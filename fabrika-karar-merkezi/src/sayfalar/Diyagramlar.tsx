@@ -10,18 +10,31 @@ import { indir } from '../bilesenler/ortak';
 import { AKTOR_RENK } from '../tema';
 import { NOT_TURU } from '../veri/notlar';
 
+// Lejant, diyagramdaki şekilleri küçük çizimlerle gösterir (renk tek başına anlam taşımaz).
+type LejantSekli = 'stadyum' | 'kutu' | 'alt' | 'olay' | 'altigen' | 'not';
+const AKTOR_LEJANT: Record<string, LejantSekli> = { insan: 'stadyum', ajan: 'kutu', deterministik: 'alt', olay: 'olay', karma: 'altigen' };
+function Sekil({ tur, dolgu, kenar, kesik }: { tur: LejantSekli; dolgu: string; kenar: string; kesik?: boolean }) {
+  const o = { fill: dolgu, stroke: kenar, strokeWidth: 1.6, strokeDasharray: kesik ? '3 2' : undefined };
+  return (
+    <svg width="30" height="18" viewBox="0 0 30 18" aria-hidden className="lejant-sekil">
+      {tur === 'stadyum' && <rect x="1" y="2" width="28" height="14" rx="7" {...o} />}
+      {tur === 'kutu' && <rect x="1" y="2" width="28" height="14" rx="2" {...o} />}
+      {tur === 'alt' && <><rect x="1" y="2" width="28" height="14" rx="1" {...o} /><path d="M5 2V16M25 2V16" stroke={kenar} strokeWidth="1.2" /></>}
+      {tur === 'olay' && <path d="M1 2H29V16H1L6 9Z" {...o} />}
+      {tur === 'altigen' && <path d="M6 2H24L29 9L24 16H6L1 9Z" {...o} />}
+      {tur === 'not' && <path d="M7 1.5H21L25 5.5V16.5H7Z" transform="rotate(-5 16 9)" {...o} />}
+    </svg>
+  );
+}
 export function Lejant() {
   return (
-    <div className="lejant">
-      {Object.values(AKTOR_RENK).map((a) => (
-        <span key={a.ad}><span className="ornek" style={{ background: a.dolgu, borderColor: a.kenar }} />{a.ad}</span>
-      ))}
-      <span><span className="ornek" style={{ background: '#fff9db', borderColor: '#f08c00', borderStyle: 'dashed' }} />Bekleme</span>
-      <span><span className="ornek" style={{ background: '#fff5f5', borderColor: '#e03131' }} />Hata / ret</span>
-      <span><span className="ornek" style={{ background: '#f1f3f5', borderColor: '#adb5bd', borderStyle: 'dashed' }} />Kapalı adım</span>
-      {Object.values(NOT_TURU).map((n) => (
-        <span key={n.ad}><span className="ornek" style={{ background: n.dolgu, borderColor: n.kenar, transform: 'rotate(-4deg)' }} />Not: {n.ad}</span>
-      ))}
+    <div className="lejant" aria-label="Lejant">
+      <span className="lejant-baslik">Lejant</span>
+      {Object.entries(AKTOR_RENK).map(([k, a]) => <span key={k} className="lejant-ogesi"><Sekil tur={AKTOR_LEJANT[k] ?? 'kutu'} dolgu={a.dolgu} kenar={a.kenar} />{a.ad}</span>)}
+      <span className="lejant-ogesi"><Sekil tur="kutu" dolgu="#fff9db" kenar="#f08c00" kesik />Bekleme</span>
+      <span className="lejant-ogesi"><Sekil tur="kutu" dolgu="#fff5f5" kenar="#e03131" />Hata / ret</span>
+      <span className="lejant-ogesi"><Sekil tur="kutu" dolgu="#f1f3f5" kenar="#adb5bd" kesik />Kapalı adım</span>
+      {Object.values(NOT_TURU).map((n) => <span key={n.ad} className="lejant-ogesi"><Sekil tur="not" dolgu={n.dolgu} kenar={n.kenar} />Not: {n.ad}</span>)}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Anchor, Badge, Button, Grid, Group, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Timeline, Title, UnstyledButton } from '@mantine/core';
-import { IconAdjustmentsHorizontal, IconArrowRight, IconFileTypePdf, IconFlag, IconListSearch, IconTarget } from '@tabler/icons-react';
+import { IconAdjustmentsHorizontal, IconArrowRight, IconFileTypePdf, IconFlag, IconFlask2, IconLayoutGrid, IconListSearch, IconRoute, IconShieldExclamation, IconTarget, IconWorld } from '@tabler/icons-react';
 import { useSayfa } from '../bilesenler/ortak';
 import { useKanit } from '../bilesenler/Kanit';
 import { SayfaBasligi, Bolum } from '../bilesenler/SayfaBasligi';
@@ -30,12 +30,12 @@ export function Baslangic() {
   const { durum } = useDurum();
   const { kanitAc } = useKanit();
   const kpi = [
-    { ad: 'Kaynaklı bulgu', deger: KANITLAR.length, alt: 'araştırma dosyalarından' },
-    { ad: 'Dünyada hata kaydı', deger: veri.d1.toplam + veri.d2.toplam + veri.d2.dikisler.length, alt: '9 motor + 8 ajan platformu' },
-    { ad: 'Kestra pilot dersi', deger: veri.kestra.nedenler.length, alt: 'önceki pilotun kök nedenleri' },
-    { ad: 'Risk bulgusu', deger: veri.risk.toplamBulgu, alt: `${veri.risk.derin} araç derin incelendi` },
-    { ad: 'ECA kuralı', deger: KURALLAR.length, alt: 'aç, kapat, ayarla' },
-    { ad: 'Hazır senaryo', deger: SENARYOLAR.length, alt: 'başlangıç noktası' },
+    { ad: 'Kaynaklı bulgu', deger: KANITLAR.length, alt: 'araştırma dosyalarından', ikon: IconListSearch, hedef: 'kanitlar' },
+    { ad: 'Dünyada hata kaydı', deger: veri.d1.toplam + veri.d2.toplam + veri.d2.dikisler.length, alt: '9 motor + 8 ajan platformu', ikon: IconWorld, hedef: 'sorunlar?kaynak=d1,d2,d2d' },
+    { ad: 'Kestra pilot dersi', deger: veri.kestra.nedenler.length, alt: 'önceki pilotun kök nedenleri', ikon: IconFlask2, hedef: 'sorunlar?kaynak=kestra' },
+    { ad: 'Risk bulgusu', deger: veri.risk.toplamBulgu, alt: `${veri.risk.derin} araç derin incelendi`, ikon: IconShieldExclamation, hedef: 'teknolojiler' },
+    { ad: 'ECA kuralı', deger: KURALLAR.length, alt: 'aç, kapat, ayarla', ikon: IconRoute, hedef: 'tasarimci?sekme=kurallar' },
+    { ad: 'Hazır senaryo', deger: SENARYOLAR.length, alt: 'başlangıç noktası', ikon: IconLayoutGrid, hedef: 'tasarimci' },
   ];
   return (
     <Stack gap={36} className="sayfa">
@@ -48,11 +48,14 @@ export function Baslangic() {
 
       <SimpleGrid cols={{ base: 2, sm: 3, lg: 6 }} spacing="sm">
         {kpi.map((k) => (
-          <Paper key={k.ad} withBorder p="md" className="kpi-karti">
-            <Text size="xs" c="dimmed" fw={600}>{k.ad}</Text>
+          <UnstyledButton key={k.ad} className="kpi-karti" onClick={() => git(k.hedef)} aria-label={`${k.ad}: ${sayi(k.deger)}. Sayfayı aç`}>
+            <Group gap={8} wrap="nowrap" mb={6} className="kpi-ust">
+              <ThemeIcon variant="light" size="md" radius="md"><k.ikon size={16} /></ThemeIcon>
+              <Text size="xs" c="dimmed" fw={600} lh={1.25}>{k.ad}</Text>
+            </Group>
             <div className="kpi-deger">{sayi(k.deger)}</div>
             <Text size="xs" c="dimmed">{k.alt}</Text>
-          </Paper>
+          </UnstyledButton>
         ))}
       </SimpleGrid>
 
@@ -62,7 +65,7 @@ export function Baslangic() {
             <UnstyledButton key={b.deger + b.kaynak} className="bulgu-karti" onClick={() => kanitAc({ baslik: b.metin.slice(0, 70) + '…', alt: `Kaynak: ${b.kaynak}`, liste: kanitAra(b.etiket), olgular: [{ metin: b.metin, kaynak: b.kaynak }] })}>
               <div className="bulgu-deger">{b.deger}</div>
               <Text size="sm" mt={6}>{b.metin}</Text>
-              <Group justify="space-between" mt="sm">
+              <Group justify="space-between" className="bulgu-alt">
                 <Badge size="sm" variant="light" color="gray">{b.kaynak}</Badge>
                 <IconArrowRight size={16} className="bulgu-ok" />
               </Group>
@@ -77,14 +80,17 @@ export function Baslangic() {
           {KARARLAR.filter((k) => k.id !== 'gorunum').map((k) => {
             const v = durum.kararlar[k.id];
             const secim = Array.isArray(v) ? v.map((x) => secenekEtiket(k.id, x)).join(', ') : secenekEtiket(k.id, String(v));
-            const n = kanitAra(k.kanit ?? []).length + k.secenekler.reduce((a, s) => a + (s.olgular?.length ?? 0), 0) + (k.olgular?.length ?? 0);
+            // Karar konusunun ve şu an seçili seçeneklerin bulguları (tekrarsız).
+            const secili = Array.isArray(v) ? v.map(String) : [String(v)];
+            const kume = new Set([...kanitAra(k.kanit ?? []), ...k.secenekler.filter((s) => secili.includes(s.deger) && s.kanit?.length).flatMap((s) => kanitAra(s.kanit!))].map((x) => x.id));
+            const n = kume.size;
             return (
               <UnstyledButton key={k.id} className="karar-ozet" onClick={() => git(`tasarimci?sekme=kararlar&karar=${k.id}`)}>
                 <Text size="xs" c="dimmed" fw={600}>{k.soru}</Text>
                 <Text fw={650} mt={2}>{k.baslik}</Text>
-                <Group justify="space-between" mt={8} wrap="nowrap">
+                <Group justify="space-between" wrap="nowrap" className="karar-ozet-alt">
                   <Text size="sm" c="indigo" lineClamp={1}>{secim || '—'}</Text>
-                  <Badge size="sm" variant="light" color="gray">{sayi(n)} bulgu</Badge>
+                  {n > 0 && <Badge size="sm" variant="light" color="gray">{sayi(n)} bulgu</Badge>}
                 </Group>
               </UnstyledButton>
             );

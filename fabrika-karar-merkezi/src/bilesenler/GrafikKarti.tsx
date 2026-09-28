@@ -13,8 +13,8 @@ export function GrafikKarti({ baslik, aciklama, kaynak, secenek, tablo, yuksekli
   return (
     <Paper withBorder p="md" radius="md" className="grafik-karti">
       <Stack gap="xs">
-        <Group justify="space-between" align="flex-start" wrap="nowrap">
-          <div>
+        <Group justify="space-between" align="flex-start" wrap="wrap" gap="xs">
+          <div style={{ flex: '1 1 220px', minWidth: 0 }}>
             <Title order={4}>{baslik}</Title>
             {aciklama && <Text size="sm" c="dimmed">{aciklama}</Text>}
           </div>

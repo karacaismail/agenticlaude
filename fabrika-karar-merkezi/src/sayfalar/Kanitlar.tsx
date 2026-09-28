@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Grid, Group, MultiSelect, Paper, SegmentedControl, Stack, Text, useComputedColorScheme } from '@mantine/core';
+import { Grid, Group, Input, MultiSelect, Paper, SegmentedControl, Stack, Text, useComputedColorScheme } from '@mantine/core';
 import { KANITLAR, KAYNAK_AD, ETIKET_AD, TUR_AD, TUR_ACIKLAMA, TUR_SIRA, type Kanit } from '../veri/kanit';
 import { KanitListesi } from '../bilesenler/Kanit';
 import { SayfaBasligi } from '../bilesenler/SayfaBasligi';
@@ -38,10 +38,14 @@ export function Kanitlar() {
         <Grid.Col span={{ base: 12, lg: 8 }}>
           <Paper withBorder p="lg">
             <Stack gap="sm">
-              <Group gap="sm" align="flex-end" wrap="wrap">
-                <MultiSelect label="Konu" placeholder="Konu seç (boşsa hepsi)" data={etiketSecenek} value={etiketler} onChange={setEtiketler} searchable clearable w={420} maxDropdownHeight={320} />
-                <SegmentedControl size="xs" value={mod} onChange={(v) => setMod(v as 'veya' | 've')} data={[{ label: 'Konulardan biri', value: 'veya' }, { label: 'Hepsi birden', value: 've' }]} />
-                <SegmentedControl size="xs" value={siralama} onChange={(v) => setSiralama(v as 'onem' | 'yeni')} data={[{ label: 'Tür sırası', value: 'onem' }, { label: 'En yeni', value: 'yeni' }]} />
+              <Group gap="md" align="flex-end" wrap="wrap" className="suzgec-satiri">
+                <MultiSelect label="Konu" placeholder="Konu seç (boşsa hepsi)" data={etiketSecenek} value={etiketler} onChange={setEtiketler} searchable clearable style={{ flex: '1 1 300px' }} maxDropdownHeight={320} />
+                <Input.Wrapper label="Konular">
+                  <div><SegmentedControl size="xs" value={mod} onChange={(v) => setMod(v as 'veya' | 've')} data={[{ label: 'Biri', value: 'veya' }, { label: 'Hepsi', value: 've' }]} /></div>
+                </Input.Wrapper>
+                <Input.Wrapper label="Sıralama">
+                  <div><SegmentedControl size="xs" value={siralama} onChange={(v) => setSiralama(v as 'onem' | 'yeni')} data={[{ label: 'Türe göre', value: 'onem' }, { label: 'En yeni', value: 'yeni' }]} /></div>
+                </Input.Wrapper>
               </Group>
               <KanitListesi key={`${etiketler.join(',')}-${mod}-${siralama}`} liste={liste} adim={30} />
             </Stack>

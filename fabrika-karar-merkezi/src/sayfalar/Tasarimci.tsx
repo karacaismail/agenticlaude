@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Badge, Button, FileButton, Grid, Group, Paper, Progress, RingProgress, SegmentedControl, SimpleGrid, Stack, Tabs, Text, Title, Tooltip } from '@mantine/core';
-import { IconArrowBackUp, IconDownload, IconFileTypePdf, IconRefresh, IconSitemap, IconUpload } from '@tabler/icons-react';
+import { IconArrowBackUp, IconCircleCheckFilled, IconDownload, IconFileTypePdf, IconRefresh, IconSitemap, IconUpload } from '@tabler/icons-react';
 import { SENARYOLAR } from '../veri/senaryolar';
 import { KAYNAK_ADI } from '../veri/sorunlar';
 import { useDurum, durumGecerliMi, type Durum } from '../durum/depo';
@@ -121,18 +121,25 @@ export function Tasarimci() {
       {yuklemeHatasi && <Alert color="red" withCloseButton onClose={() => setYuklemeHatasi(null)}>{yuklemeHatasi}</Alert>}
 
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="sm">
-        {SENARYOLAR.map((s) => (
-          <Paper key={s.id} withBorder p="sm" radius="md" className={`senaryo-karti${s.id === durum.senaryoId ? ' secili' : ''}`}
-            onClick={() => senaryoSec(s.id)} role="button" tabIndex={0} aria-pressed={s.id === durum.senaryoId}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); senaryoSec(s.id); } }}>
-            <Group justify="space-between" wrap="nowrap" mb={4}>
-              <Badge size="sm" variant={s.id === durum.senaryoId ? 'filled' : 'light'}>{s.kisa}</Badge>
-              <Badge size="xs" variant="outline" color="gray">Faz {s.hedefFaz}{s.kumeler ? ` · ${s.kumeler.length} küme` : ''}</Badge>
-            </Group>
-            <Text fw={650} size="sm">{s.ad}</Text>
-            <Text size="xs" c="dimmed" lineClamp={3}>{s.ozet}</Text>
-          </Paper>
-        ))}
+        {SENARYOLAR.map((s) => {
+          const secili = s.id === durum.senaryoId;
+          return (
+            <Paper key={s.id} withBorder p="sm" radius="md" className={`senaryo-karti${secili ? ' secili' : ''}`}
+              onClick={() => senaryoSec(s.id)} role="button" tabIndex={0} aria-pressed={secili}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); senaryoSec(s.id); } }}>
+              <div className="senaryo-ust">
+                <span className="senaryo-etiket">{s.kisa}</span>
+                {secili && <IconCircleCheckFilled size={18} className="senaryo-isaret" aria-hidden />}
+              </div>
+              <Text fw={650} size="sm" mt={4}>{s.ad}</Text>
+              <Text size="xs" c="dimmed" lineClamp={3} mt={2}>{s.ozet}</Text>
+              <div className="senaryo-alt">
+                <span className="senaryo-meta">Faz {s.hedefFaz}</span>
+                {s.kumeler && <span className="senaryo-meta">{s.kumeler.length} küme</span>}
+              </div>
+            </Paper>
+          );
+        })}
       </SimpleGrid>
 
       <Paper withBorder p="lg" className="senaryo-bilgi">
@@ -168,7 +175,7 @@ export function Tasarimci() {
       <Grid gutter="md">
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Tabs value={sekme} onChange={(v) => git(`tasarimci?sekme=${v}`)} keepMounted={false}>
-            <Tabs.List mb="sm">
+            <Tabs.List mb="sm" className="yapiskan-sekmeler">
               <Tabs.Tab value="kararlar">Kararlar{t.degisenKararlar.length ? ` (${t.degisenKararlar.length})` : ''}</Tabs.Tab>
               <Tabs.Tab value="kurallar">ECA kuralları ({t.aktifKurallar.length})</Tabs.Tab>
               <Tabs.Tab value="kumeler">Kümeler ({durum.kumeler.length})</Tabs.Tab>

@@ -49,14 +49,18 @@ export function KanitListesi({ liste, adim = 25, yukseklik }: { liste: Kanit[]; 
   return (
     <Stack gap="sm">
       <Group gap="xs" wrap="wrap">
-        <TextInput size="xs" w={240} placeholder="Bulgularda ara" leftSection={<IconSearch size={14} />} value={ara} onChange={(e) => { setAra(e.currentTarget.value); setSinir(adim); }} />
+        <TextInput size="xs" style={{ flex: '1 1 220px' }} placeholder="Bulgularda ara (ör. OOM, CVE, webhook)" leftSection={<IconSearch size={14} />} value={ara} onChange={(e) => { setAra(e.currentTarget.value); setSinir(adim); }} />
         <Select size="xs" w={210} placeholder="Kaynak dosya" clearable value={kaynak} onChange={(v) => { setKaynak(v); setSinir(adim); }}
           data={kaynaklar.map((k) => ({ value: k, label: KAYNAK_AD[k] ?? k }))} />
-        <Text size="xs" c="dimmed">{suz.length} / {liste.length} bulgu</Text>
+        <Text size="xs" c="dimmed" className="sonuc-sayisi"><b>{suz.length.toLocaleString('tr-TR')}</b> / {liste.length.toLocaleString('tr-TR')} bulgu</Text>
       </Group>
       <Chip.Group multiple value={turler} onChange={(v) => { setTurler(v); setSinir(adim); }}>
         <Group gap={6}>
-          {sayilar.map(([t, n]) => <Chip key={t} value={t} size="xs" color={TUR_RENK[t]} variant="light">{TUR_AD[t]} {n}</Chip>)}
+          {sayilar.map(([t, n]) => (
+            <Chip key={t} value={t} size="xs" color={TUR_RENK[t]} variant="light">
+              <span className="tur-nokta" style={{ background: `var(--mantine-color-${TUR_RENK[t]}-6)` }} />{TUR_AD[t]} {n}
+            </Chip>
+          ))}
         </Group>
       </Chip.Group>
       {yukseklik ? <ScrollArea.Autosize mah={yukseklik} type="auto" offsetScrollbars>{icerik}</ScrollArea.Autosize> : icerik}

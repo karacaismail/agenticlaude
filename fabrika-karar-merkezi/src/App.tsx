@@ -110,7 +110,7 @@ export function App() {
               ))}
             </Stack>
           </AppShell.Section>
-          <AppShell.Section p="xs">
+          <AppShell.Section p="xs" className="nav-alt">
             <Stack gap={6}>
               <Group justify="space-between">
                 <Tooltip label="Kataloglanan sorunlardan açık bir kurala ya da karara bağlı olanların oranı"><Text size="xs" fw={600}>Sorun bağlantısı</Text></Tooltip>

@@ -165,6 +165,39 @@ function KararKarti({ k }: { k: Karar }) {
   );
 }
 
+// Bütün kararlar ve şu anki seçimler tek bakışta; tıklayınca ilgili karar kartına gider.
+function KararDizini() {
+  const { durum } = useDurum();
+  const kararlar = KARARLAR.filter((k) => k.id !== 'gorunum');
+  const git = (id: string) => document.getElementById(`karar-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  return (
+    <Paper withBorder p="md" className="karar-dizini">
+      <Group justify="space-between" mb={8} gap="xs">
+        <Text fw={650} size="sm">Seçimlerin</Text>
+        <Text size="xs" c="dimmed">{kararlar.length} karar · karta gitmek için tıkla</Text>
+      </Group>
+      <div className="karar-dizini-izgara">
+        {kararlar.map((k, i) => {
+          const v = durum.kararlar[k.id];
+          const degerler = Array.isArray(v) ? v.map(String) : v !== undefined && v !== '' ? [String(v)] : [];
+          const secilenler = k.secenekler.filter((s) => degerler.includes(s.deger));
+          const dikkat = secilenler.some((s) => s.dikkat);
+          return (
+            <UnstyledButton key={k.id} className="karar-dizini-ogesi" onClick={() => git(k.id)}>
+              <span className="karar-dizini-no">{String(i + 1).padStart(2, '0')}</span>
+              <span className="karar-dizini-metin">
+                <span className="karar-dizini-baslik">{k.baslik}</span>
+                <span className="karar-dizini-secim">{secilenler.length ? secilenler.map((s) => s.etiket).join(', ') : 'Seçilmedi'}</span>
+              </span>
+              {dikkat && <Tooltip label="Seçilen seçenekte dikkat çeken bir bulgu var"><IconAlertTriangle size={15} className="karar-dizini-dikkat" /></Tooltip>}
+            </UnstyledButton>
+          );
+        })}
+      </div>
+    </Paper>
+  );
+}
+
 export function KararPaneli() {
   return (
     <Stack gap="md">
@@ -172,6 +205,7 @@ export function KararPaneli() {
         Her seçenekte kaynaklı olgular, dikkat çeken bulgu ve ölçütler var. "Bulgular" düğmesi o seçeneğe ait bütün kayıtları açar; "Karşılaştır" seçenekleri yan yana koyar.
         Burada öneri yok; karar sende.
       </Text>
+      <KararDizini />
       {KARARLAR.filter((k) => k.id !== 'gorunum').map((k) => <KararKarti key={k.id} k={k} />)}
     </Stack>
   );
