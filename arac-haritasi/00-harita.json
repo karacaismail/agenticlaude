@@ -13,36 +13,36 @@
     }
   },
   "istatistik": {
-    "arac": 4405,
-    "dongu": 26,
+    "arac": 4424,
+    "dongu": 27,
     "tur": {
-      "acik-kaynak": 2014,
+      "acik-kaynak": 2027,
       "kutuphane": 366,
       "platform": 65,
-      "acik-cekirdek": 248,
+      "acik-cekirdek": 250,
       "cerceve": 126,
       "bulut-hizmeti": 216,
       "ticari-saas": 726,
-      "ticari-yazilim": 217,
+      "ticari-yazilim": 221,
       "protokol-standart": 292,
       "model": 124,
       "diger": 11
     },
     "olgunluk": {
-      "olgun": 2349,
-      "gelisen": 1384,
+      "olgun": 2361,
+      "gelisen": 1390,
       "erken": 595,
-      "arsiv-terk": 77
+      "arsiv-terk": 78
     },
     "barindirma": {
-      "bulut-yonetilen": 273,
+      "bulut-yonetilen": 276,
       "saas": 1377,
-      "self-host": 2188,
-      "yerel": 2380,
+      "self-host": 2193,
+      "yerel": 2399,
       "bilinmiyor": 1
     },
     "url_kontrol": {
-      "200": 4254,
+      "200": 4273,
       "403": 39,
       "308": 69,
       "hata:timeout": 8,
@@ -63,7 +63,8 @@
     "D01": "derin araştırma: 8 paralel alan grubu",
     "D02-D13": "12 tekrar araştırma döngüsü; her döngü farklı bir açıdan arar ve önceki döngülerde bulunan araçları dışlar",
     "D15": "Codex (ikinci ajan) araç kataloğu ve ham araştırmasıyla karşılaştırma; yalnız doğrulanan eksikler eklendi",
-    "D16": "Kullanıcının istediği tek araç (Pi) birincil kaynaklarla doğrulanıp eklendi; birlestir.py çalıştırılmadı, kayıt kuralları elle uygulandı"
+    "D16": "Kullanıcının istediği tek araç (Pi) birincil kaynaklarla doğrulanıp eklendi; birlestir.py çalıştırılmadı, kayıt kuralları elle uygulandı",
+    "D17": "API istemcisi ve API testi araçları: eksikler birincil kaynaklarla doğrulanıp eklendi; birlestir.py çalıştırılmadı"
   },
   "ana_donguler": [
     {
@@ -227,6 +228,15 @@
       ],
       "yeni_arac": 1,
       "kumulatif": 4405
+    },
+    {
+      "id": "D17",
+      "aci": "Kullanıcı isteğiyle API istemcisi ve API testi araçları",
+      "alt_donguler": [
+        "D17"
+      ],
+      "yeni_arac": 19,
+      "kumulatif": 4424
     }
   ],
   "donguler": [
@@ -437,6 +447,14 @@
       "yeni": 1,
       "tekrar": 0,
       "kumulatif": 4405
+    },
+    {
+      "id": "D17",
+      "aci": "Kullanıcının sorusu üzerine (Postman ve Hoppscotch benzeri araçlar) API istemcisi, API test çalıştırıcısı ve sahte API araçları tarandı: mevcut kayıtlar doğrulandı, eksik ve doğrulanabilen araçlar eklendi; depo meta verisi, GitHub güvenlik bildirimleri, npm kayıtları ve resmî belgeler kullanıldı.",
+      "dosya": "donguler/D17.json",
+      "yeni": 19,
+      "tekrar": 7,
+      "kumulatif": 4424
     }
   ],
   "kumeler": [
@@ -463,7 +481,7 @@
       "ad": "Kod tabanı bağlamı ve mimari sınırlar",
       "alan": "A-deger-akisi",
       "dosya": "kumeler/A-deger-akisi/K03-kod-tabani-baglami-ve-mimari-sinirlar.json",
-      "arac_sayisi": 355,
+      "arac_sayisi": 361,
       "ihtiyac_sayisi": 12,
       "kapsanan_ihtiyac": 12
     },
@@ -481,7 +499,7 @@
       "ad": "Doğrulama, test oracle ve kalite kapıları",
       "alan": "A-deger-akisi",
       "dosya": "kumeler/A-deger-akisi/K05-dogrulama-test-oracle-ve-kalite-kapilari.json",
-      "arac_sayisi": 900,
+      "arac_sayisi": 918,
       "ihtiyac_sayisi": 30,
       "kapsanan_ihtiyac": 30
     },
@@ -571,7 +589,7 @@
       "ad": "Çalışma ortamı, izolasyon ve kapasite",
       "alan": "B-ajan-platformu",
       "dosya": "kumeler/B-ajan-platformu/K15-calisma-ortami-izolasyon-ve-kapasite.json",
-      "arac_sayisi": 383,
+      "arac_sayisi": 386,
       "ihtiyac_sayisi": 7,
       "kapsanan_ihtiyac": 7
     },
@@ -888,14 +906,14 @@
       "ad": "Geçici test ortamları ve test verisi yönetimi (sentetik/maskeli veri)",
       "grup": "Yürütme ortamı ve güvenlik",
       "dosya": "yetenekler/Y-19-gecici-test-ortamlari-ve-test-verisi-yon.json",
-      "arac_sayisi": 89
+      "arac_sayisi": 92
     },
     {
       "id": "Y-20",
       "ad": "Bağımsız test çalıştırıcı ve deterministik kalite kapıları (derleme, tip, statik analiz, birim, entegrasyon, uçtan uca)",
       "grup": "Doğrulama ve kalite",
       "dosya": "yetenekler/Y-20-bagimsiz-test-calistirici-ve-determinist.json",
-      "arac_sayisi": 548
+      "arac_sayisi": 567
     },
     {
       "id": "Y-21",
@@ -2417,7 +2435,13 @@
         "AR-3284",
         "AR-3285",
         "AR-3410",
-        "AR-3412"
+        "AR-3412",
+        "AR-4406",
+        "AR-4407",
+        "AR-4408",
+        "AR-4410",
+        "AR-4423",
+        "AR-4424"
       ]
     },
     {
@@ -3503,7 +3527,13 @@
         "AR-3976",
         "AR-3977",
         "AR-3978",
-        "AR-3979"
+        "AR-3979",
+        "AR-4407",
+        "AR-4412",
+        "AR-4413",
+        "AR-4414",
+        "AR-4415",
+        "AR-4417"
       ]
     },
     {
@@ -3876,7 +3906,11 @@
         "AR-3452",
         "AR-3498",
         "AR-3499",
-        "AR-3504"
+        "AR-3504",
+        "AR-4413",
+        "AR-4414",
+        "AR-4421",
+        "AR-4422"
       ]
     },
     {
@@ -4531,7 +4565,25 @@
         "AR-3322",
         "AR-3328",
         "AR-3410",
-        "AR-3412"
+        "AR-3412",
+        "AR-4406",
+        "AR-4407",
+        "AR-4408",
+        "AR-4409",
+        "AR-4410",
+        "AR-4411",
+        "AR-4412",
+        "AR-4413",
+        "AR-4414",
+        "AR-4415",
+        "AR-4416",
+        "AR-4417",
+        "AR-4418",
+        "AR-4419",
+        "AR-4420",
+        "AR-4421",
+        "AR-4422",
+        "AR-4423"
       ]
     },
     {
@@ -9776,7 +9828,10 @@
         "AR-3436",
         "AR-3438",
         "AR-3441",
-        "AR-3857"
+        "AR-3857",
+        "AR-4406",
+        "AR-4408",
+        "AR-4424"
       ]
     },
     {
@@ -20189,7 +20244,10 @@
       "AR-3431",
       "AR-3432",
       "AR-3433",
-      "AR-3438"
+      "AR-3438",
+      "AR-4406",
+      "AR-4408",
+      "AR-4424"
     ],
     "Y-20": [
       "AR-0106",
@@ -20739,7 +20797,26 @@
       "AR-4367",
       "AR-4368",
       "AR-4371",
-      "AR-4376"
+      "AR-4376",
+      "AR-4406",
+      "AR-4407",
+      "AR-4408",
+      "AR-4409",
+      "AR-4410",
+      "AR-4411",
+      "AR-4412",
+      "AR-4413",
+      "AR-4414",
+      "AR-4415",
+      "AR-4416",
+      "AR-4417",
+      "AR-4418",
+      "AR-4419",
+      "AR-4420",
+      "AR-4421",
+      "AR-4422",
+      "AR-4423",
+      "AR-4424"
     ],
     "Y-21": [
       "AR-0105",
@@ -64670,7 +64747,8 @@
       "bolge_notu": "Tamamen kurum içinde/yerelde çalışır; test verisi dışarı çıkmaz.",
       "ilk_dongu": "D01-G6",
       "bulundugu_donguler": [
-        "D01-G6"
+        "D01-G6",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -66521,7 +66599,8 @@
         "D01-G6",
         "D01-G7",
         "D14-C",
-        "D15"
+        "D15",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -67385,7 +67464,8 @@
       "bolge_notu": "Tamamen kurum içinde/yerelde çalışır; test verisi dışarı çıkmaz.",
       "ilk_dongu": "D01-G6",
       "bulundugu_donguler": [
-        "D01-G6"
+        "D01-G6",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -121713,7 +121793,8 @@
       "bolge_notu": "Self-host sürümü veri yerelliğini korur.",
       "ilk_dongu": "D06",
       "bulundugu_donguler": [
-        "D06"
+        "D06",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -121751,7 +121832,8 @@
       "bolge_notu": "Yurt dışında barındırılan SaaS; kişisel veri veya kaynak kod gönderilecekse KVKK md.9 yurt dışı aktarım şartları (standart sözleşme vb.) ve veri bölgesi seçenekleri sözleşmede netleştirilmeli.",
       "ilk_dongu": "D06",
       "bulundugu_donguler": [
-        "D06"
+        "D06",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -152511,7 +152593,8 @@
       "bolge_notu": "",
       "ilk_dongu": "D10",
       "bulundugu_donguler": [
-        "D10"
+        "D10",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -172582,7 +172665,8 @@
       "bolge_notu": "",
       "ilk_dongu": "D13",
       "bulundugu_donguler": [
-        "D13"
+        "D13",
+        "D17"
       ],
       "url_kontrol": "200"
     },
@@ -187204,6 +187288,656 @@
       "ilk_dongu": "D16",
       "bulundugu_donguler": [
         "D16"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4406",
+      "ad": "Insomnia",
+      "saglayici": "Kong",
+      "tur": "acik-cekirdek",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "bulut-yonetilen",
+        "yerel"
+      ],
+      "url": "https://insomnia.rest",
+      "kanit_url": [
+        "https://github.com/Kong/insomnia",
+        "https://insomnia.rest/pricing"
+      ],
+      "yetenek_siniflari": [
+        "Y-19",
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K03-006",
+        "N-K05-024",
+        "N-K15-003"
+      ],
+      "ne_saglar": "Açık kaynak API istemcisi: GraphQL, REST, WebSocket, SSE ve gRPC istekleri; OpenAPI tasarım düzenleyicisi; test takımları ve koleksiyon çalıştırıcı; bulutta ya da kurum içinde sahte sunucu; CI/CD için Insomnia CLI. Depolama: Local Vault (tamamen yerel), Git Sync ya da isteğe bağlı uçtan uca şifreli Cloud Sync.",
+      "sinirlar": "Hesapsız yalnız yerel Scratch Pad kullanılabiliyor; ürünün çoğu özelliği hesap istiyor. Git Sync, SSO ve sınırsız ortak çalışma ücretli planlarda. npm'deki insomnia-inso paketi 'artık desteklenmiyor' notuyla kaldırıldı.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "Cloud Sync seçilirse proje verisi Kong bulutuna gider; Local Vault ve Git Sync'te bulut kullanılmaz. Private Environments ortam değerlerini hep yerelde tutar.",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4407",
+      "ad": "Yaak",
+      "saglayici": "Mountain Loop (Gregory Schier)",
+      "tur": "acik-kaynak",
+      "lisans": "MIT (işte kullanım için ücretli lisans)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://yaak.app",
+      "kanit_url": [
+        "https://github.com/mountain-loop/yaak",
+        "https://yaak.app/pricing"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K03-006",
+        "N-K05-008",
+        "N-K05-024"
+      ],
+      "ne_saglar": "Yerel öncelikli masaüstü API istemcisi (Tauri, Rust, React): REST, GraphQL, gRPC, WebSocket ve SSE; Postman, Insomnia, OpenAPI ve curl içe aktarımı; şifreli sırlar ve işletim sistemi anahtarlığı; çalışma alanını dosya sistemine yansıtıp git ile sürümleme; eklentiler.",
+      "sinirlar": "Kişisel kullanım ücretsiz; iş kullanımında lisans gerekiyor (bireysel 79$/yıl, işletme kullanıcı başına 149$/yıl). Topluluk PR'ları yalnız hata düzeltmeleriyle sınırlı.",
+      "olgunluk": "gelisen",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "Resmî sayfaya göre uygulama veri saklamaz, senkronlamaz ve telemetri göndermez; veri cihazda kalır.",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4408",
+      "ad": "Apidog",
+      "saglayici": "Apidog",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (kaynak kapalı)",
+      "barindirma": [
+        "bulut-yonetilen",
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://apidog.com",
+      "kanit_url": [
+        "https://docs.apidog.com/",
+        "https://www.npmjs.com/package/apidog-cli",
+        "https://www.npmjs.com/package/apidog-mcp-server"
+      ],
+      "yetenek_siniflari": [
+        "Y-19",
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K03-006",
+        "N-K05-024",
+        "N-K15-003"
+      ],
+      "ne_saglar": "API tasarımı, hata ayıklama, test, sahte sunucu ve doküman yayımlamayı tek üründe toplar; Apidog CLI ile CI/CD'de test koşturur; npm'de apidog-mcp-server paketi var.",
+      "sinirlar": "Kaynak kapalı; apidog-cli paketinin lisansı UNLICENSED. Kurum içi kurulum (Apidog On-premises) ve AB veri bölgesi (Apidog Europe) ayrı seçenekler.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "Varsayılan hizmette veri Apidog bulutunda; AB'de saklama için Apidog Europe, tam denetim için kurum içi kurulum belgelenmiş.",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4409",
+      "ad": "RapidAPI for Mac (eski Paw)",
+      "saglayici": "Nokia",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (kaynak kapalı)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://paw.cloud",
+      "kanit_url": [
+        "https://paw.cloud"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-024"
+      ],
+      "ne_saglar": "Yalnız macOS için yerel HTTP istemcisi: istek oluşturma, ortamlar, dinamik değerler ve kod üretimi.",
+      "sinirlar": "Yalnız macOS. Resmî sayfadaki nota göre macOS 27 dahil gelecek macOS sürümleri Nokia tarafından test edilmeyecek, sertifikalandırılmayacak ve resmî olarak desteklenmeyecek.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4410",
+      "ad": "Thunder Client",
+      "saglayici": "Ranga Vadhineni",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (kaynak kapalı; ücretsiz plan var)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://www.thunderclient.com",
+      "kanit_url": [
+        "https://github.com/thunderclient/thunder-client-support",
+        "https://www.thunderclient.com/pricing"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K03-006",
+        "N-K05-024"
+      ],
+      "ne_saglar": "VS Code ve JetBrains için hafif REST API istemcisi eklentisi: koleksiyonlar, ortamlar, betiksiz testler ve CLI.",
+      "sinirlar": "Fiyat sayfasına göre ücretsiz planda Git senkronu yok, CLI ve CI/CD kısıtlı, kullanıcı başına ayda 250 koleksiyon koşusu; ücretli planlar kullanıcı başına ayda 3–16$.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4411",
+      "ad": "Restfox",
+      "saglayici": "Restfox topluluğu",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://restfox.dev",
+      "kanit_url": [
+        "https://docs.restfox.dev",
+        "https://github.com/flawiddsouza/Restfox"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-024"
+      ],
+      "ne_saglar": "Web ve masaüstünde çalışan, çevrimdışı öncelikli, sade HTTP ve soket test istemcisi; eklenti desteği.",
+      "sinirlar": "Küçük ekip; son sürüm Temmuz 2025.",
+      "olgunluk": "gelisen",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4412",
+      "ad": "REST Client (VS Code)",
+      "saglayici": "Huachao Mao",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://marketplace.visualstudio.com/items?itemName=humao.rest-client",
+      "kanit_url": [
+        "https://github.com/Huachao/vscode-restclient"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-008",
+        "N-K05-024"
+      ],
+      "ne_saglar": "VS Code içinde .http ve .rest dosyalarındaki istekleri gönderip yanıtı gösteren eklenti; istekler düz metin olarak depoda tutulabilir.",
+      "sinirlar": "Son sürüm Haziran 2022; son 12 ayda 1 commit.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4413",
+      "ad": "httpyac",
+      "saglayici": "AnWeber",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://httpyac.github.io",
+      "kanit_url": [
+        "https://github.com/AnWeber/httpyac",
+        "https://www.npmjs.com/package/httpyac"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-008",
+        "N-K05-012",
+        "N-K05-024"
+      ],
+      "ne_saglar": ".http ve .rest dosyalarını komut satırından ya da Docker ile koşturan CLI (VS Code eklentisiyle aynı biçim); HTTP, REST, GraphQL, WebSocket ve gRPC istekleri; tek dosya ya da klasör halinde CI'da çalışır.",
+      "sinirlar": "Son sürüm Mart 2025; son 12 ayda 3 commit.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz",
+        "typescript"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4414",
+      "ad": "IntelliJ HTTP Client",
+      "saglayici": "JetBrains",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (JetBrains; CLI ücretsiz)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html",
+      "kanit_url": [
+        "https://www.jetbrains.com/help/idea/http-client-cli.html"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-008",
+        "N-K05-012",
+        "N-K05-024"
+      ],
+      "ne_saglar": "JetBrains IDE'lerindeki .http dosyası istemcisi ve aynı dosyaları IDE olmadan koşturan HTTP Client CLI (ijhttp; Docker imajı ya da ZIP); CI'da istek testleri.",
+      "sinirlar": "IDE eklentisi JetBrains ürünlerine bağlı; belgeye göre CLI Ultimate lisansı gerektirmez, ZIP dağıtımı JDK 25 ister.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4415",
+      "ad": "Posting",
+      "saglayici": "Darren Burns",
+      "tur": "acik-kaynak",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://posting.sh",
+      "kanit_url": [
+        "https://github.com/darrenburns/posting"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-008",
+        "N-K05-024"
+      ],
+      "ne_saglar": "Terminalde çalışan HTTP istemcisi (TUI); SSH üzerinden kullanılabilir; istekler yerel YAML dosyalarında tutulur ve sürümlenebilir; istek öncesi ve sonrası Python kodu.",
+      "sinirlar": "Tek geliştirici kökenli proje; görsel arayüz yok.",
+      "olgunluk": "gelisen",
+      "ekosistem": [
+        "python"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4416",
+      "ad": "ATAC",
+      "saglayici": "Julien Caillaud",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://github.com/Julien-cpsn/ATAC",
+      "kanit_url": [
+        "https://github.com/Julien-cpsn/ATAC"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-024"
+      ],
+      "ne_saglar": "Terminal API istemcisi (Rust); Postman, Insomnia ve Bruno benzeri koleksiyonlar; hesapsız ve çevrimdışı çalışır; Docker paketi var.",
+      "sinirlar": "Tek geliştirici kökenli proje; sürüm 1.0'ın altında.",
+      "olgunluk": "gelisen",
+      "ekosistem": [
+        "rust"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4417",
+      "ad": "Slumber",
+      "saglayici": "Lucas Pickering",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://slumber.lucaspickering.me",
+      "kanit_url": [
+        "https://github.com/LucasPickering/slumber"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-008",
+        "N-K05-024"
+      ],
+      "ne_saglar": "Terminal HTTP istemcisi (TUI ve CLI, Python paketi); yapılandırma ve veri yerelde, sürüm kontrolüne alınabilir; Insomnia içe aktarımı.",
+      "sinirlar": "Küçük ekip; ekip içi paylaşım dosya ve git üzerinden.",
+      "olgunluk": "gelisen",
+      "ekosistem": [
+        "rust"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4418",
+      "ad": "HTTPie",
+      "saglayici": "HTTPie",
+      "tur": "acik-cekirdek",
+      "lisans": "BSD-3-Clause (CLI); masaüstü uygulaması ticari",
+      "barindirma": [
+        "bulut-yonetilen",
+        "yerel"
+      ],
+      "url": "https://httpie.io",
+      "kanit_url": [
+        "https://github.com/httpie/cli",
+        "https://httpie.io/docs"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-024"
+      ],
+      "ne_saglar": "İnsan dostu komut satırı HTTP istemcisi (http ve https komutları, biçimli ve renkli çıktı); ayrıca masaüstü ve web uygulaması.",
+      "sinirlar": "CLI deposunda son push Aralık 2024, son sürüm 3.2.4 (Kasım 2024); son 12 ayda commit yok.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "python"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4419",
+      "ad": "xh",
+      "saglayici": "ducaale",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://github.com/ducaale/xh",
+      "kanit_url": [
+        "https://github.com/ducaale/xh"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-024"
+      ],
+      "ne_saglar": "HTTPie söz dizimini Rust ile yeniden uygulayan hızlı komut satırı HTTP istemcisi; tek ikili dosya.",
+      "sinirlar": "HTTPie'nin bütün özelliklerini kapsamaz; kişisel hesap altında geliştiriliyor.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "rust"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4420",
+      "ad": "curl",
+      "saglayici": "curl projesi (Daniel Stenberg)",
+      "tur": "acik-kaynak",
+      "lisans": "curl lisansı (MIT türevi)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://curl.se",
+      "kanit_url": [
+        "https://github.com/curl/curl"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-024"
+      ],
+      "ne_saglar": "Komut satırı ve libcurl ile HTTP dahil birçok protokolde istek aracı; betiklerde ve CI'da duman testi ve sağlık kontrolü için yaygın kullanılır.",
+      "sinirlar": "Doğrulama ve raporlama yerleşik değil; test mantığı betikte yazılır.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4421",
+      "ad": "Newman",
+      "saglayici": "Postman",
+      "tur": "acik-kaynak",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://github.com/postmanlabs/newman",
+      "kanit_url": [
+        "https://github.com/postmanlabs/newman",
+        "https://learning.postman.com/docs/collections/using-newman-cli/command-line-integration-with-newman/"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-012",
+        "N-K05-024"
+      ],
+      "ne_saglar": "Postman koleksiyonlarını komut satırından koşturan açık kaynak çalıştırıcı; raporlayıcılar ve kütüphane kullanımı.",
+      "sinirlar": "Postman belgesine göre Postman v12 ve sonrasının koleksiyon v3 biçimiyle uyumlu değil; koleksiyon koşmak için Postman CLI'a geçiş gösteriliyor. Son 12 ayda 3 commit.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "typescript"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4422",
+      "ad": "Step CI",
+      "saglayici": "Step CI",
+      "tur": "acik-kaynak",
+      "lisans": "MPL-2.0",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://stepci.com",
+      "kanit_url": [
+        "https://docs.stepci.com",
+        "https://github.com/stepci/stepci"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K05-012",
+        "N-K05-024"
+      ],
+      "ne_saglar": "YAML, JSON ya da JavaScript ile tanımlanan açık kaynak API kalite güvencesi çerçevesi; REST, GraphQL, gRPC, tRPC ve SOAP; yerelde ve CI'da koşar.",
+      "sinirlar": "Son push Ağustos 2024, son sürüm Haziran 2024; son 12 ayda commit yok.",
+      "olgunluk": "gelisen",
+      "ekosistem": [
+        "dil-bagimsiz",
+        "typescript"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4423",
+      "ad": "Dredd",
+      "saglayici": "Apiary (Oracle)",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://dredd.org",
+      "kanit_url": [
+        "https://github.com/apiaryio/dredd"
+      ],
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K03-006",
+        "N-K05-024"
+      ],
+      "ne_saglar": "API tanım belgesini (API Blueprint, OpenAPI 2) arka uç uygulamasına karşı adım adım doğrulayan komut satırı aracı.",
+      "sinirlar": "Depo arşivlendi; son sürüm Kasım 2021; OpenAPI 3 desteği yok.",
+      "olgunluk": "arsiv-terk",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
+      ],
+      "url_kontrol": "200"
+    },
+    {
+      "id": "AR-4424",
+      "ad": "Mockoon",
+      "saglayici": "Mockoon",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://mockoon.com",
+      "kanit_url": [
+        "https://github.com/mockoon/mockoon",
+        "https://mockoon.com/cli/"
+      ],
+      "yetenek_siniflari": [
+        "Y-19",
+        "Y-20"
+      ],
+      "ihtiyaclar": [
+        "N-K03-006",
+        "N-K15-003"
+      ],
+      "ne_saglar": "Sahte API tasarlayıp yerelde koşturan masaüstü uygulaması ve CI ile başsız ortamlar için CLI; OpenAPI uyumu, istek kaydı ve JSON şablonları; hesap gerekmez.",
+      "sinirlar": "2026'da 4 güvenlik bildirimi (biri kritik); ortak çalışma bulut aboneliğinde.",
+      "olgunluk": "olgun",
+      "ekosistem": [
+        "dil-bagimsiz"
+      ],
+      "bolge_notu": "",
+      "ilk_dongu": "D17",
+      "bulundugu_donguler": [
+        "D17"
       ],
       "url_kontrol": "200"
     }

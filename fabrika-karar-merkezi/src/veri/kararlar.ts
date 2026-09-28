@@ -205,6 +205,101 @@ export const KARARLAR: Karar[] = [
     ],
   },
   {
+    id: 'apiTest', baslik: 'API testleri', soru: 'API davranışı hangi araçla test dosyası olarak yazılıp koşar?', tur: 'kutu', varsayilan: [],
+    kaynak: ['Araç haritası', 'Risk haritası', 'GitHub', 'npm', 'Resmî belgeler'],
+    kanit: ['hurl', 'bruno', 'postman', 'newman', 'hoppscotch', 'schemathesis', 'karate', 'httpdosya'],
+    olgular: [
+      o('Seçilen araç diyagramda dört aşamada gösterilir: RED (test dosyası), deterministik kapılar (CI koşusu), bağımsız QA ve alpha dağıtımından sonraki duman testi.', 'Akış tanımı'),
+      o('Araç haritası bu araçları "bağımsız test çalıştırıcı ve deterministik kalite kapıları" sınıfına bağlıyor; ilgili ihtiyaçlar arka uç, arayüz ve veri doğrulaması ile ön yüz–arka uç sözleşmesinin önceden yazılıp iki tarafta doğrulanması.', 'Araç haritası · Y-20'),
+    ],
+    secenekler: [
+      { deger: 'hurl', etiket: 'Hurl', kanit: ['hurl'], olgular: [
+        o('Düz metin .hurl dosyalarında istek zinciri ve JSONPath, XPath ve durum kodu doğrulaması; CI\'da JUnit ve HTML rapor üretir.', 'Araç haritası · AR-1025'),
+        o('Eylül 2026: sembolik bağlantıyla dosya kökü dışına okuma ve yazma açığı (yüksek, 8.2) ve yönlendirmede Authorization ile Cookie başlığı sızıntısı (orta).', 'GitHub güvenlik bildirimleri'),
+        o('Apache-2.0; son 12 ayda 795 commit.', 'GitHub'),
+      ] },
+      { deger: 'bruno', etiket: 'Bruno CLI', kanit: ['bruno'], dikkat: 'CLI paketi iki npm tedarik zinciri olayından etkilendi (Kasım 2025, Mart 2026).', olgular: [
+        o('Koleksiyonlar dosya sisteminde düz metin Bru dosyalarında ve git ile paylaşılır; bulut senkronu yok ve planlanmıyor. CLI komutu: bru run.', 'Bruno README'),
+        o('@usebruno/cli Kasım 2025\'te SHA1-Hulud saldırısından (geçişli bağımlılık) ve Mart 2026\'da Axios npm olayından (CVE-2026-34841, kritik) etkilendi; 21–27 Eylül 2026 haftasında 330.052 indirme.', 'GitHub güvenlik bildirimleri · npm'),
+      ] },
+      { deger: 'postmanCli', etiket: 'Postman CLI', kanit: ['postman'], olgular: [
+        o('Postman belgesine göre Postman tarafından imzalanan ve desteklenen komut satırı aracı; Postman v12 koleksiyonlarını koşmak için gösterilen yol.', 'Postman belgeleri'),
+        o('Oturum açıldığında istekler ve geçmiş Postman sunucularına kopyalanıyor; AB veri yerleşimi yalnız Enterprise planında.', 'Risk haritası · BL-02041'),
+        o('CloudSEK (Aralık 2024): 30.000\'den fazla kamuya açık Postman çalışma alanı API anahtarı ve erişim belirteci sızdırıyordu.', 'Risk haritası · BL-02042'),
+      ] },
+      { deger: 'newman', etiket: 'Newman', kanit: ['newman'], dikkat: 'Postman v12\'nin koleksiyon v3 biçimini koşamıyor.', olgular: [
+        o('Postman belgesine göre Newman, Postman v12 ve sonrasının koleksiyon v3 biçimiyle uyumlu değil; Postman CLI\'a geçiş gösteriliyor.', 'Postman belgeleri'),
+        o('Apache-2.0; son 12 ayda 3 commit; npm\'de haftada 768.759 indirme.', 'GitHub · npm'),
+      ] },
+      { deger: 'hoppscotchCli', etiket: 'Hoppscotch CLI', kanit: ['hoppscotch'], olgular: [
+        o('Koleksiyon testlerini CI\'da koşturan CLI; @hoppscotch/cli haftada 3.640 indirme.', 'npm'),
+        o('Kurum içinde barındırılan Hoppscotch sunucusunda 2026\'da 13 güvenlik bildirimi; ikisi kritik, 2026.2.0 ve 2026.5.0\'da yamalı.', 'GitHub güvenlik bildirimleri'),
+      ] },
+      { deger: 'schemathesis', etiket: 'Schemathesis', kanit: ['schemathesis'], olgular: [
+        o('OpenAPI ve GraphQL şemasından özellik tabanlı API testi üretir; 5xx hatalarını ve şema ihlallerini yakalar.', 'Araç haritası · AR-1001'),
+        o('Rastgele API istekleri paylaşımlı ortamda veri bozabilir; v4 yeniden yazımında Python API ve pytest entegrasyonu kırıldı.', 'Risk haritası'),
+      ] },
+      { deger: 'karate', etiket: 'Karate', kanit: ['karate'], olgular: [
+        o('Tek DSL ile API testi, sahte servis ve Gatling ile performans testi.', 'Araç haritası · AR-0948'),
+        o('Commit\'lerin %99\'u tek bakımcıdan; Mock Server\'da istek verisinden kod çalıştırma bildirimi.', 'Risk haritası'),
+      ] },
+      { deger: 'httpyac', etiket: 'httpyac (.http dosyaları)', kanit: ['httpdosya'], olgular: [
+        o('.http ve .rest dosyalarını CLI ya da Docker ile koşturur; VS Code eklentisiyle aynı biçim.', 'httpyac README'),
+        o('Son sürüm Mart 2025; son 12 ayda 3 commit; npm\'de haftada 50.740 indirme.', 'GitHub · npm'),
+      ] },
+      { deger: 'ijhttp', etiket: 'IntelliJ HTTP Client CLI', kanit: ['httpdosya'], olgular: [
+        o('.http dosyalarını IDE olmadan, Docker imajıyla ya da ZIP ile koşturur; belgeye göre Ultimate lisansı gerektirmez, ZIP dağıtımı JDK 25 ister.', 'JetBrains belgeleri'),
+      ] },
+    ],
+  },
+  {
+    id: 'apiIstemci', baslik: 'API istemcisi (insan)', soru: 'İnsan testçiler ve geliştiriciler API\'yi hangi istemciyle dener?', tur: 'kutu', varsayilan: [],
+    kaynak: ['Araç haritası', 'Risk haritası', 'GitHub', 'Resmî belgeler'],
+    kanit: ['postman', 'hoppscotch', 'bruno', 'insomnia', 'yaak', 'apidog', 'httpie', 'posting', 'thunder'],
+    olgular: [
+      o('Seçilen istemci diyagramda insan testi aşamasında gösterilir.', 'Akış tanımı'),
+      o('Senin 127 araçlık kataloğunda API istemcisi yok.', 'Pano · katalog'),
+    ],
+    secenekler: [
+      { deger: 'postman', etiket: 'Postman', kanit: ['postman'], olgular: [
+        o('Oturum açıldığında istekler ve geçmiş Postman sunucularına kopyalanıyor; AB veri yerleşimi yalnız Enterprise planında.', 'Risk haritası · BL-02041'),
+        o('Free ve Solo planlar tek kullanıcılık; Team kullanıcı başına ayda 19$.', 'Risk haritası · BL-02044'),
+        o('CloudSEK (Aralık 2024): 30.000\'den fazla kamuya açık çalışma alanı sır sızdırıyordu.', 'Risk haritası · BL-02042'),
+      ] },
+      { deger: 'hoppscotch', etiket: 'Hoppscotch', kanit: ['hoppscotch'], olgular: [
+        o('Web, masaüstü ve CLI; MIT lisanslı topluluk sürümü kurum içinde barındırılabilir.', 'Araç haritası · AR-2546'),
+        o('Kurum içi sunucuda 2026\'da 13 güvenlik bildirimi, ikisi kritik; hepsi yamalı sürümlerde kapatıldı.', 'GitHub güvenlik bildirimleri'),
+      ] },
+      { deger: 'bruno', etiket: 'Bruno', kanit: ['bruno'], olgular: [
+        o('Koleksiyonlar yerel dosyada, git ile paylaşılır; bulut senkronu yok ve planlanmıyor.', 'Bruno README'),
+        o('2025\'te iki yüksek bildirim (Safe Mode atlatma, XSS); Ağustos 2026\'da OAuth2 state doğrulama eksikliği (orta).', 'GitHub güvenlik bildirimleri'),
+      ] },
+      { deger: 'insomnia', etiket: 'Insomnia', kanit: ['insomnia'], olgular: [
+        o('Hesapsız yalnız Scratch Pad; diğer özellikler hesap ister. Depolama: Local Vault, Git Sync ya da isteğe bağlı uçtan uca şifreli Cloud Sync.', 'Insomnia README'),
+        o('Git Sync, SSO ve sınırsız ortak çalışma ücretli planlarda; Apache-2.0; son 12 ayda 797 commit.', 'Insomnia README · GitHub'),
+      ] },
+      { deger: 'yaak', etiket: 'Yaak', kanit: ['yaak'], dikkat: 'İşte kullanım ücretli lisans ister.', olgular: [
+        o('Resmî sayfaya göre yerel öncelikli; veri saklamaz, senkronlamaz, telemetri göndermez.', 'yaak.app'),
+        o('Kaynak MIT; iş kullanımında lisans: bireysel 79$/yıl, işletme kullanıcı başına 149$/yıl.', 'yaak.app/pricing'),
+      ] },
+      { deger: 'apidog', etiket: 'Apidog', kanit: ['apidog'], olgular: [
+        o('Tasarım, hata ayıklama, test, sahte sunucu ve doküman tek üründe; Apidog CLI ile CI/CD.', 'Apidog belgeleri'),
+        o('Kaynak kapalı (apidog-cli UNLICENSED); kurum içi kurulum ve AB veri bölgesi ayrı seçenekler.', 'Apidog belgeleri · npm'),
+      ] },
+      { deger: 'httpie', etiket: 'HTTPie / xh (komut satırı)', kanit: ['httpie'], olgular: [
+        o('HTTPie CLI deposunda Aralık 2024\'ten beri commit yok; son sürüm 3.2.4 (Kasım 2024).', 'GitHub'),
+        o('xh aynı söz dizimini Rust ile uygular; MIT, son 12 ayda 115 commit.', 'GitHub'),
+      ] },
+      { deger: 'posting', etiket: 'Posting (terminal)', kanit: ['posting'], olgular: [
+        o('SSH üzerinden kullanılabilen terminal istemcisi; istekler yerel YAML dosyalarında tutulur.', 'Posting README'),
+        o('Apache-2.0; son 12 ayda 79 commit.', 'GitHub'),
+      ] },
+      { deger: 'thunder', etiket: 'Thunder Client (VS Code)', kanit: ['thunder'], olgular: [
+        o('Ücretsiz planda Git senkronu yok, CLI ve CI/CD kısıtlı, ayda 250 koleksiyon koşusu; ücretli planlar kullanıcı başına ayda 3–16$.', 'thunderclient.com/pricing'),
+      ] },
+    ],
+  },
+  {
     id: 'sandbox', baslik: 'Sandbox', soru: 'Ajan nerede çalışır?', tur: 'radyo', varsayilan: 'docker',
     kaynak: ['C6', 'E6', 'Risk haritası'], kanit: ['sandbox'],
     olgular: [

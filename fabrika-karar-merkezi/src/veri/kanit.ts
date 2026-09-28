@@ -58,6 +58,8 @@ export const ETIKET_AD: Record<string, string> = {
   'claude-code': 'Claude Code', 'codex-cli': 'Codex CLI', goose: 'goose', jev: 'Jev', pydantic: 'PydanticAI', dspy: 'DSPy', langgraph: 'LangGraph',
   plane: 'Plane', github: 'GitHub', e2b: 'E2B', daytona: 'Daytona', docker: 'Docker', litellm: 'LiteLLM', symphony: 'Symphony', langfuse: 'Langfuse',
   playwright: 'Playwright', openfga: 'OpenFGA', pi: 'Pi',
+  postman: 'Postman', newman: 'Newman', hoppscotch: 'Hoppscotch', bruno: 'Bruno', hurl: 'Hurl', insomnia: 'Insomnia', yaak: 'Yaak', apidog: 'Apidog',
+  httpie: 'HTTPie / xh', schemathesis: 'Schemathesis', karate: 'Karate', httpdosya: '.http dosyaları', posting: 'Posting', thunder: 'Thunder Client', mockoon: 'Mockoon',
 };
 
 const INDEKS = (() => {
@@ -92,7 +94,9 @@ export const kanitBul = (id: string) => KANITLAR.find((k) => k.id === id);
 // Dizi değer: bulgu bu etiketlerin hepsini taşımalı (Plane MCP = Plane ve MCP).
 const AD_ETIKET: Record<string, string | string[]> = {
   Temporal: 'temporal', Kestra: 'kestra', DBOS: 'dbos', Restate: 'restate', n8n: 'n8n', 'Hermes Agent': 'hermes', 'Hermes Kanban': 'hermes',
-  OpenClaw: 'openclaw', OpenHands: 'openhands', Pi: 'pi', 'Claude Code': 'claude-code', 'Codex CLI': 'codex-cli', goose: 'goose', 'Jev (TypeSafe AI)': 'jev',
+  OpenClaw: 'openclaw', OpenHands: 'openhands', Pi: 'pi', Postman: 'postman', 'Postman CLI': 'postman', Newman: 'newman', Hoppscotch: 'hoppscotch', 'Hoppscotch CLI': 'hoppscotch',
+  Bruno: 'bruno', 'Bruno CLI': 'bruno', Hurl: 'hurl', Insomnia: 'insomnia', Yaak: 'yaak', Apidog: 'apidog', 'HTTPie / xh': 'httpie', Schemathesis: 'schemathesis', Karate: 'karate',
+  httpyac: 'httpdosya', 'IntelliJ HTTP Client CLI': 'httpdosya', Posting: 'posting', 'Thunder Client': 'thunder', 'Claude Code': 'claude-code', 'Codex CLI': 'codex-cli', goose: 'goose', 'Jev (TypeSafe AI)': 'jev',
   PydanticAI: 'pydantic', DSPy: 'dspy', LangGraph: 'langgraph', Plane: 'plane', 'Plane MCP Server': ['plane', 'mcp'], E2B: 'e2b', Daytona: 'daytona',
   LiteLLM: 'litellm', Langfuse: 'langfuse', Playwright: 'playwright', 'Playwright MCP': ['playwright', 'mcp'], OpenFGA: 'openfga',
   'GitHub Actions + merge queue': 'github', 'OpenAI Symphony': 'symphony', 'Docker Engine + çıkış vekili': 'docker',

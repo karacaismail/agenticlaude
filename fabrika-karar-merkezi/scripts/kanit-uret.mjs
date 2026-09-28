@@ -17,6 +17,11 @@ const ARACLAR = [
   ['hermes', /\bhermes\b/i], ['openclaw', /openclaw|clawhub|clawhavoc|clawdbot|moltbot/i], ['openhands', /openhands/i],
   ['claude-code', /claude code|claude-code|claude -p|agent sdk|claude agent/i], ['codex-cli', /codex cli|codex exec|codex-cli|openai codex|codex app|codex sdk/i],
   ['pi', /^pi · |\bpi coding agent\b|pi-coding-agent|earendil-works\/pi\b|\bpi-mono\b|\bpi agent harness\b/i],
+  ['postman', /^postman · |postman cli|postman koleksiyon|postman çalışma alanı/i], ['newman', /^newman · |postmanlabs\/newman/i],
+  ['hoppscotch', /hoppscotch/i], ['bruno', /^bruno · |usebruno|bruno cli|\.bru\b/i], ['hurl', /^hurl · |\.hurl\b|orange-opensource\/hurl/i],
+  ['insomnia', /^insomnia · |kong\/insomnia|insomnia cli/i], ['yaak', /\byaak\b/i], ['apidog', /apidog/i], ['httpie', /^httpie · |httpie\/cli|^xh · /i],
+  ['schemathesis', /schemathesis/i], ['karate', /^karate · |karatelabs|karate dsl/i], ['httpdosya', /httpyac|intellij http|^rest client \(vs code\) · /i],
+  ['posting', /^posting · |darrenburns\/posting/i], ['thunder', /thunder client/i], ['mockoon', /mockoon/i],
   ['goose', /\bgoose\b/i], ['jev', /\bjev\b|typesafe ai/i], ['pydantic', /pydantic/i], ['dspy', /\bdspy\b/i], ['langgraph', /langgraph/i],
   ['plane', /\bplane\b/i], ['github', /github/i], ['e2b', /\be2b\b/i], ['daytona', /daytona/i], ['docker', /docker|colima|cgroup/i],
   ['litellm', /litellm/i], ['symphony', /symphony/i], ['langfuse', /langfuse/i], ['playwright', /playwright/i], ['openfga', /openfga/i],
@@ -110,8 +115,11 @@ function trParca(p) {
   let t = anahtar ? p.replace(/-/g, ' ') : p;
   if (anahtar) for (const [rx, y] of TR_IFADE) t = t.replace(rx, y);
   t = t.replace(/(?<![\p{L}\p{N}])[a-z0-9]+(?![\p{L}\p{N}])/gu, (w) => TR_KELIME[w] ?? (anahtar ? OZEL_AD[w] ?? w : w));
+  // Adı küçük harfle yazılan ürünler (httpyac, xh, curl...) büyütülmez.
+  if (anahtar && KUCUK_AD.has(t.split(' ')[0])) return t;
   return anahtar ? t.charAt(0).toLocaleUpperCase('tr-TR') + t.slice(1) : t;
 }
+const KUCUK_AD = new Set(['httpyac', 'xh', 'curl', 'goose', 'n8n', 'k6', 'oasdiff']);
 const trBaslik = (b) => temiz(b).split(' · ').map(trParca).join(' · ');
 function ilkUrl(v) {
   if (!v) return undefined;

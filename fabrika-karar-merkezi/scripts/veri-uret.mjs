@@ -55,6 +55,8 @@ const secilenRisk = [
   'AR-0127','AR-0130','AR-0131','AR-0132','AR-0134','AR-0135','AR-0148','AR-0149','AR-0150','AR-0153','AR-0154',
   'AR-0162','AR-0174','AR-0175','AR-0180','AR-0188','AR-0194','AR-0195','AR-0452','AR-0644','AR-1155','AR-1386',
   'AR-1392','AR-1912','AR-2284','AR-4043','AR-4405',
+  // API istemcisi ve API testi kararları (D17)
+  'AR-0948','AR-1001','AR-1025','AR-2546','AR-2547','AR-3979','AR-4406','AR-4407','AR-4408','AR-4410','AR-4413','AR-4414','AR-4415','AR-4418','AR-4421',
 ];
 const detay = new Map();
 for (const f of readdirSync(join(proje, 'risk-haritasi', 'araclar'))) {

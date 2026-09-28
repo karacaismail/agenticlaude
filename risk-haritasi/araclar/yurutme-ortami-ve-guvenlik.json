@@ -1,13 +1,13 @@
 {
   "sema": "risk-haritasi/arac-grubu@1",
   "grup": "Yürütme ortamı ve güvenlik",
-  "arac_sayisi": 559,
-  "derin_arastirilan": 51,
+  "arac_sayisi": 562,
+  "derin_arastirilan": 54,
   "seviye_dagilimi": {
     "kritik": 3,
     "yuksek": 26,
     "orta": 182,
-    "dusuk": 348
+    "dusuk": 351
   },
   "araclar": [
     {
@@ -20160,6 +20160,391 @@
       "siddet_dagilimi": {},
       "en_onemli_riskler": [],
       "olaylar": []
+    },
+    {
+      "id": "AR-4424",
+      "ad": "Mockoon",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://mockoon.com",
+      "yetenek_siniflari": [
+        "Y-19",
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 14,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 18,
+      "otomatik_puan": 0,
+      "risk_turleri": [
+        "RT-01"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "mockoon/mockoon",
+        "arsiv": false,
+        "son_push": "2026-09-25",
+        "yildiz": 8424,
+        "katkici_yaklasik": 71,
+        "acik_issue": 27,
+        "son_surum": "2026-09-16",
+        "commit_12ay": 355,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "kritik": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02543",
+          "tur": "RT-01",
+          "baslik": "2026'da 4 güvenlik bildirimi; biri kritik",
+          "siddet": "kritik",
+          "olasilik": "dusuk"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 5,
+        "kritik_yuksek": [
+          "GHSA-cmwm-hp2w-h3cx (kritik, 9.1)",
+          "CVE-2026-59148 (yüksek, 8.8)",
+          "GHSA-845j-g722-g66h (yüksek)",
+          "CVE-2025-59049 (yüksek)"
+        ],
+        "not": "Depoda 5 bildirim; 4'ü 2026'da.",
+        "kaynak": "https://github.com/mockoon/mockoon/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Mockoon",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "8.424 yıldız; son 12 ayda 355 commit."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT; bulut ortak çalışma aboneliği",
+        "kilitlenme": "Düşük",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "Yerel ve CI'da sahte API sunucusu; 2026'da 4 güvenlik bildirimi, biri kritik.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4424",
+          "arac": "Mockoon",
+          "gorev": "D17-api",
+          "tur": "RT-01",
+          "baslik": "2026'da 4 güvenlik bildirimi; biri kritik",
+          "aciklama": "GHSA-cmwm-hp2w-h3cx (kritik, 9.1): multipart alan adlarıyla kimliksiz uzaktan prototip kirliliği (Eylül 2026). CVE-2026-59148 (yüksek, 8.8): kimliksiz yönetici API'si ve joker CORS ile sahte sunucu durumunun ele geçirilmesi ve sır hırsızlığı. CVE-2026-59149 (orta): yol geçişi. GHSA-845j-g722-g66h (yüksek): sınırsız istek gövdesiyle hizmet dışı bırakma.",
+          "tarih": "2026-09",
+          "siddet": "kritik",
+          "olasilik": "dusuk",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/mockoon/mockoon/security/advisories/GHSA-cmwm-hp2w-h3cx",
+            "https://github.com/mockoon/mockoon/security/advisories/GHSA-rqx4-3f6q-3x2v"
+          ],
+          "yasatacagi_sorunlar": [
+            "Ağa açık bir sahte sunucu kimlik doğrulaması olmadan ele geçirilebilir; sahte yanıtlardaki sırlar sızabilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K15-003",
+            "N-K18-004"
+          ],
+          "erken_sinyal": "Sahte sunucunun localhost dışına açılması; eski CLI sürümü.",
+          "azaltma": "Bildirimlerdeki yamalı sürümler.",
+          "id": "BL-02543",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub güvenlik bildirimleri API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/mockoon/mockoon/security/advisories/GHSA-cmwm-hp2w-h3cx",
+              "https://github.com/mockoon/mockoon/security/advisories/GHSA-rqx4-3f6q-3x2v"
+            ]
+          },
+          "zafiyet_kimlik_kontrolu": [
+            {
+              "kimlik": "CVE-2026-59148",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            },
+            {
+              "kimlik": "CVE-2026-59149",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AR-4406",
+      "ad": "Insomnia",
+      "tur": "acik-cekirdek",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "bulut-yonetilen",
+        "yerel"
+      ],
+      "url": "https://insomnia.rest",
+      "yetenek_siniflari": [
+        "Y-19",
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 12,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 12,
+      "otomatik_puan": 10,
+      "risk_turleri": [
+        "RT-05",
+        "RT-07",
+        "RT-08",
+        "RT-14"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "Kong/insomnia",
+        "arsiv": false,
+        "son_push": "2026-09-28",
+        "yildiz": 40038,
+        "katkici_yaklasik": 355,
+        "acik_issue": 743,
+        "son_surum": "2026-09-28",
+        "commit_12ay": 797,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 2,
+      "siddet_dagilimi": {
+        "orta": 1,
+        "dusuk": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02530",
+          "tur": "RT-07",
+          "baslik": "Hesapsız yalnız Scratch Pad; Git Sync ücretli planda",
+          "siddet": "orta",
+          "olasilik": "orta"
+        },
+        {
+          "id": "BL-02531",
+          "tur": "RT-05",
+          "baslik": "Insomnia CLI'ın npm paketi desteklenmiyor",
+          "siddet": "dusuk",
+          "olasilik": "yuksek"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/Kong/insomnia/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Kong",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "40.038 yıldız; son 12 ayda 797 commit; 355 katkıcı."
+      },
+      "ticari": {
+        "fiyat_modeli": "Apache-2.0 çekirdek; Git Sync ve kurumsal özellikler ücretli",
+        "kilitlenme": "Orta (hesap ve plan)",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Seçilen depolamaya göre: yerel, git ya da Kong bulutu",
+        "bolge_secenekleri": "Local Vault, Git Sync, Cloud Sync",
+        "kvkk_notu": "Cloud Sync seçilmezse proje verisi buluta gitmez."
+      },
+      "genel_degerlendirme": "Kong'un Apache-2.0 lisanslı API istemcisi; çoğu özellik hesap istiyor, Git Sync ücretli planda.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4406",
+          "arac": "Insomnia",
+          "gorev": "D17-api",
+          "tur": "RT-07",
+          "baslik": "Hesapsız yalnız Scratch Pad; Git Sync ücretli planda",
+          "aciklama": "README'ye göre Insomnia hesapsız yalnız yerel Scratch Pad ile kullanılabiliyor; ürünün çoğu özelliği hesap istiyor. Depolama seçenekleri Local Vault (tamamen yerel), Git Sync ve Cloud Sync (isteğe bağlı uçtan uca şifreli). Git Sync, SSO (SAML, OIDC) ve sınırsız ortak çalışma ücretli planlarda.",
+          "tarih": "2026-09",
+          "siddet": "orta",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/Kong/insomnia#account--subscriptions",
+            "https://insomnia.rest/pricing"
+          ],
+          "yasatacagi_sorunlar": [
+            "Ekip koleksiyonlarını git'te paylaşmak ücretli plana bağlanır; hesap politikası değişirse erişim etkilenir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K05-008",
+            "N-K22-008"
+          ],
+          "erken_sinyal": "Plan ya da hesap koşullarında değişiklik duyurusu.",
+          "azaltma": "Belgelenen seçenek: Local Vault ile tamamen yerel depolama.",
+          "id": "BL-02530",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "README 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/Kong/insomnia#account--subscriptions",
+              "https://insomnia.rest/pricing"
+            ]
+          }
+        },
+        {
+          "arac_id": "AR-4406",
+          "arac": "Insomnia",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Insomnia CLI'ın npm paketi desteklenmiyor",
+          "aciklama": "npm'deki insomnia-inso paketi 'Package no longer supported. Use at your own risk.' notuyla kaldırıldı; son sürüm 3.6.0 (Eylül 2022). README CI/CD için Insomnia CLI'ı anlatıyor ve dağıtım GitHub sürümlerine yönlendiriliyor.",
+          "tarih": "2022-09",
+          "siddet": "dusuk",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://www.npmjs.com/package/insomnia-inso",
+            "https://github.com/Kong/insomnia/releases"
+          ],
+          "yasatacagi_sorunlar": [
+            "Eski kurulum talimatlarıyla npm'den kurulan CLI güncelleme almaz."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-005"
+          ],
+          "erken_sinyal": "CI betiklerinde npm install insomnia-inso.",
+          "azaltma": "Belgelenen yol: GitHub sürümlerindeki Insomnia CLI.",
+          "id": "BL-02531",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "npm kayıt API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://www.npmjs.com/package/insomnia-inso",
+              "https://github.com/Kong/insomnia/releases"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "AR-4408",
+      "ad": "Apidog",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (kaynak kapalı)",
+      "barindirma": [
+        "bulut-yonetilen",
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://apidog.com",
+      "yetenek_siniflari": [
+        "Y-19",
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 12,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 11,
+      "otomatik_puan": 15,
+      "risk_turleri": [
+        "RT-04",
+        "RT-07",
+        "RT-08",
+        "RT-13"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "ticari",
+      "depo": null,
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "orta": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02534",
+          "tur": "RT-07",
+          "baslik": "Kaynak kapalı; kurum içi kurulum ve AB veri bölgesi ayrı seçenek",
+          "siddet": "orta",
+          "olasilik": "orta"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Açık bir bildirim kaydı bulunmadı (kaynak kapalı).",
+        "kaynak": "https://docs.apidog.com/"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Apidog",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "apidog-cli 2.2.11 (Eylül 2026)."
+      },
+      "ticari": {
+        "fiyat_modeli": "ticari",
+        "kilitlenme": "Orta",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Apidog bulutu; isteğe bağlı kurum içi",
+        "bolge_secenekleri": "Apidog Europe, kurum içi",
+        "kvkk_notu": "Varsayılan bölge belgelerde belirtilmemiş."
+      },
+      "genel_degerlendirme": "API tasarım, test, sahte sunucu ve doküman ürünü; kaynak kapalı, kurum içi kurulum ayrı seçenek.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4408",
+          "arac": "Apidog",
+          "gorev": "D17-api",
+          "tur": "RT-07",
+          "baslik": "Kaynak kapalı; kurum içi kurulum ve AB veri bölgesi ayrı seçenek",
+          "aciklama": "apidog-cli npm paketinin lisansı UNLICENSED. Belgeler kurum içi kurulumu (Apidog On-premises) ve verinin Avrupa'da tutulduğu Apidog Europe'u ayrı seçenekler olarak anlatıyor. npm'de apidog-mcp-server 0.0.17 (Aralık 2025) sürümünde.",
+          "tarih": "2026-09",
+          "siddet": "orta",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://docs.apidog.com/",
+            "https://www.npmjs.com/package/apidog-cli"
+          ],
+          "yasatacagi_sorunlar": [
+            "Tasarım, test ve doküman aynı kapalı üründe toplanırsa başka araca geçiş maliyeti artar."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K22-008",
+            "N-K22-005"
+          ],
+          "erken_sinyal": "Fiyat ya da bölge koşullarında değişiklik.",
+          "azaltma": "Belgelenen seçenekler: kurum içi kurulum, Apidog Europe.",
+          "id": "BL-02534",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "Belgeler ve npm kayıt API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://docs.apidog.com/",
+              "https://www.npmjs.com/package/apidog-cli"
+            ]
+          }
+        }
+      ]
     },
     {
       "id": "AR-0182",

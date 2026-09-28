@@ -2,7 +2,7 @@
   "sema": "risk-haritasi/harita@1",
   "baslik": "İnsan ve ajanlarla çok ekipli yazılım üretimi — araç risk haritası",
   "tarih": "2026-09-27",
-  "aciklama": "Araç haritasındaki (../arac-haritasi) 4.383 aracın zayıf noktaları, riskleri ve bu kurumda yaşatacağı sorunlar. Merkezi rolü en yüksek araçlar derin araştırıldı; tümü için otomatik sinyaller üretildi. Kategori kalıpları, ekosistem olayları ve sorun senaryoları ayrı klasörlerdedir.",
+  "aciklama": "Araç haritasındaki (../arac-haritasi) 4.402 aracın zayıf noktaları, riskleri ve bu kurumda yaşatacağı sorunlar. Merkezi rolü en yüksek araçlar derin araştırıldı; tümü için otomatik sinyaller üretildi. Kategori kalıpları, ekosistem olayları ve sorun senaryoları ayrı klasörlerdedir.",
   "yontem": {
     "derin_arastirma": "Her yetenek grubundan merkeziyet puanı en yüksek araçlar (ihtiyaç eşleşme sayısı, bulunduğu döngü sayısı, kritik yetenek sınıfı) 12 araştırma görevine bölündü; güvenlik kayıtları (GitHub Advisory, OSV, NVD), depo meta verisi, lisans dosyaları, resmî duyurular ve haberlerle araştırıldı.",
     "otomatik_sinyaller": "Tüm araçlar için: lisans sınıfı, depo arşiv/son push/12 aylık commit/katkıcı/sahip türü (GitHub GraphQL), yalnız SaaS barındırma, olgunluk, resmî URL durumu, sınırlar metninde anahtar kelime.",
@@ -156,57 +156,57 @@
     }
   ],
   "istatistik": {
-    "arac": 4383,
-    "derin_arastirilan": 637,
-    "bulgu": 2524,
+    "arac": 4402,
+    "derin_arastirilan": 652,
+    "bulgu": 2542,
     "bulgu_siddet": {
-      "kritik": 131,
-      "yuksek": 753,
-      "orta": 1493,
-      "dusuk": 147
+      "kritik": 134,
+      "yuksek": 758,
+      "orta": 1501,
+      "dusuk": 149
     },
     "bulgu_tur": {
       "RT-08": 344,
       "RT-11": 238,
+      "RT-01": 215,
       "RT-03": 214,
-      "RT-01": 211,
       "RT-10": 188,
-      "RT-15": 187,
-      "RT-14": 168,
-      "RT-05": 149,
+      "RT-15": 188,
+      "RT-14": 169,
+      "RT-05": 157,
       "RT-06": 137,
+      "RT-07": 113,
       "RT-13": 112,
-      "RT-07": 111,
-      "RT-04": 104,
+      "RT-04": 105,
       "RT-16": 103,
       "RT-12": 94,
-      "RT-02": 88,
+      "RT-02": 89,
       "RT-17": 53,
       "RT-09": 23
     },
     "bulgu_dogrulama": {
-      "birincil": 1849,
+      "birincil": 1867,
       "ikincil": 96,
       "cikarim": 579
     },
     "arac_seviye": {
       "kritik": 33,
       "yuksek": 228,
-      "orta": 1498,
-      "dusuk": 2624
+      "orta": 1503,
+      "dusuk": 2638
     },
     "kategori_kalibi": 233,
     "olay": 323,
     "senaryo": 119,
     "lisans_sinifi": {
-      "izin-verici": 2481,
+      "izin-verici": 2495,
       "kaynak-erisilebilir": 52,
       "guclu-copyleft": 113,
-      "ticari": 1105,
+      "ticari": 1109,
       "ag-copyleft": 115,
       "bilinmiyor": 243,
       "ozel-model-lisansi": 27,
-      "zayif-copyleft": 107,
+      "zayif-copyleft": 108,
       "acik-standart-dokuman": 123,
       "ticari-olmayan": 17
     }
@@ -217,16 +217,16 @@
         "id": "RT-01",
         "ad": "Güvenlik açığı ve istismar geçmişi",
         "dosya": "risk-turleri/RT-01-guvenlik-acigi-ve-istismar-gecmisi.json",
-        "bulgu": 211,
-        "kritik": 75,
-        "yuksek": 97
+        "bulgu": 215,
+        "kritik": 77,
+        "yuksek": 99
       },
       {
         "id": "RT-02",
         "ad": "Tedarik zinciri ve dağıtım bütünlüğü",
         "dosya": "risk-turleri/RT-02-tedarik-zinciri-ve-dagitim-butunlugu.json",
-        "bulgu": 88,
-        "kritik": 21,
+        "bulgu": 89,
+        "kritik": 22,
         "yuksek": 35
       },
       {
@@ -241,7 +241,7 @@
         "id": "RT-04",
         "ad": "Lisans ve hukuki",
         "dosya": "risk-turleri/RT-04-lisans-ve-hukuki.json",
-        "bulgu": 104,
+        "bulgu": 105,
         "kritik": 4,
         "yuksek": 18
       },
@@ -249,9 +249,9 @@
         "id": "RT-05",
         "ad": "Sürdürülebilirlik ve bakım",
         "dosya": "risk-turleri/RT-05-surdurulebilirlik-ve-bakim.json",
-        "bulgu": 149,
+        "bulgu": 157,
         "kritik": 1,
-        "yuksek": 38
+        "yuksek": 40
       },
       {
         "id": "RT-06",
@@ -265,7 +265,7 @@
         "id": "RT-07",
         "ad": "Satıcı kilidi ve taşınabilirlik",
         "dosya": "risk-turleri/RT-07-satici-kilidi-ve-tasinabilirlik.json",
-        "bulgu": 111,
+        "bulgu": 113,
         "kritik": 0,
         "yuksek": 15
       },
@@ -321,7 +321,7 @@
         "id": "RT-14",
         "ad": "Maliyet ve fiyatlandırma",
         "dosya": "risk-turleri/RT-14-maliyet-ve-fiyatlandirma.json",
-        "bulgu": 168,
+        "bulgu": 169,
         "kritik": 0,
         "yuksek": 14
       },
@@ -329,9 +329,9 @@
         "id": "RT-15",
         "ad": "Entegrasyon ve uyumluluk",
         "dosya": "risk-turleri/RT-15-entegrasyon-ve-uyumluluk.json",
-        "bulgu": 187,
+        "bulgu": 188,
         "kritik": 0,
-        "yuksek": 29
+        "yuksek": 30
       },
       {
         "id": "RT-16",
@@ -374,9 +374,9 @@
         "ad": "Kod tabanı bağlamı ve mimari sınırlar",
         "alan": "A-deger-akisi",
         "dosya": "kumeler/A-deger-akisi/K03-kod-tabani-baglami-ve-mimari-sinirlar.json",
-        "aday_arac": 353,
-        "bulgu": 192,
-        "kritik": 10
+        "aday_arac": 359,
+        "bulgu": 201,
+        "kritik": 12
       },
       {
         "id": "K04",
@@ -392,9 +392,9 @@
         "ad": "Doğrulama, test oracle ve kalite kapıları",
         "alan": "A-deger-akisi",
         "dosya": "kumeler/A-deger-akisi/K05-dogrulama-test-oracle-ve-kalite-kapilari.json",
-        "aday_arac": 894,
-        "bulgu": 677,
-        "kritik": 39
+        "aday_arac": 912,
+        "bulgu": 694,
+        "kritik": 41
       },
       {
         "id": "K06",
@@ -411,7 +411,7 @@
         "alan": "A-deger-akisi",
         "dosya": "kumeler/A-deger-akisi/K07-dokumantasyon-ve-kurumsal-bilgi.json",
         "aday_arac": 287,
-        "bulgu": 157,
+        "bulgu": 158,
         "kritik": 7
       },
       {
@@ -482,9 +482,9 @@
         "ad": "Çalışma ortamı, izolasyon ve kapasite",
         "alan": "B-ajan-platformu",
         "dosya": "kumeler/B-ajan-platformu/K15-calisma-ortami-izolasyon-ve-kapasite.json",
-        "aday_arac": 382,
-        "bulgu": 296,
-        "kritik": 36
+        "aday_arac": 385,
+        "bulgu": 300,
+        "kritik": 37
       },
       {
         "id": "K16",
@@ -695,8 +695,8 @@
       {
         "grup": "Yürütme ortamı ve güvenlik",
         "dosya": "araclar/yurutme-ortami-ve-guvenlik.json",
-        "arac": 559,
-        "derin": 51
+        "arac": 562,
+        "derin": 54
       },
       {
         "grup": "Model erişimi ve ekonomisi",
@@ -707,8 +707,8 @@
       {
         "grup": "Doğrulama ve kalite",
         "dosya": "araclar/dogrulama-ve-kalite.json",
-        "arac": 855,
-        "derin": 109
+        "arac": 871,
+        "derin": 121
       },
       {
         "grup": "Teslim hattı ve iş yönetimi",
@@ -4002,6 +4002,36 @@
       "tur": "RT-01",
       "baslik": "MCP OAuth2 geçişindeki kimlik atlatma açığı CISA KEV listesine girdi (CVE-2026-59822)",
       "olasilik": "yuksek",
+      "dogrulama": "birincil",
+      "tarih": "2026-09"
+    },
+    {
+      "id": "BL-02527",
+      "arac_id": "AR-2546",
+      "arac": "Hoppscotch",
+      "tur": "RT-01",
+      "baslik": "Kendi barındırılan sürümde 2026'da 13 güvenlik bildirimi; ikisi kritik",
+      "olasilik": "orta",
+      "dogrulama": "birincil",
+      "tarih": "2026-07"
+    },
+    {
+      "id": "BL-02528",
+      "arac_id": "AR-3979",
+      "arac": "Bruno",
+      "tur": "RT-02",
+      "baslik": "CLI paketi iki npm tedarik zinciri olayından etkilendi",
+      "olasilik": "orta",
+      "dogrulama": "birincil",
+      "tarih": "2026-03"
+    },
+    {
+      "id": "BL-02543",
+      "arac_id": "AR-4424",
+      "arac": "Mockoon",
+      "tur": "RT-01",
+      "baslik": "2026'da 4 güvenlik bildirimi; biri kritik",
+      "olasilik": "dusuk",
       "dogrulama": "birincil",
       "tarih": "2026-09"
     }
@@ -18422,11 +18452,12 @@
     {
       "id": "AR-1025",
       "ad": "Hurl",
-      "risk_puani": 10,
+      "risk_puani": 11,
       "risk_seviyesi": "dusuk",
-      "arastirma_derinligi": "otomatik",
-      "bulgu_sayisi": 0,
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
       "risk_turleri": [
+        "RT-01",
         "RT-08",
         "RT-13"
       ],
@@ -38549,11 +38580,12 @@
     {
       "id": "AR-2546",
       "ad": "Hoppscotch",
-      "risk_puani": 10,
-      "risk_seviyesi": "dusuk",
-      "arastirma_derinligi": "otomatik",
-      "bulgu_sayisi": 0,
+      "risk_puani": 30,
+      "risk_seviyesi": "orta",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
       "risk_turleri": [
+        "RT-01",
         "RT-08",
         "RT-14"
       ],
@@ -56812,11 +56844,13 @@
     {
       "id": "AR-3979",
       "ad": "Bruno",
-      "risk_puani": 5,
-      "risk_seviyesi": "dusuk",
-      "arastirma_derinligi": "otomatik",
-      "bulgu_sayisi": 0,
+      "risk_puani": 30,
+      "risk_seviyesi": "orta",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 2,
       "risk_turleri": [
+        "RT-01",
+        "RT-02",
         "RT-14"
       ],
       "lisans_sinifi": "izin-verici"
@@ -61976,6 +62010,242 @@
         "RT-08",
         "RT-10",
         "RT-15"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4406",
+      "ad": "Insomnia",
+      "risk_puani": 12,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 2,
+      "risk_turleri": [
+        "RT-05",
+        "RT-07",
+        "RT-08",
+        "RT-14"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4407",
+      "ad": "Yaak",
+      "risk_puani": 19,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 2,
+      "risk_turleri": [
+        "RT-04",
+        "RT-05",
+        "RT-08",
+        "RT-10",
+        "RT-14"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4408",
+      "ad": "Apidog",
+      "risk_puani": 12,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-04",
+        "RT-07",
+        "RT-08",
+        "RT-13"
+      ],
+      "lisans_sinifi": "ticari"
+    },
+    {
+      "id": "AR-4409",
+      "ad": "RapidAPI for Mac (eski Paw)",
+      "risk_puani": 27,
+      "risk_seviyesi": "orta",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "lisans_sinifi": "ticari"
+    },
+    {
+      "id": "AR-4410",
+      "ad": "Thunder Client",
+      "risk_puani": 15,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-14"
+      ],
+      "lisans_sinifi": "ticari"
+    },
+    {
+      "id": "AR-4411",
+      "ad": "Restfox",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4412",
+      "ad": "REST Client (VS Code)",
+      "risk_puani": 10,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4413",
+      "ad": "httpyac",
+      "risk_puani": 10,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4414",
+      "ad": "IntelliJ HTTP Client",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [
+        "RT-04"
+      ],
+      "lisans_sinifi": "ticari"
+    },
+    {
+      "id": "AR-4415",
+      "ad": "Posting",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4416",
+      "ad": "ATAC",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4417",
+      "ad": "Slumber",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4418",
+      "ad": "HTTPie",
+      "risk_puani": 11,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4419",
+      "ad": "xh",
+      "risk_puani": 0,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4420",
+      "ad": "curl",
+      "risk_puani": 0,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "otomatik",
+      "bulgu_sayisi": 0,
+      "risk_turleri": [],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4421",
+      "ad": "Newman",
+      "risk_puani": 28,
+      "risk_seviyesi": "orta",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05",
+        "RT-15"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4422",
+      "ad": "Step CI",
+      "risk_puani": 17,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05",
+        "RT-10"
+      ],
+      "lisans_sinifi": "zayif-copyleft"
+    },
+    {
+      "id": "AR-4423",
+      "ad": "Dredd",
+      "risk_puani": 31,
+      "risk_seviyesi": "orta",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "lisans_sinifi": "izin-verici"
+    },
+    {
+      "id": "AR-4424",
+      "ad": "Mockoon",
+      "risk_puani": 14,
+      "risk_seviyesi": "dusuk",
+      "arastirma_derinligi": "derin",
+      "bulgu_sayisi": 1,
+      "risk_turleri": [
+        "RT-01"
       ],
       "lisans_sinifi": "izin-verici"
     }

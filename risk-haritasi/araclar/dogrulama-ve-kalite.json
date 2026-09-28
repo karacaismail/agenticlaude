@@ -1,13 +1,13 @@
 {
   "sema": "risk-haritasi/arac-grubu@1",
   "grup": "Doğrulama ve kalite",
-  "arac_sayisi": 855,
-  "derin_arastirilan": 109,
+  "arac_sayisi": 871,
+  "derin_arastirilan": 121,
   "seviye_dagilimi": {
     "yuksek": 23,
     "kritik": 2,
-    "orta": 201,
-    "dusuk": 629
+    "orta": 206,
+    "dusuk": 640
   },
   "araclar": [
     {
@@ -11903,6 +11903,116 @@
       ]
     },
     {
+      "id": "AR-4423",
+      "ad": "Dredd",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://dredd.org",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 31,
+      "risk_seviyesi": "orta",
+      "arastirilmis_puan": 36,
+      "otomatik_puan": 15,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "otomatik_sinyaller": [
+        "olgunluk: arşiv/terk",
+        "depo arşivlenmiş",
+        "son push 870 gün önce"
+      ],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "apiaryio/dredd",
+        "arsiv": true,
+        "son_push": "2024-05-11",
+        "yildiz": 4223,
+        "katkici_yaklasik": 81,
+        "acik_issue": 211,
+        "son_surum": "2021-11-16",
+        "commit_12ay": 0,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "yuksek": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02542",
+          "tur": "RT-05",
+          "baslik": "Depo arşivlendi",
+          "siddet": "yuksek",
+          "olasilik": "yuksek"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/apiaryio/dredd/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Apiary (Oracle)",
+        "son_surum": "2021-11",
+        "bakim": "arşiv",
+        "tek_bakimci_riski": false,
+        "not": "Depo arşivlendi."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT",
+        "kilitlenme": "Düşük",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "API tanımını uygulamaya karşı doğrulayan araç; depo arşivlendi.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4423",
+          "arac": "Dredd",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Depo arşivlendi",
+          "aciklama": "apiaryio/dredd deposu arşivlenmiş; son sürüm dredd-transactions 10.1.0 (16 Kasım 2021); son 12 ayda commit yok.",
+          "tarih": "2024-05",
+          "siddet": "yuksek",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/apiaryio/dredd"
+          ],
+          "yasatacagi_sorunlar": [
+            "Yeni OpenAPI sürümleri ve güvenlik düzeltmeleri gelmez."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006",
+            "N-K03-006"
+          ],
+          "erken_sinyal": "—",
+          "azaltma": "—",
+          "id": "BL-02542",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub GraphQL 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/apiaryio/dredd"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "AR-0525",
       "ad": "Maestro",
       "tur": "acik-kaynak",
@@ -12429,6 +12539,152 @@
       "olaylar": []
     },
     {
+      "id": "AR-2546",
+      "ad": "Hoppscotch",
+      "tur": "acik-cekirdek",
+      "lisans": "MIT",
+      "barindirma": [
+        "saas",
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://hoppscotch.io",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 30,
+      "risk_seviyesi": "orta",
+      "arastirilmis_puan": 36,
+      "otomatik_puan": 10,
+      "risk_turleri": [
+        "RT-01",
+        "RT-08",
+        "RT-14"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "hoppscotch/hoppscotch",
+        "arsiv": false,
+        "son_push": "2026-09-26",
+        "yildiz": 80521,
+        "katkici_yaklasik": 356,
+        "acik_issue": 587,
+        "son_surum": "2026-09-23",
+        "commit_12ay": 330,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "kritik": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02527",
+          "tur": "RT-01",
+          "baslik": "Kendi barındırılan sürümde 2026'da 13 güvenlik bildirimi; ikisi kritik",
+          "siddet": "kritik",
+          "olasilik": "orta"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 15,
+        "kritik_yuksek": [
+          "CVE-2026-28215 (kritik)",
+          "CVE-2026-50160 (kritik)",
+          "CVE-2026-59721 (yüksek)",
+          "CVE-2026-69189 (yüksek)",
+          "CVE-2026-59720 (yüksek)"
+        ],
+        "not": "Depoda 16 bildirim; 13'ü 2026'da. Hepsi kurum içi (self-host) sunucu bileşenlerinde.",
+        "kaynak": "https://github.com/hoppscotch/hoppscotch/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Hoppscotch (şirket)",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "80.537 yıldız; son 12 ayda 330 commit; 356 katkıcı."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT (topluluk sürümü); kurumsal özellikler ücretli",
+        "kilitlenme": "Düşük",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Kurum içi kurulumda kurum sunucusu; bulut sürümünde Hoppscotch",
+        "bolge_secenekleri": "Kurum içi kurulum",
+        "kvkk_notu": "Kurum içi kurulumda veri kurumda kalır; sunucunun güncel tutulması gerekir."
+      },
+      "genel_degerlendirme": "MIT lisanslı web, masaüstü ve CLI API istemcisi; kurum içinde barındırılabilir. Kurum içi sunucuda 2026'da 13 güvenlik bildirimi yayımlandı, ikisi kritik.",
+      "bulgular": [
+        {
+          "arac_id": "AR-2546",
+          "arac": "Hoppscotch",
+          "gorev": "D17-api",
+          "tur": "RT-01",
+          "baslik": "Kendi barındırılan sürümde 2026'da 13 güvenlik bildirimi; ikisi kritik",
+          "aciklama": "GitHub güvenlik bildirimlerine göre depoda 16 kayıt var: 2 kritik, 9 yüksek, 4 orta, 1 düşük; 13'ü 2026'da yayımlandı. Kritik olanlar CVE-2026-28215 (kimliksiz kurulum yapılandırmasının ele geçirilmesi, 2026.2.0'da yamalı) ve CVE-2026-50160 (kurulum uç noktasında toplu atamayla kimliksiz JWT_SECRET üzerine yazma, 2026.5.0). Yüksekler arasında MAILER_SMTP_URL üzerinden yönetici RCE (CVE-2026-59721), takım GraphQL çözücülerinde kullanıcılar arası veri sızıntısı (CVE-2026-69189) ve sahte sunucu varsayılanıyla özel koleksiyon verisinin açığa çıkması (CVE-2026-59720) var.",
+          "tarih": "2026-07",
+          "siddet": "kritik",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/hoppscotch/hoppscotch/security",
+            "https://github.com/hoppscotch/hoppscotch/security/advisories/GHSA-j542-4rch-8hwf",
+            "https://github.com/hoppscotch/hoppscotch/security/advisories/GHSA-v7q6-r45w-2c6r"
+          ],
+          "yasatacagi_sorunlar": [
+            "Kurum içinde barındırılan ve güncellenmeyen bir Hoppscotch sunucusu, kimlik doğrulaması olmadan ele geçirilebilir; takım koleksiyonlarındaki anahtarlar ve ortam değerleri sızabilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-005",
+            "N-K18-004"
+          ],
+          "erken_sinyal": "Sunucu sürümünün 2026.6.0'dan eski olması; kurulum uç noktasına dışarıdan erişim.",
+          "azaltma": "Yamalı sürümler: 2026.2.0, 2026.5.0 ve 2026.6.0.",
+          "id": "BL-02527",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub güvenlik bildirimleri API'si 28.09.2026'da okundu; ciddiyet dağılımı ve yamalı sürümler bildirimlerden.",
+            "kaynak": [
+              "https://github.com/hoppscotch/hoppscotch/security",
+              "https://github.com/hoppscotch/hoppscotch/security/advisories/GHSA-j542-4rch-8hwf"
+            ]
+          },
+          "zafiyet_kimlik_kontrolu": [
+            {
+              "kimlik": "CVE-2026-28215",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            },
+            {
+              "kimlik": "CVE-2026-50160",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            },
+            {
+              "kimlik": "CVE-2026-59721",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            },
+            {
+              "kimlik": "CVE-2026-69189",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            },
+            {
+              "kimlik": "CVE-2026-59720",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "AR-2608",
       "ad": "SpecFuzzer",
       "tur": "acik-kaynak",
@@ -12622,6 +12878,181 @@
       "siddet_dagilimi": {},
       "en_onemli_riskler": [],
       "olaylar": []
+    },
+    {
+      "id": "AR-3979",
+      "ad": "Bruno",
+      "tur": "acik-cekirdek",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://www.usebruno.com/",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 30,
+      "risk_seviyesi": "orta",
+      "arastirilmis_puan": 39,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-01",
+        "RT-02",
+        "RT-14"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "usebruno/bruno",
+        "arsiv": false,
+        "son_push": "2026-09-25",
+        "yildiz": 47220,
+        "katkici_yaklasik": 479,
+        "acik_issue": 1332,
+        "son_surum": "2026-09-23",
+        "commit_12ay": 1656,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 2,
+      "siddet_dagilimi": {
+        "kritik": 1,
+        "yuksek": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02528",
+          "tur": "RT-02",
+          "baslik": "CLI paketi iki npm tedarik zinciri olayından etkilendi",
+          "siddet": "kritik",
+          "olasilik": "orta"
+        },
+        {
+          "id": "BL-02529",
+          "tur": "RT-01",
+          "baslik": "2025'te iki yüksek bildirim, 2026'da OAuth2 state doğrulama eksikliği",
+          "siddet": "yuksek",
+          "olasilik": "dusuk"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 5,
+        "kritik_yuksek": [
+          "CVE-2026-34841 (kritik, tedarik zinciri)",
+          "GHSA-246j-fv2m-6jhx (kritik, tedarik zinciri)",
+          "CVE-2025-30354 (yüksek)",
+          "CVE-2025-30210 (yüksek)"
+        ],
+        "not": "Depoda 5 bildirim; ikisi CLI paketini etkileyen npm tedarik zinciri olayları.",
+        "kaynak": "https://github.com/usebruno/bruno/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Bruno (şirket)",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "47.245 yıldız; son 12 ayda 1.660 commit; 478 katkıcı."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT; bazı özellikler ücretli sürümde",
+        "kilitlenme": "Düşük (düz metin dosyalar)",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Cihazdaki dosya sistemi; paylaşım git ile",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "README'ye göre bulut senkronu yok ve planlanmıyor."
+      },
+      "genel_degerlendirme": "Koleksiyonları düz metin dosyalarında tutan, bulut senkronu olmayan MIT lisanslı API istemcisi ve CLI. CLI paketi 2025–2026'da iki npm tedarik zinciri olayından etkilendi.",
+      "bulgular": [
+        {
+          "arac_id": "AR-3979",
+          "arac": "Bruno",
+          "gorev": "D17-api",
+          "tur": "RT-02",
+          "baslik": "CLI paketi iki npm tedarik zinciri olayından etkilendi",
+          "aciklama": "GitHub bildirimlerine göre @usebruno/cli, Kasım 2025'te geçişli @postman/tunnel-agent bağımlılığı üzerinden SHA1-Hulud tedarik zinciri saldırısından, Mart 2026'da Axios npm olayından (CVE-2026-34841, kritik, 9.8) etkilendi. Paket 21–27 Eylül 2026 haftasında 330.052 kez indirildi.",
+          "tarih": "2026-03",
+          "siddet": "kritik",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/usebruno/bruno/security/advisories/GHSA-658g-p7jg-wx5g",
+            "https://github.com/usebruno/bruno/security/advisories/GHSA-246j-fv2m-6jhx"
+          ],
+          "yasatacagi_sorunlar": [
+            "CI'da sürümü sabitlenmeden kurulan CLI, ele geçirilmiş bir bağımlılığı koşu makinesinde çalıştırabilir; koşucudaki sırlar sızabilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K18-008",
+            "N-K16-005"
+          ],
+          "erken_sinyal": "CI'da @usebruno/cli'ın sabitlenmemiş sürümle kurulması.",
+          "azaltma": "Bildirimlerdeki yol: etkilenmeyen sürüme yükseltme.",
+          "id": "BL-02528",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub güvenlik bildirimleri ve npm indirme API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/usebruno/bruno/security/advisories/GHSA-658g-p7jg-wx5g",
+              "https://github.com/usebruno/bruno/security/advisories/GHSA-246j-fv2m-6jhx"
+            ]
+          },
+          "zafiyet_kimlik_kontrolu": [
+            {
+              "kimlik": "CVE-2026-34841",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            }
+          ]
+        },
+        {
+          "arac_id": "AR-3979",
+          "arac": "Bruno",
+          "gorev": "D17-api",
+          "tur": "RT-01",
+          "baslik": "2025'te iki yüksek bildirim, 2026'da OAuth2 state doğrulama eksikliği",
+          "aciklama": "CVE-2025-30354: assert ifadelerinde Safe Mode yok sayılıyordu; CVE-2025-30210: ortam adında XSS (ikisi yüksek, Nisan 2025). Ağustos 2026: OAuth2 geri çağrısında state parametresi doğrulanmıyordu, yetkilendirme kodu enjeksiyonuna açıktı (orta).",
+          "tarih": "2026-08",
+          "siddet": "yuksek",
+          "olasilik": "dusuk",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/usebruno/bruno/security",
+            "https://github.com/usebruno/bruno/security/advisories/GHSA-hffg-7v8v-79j3"
+          ],
+          "yasatacagi_sorunlar": [
+            "Güvenilmeyen bir koleksiyon açıldığında istemci içinde betik çalışabilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K18-013"
+          ],
+          "erken_sinyal": "Eski masaüstü sürümü; dışarıdan alınan koleksiyonlar.",
+          "azaltma": "Bildirimlerdeki yamalı sürümler.",
+          "id": "BL-02529",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub güvenlik bildirimleri API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/usebruno/bruno/security",
+              "https://github.com/usebruno/bruno/security/advisories/GHSA-hffg-7v8v-79j3"
+            ]
+          },
+          "zafiyet_kimlik_kontrolu": [
+            {
+              "kimlik": "CVE-2025-30354",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            },
+            {
+              "kimlik": "CVE-2025-30210",
+              "kayit": "var",
+              "ad_eslesmesi": true
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "AR-4332",
@@ -13562,6 +13993,117 @@
       ]
     },
     {
+      "id": "AR-4421",
+      "ad": "Newman",
+      "tur": "acik-kaynak",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://github.com/postmanlabs/newman",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 28,
+      "risk_seviyesi": "orta",
+      "arastirilmis_puan": 36,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-05",
+        "RT-15"
+      ],
+      "otomatik_sinyaller": [
+        "son 12 ayda 3 commit"
+      ],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "postmanlabs/newman",
+        "arsiv": false,
+        "son_push": "2026-09-18",
+        "yildiz": 7254,
+        "katkici_yaklasik": 124,
+        "acik_issue": 256,
+        "son_surum": null,
+        "commit_12ay": 3,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "yuksek": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02540",
+          "tur": "RT-15",
+          "baslik": "Postman v12'nin koleksiyon v3 biçimiyle uyumsuz",
+          "siddet": "yuksek",
+          "olasilik": "yuksek"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/postmanlabs/newman/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Postman",
+        "son_surum": "2026-01",
+        "bakim": "az",
+        "tek_bakimci_riski": false,
+        "not": "Son 12 ayda 3 commit; npm 6.2.2 (Ocak 2026)."
+      },
+      "ticari": {
+        "fiyat_modeli": "Apache-2.0",
+        "kilitlenme": "Postman koleksiyon biçimine bağlı",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel; istekler hedef API'ye",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "Postman koleksiyonlarının açık kaynak CLI çalıştırıcısı; Postman belgesine göre v12'nin koleksiyon v3 biçimini koşamıyor.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4421",
+          "arac": "Newman",
+          "gorev": "D17-api",
+          "tur": "RT-15",
+          "baslik": "Postman v12'nin koleksiyon v3 biçimiyle uyumsuz",
+          "aciklama": "Postman belgesine göre Newman, Postman v12 ve sonrasının kullandığı koleksiyon v3 biçimiyle uyumlu değil; koleksiyonları komut satırından koşmak için Postman CLI'a geçiş gösteriliyor. Newman deposunda son 12 ayda 3 commit var; npm'de 21–27 Eylül 2026 haftasında 768.759 indirme.",
+          "tarih": "2026-09",
+          "siddet": "yuksek",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://learning.postman.com/docs/collections/using-newman-cli/command-line-integration-with-newman/",
+            "https://github.com/postmanlabs/newman"
+          ],
+          "yasatacagi_sorunlar": [
+            "Postman'ın yeni sürümünde düzenlenen koleksiyonlar CI'daki Newman ile koşmaz; hat sessizce eski biçime bağımlı kalır."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K05-012",
+            "N-K16-005"
+          ],
+          "erken_sinyal": "Koleksiyon dosyasında v3 biçimi; Newman koşusunda ayrıştırma hatası.",
+          "azaltma": "Belgelenen yol: Postman CLI.",
+          "id": "BL-02540",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "Postman belgesi ve npm indirme API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://learning.postman.com/docs/collections/using-newman-cli/command-line-integration-with-newman/",
+              "https://github.com/postmanlabs/newman"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "AR-1435",
       "ad": "Gremlin",
       "tur": "ticari-saas",
@@ -13909,6 +14451,101 @@
           "dogrulama_turu": {
             "karar": "yapilmadi",
             "not": "Orta/düşük şiddetli bulgular ikinci ajan doğrulamasına alınmadı; varsa CVE/GHSA kimlikleri otomatik kontrol edildi."
+          }
+        }
+      ]
+    },
+    {
+      "id": "AR-4409",
+      "ad": "RapidAPI for Mac (eski Paw)",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (kaynak kapalı)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://paw.cloud",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 27,
+      "risk_seviyesi": "orta",
+      "arastirilmis_puan": 36,
+      "otomatik_puan": 0,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "ticari",
+      "depo": null,
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "yuksek": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02535",
+          "tur": "RT-05",
+          "baslik": "Nokia gelecek macOS sürümlerini desteklemeyecek",
+          "siddet": "yuksek",
+          "olasilik": "yuksek"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Açık bir bildirim kaydı bulunmadı (kaynak kapalı).",
+        "kaynak": "https://paw.cloud"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Nokia",
+        "son_surum": "bilinmiyor",
+        "bakim": "destek sona eriyor",
+        "tek_bakimci_riski": false,
+        "not": "Gelecek macOS sürümleri desteklenmeyecek."
+      },
+      "ticari": {
+        "fiyat_modeli": "ticari",
+        "kilitlenme": "Orta (macOS ve özel biçim)",
+        "sahiplik_degisimi": "RapidAPI, ardından Nokia"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "Yalnız macOS için HTTP istemcisi; Nokia gelecek macOS sürümlerini desteklemeyeceğini duyurdu.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4409",
+          "arac": "RapidAPI for Mac (eski Paw)",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Nokia gelecek macOS sürümlerini desteklemeyecek",
+          "aciklama": "Resmî sayfadaki nota göre macOS 27 dahil gelecek macOS sürümleri Nokia tarafından test edilmeyecek, sertifikalandırılmayacak ve resmî olarak desteklenmeyecek. Ürünün eski adı Paw.",
+          "tarih": "2026-09",
+          "siddet": "yuksek",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://paw.cloud"
+          ],
+          "yasatacagi_sorunlar": [
+            "macOS güncellemesinden sonra istemci çalışmayabilir; koleksiyonların başka araca taşınması gerekir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006"
+          ],
+          "erken_sinyal": "macOS 27 ile uyumsuzluk bildirimleri.",
+          "azaltma": "—",
+          "id": "BL-02535",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "Resmî sayfa 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://paw.cloud"
+            ]
           }
         }
       ]
@@ -26722,6 +27359,154 @@
       ]
     },
     {
+      "id": "AR-4407",
+      "ad": "Yaak",
+      "tur": "acik-kaynak",
+      "lisans": "MIT (işte kullanım için ücretli lisans)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://yaak.app",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 19,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 19,
+      "otomatik_puan": 20,
+      "risk_turleri": [
+        "RT-04",
+        "RT-05",
+        "RT-08",
+        "RT-10",
+        "RT-14"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "mountain-loop/yaak",
+        "arsiv": false,
+        "son_push": "2026-09-28",
+        "yildiz": 19258,
+        "katkici_yaklasik": 79,
+        "acik_issue": 0,
+        "son_surum": "2026-09-26",
+        "commit_12ay": 891,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 2,
+      "siddet_dagilimi": {
+        "orta": 1,
+        "dusuk": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02532",
+          "tur": "RT-04",
+          "baslik": "Kaynak MIT, işte kullanım ücretli lisans istiyor",
+          "siddet": "orta",
+          "olasilik": "yuksek"
+        },
+        {
+          "id": "BL-02533",
+          "tur": "RT-05",
+          "baslik": "Topluluk katkısı hata düzeltmeleriyle sınırlı; geliştirme lisans gelirine bağlı",
+          "siddet": "dusuk",
+          "olasilik": "orta"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/mountain-loop/yaak/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Mountain Loop (Gregory Schier)",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "19.258 yıldız; son 12 ayda 891 commit."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT kaynak; iş kullanımında lisans (79–149$/yıl)",
+        "kilitlenme": "Düşük (dosya sistemine yansıtma)",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Cihaz",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "Resmî sayfaya göre veri saklamaz, senkronlamaz, telemetri yok."
+      },
+      "genel_degerlendirme": "Yerel öncelikli, telemetrisiz masaüstü API istemcisi; kaynak MIT, iş kullanımı ücretli lisansla.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4407",
+          "arac": "Yaak",
+          "gorev": "D17-api",
+          "tur": "RT-04",
+          "baslik": "Kaynak MIT, işte kullanım ücretli lisans istiyor",
+          "aciklama": "Resmî fiyat sayfasına göre Yaak kişisel kullanımda ücretsiz; iş ya da gelir getiren kullanımda lisans gerekiyor: bireysel 79$/yıl ya da 399$ ömür boyu, işletme kullanıcı başına 149$/yıl. Aynı sayfa kaynak kodun MIT lisanslı olduğunu yazıyor.",
+          "tarih": "2026-09",
+          "siddet": "orta",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://yaak.app/pricing"
+          ],
+          "yasatacagi_sorunlar": [
+            "Ekipte iş için kullanan her kişi lisans kapsamına girer; lisans takibi gerekir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K22-002"
+          ],
+          "erken_sinyal": "Kurum içinde lisanssız kullanım.",
+          "azaltma": "Belgelenen yol: işletme lisansı.",
+          "id": "BL-02532",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "Fiyat sayfası 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://yaak.app/pricing"
+            ]
+          }
+        },
+        {
+          "arac_id": "AR-4407",
+          "arac": "Yaak",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Topluluk katkısı hata düzeltmeleriyle sınırlı; geliştirme lisans gelirine bağlı",
+          "aciklama": "README'ye göre topluluk PR'ları yalnız hata düzeltmeleriyle sınırlı; başka katkılar için geliştiricinin açık izni gerekiyor. Geliştirme topluluğun satın aldığı lisanslarla finanse ediliyor.",
+          "tarih": "2026-09",
+          "siddet": "dusuk",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/mountain-loop/yaak"
+          ],
+          "yasatacagi_sorunlar": [
+            "Kurumun ihtiyaç duyduğu bir özellik dış katkıyla eklenemeyebilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006"
+          ],
+          "erken_sinyal": "Katkı politikasında değişiklik.",
+          "azaltma": "—",
+          "id": "BL-02533",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "README 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/mountain-loop/yaak"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "AR-0145",
       "ad": "ApprovalTests",
       "tur": "kutuphane",
@@ -27864,6 +28649,116 @@
           "dogrulama_turu": {
             "karar": "yapilmadi",
             "not": "Orta/düşük şiddetli bulgular ikinci ajan doğrulamasına alınmadı; varsa CVE/GHSA kimlikleri otomatik kontrol edildi."
+          }
+        }
+      ]
+    },
+    {
+      "id": "AR-4422",
+      "ad": "Step CI",
+      "tur": "acik-kaynak",
+      "lisans": "MPL-2.0",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://stepci.com",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 17,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 18,
+      "otomatik_puan": 15,
+      "risk_turleri": [
+        "RT-05",
+        "RT-10"
+      ],
+      "otomatik_sinyaller": [
+        "son push 786 gün önce",
+        "son 12 ayda 0 commit"
+      ],
+      "lisans_sinifi": "zayif-copyleft",
+      "depo": {
+        "ad": "stepci/stepci",
+        "arsiv": false,
+        "son_push": "2024-08-03",
+        "yildiz": 1868,
+        "katkici_yaklasik": 17,
+        "acik_issue": 63,
+        "son_surum": "2024-06-10",
+        "commit_12ay": 0,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "orta": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02541",
+          "tur": "RT-05",
+          "baslik": "Son push Ağustos 2024, son sürüm Haziran 2024",
+          "siddet": "orta",
+          "olasilik": "yuksek"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/stepci/stepci/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Step CI",
+        "son_surum": "2024-06",
+        "bakim": "durgun",
+        "tek_bakimci_riski": false,
+        "not": "Son 12 ayda commit yok."
+      },
+      "ticari": {
+        "fiyat_modeli": "MPL-2.0; destek planı ücretli",
+        "kilitlenme": "Düşük",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "YAML tabanlı açık kaynak API test çerçevesi; Ağustos 2024'ten beri commit yok.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4422",
+          "arac": "Step CI",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Son push Ağustos 2024, son sürüm Haziran 2024",
+          "aciklama": "stepci/stepci deposunda son push 3 Ağustos 2024, son sürüm 2.8.2 (10 Haziran 2024); son 12 ayda commit yok.",
+          "tarih": "2024-08",
+          "siddet": "orta",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/stepci/stepci"
+          ],
+          "yasatacagi_sorunlar": [
+            "Yeni protokol ya da güvenlik düzeltmesi gerektiğinde bakım gelmeyebilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006"
+          ],
+          "erken_sinyal": "Açık issue'lara yanıt gelmemesi.",
+          "azaltma": "—",
+          "id": "BL-02541",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub GraphQL 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/stepci/stepci"
+            ]
           }
         }
       ]
@@ -32068,6 +32963,112 @@
       "olaylar": []
     },
     {
+      "id": "AR-4410",
+      "ad": "Thunder Client",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (kaynak kapalı; ücretsiz plan var)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://www.thunderclient.com",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 15,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 18,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-14"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "ticari",
+      "depo": {
+        "ad": "thunderclient/thunder-client-support",
+        "arsiv": false,
+        "son_push": "2026-09-13",
+        "yildiz": 3725,
+        "katkici_yaklasik": 16,
+        "acik_issue": 137,
+        "son_surum": "2026-09-13",
+        "commit_12ay": 10,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "orta": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02536",
+          "tur": "RT-14",
+          "baslik": "Ücretsiz planda Git senkronu yok, CLI kısıtlı, ayda 250 koleksiyon koşusu",
+          "siddet": "orta",
+          "olasilik": "yuksek"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Destek deposunda güvenlik bildirimi yok (kaynak kapalı).",
+        "kaynak": "https://github.com/thunderclient/thunder-client-support"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Thunder Client",
+        "son_surum": "2026-09",
+        "bakim": "aktif",
+        "tek_bakimci_riski": true,
+        "not": "Kaynak kapalı eklenti."
+      },
+      "ticari": {
+        "fiyat_modeli": "Ücretsiz plan + kullanıcı başına 3–16$/ay",
+        "kilitlenme": "Orta",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel; ücretli planda senkron",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "VS Code ve JetBrains için API istemcisi eklentisi; ücretsiz planda Git senkronu yok ve CLI kısıtlı.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4410",
+          "arac": "Thunder Client",
+          "gorev": "D17-api",
+          "tur": "RT-14",
+          "baslik": "Ücretsiz planda Git senkronu yok, CLI kısıtlı, ayda 250 koleksiyon koşusu",
+          "aciklama": "Fiyat sayfasına göre Free planda Git-Sync yok, CLI ve CI/CD entegrasyonu kısıtlı, koleksiyon koşuları kullanıcı başına ayda 250 ile sınırlı. Starter 3$, Business 7$, Enterprise 16$ (kullanıcı başına aylık, yıllık faturalı).",
+          "tarih": "2026-09",
+          "siddet": "orta",
+          "olasilik": "yuksek",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://www.thunderclient.com/pricing"
+          ],
+          "yasatacagi_sorunlar": [
+            "Koleksiyonları git'te tutmak ve CI'da koşturmak ücretli plana bağlanır."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K05-008",
+            "N-K20-005"
+          ],
+          "erken_sinyal": "Koşu sınırına yaklaşma.",
+          "azaltma": "—",
+          "id": "BL-02536",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "Fiyat sayfası 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://www.thunderclient.com/pricing"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "AR-2143",
       "ad": "Tricentis qTest",
       "tur": "ticari-saas",
@@ -32238,6 +33239,227 @@
           "dogrulama_turu": {
             "karar": "yapilmadi",
             "not": "Orta/düşük şiddetli bulgular ikinci ajan doğrulamasına alınmadı; varsa CVE/GHSA kimlikleri otomatik kontrol edildi."
+          }
+        }
+      ]
+    },
+    {
+      "id": "AR-1025",
+      "ad": "Hurl",
+      "tur": "acik-kaynak",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://hurl.dev",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 11,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 11,
+      "otomatik_puan": 10,
+      "risk_turleri": [
+        "RT-01",
+        "RT-08",
+        "RT-13"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "Orange-OpenSource/hurl",
+        "arsiv": false,
+        "son_push": "2026-09-26",
+        "yildiz": 19220,
+        "katkici_yaklasik": 286,
+        "acik_issue": 195,
+        "son_surum": "2026-04-29",
+        "commit_12ay": 795,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "yuksek": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02526",
+          "tur": "RT-01",
+          "baslik": "Eylül 2026'da dosya kökü dışına kaçış ve yönlendirmede başlık sızıntısı",
+          "siddet": "yuksek",
+          "olasilik": "dusuk"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 5,
+        "kritik_yuksek": [
+          "GHSA-pc59-r9f8-hc89 (yüksek, 8.2)"
+        ],
+        "not": "Depoda 6 bildirim; 4'ü 2026'da.",
+        "kaynak": "https://github.com/Orange-OpenSource/hurl/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Orange (açık kaynak)",
+        "son_surum": "2026-04",
+        "bakim": "aktif",
+        "tek_bakimci_riski": false,
+        "not": "19.221 yıldız; son 12 ayda 795 commit; 286 katkıcı."
+      },
+      "ticari": {
+        "fiyat_modeli": "Apache-2.0",
+        "kilitlenme": "Düşük (düz metin dosyalar)",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel; istekler hedef API'ye",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "Veri kurum dışına yalnız test edilen API üzerinden çıkar."
+      },
+      "genel_degerlendirme": "Düz metin .hurl dosyalarında HTTP istek zinciri ve doğrulama; Apache-2.0. 2026'da 4 güvenlik bildirimi, biri yüksek.",
+      "bulgular": [
+        {
+          "arac_id": "AR-1025",
+          "arac": "Hurl",
+          "gorev": "D17-api",
+          "tur": "RT-01",
+          "baslik": "Eylül 2026'da dosya kökü dışına kaçış ve yönlendirmede başlık sızıntısı",
+          "aciklama": "GHSA-pc59-r9f8-hc89 (yüksek, 8.2): sembolik bağlantıyla dosya kökü sınırı dışında dosya okuma ve yazma. GHSA-3357-xfx4-g2wm (orta, 6.5): --header ile verilen Authorization ve Cookie başlıkları başka bir ana makineye yönlendirmede sızıyor. HTML raporda XSS kayıtları da var (2024, 2025, 2026). Depoda toplam 6 bildirim.",
+          "tarih": "2026-09",
+          "siddet": "yuksek",
+          "olasilik": "dusuk",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/Orange-OpenSource/hurl/security/advisories/GHSA-pc59-r9f8-hc89",
+            "https://github.com/Orange-OpenSource/hurl/security/advisories/GHSA-3357-xfx4-g2wm"
+          ],
+          "yasatacagi_sorunlar": [
+            "Güvenilmeyen .hurl dosyası koşturan bir CI işi koşucu üzerindeki dosyaları okuyup yazabilir; yönlendirmede kimlik başlıkları başka alana gidebilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K18-013",
+            "N-K18-004"
+          ],
+          "erken_sinyal": "Güvenilmeyen katkılardan gelen .hurl dosyalarının CI'da koşması.",
+          "azaltma": "Bildirimlerdeki yamalı sürümler.",
+          "id": "BL-02526",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub güvenlik bildirimleri API'si 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/Orange-OpenSource/hurl/security/advisories/GHSA-pc59-r9f8-hc89",
+              "https://github.com/Orange-OpenSource/hurl/security/advisories/GHSA-3357-xfx4-g2wm"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "AR-4418",
+      "ad": "HTTPie",
+      "tur": "acik-cekirdek",
+      "lisans": "BSD-3-Clause (CLI); masaüstü uygulaması ticari",
+      "barindirma": [
+        "bulut-yonetilen",
+        "yerel"
+      ],
+      "url": "https://httpie.io",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 11,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 11,
+      "otomatik_puan": 10,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "otomatik_sinyaller": [
+        "son push 650 gün önce",
+        "son 12 ayda 0 commit"
+      ],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "httpie/cli",
+        "arsiv": false,
+        "son_push": "2024-12-17",
+        "yildiz": 38593,
+        "katkici_yaklasik": 151,
+        "acik_issue": 189,
+        "son_surum": "2024-11-01",
+        "commit_12ay": 0,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "orta": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02539",
+          "tur": "RT-05",
+          "baslik": "CLI deposunda Aralık 2024'ten beri commit yok",
+          "siddet": "orta",
+          "olasilik": "orta"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depodaki tek bildirim 2022 tarihli (düşük).",
+        "kaynak": "https://github.com/httpie/cli/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "HTTPie",
+        "son_surum": "2024-11",
+        "bakim": "durgun",
+        "tek_bakimci_riski": false,
+        "not": "Son 12 ayda commit yok."
+      },
+      "ticari": {
+        "fiyat_modeli": "BSD-3 (CLI); masaüstü ticari",
+        "kilitlenme": "Düşük",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel (CLI)",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "İnsan dostu komut satırı HTTP istemcisi; CLI deposu Aralık 2024'ten beri durgun.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4418",
+          "arac": "HTTPie",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "CLI deposunda Aralık 2024'ten beri commit yok",
+          "aciklama": "httpie/cli deposunda son push 17 Aralık 2024, son sürüm 3.2.4 (1 Kasım 2024); son 12 ayda commit yok, 189 açık issue var. README deponun bir an yanlışlıkla gizli yapıldığını ve GitHub'ın 54 bin yıldızı sildiğini yazıyor.",
+          "tarih": "2024-12",
+          "siddet": "orta",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/httpie/cli"
+          ],
+          "yasatacagi_sorunlar": [
+            "Güvenlik ya da uyumluluk düzeltmesi gerektiğinde yeni sürüm gelmeyebilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006"
+          ],
+          "erken_sinyal": "Yeni Python sürümlerinde kurulum sorunları.",
+          "azaltma": "Aynı söz dizimini sürdüren etkin bir alternatif: xh.",
+          "id": "BL-02539",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub GraphQL 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/httpie/cli"
+            ]
           }
         }
       ]
@@ -33127,45 +34349,6 @@
         "acik_issue": 44,
         "son_surum": "2026-09-25",
         "commit_12ay": 2592,
-        "sahip_turu": "Organization"
-      },
-      "bulgu_sayisi": 0,
-      "siddet_dagilimi": {},
-      "en_onemli_riskler": [],
-      "olaylar": []
-    },
-    {
-      "id": "AR-1025",
-      "ad": "Hurl",
-      "tur": "acik-kaynak",
-      "lisans": "Apache-2.0",
-      "barindirma": [
-        "yerel"
-      ],
-      "url": "https://hurl.dev",
-      "yetenek_siniflari": [
-        "Y-20"
-      ],
-      "arastirma_derinligi": "otomatik",
-      "risk_puani": 10,
-      "risk_seviyesi": "dusuk",
-      "arastirilmis_puan": null,
-      "otomatik_puan": 10,
-      "risk_turleri": [
-        "RT-08",
-        "RT-13"
-      ],
-      "otomatik_sinyaller": [],
-      "lisans_sinifi": "izin-verici",
-      "depo": {
-        "ad": "Orange-OpenSource/hurl",
-        "arsiv": false,
-        "son_push": "2026-09-26",
-        "yildiz": 19220,
-        "katkici_yaklasik": 286,
-        "acik_issue": 195,
-        "son_surum": "2026-04-29",
-        "commit_12ay": 795,
         "sahip_turu": "Organization"
       },
       "bulgu_sayisi": 0,
@@ -35835,47 +37018,6 @@
       "olaylar": []
     },
     {
-      "id": "AR-2546",
-      "ad": "Hoppscotch",
-      "tur": "acik-cekirdek",
-      "lisans": "MIT",
-      "barindirma": [
-        "saas",
-        "self-host",
-        "yerel"
-      ],
-      "url": "https://hoppscotch.io",
-      "yetenek_siniflari": [
-        "Y-20"
-      ],
-      "arastirma_derinligi": "otomatik",
-      "risk_puani": 10,
-      "risk_seviyesi": "dusuk",
-      "arastirilmis_puan": null,
-      "otomatik_puan": 10,
-      "risk_turleri": [
-        "RT-08",
-        "RT-14"
-      ],
-      "otomatik_sinyaller": [],
-      "lisans_sinifi": "izin-verici",
-      "depo": {
-        "ad": "hoppscotch/hoppscotch",
-        "arsiv": false,
-        "son_push": "2026-09-26",
-        "yildiz": 80521,
-        "katkici_yaklasik": 356,
-        "acik_issue": 587,
-        "son_surum": "2026-09-23",
-        "commit_12ay": 330,
-        "sahip_turu": "Organization"
-      },
-      "bulgu_sayisi": 0,
-      "siddet_dagilimi": {},
-      "en_onemli_riskler": [],
-      "olaylar": []
-    },
-    {
       "id": "AR-2606",
       "ad": "Ekstazi",
       "tur": "acik-kaynak",
@@ -38439,6 +39581,223 @@
       "siddet_dagilimi": {},
       "en_onemli_riskler": [],
       "olaylar": []
+    },
+    {
+      "id": "AR-4412",
+      "ad": "REST Client (VS Code)",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://marketplace.visualstudio.com/items?itemName=humao.rest-client",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 10,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 11,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "otomatik_sinyaller": [
+        "son 12 ayda 1 commit"
+      ],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "Huachao/vscode-restclient",
+        "arsiv": false,
+        "son_push": "2026-04-23",
+        "yildiz": 6052,
+        "katkici_yaklasik": 68,
+        "acik_issue": 531,
+        "son_surum": "2022-06-21",
+        "commit_12ay": 1,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "orta": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02537",
+          "tur": "RT-05",
+          "baslik": "Son sürüm Haziran 2022; son 12 ayda 1 commit",
+          "siddet": "orta",
+          "olasilik": "orta"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/Huachao/vscode-restclient/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "Huachao Mao (bireysel)",
+        "son_surum": "2022-06",
+        "bakim": "durgun",
+        "tek_bakimci_riski": true,
+        "not": "Son 12 ayda 1 commit."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT",
+        "kilitlenme": "Düşük (.http düz metin)",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": "VS Code'da .http dosyası istemcisi; 2022'den beri yeni sürüm yok.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4412",
+          "arac": "REST Client (VS Code)",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Son sürüm Haziran 2022; son 12 ayda 1 commit",
+          "aciklama": "Huachao/vscode-restclient deposunda son sürüm 0.25.0 (21 Haziran 2022), son 12 ayda 1 commit, 531 açık issue.",
+          "tarih": "2022-06",
+          "siddet": "orta",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/Huachao/vscode-restclient"
+          ],
+          "yasatacagi_sorunlar": [
+            "VS Code değişikliklerinde uyumsuzluk çıkarsa düzeltme gelmeyebilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006"
+          ],
+          "erken_sinyal": "Eklentinin yeni VS Code sürümünde hata vermesi.",
+          "azaltma": "Aynı biçimi koşan araçlar: httpyac, IntelliJ HTTP Client.",
+          "id": "BL-02537",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub GraphQL 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/Huachao/vscode-restclient"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "AR-4413",
+      "ad": "httpyac",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://httpyac.github.io",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "derin",
+      "risk_puani": 10,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": 11,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-05"
+      ],
+      "otomatik_sinyaller": [
+        "son 12 ayda 3 commit"
+      ],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "AnWeber/httpyac",
+        "arsiv": false,
+        "son_push": "2026-03-04",
+        "yildiz": 880,
+        "katkici_yaklasik": 18,
+        "acik_issue": 72,
+        "son_surum": "2025-03-30",
+        "commit_12ay": 3,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 1,
+      "siddet_dagilimi": {
+        "orta": 1
+      },
+      "en_onemli_riskler": [
+        {
+          "id": "BL-02538",
+          "tur": "RT-05",
+          "baslik": "Son sürüm Mart 2025; son 12 ayda 3 commit",
+          "siddet": "orta",
+          "olasilik": "orta"
+        }
+      ],
+      "olaylar": [],
+      "guvenlik_gecmisi": {
+        "cve_ghsa_24ay": 0,
+        "kritik_yuksek": [],
+        "not": "Depoda güvenlik bildirimi yok.",
+        "kaynak": "https://github.com/AnWeber/httpyac/security"
+      },
+      "surdurulebilirlik": {
+        "sahiplik": "AnWeber (bireysel)",
+        "son_surum": "2025-03",
+        "bakim": "az",
+        "tek_bakimci_riski": true,
+        "not": "Son 12 ayda 3 commit."
+      },
+      "ticari": {
+        "fiyat_modeli": "MIT",
+        "kilitlenme": "Düşük (.http düz metin)",
+        "sahiplik_degisimi": "Yok"
+      },
+      "veri": {
+        "veri_nereye_gider": "Yerel",
+        "bolge_secenekleri": "Yerel",
+        "kvkk_notu": "—"
+      },
+      "genel_degerlendirme": ".http dosyalarını CLI ve Docker ile koşturan açık kaynak araç; bakım temposu düştü.",
+      "bulgular": [
+        {
+          "arac_id": "AR-4413",
+          "arac": "httpyac",
+          "gorev": "D17-api",
+          "tur": "RT-05",
+          "baslik": "Son sürüm Mart 2025; son 12 ayda 3 commit",
+          "aciklama": "AnWeber/httpyac deposunda son sürüm 6.16.7 (30 Mart 2025), son 12 ayda 3 commit; npm'de 21–27 Eylül 2026 haftasında 50.740 indirme.",
+          "tarih": "2025-03",
+          "siddet": "orta",
+          "olasilik": "orta",
+          "dogrulama": "birincil",
+          "kanit_url": [
+            "https://github.com/AnWeber/httpyac",
+            "https://www.npmjs.com/package/httpyac"
+          ],
+          "yasatacagi_sorunlar": [
+            "Yeni protokol ya da güvenlik düzeltmesi gerektiğinde bakım gelmeyebilir."
+          ],
+          "etkilenen_ihtiyaclar": [
+            "N-K16-006"
+          ],
+          "erken_sinyal": "Açık issue'ların birikmesi.",
+          "azaltma": "Aynı .http biçimini koşan başka çalıştırıcı: IntelliJ HTTP Client CLI.",
+          "id": "BL-02538",
+          "dogrulama_turu": {
+            "karar": "dogrulandi",
+            "not": "GitHub ve npm 28.09.2026'da okundu.",
+            "kaynak": [
+              "https://github.com/AnWeber/httpyac",
+              "https://www.npmjs.com/package/httpyac"
+            ]
+          }
+        }
+      ]
     },
     {
       "id": "AR-0139",
@@ -45121,44 +46480,6 @@
       "olaylar": []
     },
     {
-      "id": "AR-3979",
-      "ad": "Bruno",
-      "tur": "acik-cekirdek",
-      "lisans": "MIT",
-      "barindirma": [
-        "yerel"
-      ],
-      "url": "https://www.usebruno.com/",
-      "yetenek_siniflari": [
-        "Y-20"
-      ],
-      "arastirma_derinligi": "otomatik",
-      "risk_puani": 5,
-      "risk_seviyesi": "dusuk",
-      "arastirilmis_puan": null,
-      "otomatik_puan": 5,
-      "risk_turleri": [
-        "RT-14"
-      ],
-      "otomatik_sinyaller": [],
-      "lisans_sinifi": "izin-verici",
-      "depo": {
-        "ad": "usebruno/bruno",
-        "arsiv": false,
-        "son_push": "2026-09-25",
-        "yildiz": 47220,
-        "katkici_yaklasik": 479,
-        "acik_issue": 1332,
-        "son_surum": "2026-09-23",
-        "commit_12ay": 1656,
-        "sahip_turu": "Organization"
-      },
-      "bulgu_sayisi": 0,
-      "siddet_dagilimi": {},
-      "en_onemli_riskler": [],
-      "olaylar": []
-    },
-    {
       "id": "AR-3981",
       "ad": "Recce",
       "tur": "acik-cekirdek",
@@ -46229,6 +47550,182 @@
       "siddet_dagilimi": {},
       "en_onemli_riskler": [],
       "olaylar": []
+    },
+    {
+      "id": "AR-4411",
+      "ad": "Restfox",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "self-host",
+        "yerel"
+      ],
+      "url": "https://restfox.dev",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "flawiddsouza/Restfox",
+        "arsiv": false,
+        "son_push": "2026-09-24",
+        "yildiz": 2763,
+        "katkici_yaklasik": 24,
+        "acik_issue": 33,
+        "son_surum": "2025-07-27",
+        "commit_12ay": 36,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
+    },
+    {
+      "id": "AR-4414",
+      "ad": "IntelliJ HTTP Client",
+      "tur": "ticari-yazilim",
+      "lisans": "ticari (JetBrains; CLI ücretsiz)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-04"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "ticari",
+      "depo": null,
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
+    },
+    {
+      "id": "AR-4415",
+      "ad": "Posting",
+      "tur": "acik-kaynak",
+      "lisans": "Apache-2.0",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://posting.sh",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "darrenburns/posting",
+        "arsiv": false,
+        "son_push": "2026-09-26",
+        "yildiz": 12461,
+        "katkici_yaklasik": 27,
+        "acik_issue": 60,
+        "son_surum": "2026-09-26",
+        "commit_12ay": 79,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
+    },
+    {
+      "id": "AR-4416",
+      "ad": "ATAC",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://github.com/Julien-cpsn/ATAC",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "Julien-cpsn/ATAC",
+        "arsiv": false,
+        "son_push": "2026-09-03",
+        "yildiz": 3732,
+        "katkici_yaklasik": 25,
+        "acik_issue": 14,
+        "son_surum": "2026-09-03",
+        "commit_12ay": 36,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
+    },
+    {
+      "id": "AR-4417",
+      "ad": "Slumber",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://slumber.lucaspickering.me",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 5,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 5,
+      "risk_turleri": [
+        "RT-10"
+      ],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "LucasPickering/slumber",
+        "arsiv": false,
+        "son_push": "2026-09-24",
+        "yildiz": 1228,
+        "katkici_yaklasik": 11,
+        "acik_issue": 9,
+        "son_surum": "2026-05-16",
+        "commit_12ay": 418,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
     },
     {
       "id": "AR-0199",
@@ -51965,6 +53462,76 @@
       "siddet_dagilimi": {},
       "en_onemli_riskler": [],
       "olaylar": []
+    },
+    {
+      "id": "AR-4419",
+      "ad": "xh",
+      "tur": "acik-kaynak",
+      "lisans": "MIT",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://github.com/ducaale/xh",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 0,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 0,
+      "risk_turleri": [],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "ducaale/xh",
+        "arsiv": false,
+        "son_push": "2026-09-05",
+        "yildiz": 8104,
+        "katkici_yaklasik": 51,
+        "acik_issue": 33,
+        "son_surum": "2026-07-26",
+        "commit_12ay": 115,
+        "sahip_turu": "User"
+      },
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
+    },
+    {
+      "id": "AR-4420",
+      "ad": "curl",
+      "tur": "acik-kaynak",
+      "lisans": "curl lisansı (MIT türevi)",
+      "barindirma": [
+        "yerel"
+      ],
+      "url": "https://curl.se",
+      "yetenek_siniflari": [
+        "Y-20"
+      ],
+      "arastirma_derinligi": "otomatik",
+      "risk_puani": 0,
+      "risk_seviyesi": "dusuk",
+      "arastirilmis_puan": null,
+      "otomatik_puan": 0,
+      "risk_turleri": [],
+      "otomatik_sinyaller": [],
+      "lisans_sinifi": "izin-verici",
+      "depo": {
+        "ad": "curl/curl",
+        "arsiv": false,
+        "son_push": "2026-09-28",
+        "yildiz": 42956,
+        "katkici_yaklasik": 1258,
+        "acik_issue": 11,
+        "son_surum": "2026-09-02",
+        "commit_12ay": 3670,
+        "sahip_turu": "Organization"
+      },
+      "bulgu_sayisi": 0,
+      "siddet_dagilimi": {},
+      "en_onemli_riskler": []
     }
   ]
 }

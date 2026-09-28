@@ -121,6 +121,15 @@ export function turet(d: Durum): Turetilen {
   const sahip = kararEtiket('durumSahibi');
   const ortamlar = (d.kararlar.ortamlar as string[]) ?? ['alpha'];
   const kanallar = ((d.kararlar.bildirim as string[]) ?? []).map((v) => secenekEtiket('bildirim', v));
+  // Çoklu seçimli kararların seçenek adları (API araçları gibi); ikiden fazlası "+n" olarak kısaltılır.
+  const secimAdlari = (id: string) => {
+    const v = d.kararlar[id];
+    return (Array.isArray(v) ? v : v !== undefined && v !== '' ? [String(v)] : []).map((x) => secenekEtiket(id, String(x)));
+  };
+  const kisaListe = (l: string[]) => (l.length > 2 ? `${l.slice(0, 2).join(', ')} +${l.length - 2}` : l.join(', '));
+  const apiTest = secimAdlari('apiTest');
+  const apiIstemci = secimAdlari('apiIstemci');
+  const apiEk = (onEk: string) => (apiTest.length ? ` · ${onEk}: ${kisaListe(apiTest)}` : '');
   const asamaTeknoloji = (a: AsamaId): string => {
     switch (a) {
       case 'GIR': return `Plane · karar ajanı: ${KARAR_TEKNOLOJI['kararModeli:' + karar('kararModeli')]?.ad ?? ''}`;
@@ -128,13 +137,14 @@ export function turet(d: Durum): Turetilen {
       case 'ARS': return `${ajanAd} (salt okunur)${aktif('R10') ? ' + Context7' : ''}`;
       case 'HAR': return aktif('R11') ? 'kod grafiği + topolojik sıralama' : 'Faz 2\'de açılır';
       case 'PLN': return `${ajanAd} planlar · hakem: ${aktif('R13') ? qaAd : 'yok'}`;
-      case 'RED': case 'GRN': return `${ajanAd} · ${sandboxAd}`;
-      case 'KAP': return 'GitHub Actions';
-      case 'QA': return karar('qa') === 'yok' ? 'bağımsız QA yok' : `${qaAd}${aktif('R27') ? ' + mutasyon' : ''}`;
+      case 'RED': return `${ajanAd} · ${sandboxAd}${apiEk('API testi')}`;
+      case 'GRN': return `${ajanAd} · ${sandboxAd}`;
+      case 'KAP': return `GitHub Actions${apiEk('API testi')}`;
+      case 'QA': return karar('qa') === 'yok' ? 'bağımsız QA yok' : `${qaAd}${aktif('R27') ? ' + mutasyon' : ''}${apiEk('API')}`;
       case 'RSK': return `policy.yaml${aktif('R30') ? ' + OpenFGA' : ''}${aktif('R29') ? ' · yüksekte insan' : ''}`;
       case 'MQ': return `merge queue · ${kararEtiket('birlestirme')}`;
-      case 'DEP': return ortamlar.length > 1 ? `alpha.example.com → ${ortamlar.filter((o) => o !== 'alpha').join(' → ')}` : 'alpha.example.com';
-      case 'HT': return `insan · ${kanallar.join(', ') || 'bildirim yok'}`;
+      case 'DEP': return `${ortamlar.length > 1 ? `alpha.example.com → ${ortamlar.filter((o) => o !== 'alpha').join(' → ')}` : 'alpha.example.com'}${apiEk('API duman testi')}`;
+      case 'HT': return `insan · ${kanallar.join(', ') || 'bildirim yok'}${apiIstemci.length ? ` · API istemcisi: ${kisaListe(apiIstemci)}` : ''}`;
       case 'KAB': return 'Done / Rejected';
       default: return '';
     }
