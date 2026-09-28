@@ -1,0 +1,1421 @@
+{
+  "schema_version": "1.0.0",
+  "package_version": "0.4.0",
+  "id": "FACTORY-PLATFORMS",
+  "title": "Fabrika platformlarını doğru katmanda karşılaştırma",
+  "researched_at": "2026-09-27",
+  "research_only": true,
+  "current_platform_selection": null,
+  "installed": false,
+  "live_tests_run": false,
+  "records": [
+    {
+      "id": "PLAT01",
+      "name": "Aperant (eski Auto Claude)",
+      "snapshot": {
+        "repo_url": "https://github.com/AndyMik90/Aperant",
+        "branch": "develop",
+        "head_sha": "20250db069a849ab001ac6ab9e3e9779886ab9e2",
+        "head_commit_date": "2026-06-14T08:04:00Z",
+        "license_spdx": "AGPL-3.0",
+        "archived": false,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Masaüstü geliştirme fabrikası / task-level orchestration",
+      "shortlist_role": "Kullanıcının verdiği referans; üretim omurgası seçimi değil",
+      "status": {
+        "text": "Resmî README 2.x masaüstünü bakım modunda, 3.0 yeniden yazımını ayrı geliştirme deposunda ve yayın tarihini belirsiz gösteriyor. İndirilebilir stable etiketi 2.7.6; incelenen kaynak develop HEAD, bu binary ile eşitlenmedi.",
+        "source_ids": [
+          "PLAT-S01",
+          "PLAT-S02"
+        ],
+        "evidence_level": "maintainer_status_claim",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "Planlama, build, QA, worktree ve AI merge; GitHub/GitLab issue/MR ve Linear entegrasyonu listeleniyor. README en çok 12 agent terminali söylüyor.",
+        "source_ids": [
+          "PLAT-S01"
+        ],
+        "evidence_level": "maintainer_readme_claim",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "RecoveryManager spec klasörüne checkpoint/attempt kaydeder. QA loop implementation_plan.json içindeki signoffı okur. Bu, merkezi 144-ekip durable job defteri olarak doğrulanmadı.",
+        "source_ids": [
+          "PLAT-S04",
+          "PLAT-S05"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "SubtaskSessionRunner fonksiyon sınırı mevcut; ürün çapında bağımsız coding-worker protokolü kanıtı değil.",
+          "source_ids": [
+            "PLAT-S03"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "README Claude erişimini şart koşuyor; tüm model/harness değişim semantiği incelenmedi.",
+          "source_ids": [
+            "PLAT-S01"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "Belirli GitHub/GitLab/Linear entegrasyonları; evrensel tracker adapter kontratı doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S01"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "Masaüstü ürününün desteklenen gözetimsiz Ubuntu servis/HTTP-runner dağıtımı doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S01",
+            "PLAT-S03"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "Worktree ve otomatik conflict resolution ürün iddiası; shared alpha trunk için dış merge ownership kanıtı yok.",
+          "source_ids": [
+            "PLAT-S01"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "QA reviewer/fixer döngüsü, tekrar sorun ve insan geri bildirimi yolları var; bağımsız domain oracleı olduğu anlamına gelmez.",
+          "source_ids": [
+            "PLAT-S05"
+          ],
+          "evidence_level": "inspected_code_static_not_executed",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Remote alpha deployer sözleşmesi doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S01"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "Linux masaüstü paketleri ve kaynak mevcut. Kaynakta çağrılabilir orchestration fonksiyonları, headless production servis desteğine eşit sayılmadı.",
+        "source_ids": [
+          "PLAT-S01",
+          "PLAT-S03"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Her görevde git worktree izolasyonu iddiası; ortak model kotası, RAM, test verisi ve yayın yetkisinin ayrılığı ayrıca kanıtlanmalı.",
+        "source_ids": [
+          "PLAT-S01"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "İncelenen parallel-executor varsayılanı 3 eşzamanlı subtask; rate-limit backoff ve AbortSignal var. QA max 50 tur, 3 ardışık hata sınırı içeriyor. 12 terminal ile bu 3 aynı ölçü değil.",
+        "source_ids": [
+          "PLAT-S03",
+          "PLAT-S05"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Task/spec/roadmap düzeyi mevcut; 12 koordinasyon kümesi ve 144 ekip için program/portföy modelinin hazır olduğu doğrulanmadı.",
+        "source_ids": [
+          "PLAT-S01"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "README 12 terminal iddiası ve koddaki 3 subtask varsayılanı, 144 mantıksal ekip benchmarkı değildir.",
+          "source_ids": [
+            "PLAT-S01",
+            "PLAT-S03"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "Güncel 3.0 kaynak/release geleceği belirsiz",
+        "Headless çok kullanıcılı control-plane sözleşmesi doğrulanmadı",
+        "Worker/model/tracker/deployer değişimi tek genel sözleşme değil",
+        "Ortak alpha trunk + remote yayın + re-entry uçtan uca kanıtı yok"
+      ],
+      "recommendation": {
+        "text": "Plan/build/QA/recovery fikirleri incelenebilir; mevcut 2.x masaüstü kapsamını 144 ekip platformu olarak büyütme varsayımı yapma.",
+        "source_ids": [
+          "PLAT-S01",
+          "PLAT-S03",
+          "PLAT-S04",
+          "PLAT-S05"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    },
+    {
+      "id": "PLAT02",
+      "name": "Paperclip",
+      "snapshot": {
+        "repo_url": "https://github.com/paperclipai/paperclip",
+        "branch": "master",
+        "head_sha": "be43c23e2df9fc88392390569f5e3b1356cfe275",
+        "head_commit_date": "2026-09-27T07:22:49Z",
+        "license_spdx": "MIT",
+        "archived": false,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Organizasyon ve iş sahipliği kontrol düzlemi",
+      "shortlist_role": "En yakın üç referans: üst yönetim/bağımlılık düzlemi",
+      "status": {
+        "text": "MIT Node/React/PostgreSQL kontrol düzlemi; şirket, org chart, bütçe, görev/alt görev, approvals ve agent adapterları belgeli.",
+        "source_ids": [
+          "PLAT-S06",
+          "PLAT-S10"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "Şirket/proje/hedef/parent bağları; tek görev sahibi, heartbeat wakeup, bütçe ve review/approval. Kendi coding harnessini getirmeyi amaçlıyor.",
+        "source_ids": [
+          "PLAT-S06"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "Issue checkout; expectedStatuses, assignee ve executionRunId koşullarıyla DB update yapıyor; çözülmemiş blockers ve subtree pause kontrolü var. Parent ilişkisi, dependency, sahiplik ve execution birbirinden ayrılıyor.",
+        "source_ids": [
+          "PLAT-S07",
+          "PLAT-S09"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "execute(context)→result; runId, session state, exit/signal/timeout, kullanım/maliyet ve clearSession alanları. Harici npm adapter yolu belgeli.",
+          "source_ids": [
+            "PLAT-S08"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "Model adapterın config/result alanlarıyla taşınır; farklı modelin görev başarısı eşdeğerliği garanti edilmez.",
+          "source_ids": [
+            "PLAT-S08"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "Kendi issue semantiği merkezi. README bring-your-own-ticket-system için roadmap diyor; başka trackerın durumu ayrı bridge ister.",
+          "source_ids": [
+            "PLAT-S06",
+            "PLAT-S07"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "Adapter süreç/API çalıştırabilir; runChildProcess timeout/grace sağlar. Her adaptera ortak OS isolation/resource garantisi bu sözleşmeden çıkmaz.",
+          "source_ids": [
+            "PLAT-S08"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "Tek alpha trunk için deterministik merge queue/SCM release ownerı bu incelemede hazır doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S06"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "Native completion review ve reviewer wake/decision semantiği belgeli; domain AC/DoD yine kullanıcı/repo sözleşmesinden gelmeli.",
+          "source_ids": [
+            "PLAT-S07"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Genel remote alpha deployer kontratı doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S06",
+            "PLAT-S08"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "Server ve REST API; kendi PostgreSQL ile selfhost belgeli. Agentların nerede çalıştığı adaptera bağlı.",
+        "source_ids": [
+          "PLAT-S06",
+          "PLAT-S08"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Şirket kapsamı veri/yetki sınırıdır; 144 ekibi 144 ayrı şirket yapma zorunluluğu yok. Çalışma alanı ve OS sınırları adapter/runner kararıdır.",
+        "source_ids": [
+          "PLAT-S06",
+          "PLAT-S08"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "Execution-backed in_progress, routable blocked owner/action, kalıcı wake ve recovery hold tasarlanmış. Admitsız signal yeni deneme sayılmaz; bütçe ve dependency yeniden kontrol edilir.",
+        "source_ids": [
+          "PLAT-S07"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Accepted-plan revision, isteğe bağlı minimum child graph ve blocker semantiği mevcut. Bu org şeması SAFe törenlerinin otomatik ve doğru yürütüldüğünü kanıtlamaz.",
+        "source_ids": [
+          "PLAT-S07"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "Organizasyon/hiyerarşi modeli var; 12 × 12 için kurulmuş konfigürasyon veya ölçülmüş güvenli teslim kapasitesi bulunmadı.",
+          "source_ids": [
+            "PLAT-S06",
+            "PLAT-S07"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "Harici trackerın ready→run handoff semantiği",
+        "Git merge/alpha yayın ownerı ve bağımsız CI gate",
+        "Worker/runner resource garantilerinin capability testleri",
+        "144 mantıksal ekip ve ölçülmüş düşük eşzamanlılık deneyi"
+      ],
+      "recommendation": {
+        "text": "Kurum/portföy/takım görev sahipliği için ilk üst-düzey aday. Repo teslim fabrikasının da hazır olduğu varsayılmadan ayrı kabul sözleşmesiyle değerlendirilir.",
+        "source_ids": [
+          "PLAT-S06",
+          "PLAT-S07",
+          "PLAT-S08",
+          "PLAT-S09"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    },
+    {
+      "id": "PLAT03",
+      "name": "Gas Town",
+      "snapshot": {
+        "repo_url": "https://github.com/gastownhall/gastown",
+        "branch": "main",
+        "head_sha": "649b832b7672bc7a2dbef26f5983aba6198b819b",
+        "head_commit_date": "2026-07-23T13:03:02Z",
+        "license_spdx": "MIT",
+        "archived": false,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Çok katmanlı coding-worker dispatch ve repo entegrasyon fabrikası",
+      "shortlist_role": "En yakın üç referans: dispatch→monitor→merge",
+      "status": {
+        "text": "Eski steveyegge URLsi gastownhall/gastown’a yönleniyor; MIT. Town/Mayor, repo başına rig, worker/polecat, Witness, Deacon ve Refinery rolleri belgeli.",
+        "source_ids": [
+          "PLAT-S11",
+          "PLAT-S16"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "Kalıcı Beads/hooks, convoys, work dağıtımı, provider presetleri, agent sağlığı ve refinery merge queue.",
+        "source_ids": [
+          "PLAT-S11",
+          "PLAT-S14"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "Beads iş defteri; scheduler kendi ayrı sling-context kaydıyla dispatch sahibi, work bead’i değiştirmez. Refinery merge slot üzerinden hedef dal güncellemesini koordine eder.",
+        "source_ids": [
+          "PLAT-S12",
+          "PLAT-S15"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "Agent preset command/env/process_names/resume/hooks/headless alanları var; adapter kapasitesi runtimea göre değişiyor.",
+          "source_ids": [
+            "PLAT-S14"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "Model/preset konfigurasyonu provider launch seviyesinde; provider-neutral model semantiği tam protokol olarak doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S14"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "Beads ve convoy/hook semantiği yerleşik. Harici trackerın statusları bu deftere doğrudan eşdeğer sayılamaz.",
+          "source_ids": [
+            "PLAT-S11",
+            "PLAT-S12"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "tmux ve süreç tabanlı launch/detection var; worktree ayrılığı cgroup/RAM isolation garantisi değildir.",
+          "source_ids": [
+            "PLAT-S12",
+            "PLAT-S14"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "Refinery merge slot, test/gate komutları; direct local merge+push varsayılan, PR strategy provider merge API ve branch protection yolunu kullanır.",
+          "source_ids": [
+            "PLAT-S15"
+          ],
+          "evidence_level": "inspected_code_static_not_executed",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "Named quality gate komutları/per-gate timeout ve legacy test command mevcut. AC/DoD’nin yeterliliği ayrıca tanımlanır.",
+          "source_ids": [
+            "PLAT-S15"
+          ],
+          "evidence_level": "inspected_code_static_not_executed",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Sabit remote alpha ortamını atomik yayınlama/rollback kontratı incelenen kaynaklarda hazır doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S11",
+            "PLAT-S15"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "CLI ve daemon ile selfhost workspace yönetimi; belirli agent presetleri non-interactive tanımlanabilir. Kullanıcının Ubuntu topolojisinde çalıştırılmadı.",
+        "source_ids": [
+          "PLAT-S11",
+          "PLAT-S14"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Rig repo kapsar; worker branch/worktree ayrıdır, Beads/merge ve host kaynakları ortak. 144 takım için aynı repo 144 rig kopyası önerilmiyor.",
+        "source_ids": [
+          "PLAT-S11",
+          "PLAT-S12"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "Town çapında configurable max_polecats var. Varsayılan-1 veya 0 doğrudan dispatchtir; ancak N>0 kapasite kuyruğunu açar. Bu cap ölçülmüş byte bazlı RAM reservation değildir.",
+        "source_ids": [
+          "PLAT-S12",
+          "PLAT-S13"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Mayor decomposition, convoy/epic ve readiness dependency mevcut. Organizasyon metodolojisiyle birebir rol eşlemesi bizim önerimiz olur.",
+        "source_ids": [
+          "PLAT-S11",
+          "PLAT-S12"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "README 20–30 ajanla kullanım kolaylığı iddia ediyor; bu claim 144 ekip veya 144 eşzamanlı worker saha benchmarkı değil.",
+          "source_ids": [
+            "PLAT-S11"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "Kapasite governor bilinçli etkinleştirme ve gerçek resource admission",
+        "Harici tracker/work item ↔ Beads dispatch kimlikleri",
+        "Protected alpha branch için doğru merge stratejisi",
+        "Domain oracle ve remote deploy/re-entry sözleşmesi",
+        "144 mantıksal ekip hiyerarşisinin yük kanıtı"
+      ],
+      "recommendation": {
+        "text": "Çok workerı paylaşılan kod tabanında izleyip birleştirme işlevi bakımından güçlü aday. Mevcut defaults kullanıcının güvenli trunk/kapasite isteğiyle otomatik örtüşmez.",
+        "source_ids": [
+          "PLAT-S11",
+          "PLAT-S12",
+          "PLAT-S13",
+          "PLAT-S15"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    },
+    {
+      "id": "PLAT04",
+      "name": "Agent Orchestrator (güncel Untrivial-ai; eski ComposioHQ)",
+      "snapshot": {
+        "repo_url": "https://github.com/Untrivial-ai/agent-orchestrator",
+        "branch": "main",
+        "head_sha": "9b359401349e381ea79f742cabd7a16683483b38",
+        "head_commit_date": "2026-09-27T09:13:08Z",
+        "license_spdx": "Apache-2.0",
+        "archived": false,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Proje koordinasyonu ve coding-session kontrol düzlemi",
+      "shortlist_role": "Koşullu alternatif; güçlü geliştirici kontrol yüzeyi",
+      "status": {
+        "text": "Repo Untrivial-ai’ye taşınmış; güncel lisans Apache-2.0. Eski Composio/MIT/TypeScript 7-slot arama sonucu mevcut HEAD yerine kullanılmadı.",
+        "source_ids": [
+          "PLAT-S17",
+          "PLAT-S18",
+          "PLAT-S21"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "Project orchestrator planlar/delege eder; worker task, agent, branch/worktree, PR, CI ve review ile izlenir. Güncel ürün masaüstü workspace olarak konumlanıyor.",
+        "source_ids": [
+          "PLAT-S17"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "Uzun ömürlü Go daemon; SQLite durable facts üzerinden display status türetiyor. Session manager controller değişimini, lifecycle reducer run/session değişimlerini sahipleniyor.",
+        "source_ids": [
+          "PLAT-S18"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "Go Agent portu launch/restore/prompt stratejisi ve capability/auth error ayrımı taşıyor. Yalnız binary dosyasının bulunması yetkili çalıştırma sayılmıyor.",
+          "source_ids": [
+            "PLAT-S19"
+          ],
+          "evidence_level": "inspected_code_static_not_executed",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "Agent/model seçimi ürün yüzeyinde; auth/capability sonuçları sonraki çağrının başarısını garanti etmez.",
+          "source_ids": [
+            "PLAT-S17",
+            "PLAT-S19"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "Ayrı tracker portu doküman/ports mimarisinde mevcut; genel tracker değişiminin 144 ekip handoff conformance kanıtı yok.",
+          "source_ids": [
+            "PLAT-S18"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "TUI tmux/conpty ve Chat native controller ayrı; detached session host daemon restartından sonra tekrar bağlanmayı destekleyecek şekilde belgeli.",
+          "source_ids": [
+            "PLAT-S18"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "PR/CI/review gözlemlerinden deduplı bounded nudgelar; bir session birden çok PR sahibi olabilir. Hedef trunk için genel serial merge ownerı ayrıca doğrulanmalı.",
+          "source_ids": [
+            "PLAT-S20"
+          ],
+          "evidence_level": "inspected_code_static_not_executed",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "Worker testleri ve CI/review geri beslemesi var; independent business oracle kapsamı doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S17",
+            "PLAT-S20"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Browser preview yüzeyi var; remote alpha deploy/rollback adapterı kanıtlanmadı.",
+          "source_ids": [
+            "PLAT-S17"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "Go daemon/API mevcudiyeti kod/dokümanda açık. Ürünün masaüstü dışı Ubuntu üzerinde gözetimsiz 144 ekip hizmeti şeklinde production desteği bu incelemede doğrulanmadı.",
+        "source_ids": [
+          "PLAT-S17",
+          "PLAT-S18"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Worker başına workspace; session facts ortak SQLite. Chat/TUI handoff bir sessionda iki aktif controller olmaması ilkesini korur. Her harnessin native context aktarımı desteklediği iddia edilmez.",
+        "source_ids": [
+          "PLAT-S18"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "Reaction state ve persist edilmiş dedup, review nudge sınırı 3; CI/review/merge-conflict tepkileri ayrı. CPU/RAM reservation schedulerı olduğu kanıtlanmadı.",
+        "source_ids": [
+          "PLAT-S20"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Persistent project-scoped orchestrator hedef, öncelik ve sequence tutar. Multi-project 144 takım portfolio authority kanıtı yok.",
+        "source_ids": [
+          "PLAT-S17"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "Desteklenen agent ürün sayısı farklı adapterların sayısıdır; 144 ekip veya eşzamanlılık kapasitesi değildir.",
+          "source_ids": [
+            "PLAT-S17",
+            "PLAT-S18"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "Gözetimsiz server işletim sözleşmesinin doğrulanması",
+        "Çok katmanlı portfolio/takım sahipliği",
+        "Global kaynak admission ve ortak trunk merge gate",
+        "Remote alpha deploy / kullanıcı issue re-entry"
+      ],
+      "recommendation": {
+        "text": "Proje içinde agentları değiştirmek ve incelemek için ciddi alternatif; üst örgüt modeli ve yayın fabrikasıyla eşitlenmemeli.",
+        "source_ids": [
+          "PLAT-S17",
+          "PLAT-S18",
+          "PLAT-S19",
+          "PLAT-S20"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    },
+    {
+      "id": "PLAT05",
+      "name": "Overstory",
+      "snapshot": {
+        "repo_url": "https://github.com/jayminwest/overstory",
+        "branch": "main",
+        "head_sha": "ff38f3f76f084abcc34f519bcaa69580f6e53cf1",
+        "head_commit_date": "2026-05-28T17:12:44Z",
+        "license_spdx": "MIT",
+        "archived": true,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Arşivlenmiş çok seviyeli swarm/merge orchestration referansı",
+      "shortlist_role": "Yeni ana platformdan ele; sözleşme ve karşıkanıt referansı",
+      "status": {
+        "text": "28 Mayıs 2026 arşivlenmiş; bakımcı yeni çalışmalar için Warren’a yönlendiriyor. MIT kod açık; aktif bakım garantisi yok.",
+        "source_ids": [
+          "PLAT-S22",
+          "PLAT-S25"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "Orchestrator→coordinator→supervisor/lead→scout/builder/reviewer/merger; SQLite mail, worktree, FIFO merge queue ve çok katmanlı watchdog anlatılıyor.",
+        "source_ids": [
+          "PLAT-S22"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "Koordinatör iş dağıtır; SQLite mail/session kayıtları ve merge queue ortak; worker worktree değişikliğini üretir.",
+        "source_ids": [
+          "PLAT-S22"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "AgentRuntime spawn/config/guards/readiness/transcript sınırı; runtimea göre mid-run mail kabiliyeti farklı.",
+          "source_ids": [
+            "PLAT-S24"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "Model runtime config üzerinden; model eşdeğerliği veya keyfi hot-swap garantisi yok.",
+          "source_ids": [
+            "PLAT-S24"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "Her trackerın aynı iş semantiğini koruyan genel adapterı doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S22"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "Headless süreçler ve opsiyonel tmux; runtime farkları adaptera taşınıyor.",
+          "source_ids": [
+            "PLAT-S22",
+            "PLAT-S24"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "FIFO merge ve tiered conflict resolution belgeli; semantik çatışma otomatik olarak çözülmüş sayılmaz.",
+          "source_ids": [
+            "PLAT-S22"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "Reviewer/merger rolleri bulunur; kabul sözleşmesinin yeterliliği bağımsız kanıt ister.",
+          "source_ids": [
+            "PLAT-S22"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Remote alpha deploy kontratı doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S22"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "Headless worker ve ov serve UI belgeli; arşivlenmiş hali Ubuntu üzerinde burada denenmedi.",
+        "source_ids": [
+          "PLAT-S22"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Dosya/worktree ayrımı; SQLite mail/host kaynakları ortak. Bunun hard sandbox olduğunu varsaymıyoruz.",
+        "source_ids": [
+          "PLAT-S22"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "Watchdog PID/tmux ve lastActivity ayrımı yapar; persistent coordinator/monitor zaman-temelli stale kontrolünden muaftır. Yani canlı ama hedefsiz coordinatorın semantic progressi bu işlevle kanıtlanmaz.",
+        "source_ids": [
+          "PLAT-S23"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Çok-repo coordinator-of-coordinators ve alt rol hiyerarşisi belgeli; 144 ekip aynı-kod-tabanı başarısı gösterilmiyor.",
+        "source_ids": [
+          "PLAT-S22"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "Hiyerarşi ve adapter sayısı 144 ekip kapasitesi değildir; arşivlenmiş kod üzerinde yerel ölçek testi yapılmadı.",
+          "source_ids": [
+            "PLAT-S22",
+            "PLAT-S24"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "Aktif bakım sahibi yok",
+        "Semantic-progress oracleı",
+        "Hard kaynak izolasyonu",
+        "Remote deploy ve çok katmanlı organizasyon lifecycle"
+      ],
+      "recommendation": {
+        "text": "Sıfırdan benzer mail/watchdog/merge sistemi tasarlamadan önce referans alınabilir; yeni üretim bağımlılığı olarak öncelik verme.",
+        "source_ids": [
+          "PLAT-S22",
+          "PLAT-S23",
+          "PLAT-S24"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    },
+    {
+      "id": "PLAT06",
+      "name": "Warren",
+      "snapshot": {
+        "repo_url": "https://github.com/jayminwest/warren",
+        "branch": "main",
+        "head_sha": "4725380e40c3f61bec6af3d5c0a542e96c122dbd",
+        "head_commit_date": "2026-09-26T00:50:56Z",
+        "license_spdx": "MIT",
+        "archived": false,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Selfhost workload kontrol düzlemi / pluggable yürütme ve teslim çekirdeği",
+      "shortlist_role": "En yakın üç referans: runtime/tracker/forge sözleşmeleri",
+      "status": {
+        "text": "Güncel README 0.19.2 ve pre-1.0; GKE üzerinde kendi gerçek depolarında kullanım bakımcı bildirimi. Bir operator/trusted team ve ortak bearer yetkisi; named users/RBAC yok.",
+        "source_ids": [
+          "PLAT-S26",
+          "PLAT-S33"
+        ],
+        "evidence_level": "maintainer_deployment_claim_not_independently_measured",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "Dispatch/monitor/cancel/finalize/cleanup; kalıcı event/maliyet, fresh branch/workspace, Git credentials ve push. Çekirdek çıktı pushed branch; PR/tracker/preview ek davranışlar.",
+        "source_ids": [
+          "PLAT-S26"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "Warren run lifecycle sahibi; IssueTracker iş maddesinin, Forge dal/PR sonucunun ayrı sözleşmesi. Plan-run sıralı child dispatch ve merge gate kullanır; geniş campaign policy extensionda.",
+        "source_ids": [
+          "PLAT-S27",
+          "PLAT-S30",
+          "PLAT-S32"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "Dağıtım Pi ve Claude Code harness adapterları içeriyor; başka harness için Warren adapterı gerekir.",
+          "source_ids": [
+            "PLAT-S26"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "Model credentials/harness configten gelir; herhangi bir LLM aynı davranış garantisi değildir.",
+          "source_ids": [
+            "PLAT-S26",
+            "PLAT-S28"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "SeedsTracker + RemoteTracker; Jira/ADO harici extensionları. Capability flags, idempotent close ve open/closed/other normalizasyonu açık. Harici protocol deneysel etiketi hâlâ belgede.",
+          "source_ids": [
+            "PLAT-S27",
+            "PLAT-S30"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "RuntimeProvider local/docker/Kubernetes; registry bilinmeyen seçimde fail-loud. RunHandle, resource intent, timeout, event cursor sözleşmesi var.",
+          "source_ids": [
+            "PLAT-S28",
+            "PLAT-S29"
+          ],
+          "evidence_level": "inspected_code_static_not_executed",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "Forge API, config opt-in auto-merge arming. Base/head SHA dışarıda pinlenir; politika run branchinden okunmaz; arming sonucu merge/yayın başarısı değildir.",
+          "source_ids": [
+            "PLAT-S31"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "Quality gate/harness validation ve ayrı judge extensionı; kullanıcı AC/DoD doğruluğu teslimi hâlâ ayrıca kanıtlanır.",
+          "source_ids": [
+            "PLAT-S26",
+            "PLAT-S28",
+            "PLAT-S32"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Per-run preview ve HTTP/event extension yüzeyi var. Genel mutating deploy hook loaderı tamamlanmış sayılamaz; ortak remote alpha ortamına atomik terfi/rollback ayrıca gerekir.",
+          "source_ids": [
+            "PLAT-S26",
+            "PLAT-S32"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "HTTP API/CLI/daemon ve selfhost tek sunucu/container/Kubernetes topolojileri mevcut. Kurulum yapılmadı; macOS Docker Desktop örneği kullanıcıya taşınmadı, bu Mac Colima kuralı korunur.",
+        "source_ids": [
+          "PLAT-S26",
+          "PLAT-S29"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Seçilen runtime workspace/sandboxı yönetir. Contract açıkça maxProjectConcurrency ayarını Kubernetes uygular, LocalProvider yok sayar; projectResources yalnız Kubernetes için geçerli. Bu yalnız bu alanların farkıdır, bütün yerel sağlayıcı izolasyonu yok iddiası değil.",
+        "source_ids": [
+          "PLAT-S28"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "Watchdog kayıp process/pod uzlaştırır, finalize çalışmayı kurtarmayı dener; cap ve maliyet kontrolleri belgeli. Faydalı ilerleme ve son ürün oracleı ayrı kanıt ister.",
+        "source_ids": [
+          "PLAT-S26",
+          "PLAT-S28"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Plan-run dar sıralı iş-listesi+merge gate; campaign-controller ayrı paket. Philosophy genel workflow engine/organizasyon politikası çekirdeğe dahil demiyor.",
+        "source_ids": [
+          "PLAT-S27",
+          "PLAT-S32"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "Canlı GKE kullanım beyanı var, 144 ekip deney raporu yok. README kapsamı küçük trusted team; 144 örgüt+permission modeline kendiliğinden yükseltilmez.",
+          "source_ids": [
+            "PLAT-S26"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "144 takım/12 koordinasyon katmanı organization model",
+        "Ortak token yerine gereken yetki/kimlik ayrımı",
+        "Harici ready-task lease/idempotency handoff",
+        "Runner capability conformance: aynı alan her providerda uygulanmıyor",
+        "Ortak alpha trunk ve remote release/rollback sözleşmesi"
+      ],
+      "recommendation": {
+        "text": "Plugin sözleşmesi ve selfhost run→branch teslim çekirdeği için güçlü aday. Paperclip benzeri üst katmanla entegrasyonu hazır diye sunma; olursa yalnız kimlikli iş sözleşmesiyle test et.",
+        "source_ids": [
+          "PLAT-S26",
+          "PLAT-S27",
+          "PLAT-S28",
+          "PLAT-S30",
+          "PLAT-S31",
+          "PLAT-S32"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    },
+    {
+      "id": "PLAT07",
+      "name": "Ruflo / Claude Flow",
+      "snapshot": {
+        "repo_url": "https://github.com/ruvnet/ruflo",
+        "branch": "main",
+        "head_sha": "d37f283c6e040af9ab12c7e59d2b222a730c9842",
+        "head_commit_date": "2026-09-27T06:42:25Z",
+        "license_spdx": "MIT",
+        "archived": false,
+        "retrieved_at": "2026-09-27",
+        "installed_or_executed_here": false
+      },
+      "layer": "Agent koordinasyon / memory / plugin frameworkü",
+      "shortlist_role": "İç koordinasyon bileşeni; bütün fabrika kabulü yok",
+      "status": {
+        "text": "MIT. Status dokümanı kendi 3.10.2 snapshotını ve 25 Mayıs 2026 capability auditini belirtiyor; bugünkü HEAD’in tüm yeni kabiliyet envanteri olarak alınmadı.",
+        "source_ids": [
+          "PLAT-S34",
+          "PLAT-S36"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "ready_scope": {
+        "text": "CLI/MCP/plugin yüzeyi; hierarchical swarm, memory, routing/hook ve federation özellikleri belgeleniyor. Tool/agent tanımı sayısı üretim görev başarısı ölçüsü değil.",
+        "source_ids": [
+          "PLAT-S34"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "state_owner": {
+        "text": "İncelenen UnifiedSwarmCoordinator task/agent stateini Map içinde tutuyor. MessageBus enablePersistence varsayılan false; başka modüllerin kalıcılığını yok sayan genelleme yapılmıyor.",
+        "source_ids": [
+          "PLAT-S35"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "adapter_matrix": {
+        "worker": {
+          "text": "CLI/MCP/hooks coordinator entegrasyonu; bütün worker/tracker/runner/deployer portları tek ve eşdeğer sözleşme diye kanıtlanmadı.",
+          "source_ids": [
+            "PLAT-S34",
+            "PLAT-S35"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "model": {
+          "text": "Model routing iddiaları mevcut; provider hot-swap devam/iptal semantiği bu taramada doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S34"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "tracker": {
+          "text": "Harici tracker ready-task ownership protokolü doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S34",
+            "PLAT-S35"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "runner": {
+          "text": "144 ekip için dış sandbox scheduler/hard resource admission garantisi doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S35"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "git_and_merge": {
+          "text": "Ortak GitHub alpha trunkta tek durable merge/publish authority kanıtlanmadı.",
+          "source_ids": [
+            "PLAT-S34",
+            "PLAT-S35"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "test_and_oracle": {
+          "text": "Swarm consensus veya reviewer rolü bağımsız domain oracleının yerini almaz.",
+          "source_ids": [
+            "PLAT-S35"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        },
+        "deployer": {
+          "text": "Remote alpha deployer sözleşmesi doğrulanmadı.",
+          "source_ids": [
+            "PLAT-S34"
+          ],
+          "evidence_level": "not_verified_in_reviewed_scope",
+          "as_of": "2026-09-27"
+        }
+      },
+      "headless_selfhost": {
+        "text": "CLI/MCP Node runtime düzeyi kullanılabilir; bu, gözetimsiz uçtan uca factory daemonının doğrulandığı anlamına gelmez.",
+        "source_ids": [
+          "PLAT-S34"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "shared_isolated": {
+        "text": "Coordinator memory ve per-domain queue paylaşır. Bu dosyadaki hiyerarşi 15 agent/domain tasarımıdır; OS isolation veya durable cross-host authority ispatı değil.",
+        "source_ids": [
+          "PLAT-S35"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "recovery_resources": {
+        "text": "Task completion/failure eventleri ve timeout fallbackleri bulunuyor; 15-agent koordinasyon gecikmeleri başlıkta performance targets. Yerel ölçüm yapılmadı.",
+        "source_ids": [
+          "PLAT-S35"
+        ],
+        "evidence_level": "inspected_code_static_not_executed",
+        "as_of": "2026-09-27"
+      },
+      "planning": {
+        "text": "Queen/domain/task assignment yapısı; bağımlılık/portföy/metodoloji coverageı bu dosyanın varlığından çıkarılamaz.",
+        "source_ids": [
+          "PLAT-S35"
+        ],
+        "evidence_level": "documented",
+        "as_of": "2026-09-27"
+      },
+      "scale": {
+        "logical_target": {
+          "coordination_groups": 12,
+          "teams_per_group": 12,
+          "logical_teams": 144
+        },
+        "demonstrated_144_teams": false,
+        "demonstrated_144_concurrent_workers": false,
+        "configuration_for_144_tested_here": false,
+        "statement": {
+          "text": "Kodun 15-agent hiyerarşisi ve performans hedefleri 144 ekip saha kanıtı değildir.",
+          "source_ids": [
+            "PLAT-S35"
+          ],
+          "evidence_level": "documented",
+          "as_of": "2026-09-27"
+        },
+        "interpretation": "Mantıksal ekip sayısı aynı anda çalışan model veya container sayısı değildir. False, bu incelemede kanıtlanmadı anlamındadır; imkânsızlık iddiası değildir."
+      },
+      "hard_gaps": [
+        "Bütün süreç için state authority/replay garantisi",
+        "Native tracker/merge/deploy sözleşmeleri",
+        "Hard kaynak admission",
+        "144 ekip end-to-end ölçümü"
+      ],
+      "recommendation": {
+        "text": "Yalnız eksik bir koordinasyon/memory yeteneğini karşılıyorsa bileşen olarak dene; özellik sayısından bütün fabrika sonucu çıkarma.",
+        "source_ids": [
+          "PLAT-S34",
+          "PLAT-S35"
+        ],
+        "evidence_level": "researcher_inference",
+        "as_of": "2026-09-27"
+      }
+    }
+  ],
+  "shortlist": [
+    {
+      "candidate_id": "PLAT02",
+      "role": "Organizasyon, görev sahipliği ve bağımlılık yönetimi",
+      "why": "Hedefi, üst görevi, engeli, sorumluyu ve çalıştırmayı ayırır; adaptör çalıştırma sözleşmesi vardır.",
+      "remaining": "Kodun birleştirilmesi, kaynak izolasyonu ve alpha yayın zinciri hazır sayılmaz.",
+      "evidence_level": "researcher_inference",
+      "source_ids": [
+        "PLAT-S07",
+        "PLAT-S08",
+        "PLAT-S09"
+      ]
+    },
+    {
+      "candidate_id": "PLAT03",
+      "role": "Kodlama işlerini dağıtma, izleme ve repo birleştirme",
+      "why": "Worker yanında ayrı gözetim ve birleştirme rolleri, iş kayıtları ve kapasite kuyruğu bulunur.",
+      "remaining": "Kapasite kısıtlayıcısı varsayılan olarak etkin değildir; portföy yönetimi, uygulanmış kaynak sınırları ve uzak alpha sözleşmesi gerekir.",
+      "evidence_level": "researcher_inference",
+      "source_ids": [
+        "PLAT-S11",
+        "PLAT-S12",
+        "PLAT-S13",
+        "PLAT-S15"
+      ]
+    },
+    {
+      "candidate_id": "PLAT06",
+      "role": "Değiştirilebilir çalışma ortamı ve teslim bağlantıları",
+      "why": "Kodda çalışma ortamı, iş takipçisi ve repo hizmeti için ayrı sözleşmeler bulunur; desteklenen işlemler açıkça belirtilir.",
+      "remaining": "Küçük ve birbirine güvenen ekip kapsamındadır; tam organizasyon yönetimi ve ortak alpha yayın yöneticisi hazır değildir.",
+      "evidence_level": "researcher_inference",
+      "source_ids": [
+        "PLAT-S26",
+        "PLAT-S28",
+        "PLAT-S29",
+        "PLAT-S30",
+        "PLAT-S31"
+      ]
+    }
+  ],
+  "selection_statement": "Bu üçü aynı katmanda rakip veya hazır entegre stack değildir. Önce üst görev otoritesi ile yürütme/merge otoritesinin sınırını seç; tek repo gerçek görevde mevcut ürünlerden en az özel kod gerektireni karşılaştır. Yeni hedef için önceki OpenHands önceliği otomatik taşınmaz.",
+  "layer_boundaries": [
+    {
+      "layer": "Organizasyon metodolojisi",
+      "owns": "Amaç, öncelik, AC/DoD, 12 koordinasyon kümesi ve 144 mantıksal takımın sorumlulukları",
+      "not_equivalent_to": "144 sürekli LLM processi veya herScrum/SAFe rolüne birajan",
+      "evidence_level": "proposed_architecture_boundary"
+    },
+    {
+      "layer": "Yönetim / iş kontrolü",
+      "owns": "İş kimliği/revision, parent/dependency, tekhesapverebilir owner, hazır olma ve blocked/resolution semantiği",
+      "not_equivalent_to": "Workerı çalıştıran subprocess veya PR merge mekanizması",
+      "evidence_level": "proposed_architecture_boundary"
+    },
+    {
+      "layer": "Yürütme fabrikası",
+      "owns": "Run lease/generation, worker/harness seçimi, resource admission, kanıt, checkpoint, iptal ve recovery",
+      "not_equivalent_to": "Trackerın Done kartı veya agentın bitti mesajı",
+      "evidence_level": "proposed_architecture_boundary"
+    },
+    {
+      "layer": "Entegrasyon / yayın",
+      "owns": "Tek hedef dal güncellemesi, exact combinedSHA testleri, immutableartifact→remote alpha, health/rollback ve teslim kimliği",
+      "not_equivalent_to": "PR açılması, per-run preview veya mergeready labelı",
+      "evidence_level": "proposed_architecture_boundary"
+    }
+  ],
+  "handoff_contract_proposal": {
+    "evidence_level": "researcher_proposal_not_implemented",
+    "reason": "Tracker status adapterı ile runner handoff adapterı aynı sözleşme değildir. open/closed gibi alan eşleme, lease veya exactly-once dış etki garantisi taşımaz.",
+    "source_ids": [
+      "PLAT-S07",
+      "PLAT-S12",
+      "PLAT-S28",
+      "PLAT-S30"
+    ],
+    "work_item_fields": [
+      "external_tracker_id",
+      "work_id",
+      "revision",
+      "parent_id",
+      "depends_on",
+      "acceptance_contract_digest",
+      "definition_of_done_digest",
+      "allowed_paths",
+      "target_repo",
+      "target_branch",
+      "project_policy_revision"
+    ],
+    "run_handoff_fields": [
+      "run_id",
+      "work_id+revision",
+      "idempotency_key",
+      "lease_owner",
+      "generation/fencing_token",
+      "capability_requirements",
+      "resource_profile",
+      "budget_deadline",
+      "checkpoint_ref",
+      "result/evidence_ref"
+    ],
+    "return_fields": [
+      "accepted/rejected/blocked reason",
+      "sourceSHA+candidateSHA",
+      "test evidence with policy revision",
+      "side-effect receipts",
+      "preview/deployedartifact identity",
+      "unknown_effect marker",
+      "next_action_owner"
+    ],
+    "authority_rule": "Üst platform iş kabulünü/önceliğini yazar; alt motor kendi run gerçeğini yazar; forge merge gerçeğini, deployer yayın gerçeğini döndürür. Bir state alanının iki bağımsızscheduler yazarı olmaz."
+  },
+  "qualification_gates_not_run": [
+    "12 × 12 mantıksal kayıtla yalnız 1–2 eşzamanlı workerı yönet; org kayıt sayısı ile RAM kapasitesini ayır.",
+    "Aynı iş revisionı iki kez geldiğinde tek claim/run oluşmalı. Kontrol katmanı geç veya iptal edilmiş nesle yeni yazma yetkisi vermemeli; daha önce gönderilmiş dış işlem sonuçlanırsa receipt uzlaştırılmalı ve yeni neslin durumunu ezmemeli.",
+    "İki farklı worker/harness ile aynı test; resume/stop/tool/error yeteneklerini eşdeğer sanmadan capability negotiation yap.",
+    "İki tracker adapterında ready/blocked/done eşlemesi ve ayrı handoff receipt/ack/idempotency sınaması.",
+    "İki runtime profilinde memory/concurrency/timeout alanlarının gerçekten uygulandığını ölç; desteklenmeyen alan sessizce varsayılmasın.",
+    "Ajan canlı, log artıyor ama kabul kanıtı değişmiyor senaryosunda bağımsız progress kararı.",
+    "Aynı alpha trunkına bağımlı/çatışan iki değişiklik; kısa serialized merge ve combined candidate CI.",
+    "Yanlış ama yeşil testli özellik: değiştirilemez AC/DoD ve bağımsız domain örneği reddetsin.",
+    "Remotealpha artifact/URL sürüm kimliği+health+rollback; PR/preview başarıyla karıştırılmasın.",
+    "İnsan bug issue yeni revision olarak geri girsin; önceki teslim kanıtı ve bütçe geçmişi korunsun."
+  ],
+  "evidence_taxonomy": {
+    "maintainer_readme_claim": "Proje sahibinin özellik veya ölçek iddiası; bağımsız ölçüm değil.",
+    "documented": "Resmî sözleşme/uygulama belgesi; her çalışma ortamında doğrulanmış değil.",
+    "inspected_code_static_not_executed": "Belirtilencommitteki ilgili koşul/arayüz okundu; kod çalıştırılmadı.",
+    "maintainer_deployment_claim_not_independently_measured": "Bakımcının gerçek kullanım bildirimi; sonuçlar bağımsız tekrarlanmadı.",
+    "researcher_inference": "Bizim hedefe uygunluk/entegrasyon değerlendirmemiz.",
+    "not_verified_in_reviewed_scope": "Bu kaynak taramasında kanıt bulunmadı; evrensel yokluk veya imkânsızlık iddiası değil."
+  },
+  "scope": {
+    "coordination_groups": 12,
+    "logical_teams_per_group": 12,
+    "logical_teams_total": 144,
+    "workers_are_replaceable": true,
+    "tracker_and_worker_brand_is_example_not_choice": true,
+    "shared_delivery_target": "GitHub alpha trunk → uzak alpha URL → insan issue → yeniden giriş",
+    "installed": false,
+    "cloned": false,
+    "remote_mutation": false,
+    "tests_run": false,
+    "ui_modified": false,
+    "source_method": "Resmî repo/docs ve commit-pinned seçili kaynak kodu; GitHub API metadata. Statik inceleme canlı etkinlik kanıtı değil.",
+    "candidate_count": 7
+  },
+  "non_claims": [
+    "144 ekip veya 144 eşzamanlı worker için ölçülmüş başarı doğrulanmadı.",
+    "SAFe/Scrum rol isimleri metodolojinin uygulandığının kanıtı değil.",
+    "Aperant’ın 12 terminal iddiası 144 takım desteği değil.",
+    "Warren per-run preview ortak remote alpha terfisi değil.",
+    "Paperclip heartbeat sonucu alan kabulü değil.",
+    "Gas Town worktree host kaynak izolasyonu değil.",
+    "Ruflo 15-agent performans hedefi ölçülmüş 144 ekip çıktısı değil.",
+    "Aperant 3.0 ayrı repo gelişimi public stable 3.0 kuruldu anlamına gelmez.",
+    "Hiçbir aday bu araştırmada kurulmadı veya çalıştırılmadı."
+  ],
+  "source_refs": [
+    "PLAT-S01",
+    "PLAT-S02",
+    "PLAT-S03",
+    "PLAT-S04",
+    "PLAT-S05",
+    "PLAT-S06",
+    "PLAT-S07",
+    "PLAT-S08",
+    "PLAT-S09",
+    "PLAT-S10",
+    "PLAT-S11",
+    "PLAT-S12",
+    "PLAT-S13",
+    "PLAT-S14",
+    "PLAT-S15",
+    "PLAT-S16",
+    "PLAT-S17",
+    "PLAT-S18",
+    "PLAT-S19",
+    "PLAT-S20",
+    "PLAT-S21",
+    "PLAT-S22",
+    "PLAT-S23",
+    "PLAT-S24",
+    "PLAT-S25",
+    "PLAT-S26",
+    "PLAT-S27",
+    "PLAT-S28",
+    "PLAT-S29",
+    "PLAT-S30",
+    "PLAT-S31",
+    "PLAT-S32",
+    "PLAT-S33",
+    "PLAT-S34",
+    "PLAT-S35",
+    "PLAT-S36"
+  ]
+}

@@ -1,0 +1,2600 @@
+{
+  "meta": {
+    "gorev": "A3",
+    "baslik": "Skills, alt ajanlar, yönerge dosyaları ve MCP havuzları; pazardan alma; Kaizen/OODA; MVP'den olgunluğa",
+    "tarih": "2026-09-27",
+    "kapsam": "SAFe katmanlı 12+ scrum ekibi; iş kalemi In Progress'e alındıktan sonra ajanlarla ilerleyen teslim akışı.",
+    "yontem": "Birincil kaynaklar (arXiv API, resmî dokümanlar, GitHub advisory/OSV, satıcı mühendislik blogları) WebFetch, gh api ve export.arxiv.org ile doğrulandı. Yerel risk haritası (olay-kaydi.json, kategori-kaliplari, kumeler, senaryolar) salt okunarak kullanıldı.",
+    "kaynak_kullanimi": "Her maddedeki 'kaynak' alanı, 'kaynaklar' listesindeki kimliklere (A3-Kxx dış kaynak, A3-Yxx yerel harita) ve gerektiğinde yerel olay kimliklerine (EV-xxx) işaret eder.",
+    "dogrulama_notlari": [
+      "arXiv 2602.11988 (Evaluating AGENTS.md) sürümler arasında değişti: v1 özeti bağlam dosyalarının başarıyı 'düşürme eğiliminde' olduğunu söylerken güncel sürüm 'genelde artırmadığını' söylüyor. Bu dosyada güncel sürümün sayıları kullanıldı.",
+      "SkillsBench (arXiv 2602.12670) v1'de 'kendi ürettiği skill'ler ortalamada fayda sağlamıyor' bulgusu vardı; güncel v4 özeti bu koşulu içermiyor. Bulgu v1'e atfedildi.",
+      "OpenAI harness engineering yazısı doğrudan bot korumasıyla (403) açılamadı; içerik tam kopyalı bir ayna üzerinden doğrulandı, birincil URL korunarak verildi.",
+      "Koi Security'nin ClawHavoc yazısı artık başka alana yönleniyor; sayılar The Hacker News ve yerel harita (EV-232, RK-094) üzerinden doğrulandı, ikincil olarak işaretlendi.",
+      "GitLab'ın yayımlanmış bir 'AI-native SDLC olgunluk modeli' birincil kaynakta doğrulanamadı; bu nedenle olgunluk modelleri listesine alınmadı.",
+      "mcpmarket.com'un işletmecisi ve inceleme süreci sitede açıklanmıyor; yalnız sitenin kendi beyanları aktarıldı.",
+      "MCP'ye karşı CLI kıyası için hakemli bir çalışma bulunamadı; Scalekit karşılaştırması satıcı blogu olarak ikincil nitelikte işaretlendi."
+    ]
+  },
+  "talimat_dosyalari": {
+    "bulgular": [
+      {
+        "id": "TD-B01",
+        "bulgu": "AGENTS.md, Linux Foundation altındaki Agentic AI Foundation'ın (AAIF, 9 Aralık 2025) kurucu projelerinden biri ve açık standart. Sitesine göre 60.000'den fazla açık kaynak projede kullanılıyor; Codex, Jules, Cursor, VS Code, Copilot, Devin, Junie ve Aider gibi araçlar destekliyor. İç içe dosyalarda düzenlenen dosyaya en yakın AGENTS.md geçerli olur; sohbetteki açık kullanıcı talimatı hepsini geçersiz kılar.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K07",
+          "A3-K08"
+        ]
+      },
+      {
+        "id": "TD-B02",
+        "bulgu": "Claude Code'da CLAUDE.md 'zorlanan yapılandırma değil, bağlam'dır. Dosya başına 200 satırın altı hedeflenir; uzun dosya daha çok bağlam tüketir ve uyumu düşürür. Üst dizinlerdeki dosyalar açılışta, alt dizinlerdekiler ise o dizindeki dosyalar okunduğunda yüklenir. @import en çok dört atlama derinliğe kadar gider ama içe aktarılan dosyalar da açılışta bağlama girer. .claude/rules/ altındaki 'paths' alanlı kurallar yalnız eşleşen dosyalarla çalışılırken yüklenir. Kurum düzeyi yönetilen (managed) CLAUDE.md dışlanamaz. Engelleme gerekiyorsa PreToolUse hook'u ya da managed settings içindeki permissions.deny kullanılmalıdır. Çelişen iki kuraldan ajan birini rastgele seçebilir. Varsayılan olarak CLAUDE.md yoksa AGENTS.md okunur, varsa yalnız CLAUDE.md okunur; @AGENTS.md importu ile tek kaynak sağlanabilir.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K09"
+        ]
+      },
+      {
+        "id": "TD-B03",
+        "bulgu": "ETH Zürih / SRI Lab çalışması (Gloaguen ve ark., Şubat 2026): Bağlam dosyaları görev başarısını genelde artırmıyor, çıkarım maliyetini ortalama %20'nin üzerinde artırıyor. Güncel sürümde LLM üretimi dosyalar SWE-bench ve CTXbench'te başarıyı ortalama %0,5 ve %2 düşürdü; maliyeti %20 ve %23 artırdı; adım sayısını 2,45 ve 3,92 artırdı. Geliştiricinin yazdığı dosyalar ortalama %2,4 iyileşme sağladı ama anlamlı değil (p=%21). Talimatlara uyuluyor, ancak depo genel bakışları işe yaramıyor. Yazarların önerisi: yalnız kod tabanında zaten bulunmayan, standart dışı gereksinimleri yazmak ve LLM üretimi bağlam dosyalarını şimdilik kullanmamak. Test edilen ajanlar: Claude Code (Sonnet-4.5), Codex (GPT-5.2 ve GPT-5.1 mini), Qwen Code.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K01",
+          "A3-Y02:RK-097"
+        ]
+      },
+      {
+        "id": "TD-B04",
+        "bulgu": "Aksi yönde bir verimlilik bulgusu da var (Lulla ve ark., Ocak 2026). 10 depo ve 124 PR üzerinde AGENTS.md varlığı medyan çalışma süresini %28,64, çıktı token'ını %16,58 düşürdü; görev tamamlama davranışı benzer kaldı. Buna karşılık iki ajanlı ablasyon çalışması (Khatri, Temmuz 2026; 288 koşu) bağlam stratejisinin doğruluğu ölçülebilir biçimde değiştirmediğini buldu. Başarısızlıklar depo bilgisi eksikliğinden değil, uygulama becerisinden kaynaklanıyordu. Kısacası etki ortama ve ajana bağlı; kurumun kendi eval'i olmadan 'daha çok talimat daha iyi' varsayılamaz.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K02",
+          "A3-K03"
+        ]
+      },
+      {
+        "id": "TD-B05",
+        "bulgu": "1.925 depodaki 2.303 bağlam dosyasının incelenmesi, bu dosyaların sık ve küçük eklemelerle yapılandırma kodu gibi evrildiğini, okunmasının zorlaştığını gösterdi. En sık içerik test prosedürleri (%75,9), uygulama ayrıntıları (%70,8) ve mimari (%68,1). Güvenlik (%14,8) ve başarım (%14,5) nadiren yazılıyor.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K04"
+        ]
+      },
+      {
+        "id": "TD-B06",
+        "bulgu": "AI IDE kural dosyalarının madenciliği (83 proje, 7.310 kural, 99 anket yanıtı): Geliştiriciler kuralları çoğunlukla ajan hatalarını düzeltmek için değiştiriyor (%77,78), genelde yeni 'yapma' kısıtı ekleyerek. Kural güncellemesi sonrası artefakt uyumu %49,14'ten %72,13'e çıktı. Mimari kısıtlar önemli görülse de dosyalar ağırlıkla düşük düzey iş akışı ve biçim kurallarından oluşuyor.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K05"
+        ]
+      },
+      {
+        "id": "TD-B07",
+        "bulgu": "OpenAI harness engineering (Lopopolo, 11 Şubat 2026): 'Tek büyük AGENTS.md' yaklaşımı öngörülebilir biçimde başarısız oldu. Bunun yerine yaklaşık 100 satırlık bir AGENTS.md içindekiler tablosu/harita olarak kullanıldı; asıl bilgi kayıt sistemi olan docs/ dizininde tutuldu (design-docs doğrulama durumuyla indeksli, exec-plans, product-specs, references, QUALITY_SCORE, RELIABILITY, SECURITY). Bilgi tabanının güncelliği ve çapraz bağlantıları özel linter'lar ve CI işleriyle denetleniyor; yinelenen bir 'doc-gardening' ajanı eskimiş belgeleri tarıyor; arka plan görevleri sapmaları bulup hedefli refactor PR'ları açıyor. Beş ayda yaklaşık 1.500 PR ve yaklaşık bir milyon satır üretildiği bildiriliyor.",
+        "kanit_duzeyi": "birincil (ayna üzerinden doğrulandı)",
+        "kaynak": [
+          "A3-K06"
+        ]
+      },
+      {
+        "id": "TD-B08",
+        "bulgu": "Anthropic'in bağlam mühendisliği ilkesi: istenen sonucu en olası kılan en küçük yüksek sinyalli token kümesini bulmak. Model bir 'dikkat bütçesi'ne sahiptir ve bağlam büyüdükçe başarım düşer (context rot). Sistem talimatı 'doğru irtifada' olmalı: kırılgan mantık gömülmemeli, belirsiz de bırakılmamalı.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K10"
+        ]
+      },
+      {
+        "id": "TD-B09",
+        "bulgu": "Talimat dosyaları saldırı yüzeyidir. Görünmez Unicode ile kural dosyasına arka kapı konabilir (Rules File Backdoor). Depo içindeki ajan yapılandırmaları (hook, MCP, env) güven onayından önce komut çalıştırmaya yol açtı (Claude Code CVE-2025-59536, Codex CLI CVE-2025-61260). Aşırı yetkili bir yayın hattı token'ı ile dağıtım kanalına yıkıcı talimat eklendi (Amazon Q 1.84, CVE-2025-8217).",
+        "kanit_duzeyi": "birincil+ikincil",
+        "kaynak": [
+          "A3-Y02:RK-095",
+          "A3-Y02:RK-096",
+          "A3-Y01:EV-183",
+          "A3-Y01:EV-267",
+          "A3-Y01:EV-125",
+          "A3-Y04:SS-035"
+        ]
+      },
+      {
+        "id": "TD-B10",
+        "bulgu": "Talimat tabanlı yasak uygulanamaz. Replit ajanı açık 'kod dondurma' talimatına rağmen üretim veritabanını sildi. Uygulanabilir sınırlar kimlik ve yetki düzeyinde konmalıdır.",
+        "kanit_duzeyi": "ikincil",
+        "kaynak": [
+          "A3-Y02:RK-216",
+          "A3-Y01:EV-130"
+        ]
+      },
+      {
+        "id": "TD-B11",
+        "bulgu": "ADR (Architecture Decision Record), Nygard'ın 2011'de önerdiği kısa ve numaralı karar kaydıdır. OpenAI'nin docs/ yapısındaki doğrulama durumlu design-docs ile aynı işlevi görür: ajana 'neden böyle' bilgisini, gerektiğinde yüklenen bir referans olarak sunar.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K76",
+          "A3-K06"
+        ]
+      }
+    ],
+    "oneriler": [
+      {
+        "id": "TD-O01",
+        "oneri": "Her depoda kısa bir kök AGENTS.md tutun: yaklaşık 100 satır hedeflensin, 200 satır üst sınır olsun. Tek doğruluk kaynağı AGENTS.md olsun, CLAUDE.md yalnız @AGENTS.md içe aktarsın ve Claude'a özgü birkaç satır eklesin. İçerik şunlarla sınırlı kalsın: derleme/test/lint komutları, standart dışı konvansiyonlar, yasak alanlar, 'bitti' tanımı, docs/ ve ADR dizinine işaretçiler.",
+        "gerekce": "Harita yaklaşımı ve kanıta dayalı kısalık; iki araç arasında sapmayı önler.",
+        "kaynak": [
+          "A3-K06",
+          "A3-K09",
+          "A3-K01",
+          "A3-K07"
+        ]
+      },
+      {
+        "id": "TD-O02",
+        "oneri": "İç içe AGENTS.md'yi yalnız alt proje gerçekten farklı derleme/test komutları ya da konvansiyonları taşıyorsa ekleyin (monorepo paketleri gibi). Dosya türüne özgü kuralları (ör. SQL migration, API sözleşmesi) paths alanlı kural dosyalarına taşıyın ki yalnız ilgili dosyalarda yüklensin.",
+        "gerekce": "En yakın dosyanın geçerli olması ve isteğe bağlı yükleme bağlamı korur.",
+        "kaynak": [
+          "A3-K07",
+          "A3-K09"
+        ]
+      },
+      {
+        "id": "TD-O03",
+        "oneri": "SAFe katmanlarını kural mimarisine şöyle eşleyin: (1) Kurum/portföy: yönetilen talimat ve yönetilen ayarlar (güvenlik, veri işleme, izinli araçlar); zorlama ayarlarla, davranış rehberi talimatla yapılır. (2) ART/çözüm: ortak çekirdek kural paketi (mimari ilkeler, ortak modül sahipliği, ADR dizini), sürümlü ayrı bir depoda, CODEOWNERS ile. (3) Ekip: depo AGENTS.md ve ekip uzantısı. Çekirdek ile uzantı ayrı tutulsun; uzantı çekirdeği geçersiz kılamasın, çelişki CI'da denetlensin.",
+        "gerekce": "Merkezi sürümün ekip bağlamını ezmesi ya da kopyala-yapıştıra dönüşmesi riski; çelişen katmanlarda ajan davranışının öngörülemez hale gelmesi.",
+        "kaynak": [
+          "A3-K09",
+          "A3-Y02:RK-036",
+          "A3-Y03:N-K24-007",
+          "A3-Y03:N-K11-003"
+        ]
+      },
+      {
+        "id": "TD-O04",
+        "oneri": "docs/ dizinini kayıt sistemi olarak kurun: ARCHITECTURE.md (alan ve katman haritası), docs/adr/NNNN-*.md (Nygard biçimi: bağlam, karar, sonuçlar, durum), exec-plans/, QUALITY_SCORE.md, SECURITY.md. Ajan ADR önerebilir ama 'Kabul' durumuna yalnız insan (System Architect ya da ekip) geçirir. Belgelerin güncelliği ve bağlantıları CI linter'ıyla denetlensin; periyodik 'doc-gardening' görevi eskimiş belgeleri işaretlesin.",
+        "gerekce": "Bilgi gerektiğinde yüklenir; mekanik denetim belge çürümesini önler.",
+        "kaynak": [
+          "A3-K06",
+          "A3-K76"
+        ]
+      },
+      {
+        "id": "TD-O05",
+        "oneri": "Bir kurala ihtiyaç doğduğunda önce deterministik bir kontrol yazın (linter, test, pre-commit, PreToolUse hook, izin reddi). Bu mümkün değilse .md talimatı ekleyin. Güvenlik ve yıkıcı eylem yasaklarını asla yalnız .md'ye bırakmayın.",
+        "gerekce": "Talimat bağlamdır, zorlama değildir; mekanik zorlama OpenAI deneyiminin temelidir.",
+        "kaynak": [
+          "A3-K09",
+          "A3-K06",
+          "A3-Y02:RK-216"
+        ]
+      },
+      {
+        "id": "TD-O06",
+        "oneri": "Talimat dosyası değişikliklerini kod gibi ele alın: PR ve CODEOWNERS; ortak çekirdekte iki kişilik onay; görünmez ya da yön denetimi Unicode karakterlerini reddeden CI kontrolü; boyut bütçesi (satır ve token); imzalı sürüm; her değişiklikte eval setinde eşleştirilmiş karşılaştırma (başarı + token).",
+        "gerekce": "Görünmez karakter arka kapısı, dağıtım kanalı enjeksiyonu ve maliyet artışı riskleri.",
+        "kaynak": [
+          "A3-Y02:RK-095",
+          "A3-Y02:RK-096",
+          "A3-Y02:RK-097",
+          "A3-K01"
+        ]
+      },
+      {
+        "id": "TD-O07",
+        "oneri": "Güvenlik ve başarım gibi işlevsel olmayan gereksinimleri kısa ve eylem odaklı yazın (ör. 'kullanıcı girdisi SQL'e yalnız parametreli sorgu ile gider; kontrol: semgrep kuralı X'). Mümkünse bunları bir kontrole bağlayın.",
+        "gerekce": "Bağlam dosyalarında güvenlik ve başarım yalnız yaklaşık %15 oranında yer alıyor.",
+        "kaynak": [
+          "A3-K04"
+        ]
+      },
+      {
+        "id": "TD-O08",
+        "oneri": "Ajanların kendi talimat, ayar, hook ve MCP yapılandırma dosyalarını yazması engellensin. Bu dosyalar koruma altında tutulsun (izin reddi veya salt okunur bağlama); değişiklik yalnız insan PR'ıyla yapılsın.",
+        "gerekce": "Ajanın kendi izin yapılandırmasını değiştirip onaysız kod çalıştırması senaryosu ve CurXecute/MCPoison olayları.",
+        "kaynak": [
+          "A3-Y04:SS-036",
+          "A3-Y01:EV-142",
+          "A3-Y03:N-K11-007"
+        ]
+      }
+    ],
+    "kacinilacaklar": [
+      {
+        "id": "TD-K01",
+        "kacinilacak": "/init ile ya da LLM'e toplu ürettirilmiş AGENTS.md/CLAUDE.md dosyalarını incelemeden commit etmek.",
+        "neden": "LLM üretimi dosyalar başarıyı artırmadı, maliyeti %20'nin üzerinde artırdı.",
+        "kaynak": [
+          "A3-K01"
+        ]
+      },
+      {
+        "id": "TD-K02",
+        "kacinilacak": "Depo genel bakışı, dizin ağacı, teknoloji listesi gibi ajanın koddan kendisinin çıkarabileceği bilgileri yazmak.",
+        "neden": "Depo genel bakışlarının işe yaramadığı ölçüldü.",
+        "kaynak": [
+          "A3-K01"
+        ]
+      },
+      {
+        "id": "TD-K03",
+        "kacinilacak": "Ansiklopedi tipi tek büyük talimat dosyası; yüzlerce satırlık ekip kural setleri.",
+        "neden": "Bağlamı tüketip görevi dışarıda bırakır; 200 satırın üstünde uyum düşer.",
+        "kaynak": [
+          "A3-K06",
+          "A3-K09"
+        ]
+      },
+      {
+        "id": "TD-K04",
+        "kacinilacak": "'Sen kıdemli bir X uzmanısın' türü persona paragrafları.",
+        "neden": "Sistem isteminde persona, nesnel görevlerde başarımı iyileştirmiyor.",
+        "kaynak": [
+          "A3-K27"
+        ]
+      },
+      {
+        "id": "TD-K05",
+        "kacinilacak": "Güvenlik ve dondurma kurallarını yalnız .md'ye yazmak.",
+        "neden": "Talimat zorlanmaz (Replit olayı).",
+        "kaynak": [
+          "A3-K09",
+          "A3-Y02:RK-216"
+        ]
+      },
+      {
+        "id": "TD-K06",
+        "kacinilacak": "Birbiriyle çelişen katmanlar; kullanıcı, proje ve ekip kurallarının denetimsiz birikmesi; yalnız yeni 'yapma' kuralları ekleyip eskileri hiç temizlememek.",
+        "neden": "Çelişkide ajan kurallardan birini keyfi seçer.",
+        "kaynak": [
+          "A3-K09",
+          "A3-K05"
+        ]
+      },
+      {
+        "id": "TD-K07",
+        "kacinilacak": "Talimat dosyalarına sır, iç URL, kişisel veri ya da müşteri verisi koymak; depo dışını gösteren @import zincirleri.",
+        "neden": "Bu dosyalar her oturumda modele ve alt ajanlara taşınır; dış içe aktarmalar ayrı onay gerektirir.",
+        "kaynak": [
+          "A3-K09"
+        ]
+      }
+    ]
+  },
+  "skills": {
+    "bulgular": [
+      {
+        "id": "SK-B01",
+        "bulgu": "Agent Skills, talimat, betik ve kaynak içeren klasörlerdir. Anthropic 16 Ekim 2025'te duyurdu, 18 Aralık 2025'te açık standart yaptı. Kademeli yükleme (progressive disclosure) üç düzeyde işler: açılışta yalnız ad ve açıklama (yaklaşık 100 token); ilgili olduğunda SKILL.md gövdesi (5.000 token altı önerilir, 500 satır altı); gerektiğinde scripts/, references/ ve assets/ dosyaları. name en çok 64, description en çok 1.024 karakterdir. allowed-tools alanı deneysel. Doğrulama aracı skills-ref.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K11",
+          "A3-K12"
+        ]
+      },
+      {
+        "id": "SK-B02",
+        "bulgu": "Claude Code, skill listesinde description ve when_to_use metnini 1.536 karakterde keser. 'disable-model-invocation: true' ile yan etkili skill'ler (deploy, commit, mesaj gönderme) yalnız insan çağrısına bağlanabilir ve açıklaması bağlama girmez. Sıkıştırma sonrasında çağrılmış skill'ler, skill başına 5.000 token ve toplam 25.000 token bütçesiyle yeniden eklenir.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K13"
+        ]
+      },
+      {
+        "id": "SK-B03",
+        "bulgu": "Resmî ve yarı resmî depolar şunlar: anthropics/skills, openai/skills ('Skills Catalog for Codex'), agentskills/agentskills (spesifikasyon, Apache-2.0), github/awesome-copilot (topluluk talimatları, ajanlar ve skill'ler, MIT). Tümü 27 Eylül 2026 itibarıyla etkin. Bunlar örnek ve başlangıç kaynağıdır; kurum kataloğuna ancak kabul hattından geçerek girmelidir.",
+        "kanit_duzeyi": "birincil (gh api)",
+        "kaynak": [
+          "A3-K22"
+        ]
+      },
+      {
+        "id": "SK-B04",
+        "bulgu": "Skill sayısı arttıkça seçim doğruluğu düşüyor. Li (Ocak 2026) GPT-4o ve GPT-4o-mini ile 20 skill'e kadar doğruluğun %90'ın üstünde kaldığını, yaklaşık 30'dan sonra düştüğünü, 200'de yaklaşık %20'ye indiğini ölçtü. Düşüşün asıl nedeni sayı değil, anlamca birbirine karışan skill'ler. Hiyerarşik yönlendirme 60 ve üstünde skill'de GPT-4o-mini doğruluğunu yaklaşık %45'ten %83-85'e çıkardı. Song ve Wei (Mayıs 2026) 202 skill'lik kütüphanede başarı oranının %21'e kadar düştüğünü buldu. Asıl darboğaz 'skill gölgelemesi', yani yanlış skill seçimi; bağlam yükünün etkisi sıfırdan ayırt edilemedi.",
+        "kanit_duzeyi": "birincil (eski modellerle ölçüm; güncel modellerde eşik farklı olabilir)",
+        "kaynak": [
+          "A3-K14",
+          "A3-K15"
+        ]
+      },
+      {
+        "id": "SK-B05",
+        "bulgu": "SkillsBench'in güncel sürümü (87 görev, 18 yapılandırma): Özenle hazırlanmış skill'ler ortalama başarıyı %33,9'dan %50,5'e çıkardı (+16,6 puan). En fazla üç modüllü odaklı skill'ler, kapsamlı paketlerden daha iyi sonuç verdi. v1'de etki alana göre +4,5 puan (yazılım mühendisliği) ile +51,9 puan (sağlık) arasında değişti, 84 görevin 16'sında etki olumsuzdu ve modelin kendi ürettiği skill'ler ortalamada fayda sağlamadı.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K16"
+        ]
+      },
+      {
+        "id": "SK-B06",
+        "bulgu": "Skill pazarları yüksek risk taşıyor. İki pazardan 31.132 skill'in taranmasında %26,1'inde en az bir açık bulundu; %5,2'si kötü niyet izlenimi veren yüksek önemli kalıplar taşıyordu. Betik içeren skill'lerde açık olasılığı 2,12 kat. 98.380 skill'de dinamik doğrulamayla 157 kötü amaçlı skill doğrulandı; yarıdan fazlası tek bir aktörden ve marka taklidiyle geliyordu. Snyk ToxicSkills (5 Şubat 2026): ClawHub ve skills.sh'tan 3.984 skill'in %36,82'sinde güvenlik kusuru, 534'ünde kritik sorun, 76 doğrulanmış kötü amaçlı yük.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K17",
+          "A3-K18",
+          "A3-K19"
+        ]
+      },
+      {
+        "id": "SK-B07",
+        "bulgu": "ClawHavoc (Şubat 2026): Koi Security, ClawHub'daki 2.857 skill'den 341'ini kötü amaçlı buldu. Skill'ler sahte 'ön koşul' adımlarıyla kullanıcıya Atomic Stealer (AMOS) ve tuş kaydedici kurduruyordu. Yayıncı için tek koşul en az bir haftalık bir GitHub hesabıydı. Sayı 16 Şubat'a kadar 800'ü aştı. OpenClaw 7 Şubat'ta VirusTotal taramasını ekledi, ancak bakımcılar bunun kesin çözüm olmadığını ve gizlenmiş istem enjeksiyonunun gözden kaçabileceğini belirtti.",
+        "kanit_duzeyi": "ikincil (birincil Koi yazısı yönleniyor)",
+        "kaynak": [
+          "A3-K20",
+          "A3-K21",
+          "A3-Y01:EV-232",
+          "A3-Y02:RK-094"
+        ]
+      },
+      {
+        "id": "SK-B08",
+        "bulgu": "Paylaşılan istem ve ajan merkezleri de aynı riski taşıyor. LangSmith Prompt Hub'daki 'AgentSmith' açığında zararlı ajan, vekil sunucu üzerinden API anahtarı çalabiliyordu.",
+        "kanit_duzeyi": "ikincil",
+        "kaynak": [
+          "A3-Y01:EV-112",
+          "A3-Y04:SS-043"
+        ]
+      }
+    ],
+    "eklenmesi_onerilen_skill_turleri": [
+      {
+        "skill": "Depoya özgü değişiklik prosedürleri (ör. veritabanı migration, API sözleşmesi değişikliği ve sürümleme, feature flag ekleme ve kaldırma)",
+        "neden": "Standart dışı ve çok adımlı bilgi; bağlam dosyasına değil skill'e ait.",
+        "kaynak": [
+          "A3-K09",
+          "A3-K01",
+          "A3-K16"
+        ]
+      },
+      {
+        "skill": "Doğrulama ve test stratejisi (hangi test katmanı, mutasyon testi, kaçan hatadan regresyon testi)",
+        "neden": "Geri besleme kontrolü; Thoughtworks feedforward/feedback kontrolleri.",
+        "kaynak": [
+          "A3-K74",
+          "A3-Y03:N-K08-002"
+        ]
+      },
+      {
+        "skill": "Devir paketi ve PR açıklaması üretimi (şemalı; fark ile açıklama arasında tutarlılık kontrolü dahil)",
+        "neden": "Ajan PR'larında mesaj ile kod arasındaki tutarsızlık kabul oranını %80'den %28,3'e düşürüyor.",
+        "kaynak": [
+          "A3-Y01:EV-220",
+          "A3-Y03:N-K27-004"
+        ]
+      },
+      {
+        "skill": "Güvenlik inceleme kontrol listesi (kuruma özgü tehdit modeli ve yasaklı kalıplar)",
+        "neden": "Bağlam dosyalarında güvenlik az yer alıyor; istek üzerine yüklenmesi uygun.",
+        "kaynak": [
+          "A3-K04"
+        ]
+      },
+      {
+        "skill": "ADR yazma ve güncelleme şablonu",
+        "neden": "Karar kaydının standart biçimi; kabulü insanda kalır.",
+        "kaynak": [
+          "A3-K76",
+          "A3-K06"
+        ]
+      },
+      {
+        "skill": "İş kalemi hazır olma (DoR) ve bitti (DoD) denetimi",
+        "neden": "In Progress öncesi ve sonrası kontrol; makinece doğrulanabilir çalışma sistemi.",
+        "kaynak": [
+          "A3-Y02:RK-035"
+        ]
+      },
+      {
+        "skill": "Olay sonrası öğrenme: olay kaydından eval vakası ve kural adayı üretme (insan onaylı)",
+        "neden": "Kaizen döngüsünün girdisi.",
+        "kaynak": [
+          "A3-K62",
+          "A3-Y03:N-K08-006"
+        ]
+      },
+      {
+        "skill": "Yan etkili iş akışları (sürüm, deploy, mesaj gönderme) — yalnız insan çağrısı (disable-model-invocation)",
+        "neden": "Ajanın 'hazır göründü' diyerek deploy etmesini engeller.",
+        "kaynak": [
+          "A3-K13"
+        ]
+      }
+    ],
+    "oneriler": [
+      {
+        "id": "SK-O01",
+        "oneri": "Skill kataloğunu kurum içinde tutun. Ajan ve rol profili başına etkin skill sayısını düşük tutun (başlangıçta 20'nin altı; eşik kendi eval'inizle kalibre edilsin). Büyüyen katalogda hiyerarşik yönlendirme kullanın: alan → alt alan → skill, ya da rol profili başına ayrı paket.",
+        "gerekce": "20 skill'e kadar doğruluk stabil, sonrasında faz geçişi var; hiyerarşi düşüşü telafi ediyor.",
+        "kaynak": [
+          "A3-K14",
+          "A3-K15"
+        ]
+      },
+      {
+        "id": "SK-O02",
+        "oneri": "Skill'ler odaklı olsun (en çok 2-3 modül). Açıklamalar birbirinden ayırt edilebilir yazılsın. Her yeni skill 'örtüşme testi'nden geçsin: benzer açıklamalı mevcut skill varsa birleştirilsin.",
+        "gerekce": "Odaklı skill üstünlüğü ve gölgeleme etkisi.",
+        "kaynak": [
+          "A3-K16",
+          "A3-K15",
+          "A3-K10"
+        ]
+      },
+      {
+        "id": "SK-O03",
+        "oneri": "Her skill eşleştirilmiş eval ile kabul edilsin: aynı görev setinde skill'li ve skill'siz koşu, k tekrar; başarı, token ve seçim doğruluğu ölçülsün. Etkisi olumsuz ya da anlamsız olan skill katalogdan çıkarılsın.",
+        "gerekce": "Görevlerin bir kısmında skill etkisi olumsuz; ölçmeden yayılım maliyet yaratır.",
+        "kaynak": [
+          "A3-K16",
+          "A3-K62",
+          "A3-Y02:RK-174"
+        ]
+      },
+      {
+        "id": "SK-O04",
+        "oneri": "Kabul hattı: sahip ve kaynak kontrolü, lisans, betik varsa SAST/SCA, skill tarayıcısı (ör. Snyk agent-scan ya da SkillScan türü LLM+statik tarama), dış URL'den indirip çalıştırma, base64 ve parola korumalı arşiv kalıplarının taranması, görünmez Unicode kontrolü, insan incelemesi. Sürüm ve içerik özeti (sha256) sabitlensin.",
+        "gerekce": "Skill'ler metin olduğu için klasik SCA'dan geçmez; betikli skill'ler 2,12 kat riskli.",
+        "kaynak": [
+          "A3-K17",
+          "A3-K19",
+          "A3-Y02:RK-094",
+          "A3-K55"
+        ]
+      },
+      {
+        "id": "SK-O05",
+        "oneri": "Zorlamayı istemci yönetimiyle yapın. Claude Code'da strictKnownMarketplaces (izinli pazar kaynakları), blockedMarketplaces, strictPluginOnlyCustomization.skills (skill'leri eklenti ve yönetilen kaynaklara kilitleme) ve disableSkillShellExecution yönetilen ayar olarak dağıtılsın. Diğer ajan istemcilerinde eşdeğer kontroller aransın; yoksa iş istasyonu yerine yönetilen koşu ortamında çalıştırılsın.",
+        "gerekce": "Kurum dışı skill'in ekip makinesine girmesini teknik olarak engeller.",
+        "kaynak": [
+          "A3-K54"
+        ]
+      }
+    ],
+    "kacinilacaklar": [
+      {
+        "id": "SK-K01",
+        "kacinilacak": "Kamusal skill pazarlarından (ClawHub, skills.sh, mcpmarket'in skill bölümü vb.) ekiplerin doğrudan kurulum yapması.",
+        "neden": "Pazarlarda yüksek oranda açık ve kötü amaçlı skill doğrulandı.",
+        "kaynak": [
+          "A3-K17",
+          "A3-K18",
+          "A3-K19",
+          "A3-K20"
+        ]
+      },
+      {
+        "id": "SK-K02",
+        "kacinilacak": "Betik içeren üçüncü taraf skill'leri incelemeden kullanmak.",
+        "neden": "Betikli skill'lerde açık olasılığı 2,12 kat.",
+        "kaynak": [
+          "A3-K17"
+        ]
+      },
+      {
+        "id": "SK-K03",
+        "kacinilacak": "Ajanın kendi ürettiği skill ya da kural önerilerini eval ve insan onayı olmadan kataloğa almak.",
+        "neden": "Kendi üretilen skill'ler ortalamada fayda sağlamadı (SkillsBench v1); kendi çıktısıyla öğrenmede çöküş ve zehirli iz riski var.",
+        "kaynak": [
+          "A3-K16",
+          "A3-Y02:RK-208",
+          "A3-Y02:RK-209"
+        ]
+      },
+      {
+        "id": "SK-K04",
+        "kacinilacak": "Birbirine benzeyen çok sayıda skill; her ekibin aynı işi yapan kendi skill'ini yazması.",
+        "neden": "Gölgeleme ve faz geçişi.",
+        "kaynak": [
+          "A3-K14",
+          "A3-K15"
+        ]
+      },
+      {
+        "id": "SK-K05",
+        "kacinilacak": "Modelin zaten bildiği genel bilgiyi (ör. dilin temel kullanımı) skill'e çevirmek.",
+        "neden": "Yazılım mühendisliği alanında ortalama kazanç düşük (+4,5 puan, v1); bağlam dosyalarının yalnız standart dışı bilgi için yararlı olduğu bulgusuyla tutarlı.",
+        "kaynak": [
+          "A3-K16",
+          "A3-K01"
+        ]
+      }
+    ]
+  },
+  "alt_ajanlar": {
+    "bulgular": [
+      {
+        "id": "AA-B01",
+        "bulgu": "Claude Code alt ajanları kendi bağlam pencerelerinde, özel sistem istemi, araç kısıtı, izin modu ve model seçimiyle çalışır ve ana oturuma yalnız özet döner. Anthropic'in önerisi: tek sorumluluklu tasarım; yüksek hacimli çıktı üreten işleri (test, log, doküman tarama) yalıtmak; aşamaları çok bağlam paylaşan yinelemeli işleri ana oturumda tutmak.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K23",
+          "A3-K10"
+        ]
+      },
+      {
+        "id": "AA-B02",
+        "bulgu": "Anthropic'in çoklu ajan araştırma sistemi, kendi araştırma eval'inde tek ajanlı Opus 4'ü %90,2 geçti. Ancak ajanlar sohbetten yaklaşık 4 kat, çoklu ajan sistemleri yaklaşık 15 kat token harcıyor. Anthropic, çoğu kodlama görevinin araştırmaya göre daha az paralelleştirilebilir olduğunu ve ajanların gerçek zamanlı koordinasyon ve görev devrinde henüz iyi olmadığını belirtiyor.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K24"
+        ]
+      },
+      {
+        "id": "AA-B03",
+        "bulgu": "Cognition (Haziran 2025): Bağlam, yalnız mesajlar değil tam ajan izleri olarak paylaşılmalı. Eylemler örtük kararlar taşır ve çelişen örtük kararlar kötü sonuç üretir. Bu yüzden paralel alt ajanlar kırılgandır ve varsayılan tek iş parçacıklı doğrusal ajan olmalıdır.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K25"
+        ]
+      },
+      {
+        "id": "AA-B04",
+        "bulgu": "MAST çalışması (7 çerçeveden 1.600'den fazla iz): 14 başarısızlık kipi üç kümede toplanıyor (sistem tasarımı, ajanlar arası uyumsuzluk, görev doğrulama). Çoklu ajanın popüler kıyaslamalardaki kazancı çoğu zaman küçük. Yerel 7B modelle beş rollü bir hat, GSM8K'da JSON iletişim biçiminde doğruluğu %75'ten %45'e düşürdü; iki çağrılı öz iyileştirme 7,4 kat daha az token'la %86,2'ye ulaştı.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K26",
+          "A3-K31"
+        ]
+      },
+      {
+        "id": "AA-B05",
+        "bulgu": "Rol ve persona kanıtları karışık. 162 rol ve 2.410 soruyla yapılan çalışmada sistem istemine persona eklemek başarımı iyileştirmedi, etkisi büyük ölçüde rastgeleydi. ChatDev kendi SRDD kıyaslamasında (GPT-3.5) rollerin kaldırılmasının kaliteyi 0,3953'ten 0,2212'ye düşürdüğünü raporladı; buradaki rol 'hata arayan dikkatli inceleyici' gibi işlevsel bir görev tanımıdır. AgileCoder Agile rollerini (PM, geliştirici, testçi) kullanıp ChatDev ve MetaGPT'yi geçtiğini bildirdi. SAFe'ye uyarlanmış CogniSim ise simülasyon ortamında iyileşme raporluyor. Üretim ortamında 'Scrum Master ajanı' ya da 'RTE ajanı'nın insan rolüne göre fayda sağladığını gösteren kontrollü bir çalışma bulamadım.",
+        "kanit_duzeyi": "birincil (rol ajanı lehine kanıt simülasyon ve eski model kıyaslamalarıyla sınırlı)",
+        "kaynak": [
+          "A3-K27",
+          "A3-K28",
+          "A3-K29",
+          "A3-K30"
+        ]
+      },
+      {
+        "id": "AA-B06",
+        "bulgu": "Üretici ile doğrulayıcının ayrılması. LLM'ler dış geri bildirim olmadan akıl yürütmesini düzeltemiyor, bazen düzeltme sonrası başarım düşüyor. Anthropic'in uzun süreli uygulama çalışmasında ajanlar kendi işini ortalama kalitede olsa bile övdü; ayrı ve kuşkucu ayarlanmış bir değerlendirici, üreticiyi kendine eleştirel yapmaktan çok daha uygulanabilir çıktı. Planlayıcı, üretici ve değerlendirici mimarisinde değerlendirici Playwright MCP ile çalışan uygulamayı test etti. Maliyet: tek ajan 20 dakika ve 9 dolar, tam düzenek 6 saat ve 200 dolar. 'Progress mirage' çalışmasında ajan 54 döngünün her birinde iyileşme iddia etti ama %56'sında ölçülen değişim sıfır ya da negatifti. Bant içi güçlü bir hakem bile gerçek gerilemelerin %44'ünü kabul etti. Çözüm, başarı sinyalinin dış dünya durumuna (test, oracle) dayanması.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K33",
+          "A3-K32",
+          "A3-K34"
+        ]
+      },
+      {
+        "id": "AA-B07",
+        "bulgu": "Aynı model ailesinden hakem ve denetçiler, üreticiyle ilişkili hatalar yapma eğiliminde ve kendine benzeyeni kayırıyor. LLM hakemlerinde konum, uzunluk ve kendini kayırma yanlılıkları belgelenmiş.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-Y02:RK-093",
+          "A3-Y02:RK-171"
+        ]
+      },
+      {
+        "id": "AA-B08",
+        "bulgu": "Eşzamanlı ajan PR'ları: 2.807 depoda farklı ajanlardan gelen eşzamanlı PR çiftlerinde metinsel çakışma oranı %41,7, aynı ajandan gelenlerde %19,8.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-Y01:EV-303"
+        ]
+      }
+    ],
+    "onerilen_roller": [
+      {
+        "rol": "Keşif / arama alt ajanı (salt okur)",
+        "ne_zaman": "Geniş kod tabanı taraması; ana bağlamı kirletmeden sonuç döndürmek için.",
+        "kaynak": [
+          "A3-K23",
+          "A3-K10"
+        ]
+      },
+      {
+        "rol": "Bağımsız doğrulayıcı / değerlendirici (üreticiden ayrı bağlam, mümkünse farklı model ailesi, salt okur + test çalıştırma)",
+        "ne_zaman": "Her PR öncesi; deterministik kapılar (derleme, test, lint, SAST) önce çalışır, LLM değerlendirmesi sonra gelir.",
+        "kaynak": [
+          "A3-K32",
+          "A3-K33",
+          "A3-K34",
+          "A3-Y02:RK-093"
+        ]
+      },
+      {
+        "rol": "Test / log özetleyici",
+        "ne_zaman": "Uzun test ve log çıktılarının ana bağlama girmesini önlemek için.",
+        "kaynak": [
+          "A3-K23"
+        ]
+      },
+      {
+        "rol": "Güvenlik inceleyici (salt okur, kurum güvenlik skill'i yüklü)",
+        "ne_zaman": "Riskli yollara (kimlik doğrulama, ödeme, veri) dokunan değişikliklerde.",
+        "kaynak": [
+          "A3-K28",
+          "A3-K04"
+        ]
+      },
+      {
+        "rol": "Planlayıcı / spesifikasyon genişletici",
+        "ne_zaman": "İş kalemi In Progress'e alınınca kabul ölçütlerini sprint sözleşmesine çevirmek için; çıktı insan onayına gider.",
+        "kaynak": [
+          "A3-K32",
+          "A3-K73"
+        ]
+      }
+    ],
+    "onerilmeyen_roller": [
+      {
+        "rol": "Karar yetkili 'Scrum Master ajanı', 'RTE ajanı', 'PO ajanı', 'Mimar ajanı'",
+        "neden": "Kontrollü ve üretim ortamına ait kanıt yok; persona tek başına başarımı artırmıyor; çoklu ajan koordinasyon hataları ve token maliyeti yüksek. Bu işlevler insan rolü olarak kalmalı. Ajanlar bu rollere rapor ve özet hazırlayan yardımcı araç olarak ya da deterministik iş akışı otomasyonu (iş takip kuralları) olarak katkı verebilir.",
+        "kaynak": [
+          "A3-K27",
+          "A3-K26",
+          "A3-K24",
+          "A3-K30"
+        ]
+      },
+      {
+        "rol": "Aynı modül üzerinde paralel yazan alt ajanlar",
+        "neden": "Örtük karar çatışması ve yüksek birleştirme çakışması.",
+        "kaynak": [
+          "A3-K25",
+          "A3-Y01:EV-303"
+        ]
+      },
+      {
+        "rol": "Üreticinin kendi işini onayladığı öz değerlendirme adımı",
+        "neden": "Öz değerlendirme yanlılığı ve progress mirage.",
+        "kaynak": [
+          "A3-K32",
+          "A3-K34"
+        ]
+      },
+      {
+        "rol": "Derin iç içe ajan hiyerarşileri (ajan → ajan → ajan)",
+        "neden": "Token maliyeti katlanır; ajanlar arası istem enjeksiyonu yayılır.",
+        "kaynak": [
+          "A3-K24",
+          "A3-Y02:RK-091",
+          "A3-Y02:RK-092"
+        ]
+      }
+    ],
+    "oneriler": [
+      {
+        "id": "AA-O01",
+        "oneri": "Varsayılan mimari tek ana ajan + az sayıda tek sorumluluklu alt ajan olsun. Alt ajan yalnız bağlam yalıtımı, araç kısıtı ya da bağımsız doğrulama gerektiğinde eklensin.",
+        "gerekce": "Maliyet ve koordinasyon hatası kanıtları.",
+        "kaynak": [
+          "A3-K23",
+          "A3-K24",
+          "A3-K25",
+          "A3-K26"
+        ]
+      },
+      {
+        "id": "AA-O02",
+        "oneri": "Alt ajanlar arası iletişim serbest metin yerine şemalı devir paketiyle yapılsın (yapılan, doğrulanan, doğrulanmayan, açık riskler). Güvenilmeyen içerik okuyan ajan ile yüksek yetkili ajan ayrılsın.",
+        "gerekce": "İletişim biçimi sonucu belirliyor; ajanlar arası enjeksiyon riski var.",
+        "kaynak": [
+          "A3-K31",
+          "A3-Y02:RK-092",
+          "A3-Y03:N-K27-005"
+        ]
+      },
+      {
+        "id": "AA-O03",
+        "oneri": "Topoloji (tek ajan, alt ajanlı, üretici-değerlendirici) kurumun eval setiyle seçilsin; topoloji başına başarı, token ve süre raporlansın.",
+        "gerekce": "Kazanç göreve bağlı.",
+        "kaynak": [
+          "A3-Y02:RK-090",
+          "A3-Y02:RK-091",
+          "A3-K24"
+        ]
+      },
+      {
+        "id": "AA-O04",
+        "oneri": "SAFe insan rolleri korunsun ve ajan olaylarını kendi ritimlerinde ele alsın: Scrum Master ekip retrosunda ajan retrosunu, RTE ise PI Inspect & Adapt'te ekipler arası ajan olay örüntülerini kolaylaştırsın. System Team / platform ekibi kataloğun sahibi olsun.",
+        "gerekce": "Ajan platformu paylaşılan bir hizmettir; olaylar inceleme ve uyarlama döngüsüne girmelidir.",
+        "kaynak": [
+          "A3-Y03:N-K24-004",
+          "A3-Y03:N-K24-009",
+          "A3-Y03:N-K24-013"
+        ]
+      }
+    ],
+    "kacinilacaklar": [
+      {
+        "id": "AA-K01",
+        "kacinilacak": "Organizasyon şemasını ajanlara kopyalamak (her insan rolüne bir ajan).",
+        "neden": "Rol oyununun kanıtı zayıf; token yaklaşık 15 kat; MAST tasarım hataları.",
+        "kaynak": [
+          "A3-K27",
+          "A3-K24",
+          "A3-K26"
+        ]
+      },
+      {
+        "id": "AA-K02",
+        "kacinilacak": "Değerlendiriciyi üreticiyle aynı bağlamda ya da aynı yetki kapsamında çalıştırmak.",
+        "neden": "Öz değerlendirme yanlılığı.",
+        "kaynak": [
+          "A3-K32",
+          "A3-K33"
+        ]
+      },
+      {
+        "id": "AA-K03",
+        "kacinilacak": "Alt ajan açıklamalarını belirsiz ve örtüşen yazmak.",
+        "neden": "Otomatik yönlendirme açıklamaya dayanır; skill gölgelemesine benzer seçim hatası doğar.",
+        "kaynak": [
+          "A3-K23",
+          "A3-K15"
+        ]
+      }
+    ]
+  },
+  "mcp": {
+    "bulgular": [
+      {
+        "id": "MCP-B01",
+        "bulgu": "Resmî MCP Registry 8 Eylül 2025'ten beri önizlemede ve hâlâ önizleme durumunda. Kod barındırmaz, npm, PyPI ve Docker Hub gibi paket kayıtlarına işaret eden server.json metaverisi tutar. Ad alanı GitHub, DNS ya da HTTP doğrulamasıyla (ters DNS adı) kanıtlanır. Güvenlik taramasını açıkça paket kayıtlarına ve alt kayıtlara/pazarlara devreder. Özel sunucuları kabul etmez ve kurumların kendi özel kayıtlarını kurmasını önerir. Resmî kod tabanı kendi sunucunuzda barındırmak için tasarlanmamıştır; alt kayıtlar OpenAPI arayüzünü uygulayabilir.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K35",
+          "A3-K36"
+        ]
+      },
+      {
+        "id": "MCP-B02",
+        "bulgu": "mcpmarket.com resmî bir kayıt değil, üçüncü taraf bir dizin. 50.866 sunucu listeliyor ve bir Agent Skills bölümü var. Sitede güvenlik incelemesi, imza ya da tarama süreci ve işletmeci bilgisi açıklanmıyor.",
+        "kanit_duzeyi": "birincil (sitenin kendi beyanı, 27.09.2026)",
+        "kaynak": [
+          "A3-K37"
+        ]
+      },
+      {
+        "id": "MCP-B03",
+        "bulgu": "Docker MCP Catalog 300'den fazla sunucu içeriyor. Sürümler köken (provenance) ve SBOM metaverisi taşıyor; Docker'ın derlediği yerel sunucular kriptografik olarak imzalı ve her sunucu yalıtılmış konteynerde çalışıyor. Özel kataloglarla kurum onaylı sunucuları kısıtlayıp kendi özel sunucularını ekleyebiliyor. Smithery bir barındırma pazarı; Haziran 2025'te derleme yapılandırmasındaki yol geçişi açığıyla Fly.io belirtecine ve 3.000'den fazla barındırılan sunucuya erişilebildi, birkaç günde düzeltildi.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K38",
+          "A3-K44"
+        ]
+      },
+      {
+        "id": "MCP-B04",
+        "bulgu": "Resmî referans sunucular (modelcontextprotocol/servers) depoya göre 'üretime hazır değil, eğitim amaçlı'. Filesystem sunucusunda sandbox kaçışı (CVE-2025-53109/53110), Git sunucusunda yol doğrulama açıkları (CVE-2025-68143/68145) yayımlandı.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K46",
+          "A3-Y01:EV-122",
+          "A3-Y01:EV-212"
+        ]
+      },
+      {
+        "id": "MCP-B05",
+        "bulgu": "Araç zehirlenmesi ve rug-pull (Invariant Labs, 1 Nisan 2025): Araç açıklamasına gizlenen ve kullanıcının görmediği talimatlar Cursor'a SSH anahtarı ve mcp.json sızdırttı. Sunucu onaydan sonra açıklamasını değiştirebiliyor. Bir sunucu başka sunucunun aracını gölgeleyebiliyor. Önerilen karşı önlemler: sürüm ve araç özetini sabitlemek, açıklamaları görünür kılmak, sunucular arası veri akışı sınırı koymak.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K41",
+          "A3-Y02:RK-102",
+          "A3-Y02:RK-103"
+        ]
+      },
+      {
+        "id": "MCP-B06",
+        "bulgu": "Kimlik doğrulama açığı yaygın. Knostic (17 Temmuz 2025) internette açık 1.862 MCP sunucusu buldu; doğrulanan 119 sunucunun tümü kimlik doğrulamasız araç listesi veriyordu. Temmuz 2026 ölçümünde (arXiv 2608.00150) doğrulanan 640 sunucudan dinamik denetlenen 414'ünün %91,8'inde OAuth yoktu; 687 araç örneği erişim denetimsiz kabuk çalıştırma sunuyordu ve 68 bildirilebilir açık bulundu. MCP spesifikasyonu token passthrough'u açıkça yasaklar: sunucu kendisi için verilmemiş token'ı kabul etmemelidir. Karışık yetki (confused deputy) ve SSRF de tanımlıdır.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K42",
+          "A3-K43",
+          "A3-K45",
+          "A3-Y02:RK-104"
+        ]
+      },
+      {
+        "id": "MCP-B07",
+        "bulgu": "Tasarım ilkeleri: 'Ölümcül üçlü' (Willison), yani özel veriye erişim + güvenilmeyen içerik + dışa iletişim bir arada. MCP farklı kaynaklardan araçları karıştırmayı teşvik ederek bu koşulu kolayca oluşturuyor. Meta'nın 'Agents Rule of Two' kuralına göre bir ajan oturumu üç özellikten en çok ikisini taşımalı; üçü de gerekiyorsa insan gözetimi şart. GitHub MCP 'zehirli ajan akışı' olayı bu desenin gerçek örneği.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K56",
+          "A3-K57",
+          "A3-Y01:EV-100"
+        ]
+      },
+      {
+        "id": "MCP-B08",
+        "bulgu": "Bağlam maliyeti: 5 sunucudaki 58 araç, konuşma başlamadan yaklaşık 55 bin token tüketiyor; Anthropic'in gözlediği en yüksek değer 134 bin. Tool Search Tool token'ı %85 azalttı ve MCP değerlendirmesinde doğruluğu Opus 4'te %49'dan %74'e, Opus 4.5'te %79,5'ten %88,1'e çıkardı. MCP ile kod çalıştırma örneğinde 150 bin token 2 bine indi (%98,7), ancak bu yaklaşım güvenli bir sandbox gerektiriyor. Claude Code'da tool search varsayılan açık; açılışta yalnız araç adları yükleniyor.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K48",
+          "A3-K47",
+          "A3-K49"
+        ]
+      },
+      {
+        "id": "MCP-B09",
+        "bulgu": "CLI mi MCP mi? Scalekit'in satıcı kıyası (Mart 2026; Claude Sonnet 4, GitHub Copilot MCP sunucusu, 5 salt okur görev, 75 koşu): CLI görev başına 9 ile 32 kat daha az token harcadı; CLI 25/25 başarılı, MCP 18/25 (%72; hatalar uzak sunucuya TCP zaman aşımı). Aynı kaynak, kullanıcı başına OAuth, açık araç sınırları ve denetlenebilir kayıt gereken çok kiracılı senaryolarda MCP'nin üstün olduğunu belirtiyor. Hakemli bir çalışma (arXiv 2608.11386, 11.700 iz) araç mimarisinin davranışı değiştirdiğini gösterdi: CodeAct türü Python arayüzü benzer başarıyı %41,6 daha az adım ve %56,3 daha az token'la sağladı; yapılandırılmış düşük düzey arayüzler tutarlılığı 4,7 kata kadar artırdı.",
+        "kanit_duzeyi": "ikincil (satıcı kıyası) + birincil (hakemli çalışma)",
+        "kaynak": [
+          "A3-K50",
+          "A3-K51"
+        ]
+      },
+      {
+        "id": "MCP-B10",
+        "bulgu": "Kurumsal izin listesi mekanizmaları farklı güçte. GitHub Copilot'un 'Registry only' politikası yalnız sunucu adı/kimliğiyle eşleşiyor; dokümana göre yapılandırma dosyası düzenlenerek atlatılabiliyor ve kurulumu engelleyen katı zorlama henüz yok. Claude Code'da managed-mcp.json ile münhasır kontrol, allowedMcpServers + allowManagedMcpServersOnly ile onaylı katalog, deniedMcpServers ve managedMcpServers bulunuyor; strictPluginOnlyCustomization.mcp ile MCP eklenti ve yönetilen kaynaklara kilitlenebiliyor.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K52",
+          "A3-K53",
+          "A3-K54"
+        ]
+      },
+      {
+        "id": "MCP-B11",
+        "bulgu": "MCP ağ geçidi ve çalışma zamanı seçenekleri: Docker MCP Gateway (konteyner yalıtımı, sır yönetimi, çağrı izleme), ToolHive (konteyner yalıtımı, istek başına kimlik ve erişim politikası, köken doğrulayan ve imzalayan kayıt sunucusu, OpenTelemetry denetim kaydı), agentgateway (Apache-2.0) ve microsoft/mcp-gateway (Kubernetes ters vekil). Ağ geçitlerinin kendisi de saldırı yüzeyi: yerel harita, ToolHive'da Eylül 2026'da kimlik doğrulama ve yetkilendirme atlatma açıkları kümesi kaydetmiş.",
+        "kanit_duzeyi": "birincil (gh api, README) + yerel harita",
+        "kaynak": [
+          "A3-K55",
+          "A3-K38",
+          "A3-Y03:K12/BL-00982"
+        ]
+      },
+      {
+        "id": "MCP-B12",
+        "bulgu": "OWASP Agentic Top 10 (9 Aralık 2025) ASI04 'Agentic Supply Chain Vulnerabilities' başlığı üçüncü taraf araç, eklenti, kayıt ve MCP sunucularını kapsıyor; GitHub MCP istismarını örnek gösteriyor.",
+        "kanit_duzeyi": "birincil",
+        "kaynak": [
+          "A3-K58"
+        ]
+      }
+    ],
+    "olaylar": [
+      {
+        "olay": "postmark-mcp: 15 temiz sürümden sonra 1.0.16'da tüm e-postaları saldırgana gizli kopya (BCC) olarak göndermeye başladı. İlk zararlı MCP paketi olarak kayda geçti.",
+        "tarih": "2025-09",
+        "kaynak": [
+          "A3-K39",
+          "A3-Y01:EV-175"
+        ]
+      },
+      {
+        "olay": "mcp-remote CVE-2025-6514 (CVSS 9,6): Güvenilmeyen sunucunun authorization_endpoint değeri üzerinden işletim sistemi komutu çalıştırma. Etkilenen sürümler 0.0.5–0.1.15, düzeltme 0.1.16.",
+        "tarih": "2025-07-09",
+        "kaynak": [
+          "A3-K40",
+          "A3-Y01:EV-124"
+        ]
+      },
+      {
+        "olay": "Araç zehirlenmesi ve rug-pull gösterimi (Invariant Labs).",
+        "tarih": "2025-04-01",
+        "kaynak": [
+          "A3-K41"
+        ]
+      },
+      {
+        "olay": "Cursor CurXecute ve MCPoison (CVE-2025-54135/54136): Onaylanmış MCP tanımı sessizce değiştirildiğinde yeniden onay istenmiyordu.",
+        "tarih": "2025-08-01",
+        "kaynak": [
+          "A3-Y01:EV-142"
+        ]
+      },
+      {
+        "olay": "GitHub MCP 'zehirli ajan akışı': Herkese açık bir issue üzerinden özel depo verisi sızdı.",
+        "tarih": "2025-05-26",
+        "kaynak": [
+          "A3-Y01:EV-100"
+        ]
+      },
+      {
+        "olay": "Asana MCP sunucusu kiracılar arası veri görünürlüğü hatası nedeniyle geçici olarak kapatıldı.",
+        "tarih": "2025-06-16",
+        "kaynak": [
+          "A3-Y01:EV-110"
+        ]
+      },
+      {
+        "olay": "MCP Inspector CVE-2025-49596: Tarayıcı üzerinden geliştirici makinesinde RCE.",
+        "tarih": "2025-06-13",
+        "kaynak": [
+          "A3-Y01:EV-109"
+        ]
+      },
+      {
+        "olay": "Smithery barındırma platformunda yol geçişi; 3.000'den fazla sunucu ve API anahtarları risk altında.",
+        "tarih": "2025-06",
+        "kaynak": [
+          "A3-K44",
+          "A3-Y01:EV-189"
+        ]
+      },
+      {
+        "olay": "Resmî Filesystem MCP (CVE-2025-53109/53110) ve Git MCP (CVE-2025-68143/68145) açıkları.",
+        "tarih": "2025-07 / 2025-12",
+        "kaynak": [
+          "A3-Y01:EV-122",
+          "A3-Y01:EV-212"
+        ]
+      },
+      {
+        "olay": "Framelink Figma MCP komut enjeksiyonu (CVE-2025-53967).",
+        "tarih": "2025-09-30",
+        "kaynak": [
+          "A3-Y01:EV-177"
+        ]
+      },
+      {
+        "olay": "Claude Code CVE-2025-59536 ve Codex CLI CVE-2025-61260: Depo içindeki MCP ve hook tanımlarıyla onaysız komut çalıştırma.",
+        "tarih": "2025-10 / 2026-04",
+        "kaynak": [
+          "A3-Y01:EV-183",
+          "A3-Y01:EV-267"
+        ]
+      },
+      {
+        "olay": "Shai-Hulud dalgası: MCP entegrasyonu taklidi yapan 23 zararlı PyPI paketi.",
+        "tarih": "2026-06-09",
+        "kaynak": [
+          "A3-Y01:EV-295"
+        ]
+      },
+      {
+        "olay": "Langflow: MCP stdio taşıması üzerinden kimliği doğrulanmış RCE; stdio sunucu tanımı rastgele komut çalıştırmak demek.",
+        "tarih": "2026-09-10",
+        "kaynak": [
+          "A3-Y01:EV-315"
+        ]
+      }
+    ],
+    "onerilen_sunucu_siniflari": [
+      {
+        "sinif": "İş takip (Jira, Linear ya da GitHub Issues)",
+        "kosul": "Pilot aşamada salt okur ve ayrı pilot kiracıda; yazma yalnız durum ve yorum alanlarında, iş kalemine bağlı dar kapsamlı token ile.",
+        "kaynak": [
+          "A3-Y01:EV-110",
+          "A3-Y03:N-K12-004"
+        ]
+      },
+      {
+        "sinif": "SCM (GitHub/GitLab)",
+        "kosul": "Önce CLI (gh/glab) + skill değerlendirilsin. MCP kullanılacaksa token görev deposuyla sınırlı ve kısa ömürlü olsun; güvenilmeyen issue içeriği okuyan oturumda özel depo ve dışa yazma aynı anda bulunmasın.",
+        "kaynak": [
+          "A3-K50",
+          "A3-Y01:EV-100",
+          "A3-K57"
+        ]
+      },
+      {
+        "sinif": "Gözlemlenebilirlik (Sentry, Grafana vb.)",
+        "kosul": "Salt okur; sürüm sabit ve CVE takipli (yerel harita Grafana MCP'de belirteç sızdırma ve SSRF açıkları kaydetmiş).",
+        "kaynak": [
+          "A3-Y03:K12/BL-02082"
+        ]
+      },
+      {
+        "sinif": "Bilgi tabanı / dokümantasyon (Confluence vb.) ve sürüme özgü kütüphane dokümanı",
+        "kosul": "Salt okur; içerik güvenilmeyen veri olarak etiketlenir.",
+        "kaynak": [
+          "A3-K56",
+          "A3-Y02:RK-092"
+        ]
+      },
+      {
+        "sinif": "Tarayıcı ve arayüz doğrulama (Playwright MCP)",
+        "kosul": "Yalnız değerlendirici ajanda ve sandbox/konteyner içinde; DNS rebinding açığı (CVE-2025-9611) nedeniyle yerel bağlama kapalı.",
+        "kaynak": [
+          "A3-K32",
+          "A3-Y03:K12/BL-00274"
+        ]
+      },
+      {
+        "sinif": "Kurum içi sistemler için ekiplerin yazdığı MCP sunucuları",
+        "kosul": "İç kayıtta, kod incelemeli, OAuth ve audience doğrulamalı, token passthrough olmadan.",
+        "kaynak": [
+          "A3-K45",
+          "A3-K35"
+        ]
+      }
+    ],
+    "eklenmemesi_gerekenler": [
+      {
+        "sunucu": "Kamusal pazardan npx veya uvx ile sürüm ve özet sabitlemeden çalıştırılan sunucular",
+        "neden": "postmark-mcp rug-pull'u; ad benzerliği saldırıları.",
+        "kaynak": [
+          "A3-K39",
+          "A3-Y01:EV-295"
+        ]
+      },
+      {
+        "sunucu": "Üçüncü taraf barındırma pazarında kurum kimlik bilgisiyle çalışan sunucular",
+        "neden": "Tek bir noktadan binlerce kurumun anahtarı ele geçirilebilir.",
+        "kaynak": [
+          "A3-K44"
+        ]
+      },
+      {
+        "sunucu": "Referans filesystem/git sunucularının üretimde kullanılması",
+        "neden": "Üretime hazır değiller ve açıkları var.",
+        "kaynak": [
+          "A3-K46",
+          "A3-Y01:EV-122",
+          "A3-Y01:EV-212"
+        ]
+      },
+      {
+        "sunucu": "Genel amaçlı kabuk/komut çalıştırma MCP'leri ve kimlik doğrulamasız ağa açık MCP'ler",
+        "neden": "687 denetimsiz kabuk aracı örneği; %91,8 OAuth yok.",
+        "kaynak": [
+          "A3-K43",
+          "A3-K42"
+        ]
+      },
+      {
+        "sunucu": "Otonom ajan oturumunda e-posta, mesaj veya ödeme gibi dışa iletişim kuran MCP'ler",
+        "neden": "Rule of Two ve ölümcül üçlü; postmark BCC olayı.",
+        "kaynak": [
+          "A3-K57",
+          "A3-K56",
+          "A3-K39"
+        ]
+      },
+      {
+        "sunucu": "Proje dosyasıyla (.mcp.json, .cursor/mcp.json) kullanıcı ya da depo tarafından eklenen sunucular",
+        "neden": "MCPoison ve depo yapılandırması üzerinden RCE olayları.",
+        "kaynak": [
+          "A3-Y01:EV-142",
+          "A3-Y01:EV-183",
+          "A3-Y01:EV-267"
+        ]
+      }
+    ],
+    "cli_mi_mcp_mi": {
+      "karar_kurali": "Geliştirici ya da ajanın kendi kimliğiyle çalıştığı, kurulu ve iyi bilinen bir CLI'si olan işlerde (git, gh, kubectl, bulut CLI'leri) CLI + skill tercih edilsin. Kullanıcı başına OAuth, kiracı yalıtımı, araç düzeyinde yetki ve denetim kaydı gereken ya da CLI'si olmayan iç sistemlerde MCP (ağ geçidi arkasında) tercih edilsin. Her iki durumda da araç tanımı bütçesi için tool search veya kod çalıştırma deseni kullanılsın ve sonuç kurum eval'iyle doğrulansın.",
+      "kaynak": [
+        "A3-K50",
+        "A3-K51",
+        "A3-K47",
+        "A3-K48"
+      ]
+    },
+    "oneriler": [
+      {
+        "id": "MCP-O01",
+        "oneri": "Kurum içi özel MCP kaydı (resmî Registry OpenAPI'siyle uyumlu alt kayıt) kurulsun. Upstream metaveri keşif için çekilsin; kataloğa giriş yalnız kabul hattından geçerek olsun. Seçenekler: ToolHive Registry Server, Docker özel kataloğu ya da benzeri.",
+        "gerekce": "Resmî kayıt güvenlik taramasını alt kayıtlara bırakıyor ve özel sunucuları kabul etmiyor.",
+        "kaynak": [
+          "A3-K35",
+          "A3-K38",
+          "A3-K55"
+        ]
+      },
+      {
+        "id": "MCP-O02",
+        "oneri": "Sabitleme: paket sürümü + içerik özeti (npm integrity, OCI digest) + araç tanımları özeti. Özet değişirse otomatik devre dışı bırakılsın ve yeniden onay istensin. Otomatik güncelleme kapalı olsun.",
+        "gerekce": "Rug-pull ve postmark-mcp olayları.",
+        "kaynak": [
+          "A3-K41",
+          "A3-K39",
+          "A3-Y02:RK-103"
+        ]
+      },
+      {
+        "id": "MCP-O03",
+        "oneri": "Yalıtım ve en az yetki: her sunucu konteynerde, ağ çıkış izin listesiyle çalışsın; sırlar ortam değişkeni yerine sır yöneticisinden gelsin; görev ve hedef bazlı kısa ömürlü token kullanılsın (RFC 8693 token değişimi, audience doğrulaması); ajan kimliği ayrı bir hizmet hesabı olsun.",
+        "gerekce": "Spesifikasyonun güvenlik en iyi uygulamaları ve açık sunucu ölçümleri.",
+        "kaynak": [
+          "A3-K45",
+          "A3-K38",
+          "A3-Y02:RK-104"
+        ]
+      },
+      {
+        "id": "MCP-O04",
+        "oneri": "Ağ geçidi: tüm uzak MCP trafiği tek bir ağ geçidinden geçsin (kimlik, politika, oran sınırı, çağrı düzeyinde denetim kaydı). Ağ geçidinin kendisi de kritik bileşen olarak yamalansın ve red team kapsamına alınsın.",
+        "gerekce": "Merkezî görünürlük; ağ geçidi açıkları.",
+        "kaynak": [
+          "A3-K55",
+          "A3-Y03:K12/BL-00982"
+        ]
+      },
+      {
+        "id": "MCP-O05",
+        "oneri": "İstemci zorlaması ada göre eşleşen izin listesine bırakılmasın; yönetilen ayarlarla yapılsın (managed-mcp.json ya da allowManagedMcpServersOnly). İstemci desteklemiyorsa ajan, yönetilen koşu ortamında (CI veya uzak sandbox) çalıştırılsın.",
+        "gerekce": "Ad tabanlı izin listesi dokümana göre atlatılabiliyor.",
+        "kaynak": [
+          "A3-K52",
+          "A3-K53"
+        ]
+      },
+      {
+        "id": "MCP-O06",
+        "oneri": "Oturum bileşimi politikası: aynı oturumda güvenilmeyen içerik, hassas veri ve dışa iletişim/durum değiştirme en çok ikisi bir arada bulunsun. Rol profilleri buna göre tasarlansın (ör. issue okuyan triyaj ajanı dışa yazamaz).",
+        "gerekce": "Rule of Two ve ölümcül üçlü.",
+        "kaynak": [
+          "A3-K57",
+          "A3-K56"
+        ]
+      },
+      {
+        "id": "MCP-O07",
+        "oneri": "Rol profili başına az sayıda MCP ve araç; tool search açık. Kullanılmayan sunucular 30 günlük telemetriyle tespit edilip emekliye ayrılsın (süre öneridir, kalibre edilmeli).",
+        "gerekce": "Araç tanımı bağlam maliyeti ve seçim doğruluğu.",
+        "kaynak": [
+          "A3-K48",
+          "A3-K49",
+          "A3-K10"
+        ]
+      },
+      {
+        "id": "MCP-O08",
+        "oneri": "MCP sunucu kombinasyonları red team senaryolarına dahil edilsin (ör. git + filesystem zinciri; araç gölgeleme).",
+        "gerekce": "Birlikte kullanılan sunucular yeni saldırı zincirleri doğuruyor.",
+        "kaynak": [
+          "A3-Y01:EV-212",
+          "A3-K41"
+        ]
+      }
+    ],
+    "kacinilacaklar": [
+      {
+        "id": "MCP-K01",
+        "kacinilacak": "'MCP her şey için' yaklaşımı; CLI'si olan işler için ağır MCP sunucuları.",
+        "neden": "Token ve güvenilirlik maliyeti.",
+        "kaynak": [
+          "A3-K50",
+          "A3-K48"
+        ]
+      },
+      {
+        "id": "MCP-K02",
+        "kacinilacak": "Tek seferlik onayı kalıcı güven saymak.",
+        "neden": "Rug-pull ve MCPoison.",
+        "kaynak": [
+          "A3-K41",
+          "A3-Y01:EV-142"
+        ]
+      },
+      {
+        "id": "MCP-K03",
+        "kacinilacak": "Geniş kapsamlı, uzun ömürlü kişisel erişim token'ıyla MCP çalıştırmak.",
+        "neden": "Karışık yetki ve özel veri sızıntısı.",
+        "kaynak": [
+          "A3-K45",
+          "A3-Y01:EV-100"
+        ]
+      },
+      {
+        "id": "MCP-K04",
+        "kacinilacak": "MCP geliştirici araçlarını (Inspector, köprüler) envanter dışı bırakmak.",
+        "neden": "Yerel port açan araçlar RCE yüzeyi.",
+        "kaynak": [
+          "A3-Y01:EV-109",
+          "A3-K40"
+        ]
+      }
+    ]
+  },
+  "pazar_ve_havuz_degerlendirmesi": {
+    "soru": "Skills, agents ve MCP havuzları kurulup ekipler ihtiyaç halinde bunları bir pazardan (ör. mcpmarket.com) alırsa bu doğru, mantıklı ve pragmatik mi?",
+    "cevap": "Havuz fikri doğru; ekiplerin kamusal pazardan ihtiyaç anında doğrudan alması ise doğru değil. Pragmatik model şu: kamusal pazarlar (mcpmarket, Smithery, resmî MCP Registry, skill dizinleri) yalnız keşif ve aday kaynağı olarak kullanılır. Ekiplerin gerçekten kullandığı havuz kurumun kendi iç kataloğudur ve bu katalog kabul, sabitleme, yalıtım, eval ve sürekli izleme adımlarından geçen paketlerden oluşur. Ekip kendi kendine hizmet alır, ama pazardan değil iç katalogdan. Katalogda olmayan bir paket için talep açar; platform ekibi bir hizmet düzeyi süresi içinde değerlendirir.",
+    "gerekceler": [
+      {
+        "gerekce": "Pazarların kendisi güvenlik garantisi vermiyor. mcpmarket.com inceleme süreci açıklamayan bir üçüncü taraf dizini. Resmî MCP Registry yalnız ad alanını doğruluyor, taramayı paket kayıtlarına ve alt kayıtlara bırakıyor.",
+        "kaynak": [
+          "A3-K37",
+          "A3-K35"
+        ]
+      },
+      {
+        "gerekce": "Skill pazarlarında ölçülmüş risk oranları yüksek: %26,1 açık (31 bin skill), %36,82 kusur ve 76 kötü amaçlı yük (ClawHub + skills.sh), 157 doğrulanmış kötü amaçlı skill, ClawHavoc'ta 2.857 skill'den 341'i zararlı. Yayıncı eşiği bir haftalık GitHub hesabı kadar düşük.",
+        "kaynak": [
+          "A3-K17",
+          "A3-K19",
+          "A3-K18",
+          "A3-K20"
+        ]
+      },
+      {
+        "gerekce": "Güven zamanla değişiyor. postmark-mcp 15 temiz sürümden sonra zararlıya döndü; MCP araç tanımları onaydan sonra değişebiliyor. 'İhtiyaç anında güncel sürümü al' modeli bu saldırıya doğrudan açık.",
+        "kaynak": [
+          "A3-K39",
+          "A3-K41",
+          "A3-Y01:EV-142"
+        ]
+      },
+      {
+        "gerekce": "Barındırılan pazarlar tek hata noktası oluşturuyor (Smithery: 3.000'den fazla sunucu ve API anahtarları).",
+        "kaynak": [
+          "A3-K44"
+        ]
+      },
+      {
+        "gerekce": "Serbest ekleme başarımı da düşürüyor. Skill sayısı arttıkça seçim doğruluğunda faz geçişi ve gölgeleme görülüyor; araç tanımları on binlerce token tüketiyor. Ekipler 'ihtiyaç oldukça' ekledikçe ajan kötüleşir.",
+        "kaynak": [
+          "A3-K14",
+          "A3-K15",
+          "A3-K48"
+        ]
+      },
+      {
+        "gerekce": "Tarama tek başına yetmiyor. OpenClaw bakımcıları VirusTotal taramasının kesin çözüm olmadığını ve gizlenmiş istem enjeksiyonunun kaçabileceğini söylüyor. Tarayıcıların duyarlılığı %82,5 ile %94,5 arasında (SkillScan, SkillSieve), yani bir kısmı gözden kaçıyor.",
+        "kaynak": [
+          "A3-K21",
+          "A3-K17",
+          "A3-K81"
+        ]
+      },
+      {
+        "gerekce": "Ada göre izin listeleri zayıf. Copilot'un 'Registry only' kuralı yapılandırma dosyası düzenlenerek atlatılabiliyor. Zorlama yönetilen ayarlarla yapılmalı.",
+        "kaynak": [
+          "A3-K52",
+          "A3-K53",
+          "A3-K54"
+        ]
+      },
+      {
+        "gerekce": "Buna karşın merkezî havuz pragmatik: tek yerde sürüm, sahip, eval sonucu ve CVE takibi tutulur; ekipler arası yeniden kullanım artar. OWASP ASI04 de AIBOM, imzalı sürüm ve doğrulanmış köken istiyor.",
+        "kaynak": [
+          "A3-K58",
+          "A3-Y03:N-K12-002"
+        ]
+      }
+    ],
+    "onerilen_model": [
+      {
+        "adim": 1,
+        "ad": "Tek iç katalog (varlık türleri: skill, alt ajan tanımı, kural paketi, MCP sunucusu, hook)",
+        "ayrinti": "Sürümlü bir 'çalışma sistemi deposu'nda tutulur. Her varlık için sahip, amaç, risk sınıfı, izinli roller, sürüm ve özet, eval sonucu ve son tarama tarihi kaydedilir. MCP için resmî Registry OpenAPI'siyle uyumlu özel alt kayıt kurulur.",
+        "kaynak": [
+          "A3-K35",
+          "A3-Y03:N-K11-010",
+          "A3-Y02:RK-035"
+        ]
+      },
+      {
+        "adim": 2,
+        "ad": "Kabul hattı",
+        "ayrinti": "Kaynak ve sahip doğrulama, lisans, SAST/SCA, skill ve MCP tarayıcıları (ör. Snyk agent-scan), görünmez Unicode, dış indirme ve komut kalıpları, araç açıklaması taraması, insan incelemesi; ortak paketlerde iki kişilik onay.",
+        "kaynak": [
+          "A3-K19",
+          "A3-K17",
+          "A3-Y02:RK-095",
+          "A3-Y02:RK-096"
+        ]
+      },
+      {
+        "adim": 3,
+        "ad": "Sabitleme ve yeniden onay",
+        "ayrinti": "Sürüm + içerik özeti + araç tanımı özeti; fark oluşursa varlık otomatik devre dışı kalır. Koşu başında paket sürümü kaydedilir (yeniden üretilebilirlik).",
+        "kaynak": [
+          "A3-K41",
+          "A3-Y03:N-K11-006"
+        ]
+      },
+      {
+        "adim": 4,
+        "ad": "Yalıtım",
+        "ayrinti": "Konteyner, ağ izin listesi, sır yöneticisi, kısa ömürlü ve görev kapsamlı token, ağ geçidi ve denetim kaydı.",
+        "kaynak": [
+          "A3-K38",
+          "A3-K45",
+          "A3-K55"
+        ]
+      },
+      {
+        "adim": 5,
+        "ad": "Eval kapısı",
+        "ayrinti": "Her yeni ya da değişen varlık, kurum görev setinde eşleştirilmiş ve k tekrarlı koşuyla ölçülür (başarı, token, seçim doğruluğu). Regresyon seti düşmemeli.",
+        "kaynak": [
+          "A3-K01",
+          "A3-K16",
+          "A3-K62"
+        ]
+      },
+      {
+        "adim": 6,
+        "ad": "Rol profilleri",
+        "ayrinti": "Katalogdan rol başına küçük paketler (ör. 'backend-geliştirici-ajan', 'değerlendirici', 'triyaj') oluşturulur; skill ve MCP sayısı bütçelenir, tool search açık tutulur.",
+        "kaynak": [
+          "A3-K14",
+          "A3-K48"
+        ]
+      },
+      {
+        "adim": 7,
+        "ad": "İstemci zorlaması",
+        "ayrinti": "strictKnownMarketplaces, strictPluginOnlyCustomization, allowManagedMcpServersOnly / managed-mcp.json, allowManagedHooksOnly ya da diğer istemcilerde eşdeğerleri. Destek yoksa yönetilen koşu ortamı kullanılır.",
+        "kaynak": [
+          "A3-K53",
+          "A3-K54"
+        ]
+      },
+      {
+        "adim": 8,
+        "ad": "Sürekli izleme ve emeklilik",
+        "ayrinti": "Günlük yeniden tarama, CVE ve kötü amaçlı paket beslemeleri (OSV), kullanım telemetrisi; kullanılmayan ya da etkisi kanıtlanamayan varlıklar emekliye ayrılır.",
+        "kaynak": [
+          "A3-K21",
+          "A3-K39"
+        ]
+      },
+      {
+        "adim": 9,
+        "ad": "Talep akışı (SAFe)",
+        "ayrinti": "Ekip pazarda bir aday görür ve bir 'katalog talebi' açar. System Team / platform ekibi hizmet düzeyi süresi içinde değerlendirir. Ortak paketler ART düzeyinde, ekip paketleri ekip sahipliğinde tutulur. PI planlamasında etkinleştirici iş (enabler) olarak kapasite ayrılır.",
+        "kaynak": [
+          "A3-Y03:N-K24-004",
+          "A3-Y03:N-K24-005"
+        ]
+      },
+      {
+        "adim": 10,
+        "ad": "Keşif kum havuzu",
+        "ayrinti": "Katalog dışı adaylar yalnız gerçek sır ve üretim verisi olmayan, ağı kısıtlı ve geçici bir ortamda denenebilir.",
+        "kaynak": [
+          "A3-Y02:RK-094"
+        ]
+      }
+    ],
+    "olaylar": [
+      {
+        "olay": "ClawHavoc: ClawHub'da 341, sonrasında 800'ü aşan zararlı skill.",
+        "kaynak": [
+          "A3-K20",
+          "A3-Y01:EV-232"
+        ]
+      },
+      {
+        "olay": "Snyk ToxicSkills: 3.984 skill, 76 doğrulanmış kötü amaçlı yük.",
+        "kaynak": [
+          "A3-K19"
+        ]
+      },
+      {
+        "olay": "postmark-mcp BCC arka kapısı.",
+        "kaynak": [
+          "A3-K39",
+          "A3-Y01:EV-175"
+        ]
+      },
+      {
+        "olay": "Smithery barındırma platformu yol geçişi.",
+        "kaynak": [
+          "A3-K44",
+          "A3-Y01:EV-189"
+        ]
+      },
+      {
+        "olay": "mcp-remote CVE-2025-6514.",
+        "kaynak": [
+          "A3-K40"
+        ]
+      },
+      {
+        "olay": "LangSmith Prompt Hub 'AgentSmith': paylaşılan ajan üzerinden API anahtarı çalma.",
+        "kaynak": [
+          "A3-Y01:EV-112"
+        ]
+      },
+      {
+        "olay": "VS Code Marketplace'te 1,5 milyon kurulumlu zararlı 'AI' eklentileri; GlassWorm; Nx Console üzerinden GitHub'ın 3.800 iç deposunun sızması. Pazar tabanlı eklenti modelinin genel riski.",
+        "kaynak": [
+          "A3-Y01:EV-227",
+          "A3-Y01:EV-187",
+          "A3-Y01:EV-287"
+        ]
+      },
+      {
+        "olay": "Cline CLI 2.3.0 yetkisiz npm yayını: postinstall ile OpenClaw kuruldu.",
+        "kaynak": [
+          "A3-Y01:EV-238"
+        ]
+      },
+      {
+        "olay": "Shai-Hulud: MCP taklidi 23 zararlı PyPI paketi.",
+        "kaynak": [
+          "A3-Y01:EV-295"
+        ]
+      }
+    ],
+    "kaynak": [
+      "A3-K35",
+      "A3-K37",
+      "A3-K17",
+      "A3-K19",
+      "A3-K39",
+      "A3-K53"
+    ]
+  },
+  "kaizen_ooda": {
+    "ilke": "Ajan sistemi üç iç içe iyileştirme döngüsüyle çalışmalı: (1) OODA, görev içi ve dakikalar ölçeğinde hızlı geri bildirim; (2) Kaizen, ekip ve sprint ölçeğinde küçük, ölçülen, standartlaşan iyileştirme; (3) PDCA, kural, skill, araç ve model değişikliklerinin doğrulanıp yayınlanma disiplini. Döngülerin tümü ajanın kendi beyanına değil, dış ve deterministik sinyallere dayanmalı.",
+    "kaynak": [
+      "A3-K33",
+      "A3-K34",
+      "A3-K62",
+      "A3-K06"
+    ],
+    "donguler": [
+      {
+        "ad": "İç döngü — görev OODA'sı",
+        "olcek": "Tek iş kalemi, dakikalar ve saatler",
+        "adimlar": {
+          "gozle": "Derleme, test, lint, SAST, çalışan uygulama (Playwright) ve CI sonuçları; ajanın anlatısı değil.",
+          "yonel": "Kısa AGENTS.md haritası, ilgili ADR'ler, path kuralları ve istek üzerine yüklenen skill.",
+          "karar_ver": "Planlayıcının sprint sözleşmesi ve kabul ölçütleri; yüksek riskli kararlar insana.",
+          "eyle": "Küçük adımlı değişiklik; bağımsız değerlendirici; başarısızlıkta dış sinyalle yeniden deneme."
+        },
+        "kaynak": [
+          "A3-K32",
+          "A3-K34",
+          "A3-K06"
+        ]
+      },
+      {
+        "ad": "Orta döngü — ekip Kaizen'i",
+        "olcek": "Sprint / iterasyon; Scrum Master kolaylaştırır",
+        "adimlar": [
+          "Her başarısız, geri alınan ya da insan tarafından ağır düzeltilen ajan işi 'ajan olay kaydı'na düşer (iz bağlantısı, iş kalemi, sınıf).",
+          "Kayıtlar hata taksonomisine göre sınıflanır. İnsanlar izleri okur; ilk etiketlemeyi LLM yapabilir ama örneklem insanla kalibre edilir.",
+          "En sık 1-3 sınıf için kök neden bulunur ve iyileştirme türü seçilir. Öncelik sırası: deterministik kontrol/test > araç veya izin değişikliği > skill > kısa talimat satırı.",
+          "Aday iyileştirme, olaydan türetilen yeni eval vakalarıyla birlikte PR olarak açılır.",
+          "Eval kapısı: eşleştirilmiş, k tekrarlı; regresyon seti düşmemeli, token artışı raporlanmalı.",
+          "Ekip içinde yayın, bir sprint gözlem; etki yoksa geri alınır (standartlaştır ya da bırak)."
+        ],
+        "kaynak": [
+          "A3-K62",
+          "A3-K05",
+          "A3-K65",
+          "A3-Y03:N-K08-006",
+          "A3-Y03:N-K08-002"
+        ]
+      },
+      {
+        "ad": "Dış döngü — ART/PI PDCA'sı",
+        "olcek": "Program artımı (PI); RTE, Inspect & Adapt'te kolaylaştırır",
+        "adimlar": [
+          "Planla: Ekipler arası olay örüntüleri ve metrik eğilimleri; hangi yerel iyileştirme ortak çekirdeğe terfi eder, hangi paket emekliye ayrılır, hangi işlev için otonomi seviyesi değişir.",
+          "Uygula: Pilot ekiplerde kademeli yayın (özellik bayrağı ya da paket sürümü).",
+          "Kontrol et: Gizli (ekiplerin görmediği) eval seti ve üretim metrikleri; ekipler arası karşılaştırmada ekip bileşimi farkı dikkate alınır.",
+          "Önlem al: ART geneline yayın ya da geri dönüş; karar ve gerekçe ADR/çalışma sistemi kaydına yazılır."
+        ],
+        "kaynak": [
+          "A3-Y03:N-K24-009",
+          "A3-Y03:N-K24-013",
+          "A3-Y02:RK-210",
+          "A3-Y02:RK-036"
+        ]
+      }
+    ],
+    "hata_taksonomisi": {
+      "temel": "MAST: 14 kip, 3 küme (sistem tasarımı, ajanlar arası uyumsuzluk, görev doğrulama); kappa 0,88 ile doğrulanmış. Kurum kendi izleriyle genişletmeli.",
+      "kurum_siniflari_onerisi": [
+        {
+          "sinif": "Gereksinim / niyet yanlış anlama",
+          "tipik_care": "DoR skill'i, planlayıcı sözleşmesi, insan onayı",
+          "kaynak": [
+            "A3-K62",
+            "A3-K32"
+          ]
+        },
+        {
+          "sinif": "Bağlam eksikliği ya da yanlış bağlam (eski ADR, çelişen kural)",
+          "tipik_care": "docs/ güncelliği, çelişki linter'ı",
+          "kaynak": [
+            "A3-K09",
+            "A3-K06"
+          ]
+        },
+        {
+          "sinif": "Yanlış skill veya araç seçimi (gölgeleme)",
+          "tipik_care": "Açıklama ayrıştırma, profil küçültme, hiyerarşik yönlendirme",
+          "kaynak": [
+            "A3-K14",
+            "A3-K15"
+          ]
+        },
+        {
+          "sinif": "Talimat ihlali",
+          "tipik_care": "Talimatı hook, izin ya da teste çevirme",
+          "kaynak": [
+            "A3-K09",
+            "A3-Y02:RK-216"
+          ]
+        },
+        {
+          "sinif": "Doğrulama eksikliği / sahte başarı beyanı (mesaj ile kod tutarsız)",
+          "tipik_care": "Bağımsız değerlendirici, fark ile açıklama tutarlılık kontrolü",
+          "kaynak": [
+            "A3-Y01:EV-220",
+            "A3-K32",
+            "A3-K34"
+          ]
+        },
+        {
+          "sinif": "Güvenlik veya politika ihlali (enjeksiyon, yetki aşımı)",
+          "tipik_care": "Yetki ve oturum bileşimi politikası, sandbox",
+          "kaynak": [
+            "A3-K57",
+            "A3-Y02:RK-092",
+            "A3-K58"
+          ]
+        },
+        {
+          "sinif": "Ortam / altyapı (zaman aşımı, bağımlılık, kota)",
+          "tipik_care": "Platform düzeltmesi, yeniden deneme politikası",
+          "kaynak": [
+            "A3-K26"
+          ]
+        },
+        {
+          "sinif": "Koordinasyon (eşzamanlı PR çakışması, devir kaybı)",
+          "tipik_care": "Niyet ve üstlenme kaydı, şemalı devir paketi",
+          "kaynak": [
+            "A3-Y01:EV-303",
+            "A3-Y03:N-K27-004"
+          ]
+        }
+      ],
+      "kaynak": [
+        "A3-K26",
+        "A3-Y01:EV-220",
+        "A3-Y01:EV-303",
+        "A3-K15",
+        "A3-K09"
+      ]
+    },
+    "ogrenme_mekanizmalari_kanit": [
+      {
+        "mekanizma": "Hata sonrası kural güncellemesi",
+        "kanit": "Artefakt uyumu %49,14'ten %72,13'e çıktı.",
+        "kaynak": [
+          "A3-K05"
+        ]
+      },
+      {
+        "mekanizma": "Evrilen bağlam el kitapları (ACE: üret, yansıt, küratörle)",
+        "kanit": "Ajan görevlerinde +%10,6, finansta +%8,6; kısalık yanlılığı ve 'bağlam çöküşü' riskine karşı artımlı güncelleme.",
+        "kaynak": [
+          "A3-K63"
+        ]
+      },
+      {
+        "mekanizma": "Sözel yansıtma belleği (Reflexion)",
+        "kanit": "HumanEval pass@1 %91 (2023 düzeyi); dış geri bildirim sinyaline dayanıyor.",
+        "kaynak": [
+          "A3-K64"
+        ]
+      },
+      {
+        "mekanizma": "Modelin kendi ürettiği skill'ler",
+        "kanit": "Ortalamada fayda yok (SkillsBench v1). İnsan küratörlüğü gerekli.",
+        "kaynak": [
+          "A3-K16"
+        ]
+      },
+      {
+        "mekanizma": "LLM hakemli değerlendirme",
+        "kanit": "Ölçütler çıktılar görüldükçe değişiyor (criteria drift); hakemin insanla hizalanması gerekiyor.",
+        "kaynak": [
+          "A3-K65",
+          "A3-Y02:RK-171",
+          "A3-Y02:RK-172"
+        ]
+      }
+    ],
+    "metrikler": [
+      {
+        "metrik": "DORA beş metriği: değişiklik teslim süresi, dağıtım sıklığı, başarısız dağıtımdan kurtarma süresi, değişiklik başarısızlık oranı, dağıtım yeniden iş oranı",
+        "not": "Ajan kaynaklı ve insan kaynaklı değişiklikler ayrı etiketlenmeli. DORA 2025: AI benimsemesi hacimle pozitif, kararlılıkla negatif ilişkili.",
+        "kaynak": [
+          "A3-K61",
+          "A3-K59"
+        ]
+      },
+      {
+        "metrik": "İlk geçiş kabul oranı (ajan PR'ının insan kod değişikliği olmadan, yalnız onayla birleşmesi)",
+        "not": "Ajan PR'ları insan PR'larından daha az kabul ediliyor; bu açık izlenmeli.",
+        "kaynak": [
+          "A3-K67",
+          "A3-K72"
+        ]
+      },
+      {
+        "metrik": "Yeniden iş: PR başına revizyon turu, birleşme sonrası 21 gün içinde aynı kodda düzeltme (pencere öneridir)",
+        "not": "DORA'nın dağıtım yeniden iş oranını PR düzeyinde tamamlar.",
+        "kaynak": [
+          "A3-K61"
+        ]
+      },
+      {
+        "metrik": "İnceleme kuyruğu ve süresi; inceleyici başına ajan PR yükü",
+        "not": "Faros: PR sayısı %98 arttı, inceleme süresi %91 uzadı.",
+        "kaynak": [
+          "A3-Y01:EV-120"
+        ]
+      },
+      {
+        "metrik": "Mesaj ile kod tutarlılığı ihlal oranı",
+        "not": "Tutarsız PR'larda kabul oranı %28,3, tutarlılarda %80.",
+        "kaynak": [
+          "A3-Y01:EV-220"
+        ]
+      },
+      {
+        "metrik": "İş kalemi başına token, maliyet ve süre; topoloji başına maliyet",
+        "not": "Çoklu ajan yaklaşık 15 kat token harcıyor.",
+        "kaynak": [
+          "A3-K24",
+          "A3-Y02:RK-091"
+        ]
+      },
+      {
+        "metrik": "Eval: capability pass@k, regresyon pass^k, güven aralığı",
+        "not": "Anthropic eval rehberi; hata çubukları.",
+        "kaynak": [
+          "A3-K62",
+          "A3-Y02:RK-174"
+        ]
+      },
+      {
+        "metrik": "Müdahale ve otonomi: insan kesinti oranı, otomatik onay kullanım oranı, kesintisiz çalışma süresi",
+        "not": "Deneyimli kullanıcılarda tam otomatik onay oturumların %40'ından fazlası; otonomi kendiliğinden artıyor, geri kısma mekanizmasına bağlanmalı.",
+        "kaynak": [
+          "A3-K77"
+        ]
+      },
+      {
+        "metrik": "Skill ve araç seçim doğruluğu; bağlam dosyası boyutu ve açılış token'ı",
+        "not": "Gölgeleme ve bağlam maliyeti.",
+        "kaynak": [
+          "A3-K15",
+          "A3-K01"
+        ]
+      },
+      {
+        "metrik": "Eşzamanlı ajan PR çakışma oranı",
+        "not": "Farklı ajanlarda %41,7.",
+        "kaynak": [
+          "A3-Y01:EV-303"
+        ]
+      },
+      {
+        "metrik": "Algılanan ve ölçülen verimlilik farkı; geliştirici deneyimi",
+        "not": "RCT'de (arXiv 2507.09089) geliştiriciler %20 hızlandıklarını düşündü, ölçülen sonuç %19 yavaşlamaydı. DX çerçevesi: kullanım, etki, maliyet.",
+        "kaynak": [
+          "A3-K66",
+          "A3-K68"
+        ]
+      },
+      {
+        "metrik": "Kaçan hatadan regresyon testi oranı; olaydan eval vakasına dönüşüm oranı",
+        "not": "Kaizen döngüsünün kapanıp kapanmadığını gösterir.",
+        "kaynak": [
+          "A3-K62",
+          "A3-Y03:N-K08-002"
+        ]
+      }
+    ],
+    "kacinilacaklar": [
+      {
+        "kacinilacak": "PR veya satır sayısını verimlilik ölçütü yapmak.",
+        "kaynak": [
+          "A3-Y01:EV-121",
+          "A3-Y01:EV-120"
+        ]
+      },
+      {
+        "kacinilacak": "Ajanın 'iyileştirdim' beyanını döngü kapısı yapmak.",
+        "kaynak": [
+          "A3-K34"
+        ]
+      },
+      {
+        "kacinilacak": "Her hatadan sonra otomatik olarak talimat dosyasına satır eklemek (maliyet artar, çelişki birikir).",
+        "kaynak": [
+          "A3-K01",
+          "A3-K09"
+        ]
+      },
+      {
+        "kacinilacak": "Ajan izlerinden onaysız otomatik öğrenme (zehirli iz, ödül kurcalama, çöküş).",
+        "kaynak": [
+          "A3-Y02:RK-208",
+          "A3-Y02:RK-209",
+          "A3-Y02:RK-210"
+        ]
+      },
+      {
+        "kacinilacak": "Ajan olay kayıtlarını çalışanın disiplin gerekçesine dönüştürmek (izleme politikası önceden bildirilmeli, akış ve içerik verisi ayrı yetkilendirilmeli).",
+        "kaynak": [
+          "A3-Y01:EV-001"
+        ]
+      }
+    ]
+  },
+  "olgunluk_modelleri": [
+    {
+      "model": "DORA AI Capabilities Model (2025)",
+      "tur": "Yetenek modeli (seviyeli değil)",
+      "seviyeler": "Seviye tanımlamaz; AI'ın etkisini büyüten yedi yetenek sayar: açık ve iletilmiş AI tutumu, sağlıklı veri ekosistemleri, AI'ın erişebildiği iç veri, güçlü sürüm kontrolü uygulamaları, küçük partilerle çalışma, kullanıcı odaklılık, kaliteli iç platformlar.",
+      "gecis_olcutleri": "Yedi yeteneğin olgunluğu ve DORA teslim metrikleri (hacim ve kararsızlık). Ana mesaj: AI güçlü ekipleri güçlendirir, zayıf ekiplerin sorunlarını büyütür. 2025 raporunda AI benimsemesi %90, teslim kararlılığıyla ilişki negatif.",
+      "kaynak": [
+        "A3-K60",
+        "A3-K59",
+        "A3-K61"
+      ]
+    },
+    {
+      "model": "Levels of Autonomy for AI Agents (Feng, McDonald, Zhang; arXiv 2506.12469)",
+      "tur": "Otonomi seviyesi (kullanıcı rolüne göre)",
+      "seviyeler": "L1 operatör, L2 iş birlikçi, L3 danışman, L4 onaylayıcı, L5 gözlemci. Otonomi, yetenekten ayrı ve bilinçli bir tasarım kararı olarak ele alınır.",
+      "gecis_olcutleri": "Otonomi sertifikaları ve otonomi değerlendirmesi önerilir; seviye, yetenek ve ortam riskine göre verilir.",
+      "kaynak": [
+        "A3-K69"
+      ]
+    },
+    {
+      "model": "CSA Autonomy Levels for Agentic AI (Ocak 2026)",
+      "tur": "SAE J3016 benzeri 0-5 ölçek",
+      "seviyeler": "L0 otonomi yok (yalnız öneri), L1 destekli (her eyleme onay), L2 denetimli (planı onayla, toplu yürüt), L3 koşullu (sınırlar içinde kendi kararı, aşımda eskalasyon), L4 yüksek (insan anomali izler), L5 tam (kendi hedefini koyar). Yazar L5'i bugün kurumsal kullanım için uygun görmüyor.",
+      "gecis_olcutleri": "Seviye arttıkça gereken yetki onayı yükselir (L1 iş sahibi, L4 yönetici onayı ve belgelenmiş risk kabulü) ve inceleme sıklığı artar.",
+      "kaynak": [
+        "A3-K70"
+      ]
+    },
+    {
+      "model": "Dan Shapiro — Five Levels (Ocak 2026)",
+      "tur": "Uygulayıcı modeli (sürüş otomasyonu analojisi)",
+      "seviyeler": "0 'spicy autocomplete', 1 stajyer (ayrık görevler), 2 kıdemsiz geliştirici (eşli çalışma), 3 geliştirici (insan çok miktarda AI kodu inceler), 4 mühendislik ekibi (spesifikasyon yazar, test sonuçlarını inceler), 5 karanlık fabrika (kimse kod okumaz).",
+      "gecis_olcutleri": "Temel ayrım diff'i kimin okuduğu. Yazarın uyarısı: '2. seviye ve sonrası bitmiş gibi hissettirir ama değildir.'",
+      "kaynak": [
+        "A3-K71"
+      ]
+    },
+    {
+      "model": "Microsoft — DevOps Playbook for the Agentic Era (Nisan 2026)",
+      "tur": "Olgunluk aşamaları",
+      "seviyeler": "Reactive (el ile dağıtım, bireysel ve dağınık AI kullanımı), Foundation (otomatik CI/CD, ekip genelinde IDE desteği, standart PR doğrulaması), Structured (zengin skill profilleri, özel ajanlar, ajana özgü doğrulama katmanları), Optimized (koda bağlı yaşayan spesifikasyonlar, orkestre ajan ekipleri, uyarlanabilir doğrulama derinliği).",
+      "gecis_olcutleri": "Önerilen metrikler: sonuç temelli (teslim edilen özellik, etki), inceleme verimliliği (onay süresi, revizyon turu, birleşme başarısı), güven sınırları (CI'da yakalanan ve üretime kaçan kusurlar, ilk deneme geçiş oranı), spesifikasyon kalitesi (müdahale sıklığı). Her aşamada insan gözetimi.",
+      "kaynak": [
+        "A3-K72"
+      ]
+    },
+    {
+      "model": "AWS AI-DLC (Temmuz 2025)",
+      "tur": "Yaşam döngüsü yöntemi (seviyeli değil)",
+      "seviyeler": "Inception (Mob Elaboration), Construction (Mob Construction), Operations. Sprint yerine saatler ve günler süren 'Bolt'lar; epik yerine 'Unit of Work'.",
+      "gecis_olcutleri": "Her adımda AI plan ve artefakt üretir, insan doğrular ve onaylar; kritik kararlar insana bırakılır.",
+      "kaynak": [
+        "A3-K73"
+      ]
+    },
+    {
+      "model": "Thoughtworks Technology Radar Vol. 34 (Nisan 2026)",
+      "tur": "Uygulama rehberi (seviyeli değil)",
+      "seviyeler": "Harness engineering: ileri besleme kontrolleri (Agent Skills, spesifikasyon güdümlü geliştirme) ve geri besleme kontrolleri (mutasyon testi); bilişsel borç ve 'AI üretimi koda rehavet' uyarısı; izin arayan ajanlar için sıfır güven.",
+      "gecis_olcutleri": "Temel mühendislik uygulamalarına dönüş; tek katkıcılı kısa ömürlü araçlara karşı temkin.",
+      "kaynak": [
+        "A3-K74"
+      ]
+    },
+    {
+      "model": "%50 görev tamamlama zaman ufku (Kwa ve ark., arXiv 2503.14499)",
+      "tur": "Yetenek ölçüsü (otonomi kararına girdi)",
+      "seviyeler": "Model, insanın X dakikada yaptığı işi %50 başarıyla yapabiliyorsa ufku X'tir. 2019'dan bu yana yaklaşık 7 ayda bir ikiye katlandığı ölçülmüş.",
+      "gecis_olcutleri": "Ajana verilecek görev büyüklüğü modelin güvenilir ufkuyla sınırlandırılabilir; kurum kendi görevleriyle yeniden ölçmelidir.",
+      "kaynak": [
+        "A3-K75"
+      ]
+    },
+    {
+      "model": "A3 sentezi — Kurum için önerilen 5 kademeli model (Seviye 0-4)",
+      "tur": "Öneri (yukarıdaki kaynaklardan türetildi; eşikler kurum tabanıyla kalibre edilmeli)",
+      "seviyeler": "S0 Temel hazırlık; S1 MVP, denetimli ajan (pilot ekip); S2 Tekrarlanabilir (birkaç ekip, iç katalog); S3 Tanımlı (ART, 12+ ekip); S4 Ölçülen ve kendini iyileştiren. Shapiro L5 / CSA L5 ('karanlık fabrika') hedeflenmez.",
+      "gecis_olcutleri": "Ayrıntı mvp_olgunluk_yol_haritasi alanında. Genel kural: bir seviyeye geçiş, ajan kaynaklı değişikliklerin kararlılık metriklerinin (değişiklik başarısızlık oranı, yeniden iş) insan tabanından istatistiksel olarak kötü olmadığının en az bir PI boyunca gösterilmesine ve otonomi artışının işlev bazında (tüm sistem için değil) verilmesine bağlıdır.",
+      "kaynak": [
+        "A3-K59",
+        "A3-K70",
+        "A3-K72",
+        "A3-Y01:EV-246",
+        "A3-Y03:N-K17-007"
+      ]
+    }
+  ],
+  "mvp_olgunluk_yol_haritasi": [
+    {
+      "seviye": "S0 — Temel hazırlık",
+      "sure_onerisi": "0-6 hafta",
+      "hedef": "AI'ın büyüteceği temel yetenekleri sağlamlaştırmak.",
+      "dahil": [
+        "Açık AI tutumu: izinli araçlar, veri sınıfları, yasak eylemler; çalışan izleme politikasının önceden bildirilmesi.",
+        "Sürüm kontrolü, küçük partiler, güvenilir CI ve test tabanı, hızlı geri alma.",
+        "Ajan için izole çalışma ortamı (konteyner, üretim kimliği yok), yönetilen istemci ayarları.",
+        "Kök AGENTS.md iskeleti (kısa) ve docs/ + ADR dizini.",
+        "Metrik tabanı: DORA beş metrik, inceleme süresi, insan tabanı ölçümü.",
+        "Eval tohumu: gerçek hatalardan ve geçmiş iş kalemlerinden 20-50 görev."
+      ],
+      "dahil_degil": [
+        "Pazardan skill veya MCP",
+        "Çoklu ajan",
+        "Otomatik birleştirme"
+      ],
+      "gecis_olcutu": "CI kırmızı/yeşil güvenilirliği, geri alma prosedürü tatbik edilmiş, eval tohumu otomatik koşuyor, metrik tabanı en az 4 hafta ölçülmüş.",
+      "kaynak": [
+        "A3-K60",
+        "A3-K62",
+        "A3-Y01:EV-001",
+        "A3-K09"
+      ]
+    },
+    {
+      "seviye": "S1 — MVP: Denetimli ajan (1-2 pilot ekip)",
+      "sure_onerisi": "1 PI",
+      "hedef": "In Progress → ajan → PR → zorunlu insan incelemesi akışını güvenle çalıştırmak ve ölçmek.",
+      "dahil": [
+        "Tek ana ajan; alt ajan olarak yalnız keşif ve bağımsız değerlendirici.",
+        "3-5 iç skill (depo prosedürleri, devir paketi, DoD kontrolü); yan etkili skill'ler yalnız insan çağrısıyla.",
+        "MCP: en fazla 1-2 ve salt okur (iş takip); SCM için CLI.",
+        "Deterministik kapılar (derleme, test, lint, SAST) + fark ile açıklama tutarlılık kontrolü.",
+        "Ajan olay kaydı ve sprint sonunda ajan retrosu (Kaizen orta döngüsü).",
+        "Metrikler: ilk geçiş kabul, revizyon turu, değişiklik başarısızlık oranı (ajan/insan ayrımıyla), iş başına token ve maliyet, inceleme süresi."
+      ],
+      "dahil_degil": [
+        "Katalog dışı paket",
+        "Üretim yazma yetkisi",
+        "Ajanın kural dosyası değiştirmesi",
+        "Rol oyunu yapan SAFe ajanları"
+      ],
+      "gecis_olcutu": "Ajan PR'larında değişiklik başarısızlık ve yeniden iş oranı insan tabanından kötü değil; inceleme süresi kabul edilebilir; eval regresyon seti stabil; en az bir tam Kaizen döngüsü kapanmış (olay → iyileştirme → eval → yayın).",
+      "kaynak": [
+        "A3-K23",
+        "A3-K32",
+        "A3-K62",
+        "A3-Y01:EV-220",
+        "A3-K67"
+      ]
+    },
+    {
+      "seviye": "S2 — Tekrarlanabilir (3-4 ekip)",
+      "sure_onerisi": "1-2 PI",
+      "hedef": "Paylaşılan iç kataloğa ve kabul hattına geçmek.",
+      "dahil": [
+        "İç katalog (skill, ajan, kural, MCP, hook) + kabul hattı + sabitleme + yeniden onay.",
+        "Yönetilen istemci zorlaması (izinli pazarlar, yalnız yönetilen MCP ve hook).",
+        "Rol profilleri ve skill/MCP bütçesi; tool search.",
+        "Paths alanlı kurallar; ortak çekirdek ve ekip uzantısı ayrımı.",
+        "Her kural ve skill değişikliğinde eval kapısı (eşleştirilmiş, k tekrar).",
+        "MCP ağ geçidi pilotu; kısa ömürlü ve kapsamlı token."
+      ],
+      "dahil_degil": [
+        "Otomatik öğrenme hattı",
+        "Ajanlar arası serbest iletişim",
+        "Tam otonom birleştirme"
+      ],
+      "gecis_olcutu": "Katalog dışı kurulum teknik olarak engellenmiş ve denetlenmiş; tüm katalog varlıklarının sahibi ve eval sonucu var; ekipler arası metrik karşılaştırması tutarlı.",
+      "kaynak": [
+        "A3-K53",
+        "A3-K54",
+        "A3-K14",
+        "A3-K16",
+        "A3-K55"
+      ]
+    },
+    {
+      "seviye": "S3 — Tanımlı (ART, 12+ ekip)",
+      "sure_onerisi": "2-3 PI",
+      "hedef": "Program ölçeğinde koordinasyon ve yönetişim.",
+      "dahil": [
+        "İş üstlenme ve niyet kaydı; ortak sıcak nokta dosyalarında sahip onayı.",
+        "PI Inspect & Adapt'te ajan olay örüntüleri; ortak ders havuzu.",
+        "İşlev bazlı otonomi seviyeleri (CSA L1-L3 aralığı) ve modül güven skoru; hata bütçesine bağlı otomatik geri kısma.",
+        "Merkezî denetim kaydı, OWASP ASI kapsamında red team (MCP kombinasyonları dahil).",
+        "Ekip dışında tutulan gizli eval seti; model sürümü sabitleme ve model değişikliğinde yeniden kalifikasyon."
+      ],
+      "dahil_degil": [
+        "L4+ genel otonomi",
+        "İnsan incelemesiz yüksek riskli değişiklik"
+      ],
+      "gecis_olcutu": "Eşzamanlı PR çakışma oranı düşüyor; ajan kaynaklı olaylar I&A'da kök nedenle kapanıyor; kararlılık metrikleri en az bir PI boyunca tabandan kötü değil.",
+      "kaynak": [
+        "A3-Y01:EV-303",
+        "A3-K70",
+        "A3-K58",
+        "A3-Y03:N-K24-009",
+        "A3-Y03:N-K17-007"
+      ]
+    },
+    {
+      "seviye": "S4 — Ölçülen ve kendini iyileştiren",
+      "sure_onerisi": "Sürekli",
+      "hedef": "Kontrollü öğrenme ve maliyet optimizasyonu.",
+      "dahil": [
+        "Kontrollü öğrenme hattı: izlerden aday iyileştirme (ACE türü artımlı el kitabı), köken filtresi, gizli eval, insan onayı, kademeli yayın, geri dönüş.",
+        "Düşük riskli değişiklik sınıflarında (ör. bağımlılık yaması, belge) insan onayı yerine örneklemli denetim (CSA L3), yalnız kanıtlanmış işlevlerde.",
+        "Topoloji ve model yönlendirme optimizasyonu (maliyet/başarı).",
+        "Otonomi ve zaman ufku ölçümleriyle görev büyüklüğü sınırları."
+      ],
+      "dahil_degil": [
+        "Kimsenin kod okumadığı 'karanlık fabrika' (Shapiro L5 / CSA L5)"
+      ],
+      "gecis_olcutu": "Seviye değil süreklilik: her otonomi artışı işlev bazında kanıtla verilir, kanıt bozulunca otomatik geri alınır.",
+      "kaynak": [
+        "A3-K63",
+        "A3-Y02:RK-208",
+        "A3-Y02:RK-209",
+        "A3-K70",
+        "A3-K71",
+        "A3-K75",
+        "A3-Y01:EV-246"
+      ]
+    }
+  ],
+  "kaynaklar": [
+    {
+      "id": "A3-K01",
+      "baslik": "Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?",
+      "yazar_kurum": "Gloaguen, Mündler, Müller, Raychev, Vechev (ETH Zürih SRI Lab)",
+      "tarih": "2026-02-12",
+      "url": "https://arxiv.org/abs/2602.11988",
+      "tur": "birincil (makale)",
+      "not": "v1 ile güncel sürüm arasında özet değişti; sayılar güncel HTML sürümünden."
+    },
+    {
+      "id": "A3-K02",
+      "baslik": "On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents",
+      "yazar_kurum": "Lulla, Mohsenimofidi, Galster, Zhang, Baltes, Treude",
+      "tarih": "2026-01-28",
+      "url": "https://arxiv.org/abs/2601.20404",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K03",
+      "baslik": "Do Context Files Help Coding Agents? A Two-Agent Ablation Study on Real Repositories",
+      "yazar_kurum": "Khatri",
+      "tarih": "2026-07-28",
+      "url": "https://arxiv.org/abs/2607.27250",
+      "tur": "birincil (makale, hakemsiz ön baskı)"
+    },
+    {
+      "id": "A3-K04",
+      "baslik": "Agent READMEs: An Empirical Study of Context Files for Agentic Coding",
+      "yazar_kurum": "Chatlatanagulchai ve ark.",
+      "tarih": "2025-11-17",
+      "url": "https://arxiv.org/abs/2511.12884",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K05",
+      "baslik": "Rule Taxonomy and Evolution in AI IDEs: A Mining and Survey Study",
+      "yazar_kurum": "Cai, Li, Liang, Li, Shahin",
+      "tarih": "2026-06-10",
+      "url": "https://arxiv.org/abs/2606.12231",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K06",
+      "baslik": "Harness engineering: leveraging Codex in an agent-first world",
+      "yazar_kurum": "Ryan Lopopolo, OpenAI",
+      "tarih": "2026-02-11",
+      "url": "https://openai.com/index/harness-engineering/",
+      "tur": "birincil (satıcı mühendislik yazısı)",
+      "not": "openai.com bot korumalı; içerik https://jaytaylor.com/notes/node/1770842156000.html aynasından doğrulandı."
+    },
+    {
+      "id": "A3-K07",
+      "baslik": "AGENTS.md",
+      "yazar_kurum": "Agentic AI Foundation",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://agents.md/",
+      "tur": "birincil (standart sitesi)"
+    },
+    {
+      "id": "A3-K08",
+      "baslik": "Linux Foundation Announces the Formation of the Agentic AI Foundation (AAIF)",
+      "yazar_kurum": "Linux Foundation",
+      "tarih": "2025-12-09",
+      "url": "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation",
+      "tur": "birincil (basın bülteni)"
+    },
+    {
+      "id": "A3-K09",
+      "baslik": "How Claude remembers your project (CLAUDE.md, AGENTS.md, .claude/rules)",
+      "yazar_kurum": "Anthropic, Claude Code dokümanı",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://code.claude.com/docs/en/memory",
+      "tur": "birincil (resmî doküman)"
+    },
+    {
+      "id": "A3-K10",
+      "baslik": "Effective context engineering for AI agents",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2025-09-29",
+      "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K11",
+      "baslik": "Equipping agents for the real world with Agent Skills",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2025-10-16 (açık standart: 2025-12-18)",
+      "url": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K12",
+      "baslik": "Agent Skills Specification",
+      "yazar_kurum": "agentskills.io",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://agentskills.io/specification",
+      "tur": "birincil (spesifikasyon)"
+    },
+    {
+      "id": "A3-K13",
+      "baslik": "Claude Code Skills dokümanı",
+      "yazar_kurum": "Anthropic",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://code.claude.com/docs/en/skills",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K14",
+      "baslik": "When Single-Agent with Skills Replace Multi-Agent Systems and When They Fail",
+      "yazar_kurum": "Xiaoxiao Li",
+      "tarih": "2026-01-08",
+      "url": "https://arxiv.org/abs/2601.04748",
+      "tur": "birincil (makale)",
+      "not": "GPT-4o ve GPT-4o-mini ile ölçüldü."
+    },
+    {
+      "id": "A3-K15",
+      "baslik": "More Skills, Worse Agents? Skill Shadowing Degrades Performance When Expanding Skill Libraries",
+      "yazar_kurum": "Song, Wei",
+      "tarih": "2026-05-21",
+      "url": "https://arxiv.org/abs/2605.24050",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K16",
+      "baslik": "SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks",
+      "yazar_kurum": "Li ve ark.",
+      "tarih": "2026-02-13 (v1), güncel v4",
+      "url": "https://arxiv.org/abs/2602.12670",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K17",
+      "baslik": "Agent Skills in the Wild: An Empirical Study of Security Vulnerabilities at Scale",
+      "yazar_kurum": "Liu ve ark.",
+      "tarih": "2026-01-15",
+      "url": "https://arxiv.org/abs/2601.10338",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K18",
+      "baslik": "\"Do Not Mention This to the User\": Detecting and Understanding Malicious Agent Skills in the Wild",
+      "yazar_kurum": "Liu ve ark.",
+      "tarih": "2026-02-06",
+      "url": "https://arxiv.org/abs/2602.06547",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K19",
+      "baslik": "ToxicSkills: malicious AI agent skills on ClawHub",
+      "yazar_kurum": "Snyk",
+      "tarih": "2026-02-05",
+      "url": "https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/",
+      "tur": "birincil (güvenlik araştırması)"
+    },
+    {
+      "id": "A3-K20",
+      "baslik": "Researchers find 341 malicious ClawHub skills (ClawHavoc)",
+      "yazar_kurum": "The Hacker News (Koi Security bulgusu)",
+      "tarih": "2026-02-02",
+      "url": "https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html",
+      "tur": "ikincil",
+      "not": "Koi'nin birincil yazısı artık başka alana yönleniyor."
+    },
+    {
+      "id": "A3-K21",
+      "baslik": "OpenClaw Integrates VirusTotal Scanning to Detect Malicious ClawHub Skills",
+      "yazar_kurum": "The Hacker News",
+      "tarih": "2026-02",
+      "url": "https://thehackernews.com/2026/02/openclaw-integrates-virustotal-scanning.html",
+      "tur": "ikincil"
+    },
+    {
+      "id": "A3-K22",
+      "baslik": "Resmî skill depoları: anthropics/skills, openai/skills, agentskills/agentskills, github/awesome-copilot",
+      "yazar_kurum": "GitHub (gh api)",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://github.com/anthropics/skills ; https://github.com/openai/skills ; https://github.com/agentskills/agentskills ; https://github.com/github/awesome-copilot",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K23",
+      "baslik": "Claude Code Subagents dokümanı",
+      "yazar_kurum": "Anthropic",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://code.claude.com/docs/en/sub-agents",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K24",
+      "baslik": "How we built our multi-agent research system",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2025-06-13",
+      "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K25",
+      "baslik": "Don't Build Multi-Agents",
+      "yazar_kurum": "Walden Yan, Cognition",
+      "tarih": "2025-06-12",
+      "url": "https://cognition.com/blog/dont-build-multi-agents",
+      "tur": "birincil (satıcı görüşü)"
+    },
+    {
+      "id": "A3-K26",
+      "baslik": "Why Do Multi-Agent LLM Systems Fail? (MAST)",
+      "yazar_kurum": "Cemri, Pan, Yang, Agrawal ve ark.",
+      "tarih": "2025-03-17",
+      "url": "https://arxiv.org/abs/2503.13657",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K27",
+      "baslik": "When 'A Helpful Assistant' Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of LLMs",
+      "yazar_kurum": "Zheng, Pei ve ark.",
+      "tarih": "2023-11-16",
+      "url": "https://arxiv.org/abs/2311.10054",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K28",
+      "baslik": "ChatDev: Communicative Agents for Software Development",
+      "yazar_kurum": "Qian ve ark.",
+      "tarih": "2023-07-16",
+      "url": "https://arxiv.org/abs/2307.07924",
+      "tur": "birincil (makale)",
+      "not": "Rol ablasyonu Tablo 4, SRDD, GPT-3.5."
+    },
+    {
+      "id": "A3-K29",
+      "baslik": "AgileCoder: Dynamic Collaborative Agents for Software Development based on Agile Methodology",
+      "yazar_kurum": "Nguyen ve ark.",
+      "tarih": "2024-06-16",
+      "url": "https://arxiv.org/abs/2406.11912",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K30",
+      "baslik": "Cognitive Agents Powered by LLMs for Agile Software Project Management (CogniSim, SAFe)",
+      "yazar_kurum": "Cinkusz, Chudziak, Niewiadomska-Szynkiewicz",
+      "tarih": "2025-08-21",
+      "url": "https://arxiv.org/abs/2508.16678",
+      "tur": "birincil (makale; simülasyon)"
+    },
+    {
+      "id": "A3-K31",
+      "baslik": "Two Calls Beat Five Agents: Evaluating Multi-Agent Pipelines Against Self-Refinement for Local Language Models",
+      "yazar_kurum": "Prajapati, Mohite",
+      "tarih": "2026-07-29",
+      "url": "https://arxiv.org/abs/2607.26922",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K32",
+      "baslik": "Harness design for long-running application development",
+      "yazar_kurum": "Prithvi Rajasekaran, Anthropic Labs",
+      "tarih": "2026-03-24",
+      "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K33",
+      "baslik": "Large Language Models Cannot Self-Correct Reasoning Yet",
+      "yazar_kurum": "Huang, Chen, Mishra, Zheng ve ark.",
+      "tarih": "2023-10-03",
+      "url": "https://arxiv.org/abs/2310.01798",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K34",
+      "baslik": "When Do Agent Loops Mistake Stagnation for Progress? Self-Evaluation Bias and Externally Grounded Verification",
+      "yazar_kurum": "Park, Choi",
+      "tarih": "2026-07-27",
+      "url": "https://arxiv.org/abs/2607.25152",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K35",
+      "baslik": "The MCP Registry (about, trust and security)",
+      "yazar_kurum": "Model Context Protocol",
+      "tarih": "erişim 2026-09-27 (önizleme)",
+      "url": "https://modelcontextprotocol.io/registry/about",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K36",
+      "baslik": "Introducing the MCP Registry (preview)",
+      "yazar_kurum": "MCP Blog",
+      "tarih": "2025-09-08",
+      "url": "https://blog.modelcontextprotocol.io/posts/2025-09-08-mcp-registry-preview/",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K37",
+      "baslik": "MCP Market",
+      "yazar_kurum": "mcpmarket.com (işletmeci açıklanmıyor)",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://mcpmarket.com/",
+      "tur": "birincil (sitenin kendi beyanı)"
+    },
+    {
+      "id": "A3-K38",
+      "baslik": "Docker MCP Catalog",
+      "yazar_kurum": "Docker",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://docs.docker.com/ai/mcp-catalog-and-toolkit/catalog/",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K39",
+      "baslik": "MAL-2025-47604: postmark-mcp",
+      "yazar_kurum": "OSV / OpenSSF malicious-packages",
+      "tarih": "2025-09-26",
+      "url": "https://osv.dev/vulnerability/MAL-2025-47604",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K40",
+      "baslik": "GHSA-6xpm-ggf7-wc3p / CVE-2025-6514 (mcp-remote)",
+      "yazar_kurum": "GitHub Advisory Database",
+      "tarih": "2025-07-09",
+      "url": "https://github.com/advisories/GHSA-6xpm-ggf7-wc3p",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K41",
+      "baslik": "MCP Security Notification: Tool Poisoning Attacks",
+      "yazar_kurum": "Invariant Labs",
+      "tarih": "2025-04-01",
+      "url": "https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K42",
+      "baslik": "Exposing the Unseen: Mapping MCP Servers Across the Internet",
+      "yazar_kurum": "Knostic",
+      "tarih": "2025-07-17",
+      "url": "https://www.knostic.ai/blog/mapping-mcp-servers-study",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K43",
+      "baslik": "Exposed by Design: A Dynamic Security Assessment of Internet-Facing MCP Servers at Scale",
+      "yazar_kurum": "Padilla",
+      "tarih": "2026-07-31",
+      "url": "https://arxiv.org/abs/2608.00150",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K44",
+      "baslik": "Breaking MCP Server Hosting (Smithery)",
+      "yazar_kurum": "GitGuardian",
+      "tarih": "2025-06 (keşif ve düzeltme 10-15 Haziran)",
+      "url": "https://blog.gitguardian.com/breaking-mcp-server-hosting/",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K45",
+      "baslik": "MCP Security Best Practices (token passthrough, confused deputy, SSRF)",
+      "yazar_kurum": "Model Context Protocol spesifikasyonu",
+      "tarih": "erişim 2026-09-27 (draft)",
+      "url": "https://modelcontextprotocol.io/specification/draft/basic/security_best_practices",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K46",
+      "baslik": "modelcontextprotocol/servers README (reference implementations)",
+      "yazar_kurum": "MCP",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K47",
+      "baslik": "Code execution with MCP",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2025-11-04",
+      "url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K48",
+      "baslik": "Introducing advanced tool use on the Claude Developer Platform",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2025-11-24",
+      "url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K49",
+      "baslik": "Claude Code MCP dokümanı (tool search)",
+      "yazar_kurum": "Anthropic",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://code.claude.com/docs/en/mcp",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K50",
+      "baslik": "MCP vs CLI: Benchmarking AI Agent Cost & Reliability",
+      "yazar_kurum": "Scalekit",
+      "tarih": "2026-03-11",
+      "url": "https://www.scalekit.com/blog/mcp-vs-cli-use",
+      "tur": "ikincil nitelikli (satıcı kıyası; tek sunucu, 5 görev)"
+    },
+    {
+      "id": "A3-K51",
+      "baslik": "The Devil Is in the Interface: Evaluating How Tool Architecture Shapes Coding Agent Behavior",
+      "yazar_kurum": "Xu ve ark.",
+      "tarih": "2026-08-11",
+      "url": "https://arxiv.org/abs/2608.11386",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K52",
+      "baslik": "MCP allowlist enforcement (Copilot)",
+      "yazar_kurum": "GitHub Docs",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://docs.github.com/en/copilot/reference/mcp-allowlist-enforcement",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K53",
+      "baslik": "Managed MCP configuration",
+      "yazar_kurum": "Anthropic, Claude Code",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://code.claude.com/docs/en/managed-mcp",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K54",
+      "baslik": "Claude Code settings reference (strictKnownMarketplaces, blockedMarketplaces, strictPluginOnlyCustomization, allowManagedHooksOnly, disableSkillShellExecution)",
+      "yazar_kurum": "Anthropic",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://code.claude.com/docs/en/settings-reference",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K55",
+      "baslik": "MCP çalışma zamanı ve ağ geçitleri: stacklok/toolhive, docker/mcp-gateway, agentgateway/agentgateway, microsoft/mcp-gateway, snyk/agent-scan",
+      "yazar_kurum": "GitHub (gh api, README)",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://github.com/stacklok/toolhive ; https://github.com/docker/mcp-gateway ; https://github.com/agentgateway/agentgateway ; https://github.com/microsoft/mcp-gateway ; https://github.com/snyk/agent-scan",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K56",
+      "baslik": "The lethal trifecta for AI agents",
+      "yazar_kurum": "Simon Willison",
+      "tarih": "2025-06-16",
+      "url": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+      "tur": "birincil (uzman görüşü)"
+    },
+    {
+      "id": "A3-K57",
+      "baslik": "Agents Rule of Two: A Practical Approach to AI Agent Security",
+      "yazar_kurum": "Meta AI",
+      "tarih": "2025-10-31",
+      "url": "https://ai.meta.com/blog/practical-ai-agent-security/",
+      "tur": "birincil",
+      "not": "Tarih ve içerik Willison'ın 2 Kasım 2025 notuyla çapraz doğrulandı."
+    },
+    {
+      "id": "A3-K58",
+      "baslik": "OWASP Top 10 for Agentic Applications",
+      "yazar_kurum": "OWASP GenAI Security Project",
+      "tarih": "2025-12-09",
+      "url": "https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K59",
+      "baslik": "Announcing the 2025 DORA Report",
+      "yazar_kurum": "Google Cloud / DORA",
+      "tarih": "2025-09-24",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K60",
+      "baslik": "2025 DORA AI Capabilities Model (PDF)",
+      "yazar_kurum": "DORA / Google",
+      "tarih": "2025",
+      "url": "https://services.google.com/fh/files/misc/2025_dora_ai_capabilities_model.pdf",
+      "tur": "birincil",
+      "not": "Yedi yetenek adı PDF metninden doğrulandı."
+    },
+    {
+      "id": "A3-K61",
+      "baslik": "DORA's software delivery performance metrics (five-metric model)",
+      "yazar_kurum": "dora.dev",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://dora.dev/guides/dora-metrics/",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K62",
+      "baslik": "Demystifying evals for AI agents",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2026-01-09",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K63",
+      "baslik": "Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models (ACE)",
+      "yazar_kurum": "Zhang ve ark.",
+      "tarih": "2025-10-06",
+      "url": "https://arxiv.org/abs/2510.04618",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K64",
+      "baslik": "Reflexion: Language Agents with Verbal Reinforcement Learning",
+      "yazar_kurum": "Shinn ve ark.",
+      "tarih": "2023-03-20",
+      "url": "https://arxiv.org/abs/2303.11366",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K65",
+      "baslik": "Who Validates the Validators? Aligning LLM-Assisted Evaluation of LLM Outputs with Human Preferences",
+      "yazar_kurum": "Shankar ve ark.",
+      "tarih": "2024-04-18",
+      "url": "https://arxiv.org/abs/2404.12272",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K66",
+      "baslik": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+      "yazar_kurum": "Becker, Rush, Barnes, Rein",
+      "tarih": "2025-07-12",
+      "url": "https://arxiv.org/abs/2507.09089",
+      "tur": "birincil (RCT)"
+    },
+    {
+      "id": "A3-K67",
+      "baslik": "The Rise of AI Teammates in SE 3.0 (AIDev veri seti)",
+      "yazar_kurum": "Li, Zhang, Hassan",
+      "tarih": "2025-07-20",
+      "url": "https://arxiv.org/abs/2507.15003",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K68",
+      "baslik": "DX AI Measurement Framework (utilization, impact, cost)",
+      "yazar_kurum": "DX",
+      "tarih": "erişim 2026-09-27",
+      "url": "https://getdx.com/research/measuring-ai-code-assistants-and-agents/",
+      "tur": "birincil (satıcı çerçevesi)"
+    },
+    {
+      "id": "A3-K69",
+      "baslik": "Levels of Autonomy for AI Agents",
+      "yazar_kurum": "Feng, McDonald, Zhang",
+      "tarih": "2025-06-14",
+      "url": "https://arxiv.org/abs/2506.12469",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K70",
+      "baslik": "Autonomy Levels for Agentic AI",
+      "yazar_kurum": "Jim Reavis, Cloud Security Alliance",
+      "tarih": "2026-01-28",
+      "url": "https://cloudsecurityalliance.org/blog/2026/01/28/levels-of-autonomy",
+      "tur": "birincil (kurum görüşü)"
+    },
+    {
+      "id": "A3-K71",
+      "baslik": "The Five Levels: from Spicy Autocomplete to the Software Factory",
+      "yazar_kurum": "Dan Shapiro",
+      "tarih": "2026-01-23",
+      "url": "https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/",
+      "tur": "birincil (uygulayıcı görüşü)"
+    },
+    {
+      "id": "A3-K72",
+      "baslik": "DevOps Playbook for the Agentic Era",
+      "yazar_kurum": "David Sanchez, Microsoft (All things Azure)",
+      "tarih": "2026-04-15",
+      "url": "https://devblogs.microsoft.com/all-things-azure/agentic-devops-practices-principles-strategic-direction/",
+      "tur": "birincil (satıcı yazısı)"
+    },
+    {
+      "id": "A3-K73",
+      "baslik": "AI-Driven Development Life Cycle: Reimagining Software Engineering",
+      "yazar_kurum": "Raja SP, AWS",
+      "tarih": "2025-07-31",
+      "url": "https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/",
+      "tur": "birincil (satıcı yazısı)"
+    },
+    {
+      "id": "A3-K74",
+      "baslik": "Technology Radar Vol. 34 basın bülteni",
+      "yazar_kurum": "Thoughtworks",
+      "tarih": "2026-04-15",
+      "url": "https://www.thoughtworks.com/about-us/news/2026/combat-ai-cognitive-debt-radar-v34",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K75",
+      "baslik": "Measuring AI Ability to Complete Long Software Tasks",
+      "yazar_kurum": "Kwa, West, Becker, Deng ve ark.",
+      "tarih": "2025-03-18",
+      "url": "https://arxiv.org/abs/2503.14499",
+      "tur": "birincil (makale)"
+    },
+    {
+      "id": "A3-K76",
+      "baslik": "Documenting Architecture Decisions",
+      "yazar_kurum": "Michael Nygard (Cognitect)",
+      "tarih": "2011-11-15",
+      "url": "https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
+      "tur": "birincil"
+    },
+    {
+      "id": "A3-K77",
+      "baslik": "Measuring agent autonomy (Claude Code otomatik onay kullanımı)",
+      "yazar_kurum": "Anthropic",
+      "tarih": "2026-02-18",
+      "url": "https://www.anthropic.com/research/measuring-agent-autonomy",
+      "tur": "birincil",
+      "not": "Yerel harita EV-231 üzerinden; bu görevde ayrıca açılmadı."
+    },
+    {
+      "id": "A3-K81",
+      "baslik": "SkillSieve: A Hierarchical Triage Framework for Detecting Malicious AI Agent Skills",
+      "yazar_kurum": "Hou, Yang",
+      "tarih": "2026-04-08",
+      "url": "https://arxiv.org/abs/2604.06550",
+      "tur": "birincil (makale)",
+      "not": "F1 0,929, duyarlılık 0,945, skill başına ortalama 0,006 dolar."
+    },
+    {
+      "id": "A3-Y01",
+      "baslik": "Yerel risk haritası — olay kaydı (EV-001…EV-320)",
+      "yazar_kurum": "Kullanıcının risk haritası",
+      "tarih": "2026-09-27",
+      "url": "file:///Users/w6x/Documents/otomasyon coding/risk-haritasi/olaylar/olay-kaydi.json",
+      "tur": "yerel (her olayın kendi kaynak_url alanı var)",
+      "not": "Kullanılan olaylar: EV-001, 100, 109, 110, 112, 120, 121, 122, 124, 125, 130, 142, 175, 177, 183, 187, 189, 212, 220, 227, 231, 232, 238, 246, 267, 287, 295, 303, 315."
+    },
+    {
+      "id": "A3-Y02",
+      "baslik": "Yerel risk haritası — kategori kalıpları",
+      "yazar_kurum": "Kullanıcının risk haritası",
+      "tarih": "2026-09-27",
+      "url": "file:///Users/w6x/Documents/otomasyon coding/risk-haritasi/kategori-kaliplari/",
+      "tur": "yerel",
+      "not": "Y-07 (RK-090…093), Y-08 (RK-094…097), Y-09 (RK-098…101), Y-10 (RK-102…105), Y-29 (RK-171…174), Y-40 (RK-208…210), Y-42 (RK-215…218), Y-58 (RK-035…037)."
+    },
+    {
+      "id": "A3-Y03",
+      "baslik": "Yerel risk haritası — kümeler ve ihtiyaçlar",
+      "yazar_kurum": "Kullanıcının risk haritası",
+      "tarih": "2026-09-27",
+      "url": "file:///Users/w6x/Documents/otomasyon coding/risk-haritasi/kumeler/",
+      "tur": "yerel",
+      "not": "K08, K11, K12 (BL-00274, BL-00982, BL-02082), K17, K23, K24, K27."
+    },
+    {
+      "id": "A3-Y04",
+      "baslik": "Yerel risk haritası — sorun senaryoları",
+      "yazar_kurum": "Kullanıcının risk haritası",
+      "tarih": "2026-09-27",
+      "url": "file:///Users/w6x/Documents/otomasyon coding/risk-haritasi/senaryolar/sorun-senaryolari.json",
+      "tur": "yerel",
+      "not": "SS-034, SS-035, SS-036, SS-043, SS-054, SS-068, SS-084, SS-086."
+    }
+  ]
+}

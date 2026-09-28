@@ -1,0 +1,59 @@
+{
+  "title": "Ajan → sağlayıcı haritası",
+  "summary": "Panodaki 21 ajan ve akış rolünün önerilen sağlayıcısı, alternatifi ve bu rapordaki öneri.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Referans",
+      "title": "Ajan → sağlayıcı haritası",
+      "lede": "Kaynak: agent_providers/2agent-provider.pdf (“Tüm ajanlar hangi sağlayıcı yönetir ve neden?”). Panodaki seçimlerin çoğu yerinde. Değişiklik önerilen satırlar üç nedene dayanıyor: tek durum sahibi Temporal olmalı, deterministik işler ajan olmamalı, başsız (headless) bir hat IDE’ye bağlı araç kullanamaz."
+    },
+    {
+      "type": "stats",
+      "items": [
+        { "value": "14", "label": "Olduğu gibi kalır" },
+        { "value": "5", "label": "Ayarlanır" },
+        { "value": "2", "label": "Ajan olmaktan çıkar" }
+      ]
+    },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "agent", "label": "Ajan", "kind": "code" },
+        { "key": "pdf", "label": "Panodaki seçim" },
+        { "key": "alt", "label": "Panodaki alternatif" },
+        { "key": "verdict", "label": "Karar", "kind": "badge" },
+        { "key": "rec", "label": "Öneri" }
+      ],
+      "rows": [
+        { "agent": "R&D / task-spec", "pdf": "LangGraph + OpenHands", "alt": "PydanticAI Harness", "verdict": { "text": "Ayarla", "tone": "warning" }, "rec": "Temporal iş akışı + OpenHands (salt-okunur) + PydanticAI çıktı şeması. Akış ve döngü sayacı Temporal’da." },
+        { "agent": "module.relation.map", "pdf": "PydanticAI + OpenHands/Aider araçları", "alt": "LangGraph / Strands", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Önce kod grafiği aracı (Graphify / SCIP), sonra PydanticAI ile tipli rapor." },
+        { "agent": "task-dependency-cluster", "pdf": "LangGraph", "alt": "PydanticAI + networkx", "verdict": { "text": "Ayarla", "tone": "warning" }, "rec": "Panonun kendi alternatifi: networkx ile bağlı bileşenler ve topolojik sıra. Kümeleme bir algoritma problemi." },
+        { "agent": "dependency-priority", "pdf": "LangGraph", "alt": "Strands", "verdict": { "text": "Ajan değil", "tone": "info" }, "rec": "Pano da “deterministik akış” diyor. foundation → dependency → consumer sıralaması koddur; LLM gerekmez." },
+        { "agent": "test-first", "pdf": "OpenHands (Docker sandbox)", "alt": "PydanticAI Harness", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Gerçek test koşusu gerekir. Sonucu ajan değil, bağımsız çalıştırıcı raporlar." },
+        { "agent": "OOP.agent", "pdf": "PydanticAI analiz + OpenHands uygulama", "alt": "Aider architect", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "İnceleme alt ajanı olarak; bulgu tipli, uygulama kodlama ajanında." },
+        { "agent": "solid.agent", "pdf": "PydanticAI (tipli ihlal raporu)", "alt": "OpenHands reviewer", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Panodaki not doğru: dogmatik değil, bakım kolaylığı için." },
+        { "agent": "mobile-first", "pdf": "OpenHands / Cline", "alt": "Agent Zero", "verdict": { "text": "Ayarla", "tone": "warning" }, "rec": "Cline bir IDE eklentisi; başsız hatta çalışmaz. OpenHands veya Claude Code + Playwright viewport ekran görüntüleri." },
+        { "agent": "edge-case", "pdf": "LangGraph (6 perspektif = 6 düğüm)", "alt": "PydanticAI Harness", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "LangGraph’ın haklı olduğu yer. Tek aktivite içinde, kalıcı checkpointer olmadan. Alternatif: Temporal’da 6 paralel aktivite." },
+        { "agent": "performance", "pdf": "PydanticAI + OpenHands (profil)", "alt": "PydanticAI Harness", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Ölçüm k6 / benchmark ile deterministik; ajan önce/sonra karşılaştırmasını raporlar." },
+        { "agent": "gap-analysis", "pdf": "PydanticAI (tipli liste)", "alt": "OpenHands + LangGraph", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "BaseModel şeması yeterli." },
+        { "agent": "web-research", "pdf": "PydanticAI + Context7 MCP + web arama", "alt": "smolagents / LangGraph", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Kaynak hiyerarşisi (resmi doküman → RFC → vendor → repo) yerinde. Web içeriği skill’e yazılmamalı (zehirlenme riski)." },
+        { "agent": "unknown-unknowns", "pdf": "PydanticAI + MCP", "alt": "goose", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Tipli risk listesi; Plane’e bulgu olarak yazılır." },
+        { "agent": "definition-of-ready", "pdf": "PydanticAI (bool checklist + blocker)", "alt": "LangGraph gate", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Çıktı Temporal’da kapı olarak kullanılır." },
+        { "agent": "maturity-level", "pdf": "PydanticAI (PoC/MVP/PMF/Enterprise enum)", "alt": "—", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Tek seferlik sınıflandırma." },
+        { "agent": "technology-boundary", "pdf": "PydanticAI + OpenHands tarama", "alt": "LangGraph", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Önce ADR ve mevcut bağımlılıklar okunur." },
+        { "agent": "frontend-backend-router", "pdf": "PydanticAI enum → LangGraph conditional edge", "alt": "LangGraph router", "verdict": { "text": "Ayarla", "tone": "warning" }, "rec": "Enum kalır; dallanma Temporal iş akışında bir if bloğudur." },
+        { "agent": "git-scenario", "pdf": "Aider (git-native)", "alt": "goose / OpenHands", "verdict": { "text": "Ajan değil", "tone": "info" }, "rec": "Worktree, branch, commit ve merge deterministik aktivite. LLM yalnızca çakışma çözümü önerir. Yıkıcı işlem hiçbir ajana verilmez." },
+        { "agent": "documentation", "pdf": "OpenHands / goose", "alt": "Aider", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Kodla aynı PR’da README / ADR / migration notu." },
+        { "agent": "authorization", "pdf": "OpenFGA (LLM değil, motor)", "alt": "SpiceDB, Oso, Cerbos, Casbin", "verdict": { "text": "Kalsın", "tone": "success" }, "rec": "Panonun en güçlü kararı. Yetki kararı deterministik; ajan yalnızca modeli ve testleri yazar." },
+        { "agent": "blocker / human approval", "pdf": "LangGraph", "alt": "Microsoft Agent Framework", "verdict": { "text": "Ayarla", "tone": "warning" }, "rec": "Temporal Signal/Update. İki çekirdek çelişkisinin çözümü bu satır." }
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "note",
+      "title": "“Harness” ne demek?",
+      "text": "Panoda sık geçen “PydanticAI Harness”, “OpenHands SDK” gibi ifadeler ajanın çalıştığı iskeleti anlatıyor. Bu raporda **çalıştırıcı** (harness) terimi dosya, terminal ve tarayıcıya erişen süreci (Claude Code, OpenHands, goose, Hermes); **kütüphane** terimi ise kod içinden çağrılan tipli ajanları (PydanticAI, OpenAI Agents SDK) ifade eder."
+    }
+  ]
+}

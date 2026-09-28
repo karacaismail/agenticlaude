@@ -1,0 +1,78 @@
+{
+  "title": "Pano bulguları",
+  "summary": "Araç seçiminden bağımsız olarak otomasyondan önce kapatılması gereken tutarsızlıklar.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "Pano bulguları",
+      "lede": "Temporal bu kuralları koda dökecek. Panolardaki belirsizlikler kod aşamasında doğrudan hataya dönüşür. Aşağıdakiler önem sırasına göre."
+    },
+    {
+      "type": "issues",
+      "items": [
+        {
+          "severity": "high",
+          "title": "İki farklı orkestrasyon çekirdeği",
+          "detail": "STARK durumu, bütçeyi ve devamı Temporal’a; ajan-sağlayıcı panosu akışı, tekrarı, blocker ve insan onayını LangGraph’a veriyor.",
+          "fix": "Tek durum sahibi Temporal. LangGraph yalnızca aktivite içinde ve kalıcı checkpointer olmadan.",
+          "href": "#/ideal-kurgu/iki-cekirdek-celiskisi"
+        },
+        {
+          "severity": "high",
+          "title": "Deneme bütçeleri panolar arasında farklı",
+          "detail": "Fix döngüsü 6 (ana akış), 12 (agentic-main-processes), 4 (deterministik kapı), 3 + 2 / 10 (STARK).",
+          "fix": "Tek, sürümlü policy.yaml; run başında sabitlenir.",
+          "href": "#/politika"
+        },
+        {
+          "severity": "high",
+          "title": "Ana akışta RED kapısı görünmüyor",
+          "detail": "full_Agentic ve 15agents panolarında “Plan onaylandı → Kodlama başlar”. TDD panolarında RED kanıtı olmadan kodlama yasak.",
+          "fix": "Ana akışa “RED kanıtlandı mı?” kararını ekleyin; Temporal’da kodlama aktivitesinin ön koşulu olsun."
+        },
+        {
+          "severity": "medium",
+          "title": "Yasaklı risk sınıfı otomatik döngüye dönüyor",
+          "detail": "agentic-main-processes panosunda Yasaklı / Yüksek / Orta / Düşük seviyelendirmesinden çıkan ok “Aksiyon planı yaratır → Max ×12” döngüsüne gidiyor. STARK’ta yüksek risk insana devrediliyor.",
+          "fix": "Yasaklı: otomatik düzeltme yok; geri al ve insana devret. Yüksek: insan onayı. Orta / Düşük: otomatik."
+        },
+        {
+          "severity": "medium",
+          "title": "Plan incelemesini aynı yapay zekâ yapıyor",
+          "detail": "“Plan Gözden Geçirilir (Yapay Zekâ Kontrol Eder)” kutusu hangi modelin incelediğini tanımlamıyor. LLM-as-a-Judge araştırmaları hakemlerin kendi model ailesini kayırdığını, sıra ve uzunluktan etkilendiğini gösteriyor.",
+          "fix": "Planlayıcıdan farklı model ailesi; rubrik ve referans kriterler; yüksek riskte insan.",
+          "href": "#/kavramlar/dogrulama"
+        },
+        {
+          "severity": "medium",
+          "title": "Yayın hattının sahibi belirsiz",
+          "detail": "STARK’ta hem “GitHub CI/CD yayınlar” hem “Jenkins süreci burada değiştirilmez” ifadesi var.",
+          "fix": "READY_FOR_ALPHA’dan sonraki sahibi tek sistem olarak yazın."
+        },
+        {
+          "severity": "low",
+          "title": "%100 AC → test eşlemesi test gücünü ölçmez",
+          "detail": "Her kabul kriterine en az bir test bağlanması kapsamı gösterir; testin yanlış kodu yakalayıp yakalamadığını göstermez. Oracle problemi panolarında da vurgulanıyor.",
+          "fix": "Değişen modüllerde mutation testing (Stryker / PIT); hayatta kalan mutant QA bulgusudur."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Panolardaki güçlü kararlar"
+    },
+    {
+      "type": "list",
+      "style": "check",
+      "items": [
+        "Deterministik kapılar ajan denetiminden önce: “Amaç bariz hataları bedavaya elemek, pahalı yapay zekâ denetimini boşa çalıştırmamak.”",
+        "RED kanıtı olmadan kodlama yok; ajan testi silemez, atlayamaz, zayıflatamaz.",
+        "Yetkilendirme LLM değil motor işi (OpenFGA).",
+        "Test yalnızca DEV’de; alpha / beta / RC / prod teslim ortamı.",
+        "Başarıyı test çalıştırıcısı verir; QA ajanı bulgu üretir, kodlayanın iddiası kanıt sayılmaz.",
+        "Sınırlar evrensel değil; ilk 20–30 görevden sonra ölçümle ayarlanır."
+      ]
+    }
+  ]
+}

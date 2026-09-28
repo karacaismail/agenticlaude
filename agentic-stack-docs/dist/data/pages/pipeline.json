@@ -1,0 +1,469 @@
+{
+  "title": "Pipeline aşamaları",
+  "summary": "Her aşama bir API uç noktası gibi belgelendi: kim çalıştırır, ne alır, ne döndürür, nasıl hata verir.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Referans",
+      "title": "Pipeline aşamaları",
+      "lede": "Aşama kodları STARK panosundaki A–F bölümlerini izler. G deterministik kapıları, R risk sınıfını, L öğrenme döngüsünü gösterir. Etiket, adımı kimin yürüttüğünü söyler."
+    },
+    {
+      "type": "legend",
+      "items": [
+        {
+          "method": "EVENT",
+          "text": "Dış olayla tetiklenir"
+        },
+        {
+          "method": "AGENT",
+          "text": "Ajan çalışır; sonuç doğrulanmadan kabul edilmez"
+        },
+        {
+          "method": "AUTO",
+          "text": "Deterministik; yapay zekâ yok"
+        },
+        {
+          "method": "HUMAN",
+          "text": "İnsan kararı bekler"
+        },
+        {
+          "method": "STATE",
+          "text": "Yalnızca Temporal durumu değişir"
+        }
+      ]
+    },
+    {
+      "type": "endpoint",
+      "id": "a0",
+      "method": "AGENT",
+      "path": "/intake/normalize",
+      "title": "A0 · İçe alım ve normalizasyon",
+      "summary": "IceBox’taki 12.000 görev, görev çerçevesine (problem statement, user story, kabul kriterleri, risk, “neyi yapma”) uydurulur ve Product Backlog’a alınır.",
+      "orchestrator": "Temporal toplu iş akışı; hız sınırı ve maliyet tavanı iş akışında",
+      "worker": "PydanticAI tipli ajan (çıktı şeması doğrulanır)",
+      "params": [
+        {
+          "name": "plane_issue_id",
+          "type": "string",
+          "required": true,
+          "desc": "Kaynak görev"
+        },
+        {
+          "name": "frame_version",
+          "type": "semver",
+          "required": true,
+          "desc": "Görev çerçevesi şablonunun sürümü"
+        },
+        {
+          "name": "batch_budget",
+          "type": "money",
+          "required": true,
+          "desc": "Toplu iş için harcama tavanı"
+        }
+      ],
+      "response": "{\n  \"status\": \"NORMALIZED\",\n  \"dor\": { \"problem\": true, \"scope\": true, \"ac\": false, \"deps\": true },\n  \"missing\": [\"kabul kriteri ölçülebilir değil\"],\n  \"next\": \"PRODUCT_BACKLOG\"\n}",
+      "errors": [
+        {
+          "code": "DOR_INCOMPLETE",
+          "desc": "Eksik alan var; görev PO kuyruğuna döner."
+        },
+        {
+          "code": "BUDGET_EXCEEDED",
+          "desc": "Toplu iş durur; kalan görevler sonraki pencereye kalır."
+        }
+      ],
+      "avoid": "12.000 kaydı n8n döngüsüyle işlemek. Deneme ve bütçe mantığını elle yazmak zorunda kalırsınız."
+    },
+    {
+      "type": "endpoint",
+      "id": "a1",
+      "method": "EVENT",
+      "path": "/plane/comment → /startask",
+      "title": "A1 · Komut alımı",
+      "summary": "Geliştirici Plane’de görev yorumuna /startask yazar. Alıcı webhook imzasını ve kullanıcıyı doğrular, yorum kimliğini kaydeder.",
+      "orchestrator": "Küçük webhook alıcısı → Temporal StartWorkflow",
+      "worker": "—",
+      "params": [
+        {
+          "name": "workflow_id",
+          "type": "string",
+          "required": true,
+          "desc": "plane:{issue}:{ac_version}. Tekil olduğu için ikinci komut yeni run açmaz."
+        },
+        {
+          "name": "actor",
+          "type": "user",
+          "required": true,
+          "desc": "Yetkili assignee olmalı"
+        },
+        {
+          "name": "policy_version",
+          "type": "semver",
+          "required": true,
+          "desc": "Run boyunca sabit kalır"
+        }
+      ],
+      "response": "{\n  \"run_id\": \"…\",\n  \"plane_status\": \"RUNNING\",\n  \"duplicate\": false\n}",
+      "errors": [
+        {
+          "code": "DUPLICATE_COMMAND",
+          "desc": "Mevcut run bağlantısı yoruma yazılır."
+        },
+        {
+          "code": "UNAUTHORIZED",
+          "desc": "Gerekçeyle reddedilir; run açılmaz."
+        }
+      ],
+      "avoid": "Komutu doğrudan bir ajana iletmek. Aynı görev için iki paralel run oluşur."
+    },
+    {
+      "type": "endpoint",
+      "id": "a2",
+      "method": "AGENT",
+      "path": "/research/spec",
+      "title": "A2 · Araştırma ve task spec",
+      "summary": "Kod tabanı ve internet araştırılır, task spec üretilir. Eksik veya belirsiz bilgi en fazla 2 döngüde tamamlanır; sonra PO’ya sorulur.",
+      "orchestrator": "Temporal (döngü sayacı iş akışında)",
+      "worker": "OpenHands veya Claude Code salt-okunur modda; web-research ve unknown-unknowns ajanları; Context7 MCP",
+      "params": [
+        {
+          "name": "issue",
+          "type": "PlaneIssue",
+          "required": true,
+          "desc": "AC kimlikleriyle"
+        },
+        {
+          "name": "repo_sha",
+          "type": "sha",
+          "required": true,
+          "desc": "Araştırmanın yapıldığı revizyon"
+        }
+      ],
+      "response": "{\n  \"spec\": { \"behaviors\": [\"B1\", \"B2\"], \"risks\": [\"…\"], \"test_plan\": [\"…\"] },\n  \"ambiguous\": false,\n  \"loops_used\": 1\n}",
+      "errors": [
+        {
+          "code": "WAITING_FOR_PO",
+          "desc": "2 döngü sonunda hâlâ belirsiz. Açık soru Plane’e yazılır; cevapla A4’ten devam edilir."
+        }
+      ],
+      "avoid": "Döngü sayısını ajanın kendisine bırakmak."
+    },
+    {
+      "type": "endpoint",
+      "id": "a3",
+      "method": "AUTO",
+      "path": "/relations/cluster",
+      "title": "A3 · İlişki haritası ve kümeleme",
+      "summary": "Etkilenen modül, servis, API ve veri modeli belirlenir. Parçalanmış görevler bağımlılığa göre kümelenir; her küme bağımsız başlayabilir.",
+      "orchestrator": "Temporal child workflow (bağımsız küme başına)",
+      "worker": "Kod grafiği (Graphify / SCIP / tree-sitter) + networkx; LLM yalnızca yorum ve rapor",
+      "params": [
+        {
+          "name": "spec",
+          "type": "TaskSpec",
+          "required": true,
+          "desc": "A2 çıktısı"
+        },
+        {
+          "name": "max_split_attempts",
+          "type": "int",
+          "required": true,
+          "desc": "Panoda 2"
+        }
+      ],
+      "response": "{\n  \"clusters\": [[\"B1\"], [\"B2\", \"B3\"]],\n  \"order\": \"foundation → dependency → consumer\",\n  \"cycles\": []\n}",
+      "errors": [
+        {
+          "code": "BLOCKER_DEPENDENCY",
+          "desc": "Eksik ön koşul görev var; geliştirme başlamaz."
+        },
+        {
+          "code": "CYCLE_DETECTED",
+          "desc": "Döngüsel bağımlılık; yeniden bölme veya insan kararı."
+        }
+      ],
+      "avoid": "Bağımlılık grafiğini yalnızca LLM’e çıkartmak."
+    },
+    {
+      "type": "endpoint",
+      "id": "a4",
+      "method": "HUMAN",
+      "path": "/plan/review",
+      "title": "A4 · Plan ve plan incelemesi",
+      "summary": "Görev parçalara bölünür, riskler ve test planı yazılır. Plan, planlayıcıdan farklı bir model ailesindeki hakemce incelenir; çünkü LLM hakemlerin kendi model ailesini kayırdığı (self-preference) biliniyor. Yüksek riskte insan onayı gerekir.",
+      "orchestrator": "Temporal Signal / Update (günlerce bekleyebilir)",
+      "worker": "Planlayıcıdan farklı sağlayıcıda hakem ajan",
+      "params": [
+        {
+          "name": "plan",
+          "type": "Plan",
+          "required": true,
+          "desc": "Davranış listesi + risk + test planı"
+        },
+        {
+          "name": "reviewer_model",
+          "type": "string",
+          "required": true,
+          "desc": "Planlayıcıdan farklı aile"
+        }
+      ],
+      "response": "{\n  \"approved\": true,\n  \"reviewer\": \"model-b\",\n  \"notes\": [\"B2 için sınır durumu eksik\"]\n}",
+      "errors": [
+        {
+          "code": "PLAN_REJECTED",
+          "desc": "Araştırma derinleştirilir (A2)."
+        },
+        {
+          "code": "WAITING_FOR_PO",
+          "desc": "Ürün kararı gerekiyor."
+        }
+      ],
+      "avoid": "Planlayıcı ile incelemeciyi aynı model ve aynı prompt ailesinden seçmek."
+    },
+    {
+      "type": "endpoint",
+      "id": "b",
+      "method": "AGENT",
+      "path": "/tdd/{behavior}",
+      "title": "B · TDD: RED → GREEN → REFACTOR",
+      "summary": "Her davranış küçük bir tur. Test önce yazılır ve beklenen nedenle kırmızı olduğu kanıtlanır. RED kanıtı olmadan kodlama başlamaz. Ajan testi silemez, atlayamaz, zayıflatamaz.",
+      "orchestrator": "Temporal aktivitesi: heartbeat, zaman aşımı, iptal yayılımı. Her deneme temiz SHA’dan başlar.",
+      "worker": "Claude Code / Codex / OpenHands (isteğe bağlı Hermes); görev başına izole worktree + container",
+      "params": [
+        {
+          "name": "behavior_id",
+          "type": "string",
+          "required": true,
+          "desc": "AC kimliğine bağlı"
+        },
+        {
+          "name": "base_sha",
+          "type": "sha",
+          "required": true,
+          "desc": "Temiz başlangıç revizyonu"
+        },
+        {
+          "name": "attempts_left",
+          "type": "int",
+          "required": true,
+          "desc": "Görev toplamından düşülür"
+        }
+      ],
+      "response": "{\n  \"red\": { \"failed\": true, \"reason\": \"expected\" },\n  \"green\": { \"new_tests\": \"pass\", \"related\": \"pass\" },\n  \"sha\": \"…\",\n  \"attempts_used\": 1\n}",
+      "errors": [
+        {
+          "code": "BLOCKED_TEST",
+          "desc": "Test beklenen nedenle kırmızı değil; QA inceler."
+        },
+        {
+          "code": "BLOCKED_INFRA",
+          "desc": "Altyapı 1 + 2 denemede düzelmedi; işletime devredilir."
+        },
+        {
+          "code": "ERROR",
+          "desc": "Görev bütçesi bitti; otomatik iş durur, kanıt paketi hazırlanır."
+        }
+      ],
+      "avoid": "Testi ajanın kendi terminalinde koşup sonucu ajanın raporundan okumak."
+    },
+    {
+      "type": "endpoint",
+      "id": "g",
+      "method": "AUTO",
+      "path": "/gates/{sha}",
+      "title": "G · Deterministik kapılar",
+      "summary": "Panodaki en doğru karar: “Burada yapay zekâ yok, makineler kontrol eder.” Ucuz ve kesin eleme, pahalı ajan denetiminden önce yapılır.",
+      "orchestrator": "GitHub Actions zorunlu kontrolleri; Temporal sonucu Signal ile bekler",
+      "worker": "Yok (bilinçli olarak)",
+      "params": [
+        {
+          "name": "sha",
+          "type": "sha",
+          "required": true,
+          "desc": "Sonuç bu revizyona bağlıdır"
+        },
+        {
+          "name": "suite",
+          "type": "enum",
+          "required": true,
+          "desc": "build · lint · typecheck · unit · integration · e2e · sast · deps · a11y · perf"
+        }
+      ],
+      "response": "{\n  \"green\": false,\n  \"failed\": [\"lint\", \"sast\"],\n  \"report_url\": \"s3://…\"\n}",
+      "errors": [
+        {
+          "code": "GATE_FAILED",
+          "desc": "Fix ajanına gider; deneme sayılır."
+        },
+        {
+          "code": "FLAKY",
+          "desc": "Yeni flaky / skip / bypass başarı sayılmaz."
+        }
+      ],
+      "avoid": "Kapı sonucunu bir LLM’e yorumlatmak."
+    },
+    {
+      "type": "endpoint",
+      "id": "c",
+      "method": "AGENT",
+      "path": "/qa/verify",
+      "title": "C · Bağımsız QA",
+      "summary": "QA ajanı senaryoları AC’den çıkarır, kodlayanın başarı iddiasını kanıt saymaz. Başarıyı test çalıştırıcısı verir; QA bulgu üretir.",
+      "orchestrator": "Temporal; QA → kodlama dönüşü en fazla 2 tur",
+      "worker": "Kodlayıcıdan farklı sağlayıcı; değişen modüllerde mutation testing",
+      "params": [
+        {
+          "name": "package_digest",
+          "type": "string",
+          "required": true,
+          "desc": "Doğrulanan paket"
+        },
+        {
+          "name": "ac_version",
+          "type": "semver",
+          "required": true,
+          "desc": "Sessizce değişemez"
+        }
+      ],
+      "response": "{\n  \"verdict\": \"PASS\",\n  \"surviving_mutants\": 0,\n  \"findings\": []\n}",
+      "errors": [
+        {
+          "code": "QA_FINDING",
+          "desc": "Kodlamaya döner (tur sayılır)."
+        },
+        {
+          "code": "WAITING_FOR_QA",
+          "desc": "Test beklentisi belirsiz; QA mühendisi karar verir."
+        }
+      ],
+      "avoid": "QA’yı kodlayan modelin başka bir promptuyla yaptırmak (oracle problemi)."
+    },
+    {
+      "type": "endpoint",
+      "id": "r",
+      "method": "HUMAN",
+      "path": "/risk/classify",
+      "title": "R · Risk sınıfı ve insan onayı",
+      "summary": "Değişiklik olasılık-etki matrisine göre sınıflanır. Panoda insan onayı “otomasyon duraksıyor ama durmuyor” diye tarif ediliyor.",
+      "orchestrator": "Temporal Update/Signal + Plane durumu",
+      "worker": "İnsan; bildirim n8n veya doğrudan Slack/Telegram",
+      "params": [
+        {
+          "name": "diff_summary",
+          "type": "string",
+          "required": true,
+          "desc": "Kod, testler ve kontrol sonuçları hazır"
+        },
+        {
+          "name": "risk",
+          "type": "enum",
+          "required": true,
+          "desc": "YASAKLI · YÜKSEK · ORTA · DÜŞÜK"
+        }
+      ],
+      "response": "{\n  \"risk\": \"YÜKSEK\",\n  \"approval\": \"PENDING\",\n  \"notified\": [\"slack\"]\n}",
+      "errors": [
+        {
+          "code": "FORBIDDEN_CHANGE",
+          "desc": "Yasaklı: otomatik düzeltme yok; değişiklik geri alınır, insana devredilir."
+        },
+        {
+          "code": "APPROVAL_REJECTED",
+          "desc": "Değişiklik isteği açılır."
+        }
+      ],
+      "avoid": "Onay için açık bir HTTP isteğini veya n8n kuyruk işçisini günlerce bekletmek."
+    },
+    {
+      "type": "endpoint",
+      "id": "e",
+      "method": "AUTO",
+      "path": "/release/{channel}",
+      "title": "E · Birleştirme ve yayın",
+      "summary": "READY_FOR_ALPHA sonrası mevcut yayın akışı devralır. Alpha, beta, RC ve prod test ortamı değildir; düzeltme DEV’de yapılır.",
+      "orchestrator": "GitHub merge queue + mevcut CI/CD",
+      "worker": "—",
+      "params": [
+        {
+          "name": "sha",
+          "type": "sha",
+          "required": true,
+          "desc": "Eski yeşil sonuç yeni SHA’ya taşınmaz"
+        },
+        {
+          "name": "digest",
+          "type": "string",
+          "required": true,
+          "desc": "Yayın paketinin kimliği"
+        }
+      ],
+      "response": "{\n  \"channel\": \"alpha\",\n  \"plane_status\": \"DONE\"\n}",
+      "errors": [
+        {
+          "code": "SHA_MOVED",
+          "desc": "Ana dal ilerledi; yeni kanıt üretilir (C4)."
+        }
+      ],
+      "avoid": "Yayın adımlarını ajan akışının içine gömmek."
+    },
+    {
+      "type": "endpoint",
+      "id": "f",
+      "method": "EVENT",
+      "path": "/feedback/bug",
+      "title": "F · Geri besleme",
+      "summary": "Sunumda bulunan sorun bağlantılı bug olarak açılır. Test ajanı yeni regresyon testi yazar: hatalı sürümde kırmızı, düzeltilmişte yeşil olmalı.",
+      "orchestrator": "Plane webhook → Temporal (A1 ile aynı kapı)",
+      "worker": "Test ajanı",
+      "params": [
+        {
+          "name": "root_issue",
+          "type": "string",
+          "required": true,
+          "desc": "Kök görev kimliği"
+        }
+      ],
+      "response": "{\n  \"bug\": \"…\",\n  \"regression_test\": \"red-on-old, green-on-fix\"\n}",
+      "errors": [
+        {
+          "code": "SCOPE_CHANGE",
+          "desc": "Yeni istek; PO’ya ayrı backlog işi."
+        }
+      ],
+      "avoid": "Aynı hatadan kopya görevler açmak."
+    },
+    {
+      "type": "endpoint",
+      "id": "l",
+      "method": "STATE",
+      "path": "/learning/propose",
+      "title": "L · Öğrenme ve yönerge iyileştirme",
+      "summary": "Panodaki kural: “Ajan yönergesi de değişecekse ayrı örnek kümesinde karşılaştır; iyileşirse sonraki çalışmalarda uygula.”",
+      "orchestrator": "Zamanlanmış Temporal iş akışı (çevrimdışı)",
+      "worker": "Hermes tarzı skill önerisi → rules deposuna PR → Promptfoo / Inspect → insan onayı → merge",
+      "params": [
+        {
+          "name": "candidate",
+          "type": "Skill | Prompt",
+          "required": true,
+          "desc": "Önerilen değişiklik"
+        },
+        {
+          "name": "eval_set",
+          "type": "string",
+          "required": true,
+          "desc": "Sabit örnek kümesi"
+        }
+      ],
+      "response": "{\n  \"baseline\": 0.71,\n  \"candidate\": 0.78,\n  \"decision\": \"PR_OPENED\"\n}",
+      "errors": [
+        {
+          "code": "REGRESSION",
+          "desc": "Öneri reddedilir; üretim hattı değişmez."
+        }
+      ],
+      "avoid": "Skill’lerin üretim hattında sessizce kendini değiştirmesi."
+    }
+  ]
+}

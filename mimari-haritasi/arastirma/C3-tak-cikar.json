@@ -1,0 +1,1009 @@
+{
+ "meta": {
+  "soru": "C3 - Ajanik yazilim teslim sisteminde gercek tak-cikar (degistirilebilirlik/uyarlanabilirlik) ne gerektirir, kanit nedir?",
+  "tarih": "2026-09-27",
+  "durum": "tamamlandi",
+  "yontem": "WebSearch/WebFetch ile birincil kaynak (duyuru, dokuman, changelog, lisans metni) dogrulamasi; onceki arastirma dosyalarindan (A0, B1, A2) capraz kontrol",
+  "not": "Her iddia URL ile; dogrulanamayanlar 'dogrulanamadi' olarak isaretli",
+  "sinirlar": [
+   "WebSearch butcesi oturumda tukendi; son dogrulamalar gh api/curl/WebFetch ile yapildi",
+   "'Arac yari omru' icin akademik bir calisma bulunamadi (dogrulanamadi); omur sayilari yalnizca bu dosyadaki orneklerden turetildi, secim yanliligi var",
+   "Alan (Alan Eng.) CircleCI->GitHub Actions vakasi 403 nedeniyle dogrulanamadi ve kullanilmadi",
+   "Terragon resmi kapanis sayfasi sertifika hatasi verdi; arama ozeti + GitHub deposuyla dogrulandi",
+   "OpenHands V0 kaldirma tarihi (2026-04-01) ikincil kaynak (DeepWiki)"
+  ]
+ },
+ "degisim_kanitlari": [
+  {
+   "katman": "model",
+   "olay": "Anthropic: Claude 2/2.1/Sonnet 3 emekliye ayrildi (duyuru 2025-01-21)",
+   "tarih": "2025-07-21",
+   "etki": "Duyurudan emekliye 6 ay; emeklilik sonrasi istekler hata doner",
+   "kaynak": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  },
+  {
+   "katman": "model",
+   "olay": "Anthropic: Claude Sonnet 3.5 (iki snapshot) emekli (duyuru 2025-08-13)",
+   "tarih": "2025-10-28",
+   "etki": "Duyurudan emekliye ~2,5 ay; 2024-06 ve 2024-10 snapshot'lari ~12-16 ay yasadi",
+   "kaynak": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  },
+  {
+   "katman": "model",
+   "olay": "Anthropic: Sonnet 3.7 ve Haiku 3.5 emekli",
+   "tarih": "2026-02-19",
+   "etki": "Sonnet 3.7 (2025-02-19 snapshot) tam 12 ay yasadi",
+   "kaynak": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  },
+  {
+   "katman": "model",
+   "olay": "Anthropic: Sonnet 4 ve Opus 4 emekli (duyuru 2026-04-14); Opus 4.1 emekli (duyuru 2026-06-05)",
+   "tarih": "2026-06-15 / 2026-08-05",
+   "etki": "2025-05 snapshot'lari ~13 ay; Opus 4.1 (2025-08) 12 ay. Politika: kamuya acik modellerde 'en az 60 gun' bildirim",
+   "kaynak": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  },
+  {
+   "katman": "model/API parametresi",
+   "olay": "Anthropic: Opus 4.7 ve sonrasinda temperature/top_p/top_k varsayilan disi deger 400 hatasi; Python SDK v1.0 bu parametreleri kaldirdi",
+   "tarih": "2026",
+   "etki": "Model degisince istek sozlesmesi de degisiyor: 'sadece model adini degistir' varsayimi kiriliyor",
+   "kaynak": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  },
+  {
+   "katman": "model",
+   "olay": "OpenAI: gpt-4.5-preview duyurudan 3 ay sonra kapatildi",
+   "tarih": "2025-04-14 -> 2025-07-14",
+   "etki": "Onizleme modeli ~5 ay yasadi",
+   "kaynak": "https://developers.openai.com/api/docs/deprecations"
+  },
+  {
+   "katman": "model",
+   "olay": "OpenAI: codex-mini-latest ve chatgpt-4o-latest kapatildi",
+   "tarih": "2026-02-12 / 2026-02-17",
+   "etki": "Kodlama ajani icin ozel model ~9 ayda kapandi (duyuru 2025-11-17)",
+   "kaynak": "https://developers.openai.com/api/docs/deprecations"
+  },
+  {
+   "katman": "model",
+   "olay": "OpenAI deprecations sayfasi: 2025'te en az 12, 2026'da (Eylul'e kadar) en az 9 ayri kullanimdan kaldirma duyurusu (WebFetch sayimi, tam liste degil olabilir)",
+   "tarih": "2025-2026",
+   "etki": "Ayda ortalama ~1 kirici degisiklik duyurusu",
+   "kaynak": "https://developers.openai.com/api/docs/deprecations"
+  },
+  {
+   "katman": "ajan API/platform",
+   "olay": "OpenAI Assistants API kullanimdan kaldirildi; thread'ler saglayicida tutuluyordu, Responses+Conversations API'ye tasima gerekti",
+   "tarih": "duyuru 2025-08-26, kapanis 2026-08-26",
+   "etki": "Durum (thread/run) araci icinde oldugu icin gecis bir veri/durum gocu oldu",
+   "kaynak": "https://developers.openai.com/api/docs/deprecations"
+  },
+  {
+   "katman": "dugum-grafigi ajan kurucu",
+   "olay": "OpenAI Agent Builder (AgentKit gorsel kanvasi) kullanimdan kaldirildi; Evals platformu ve reusable prompts da",
+   "tarih": "lansman 2025-10-06; duyuru 2026-06-03; kapanis 2026-11-30",
+   "etki": "~8 ayda kaldirma kararı; gecis: Agents SDK (kod) veya promptlari 'uygulama koduna tasiyin'; Evals -> Promptfoo",
+   "kaynak": "https://developers.openai.com/api/docs/deprecations ; https://superprompt.com/blog/openai-agentkit-agent-builder-guide"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Anthropic: abonelik OAuth tokenlarinin ucuncu taraf harness'larda (OpenCode vb.) kullanimi sunucu tarafinda engellendi",
+   "tarih": "2026-01-09",
+   "etki": "Bir gecede, onceden duyurusuz; hata: 'This credential is only authorized for use with Claude Code.'",
+   "kaynak": "https://venturebeat.com/technology/anthropic-cracks-down-on-unauthorized-claude-usage-by-third-party-harnesses ; https://news.ycombinator.com/item?id=46549823"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Anthropic: Claude aboneliginin OpenClaw ve diger ucuncu taraf harness'larda kullanimi kapatildi (ek kullanim/API ucreti)",
+   "tarih": "2026-04-04",
+   "etki": "Gerekce: 'subscriptions weren't built for the usage patterns of these third-party tools'",
+   "kaynak": "https://techcrunch.com/2026/04/04/anthropic-says-claude-code-subscribers-will-need-to-pay-extra-for-openclaw-support/"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Anthropic: ucuncu taraf ajan kullanimi 'Agent SDK kredileri' ile geri acildi; 2026-06-15'ten itibaren Agent SDK, GitHub Actions ve OpenClaw gibi programatik kullanim ayri aylik kredi havuzundan",
+   "tarih": "2026-05-13 / 2026-06-15",
+   "etki": "6 ayda en az 4 politika degisikligi (Oca, Nis, May, Haz) - saglayici kullanim kosullari tek basina bir oynaklik katmani",
+   "kaynak": "https://venturebeat.com/technology/anthropic-reinstates-openclaw-and-third-party-agent-usage-on-claude-subscriptions-with-a-catch ; https://www.infoworld.com/article/4171274/anthropic-puts-claude-agents-on-a-meter-across-its-subscriptions.html"
+  },
+  {
+   "katman": "model erisimi",
+   "olay": "Anthropic, Windsurf'un Claude 3.x erisimini 5 gunden kisa bildirimle kesti; ardindan OpenAI-Windsurf 3 milyar $ anlasmasi coktu, Google CEO'yu aldi, Cognition kalanini satin aldi",
+   "tarih": "2025-06 / 2025-07-11..14",
+   "etki": "Tek saglayiciya bagli bir urun hem model erisimini hem sahipligini 6 hafta icinde kaybetti",
+   "kaynak": "https://www.forbes.com/sites/johanmoreno/2025/06/05/anthropic-cuts-windsurfs-claude-access-before-openai-acquisition/ ; https://www.deeplearning.ai/the-batch/google-cognition-carve-up-windsurf-after-openais-failed-3b-acquisition-bid"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Clawdbot -> Moltbot -> OpenClaw: Anthropic marka itirazi sonrasi 4 gunde iki isim degisikligi; yaratıcı 2026-02-14'te OpenAI'ye katildi, vakfa devir",
+   "tarih": "2026-01-26/27 ve 2026-01-29/30",
+   "etki": "Paket adlari, depo, alan adlari, yapilandirma yollarinin degismesi; guvenlik/dolandiricilik riskleri",
+   "kaynak": "https://en.wikipedia.org/wiki/OpenClaw ; https://www.forbes.com/sites/ronschmelzer/2026/01/30/moltbot-molts-again-and-becomes-openclaw-pushback-and-concerns-grow/"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Hermes Agent (Nous Research) OpenClaw'dan goc komutu sunuyor: 'hermes claw migrate' ayarlari, bellekleri, skill'leri ve API anahtarlarini iceri aktarir",
+   "tarih": "2026",
+   "etki": "Harness degisimini ucuzlatan sey: skill'lerin acik bir bicimde (agentskills.io) ve bellegin dosya olarak tasinabilmesi",
+   "kaynak": "https://github.com/nousresearch/hermes-agent"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Vibe Kanban'in sirketi (bloop) kapandi; uzak ozellikler 30 gunde kapatildi, proje topluluk bakimli ve tamamen yerel mimariye gecti",
+   "tarih": "2026-04-10",
+   "etki": "Depo 2025-06-14'te acilmisti: sirketli omur ~10 ay",
+   "kaynak": "https://www.vibekanban.com/blog/shutdown ; https://github.com/BloopAI/vibe-kanban"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Terragon (bulutta Claude Code/Codex calistiran arka plan ajan orkestratoru) kapandi, kod anlik goruntu olarak acildi",
+   "tarih": "2026-02-09",
+   "etki": "Gerekce: surdurulebilir is icin yeterli cekis yok; kullanicilara 'verinizi indirin' denildi",
+   "kaynak": "https://github.com/terragon-labs/terragon-oss ; https://docs.terragonlabs.com/docs/resources/shutdown (sertifika suresi dolmus, arama ozetiyle dogrulandi)"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Crystal (paralel worktree ajan yoneticisi) kullanimdan kaldirildi, yerini Nimbalyst aldi",
+   "tarih": "2026-02",
+   "etki": "Depo 2025-06-05'te acilmisti: omur ~8 ay",
+   "kaynak": "https://github.com/stravu/crystal"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Roo Code (3 milyon kurulum) kapatildi, depo arsivlendi; ekip Slack-oncelikli bulut ajani Roomote'a gecti",
+   "tarih": "duyuru 2026-04-20/21, kapanis 2026-05-15",
+   "etki": "Aracın ozel yapilandirma bicimleri (.roo/rules, .roomodes, .rooignore) sahipsiz kaldi; alt akis araclar bunlari kaldirmak zorunda",
+   "kaynak": "https://www.bodegaone.ai/blog/roo-code-shutdown-alternatives ; https://github.com/PIsberg/vibetags/issues/664 ; https://github.com/RooCodeInc/Roo-Code"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "Sourcegraph Cody Free/Pro/Enterprise Starter sonlandirildi, bireysel kullanicilar Amp'e yonlendirildi; Amp 2025-12'de ayri sirket oldu",
+   "tarih": "2025-07-23",
+   "etki": "Ayni satici icinde urun degisimi: kullanicinin is akisi/yapilandirmasi tasinmadi",
+   "kaynak": "https://sourcegraph.com/blog/changes-to-cody-free-pro-and-enterprise-starter-plans ; https://en.wikipedia.org/wiki/Sourcegraph"
+  },
+  {
+   "katman": "ajan kosum/harness",
+   "olay": "GitHub Copilot Workspace teknik onizlemesi kapatildi; yerini Copilot coding agent aldi",
+   "tarih": "lansman 2024-04, kapanis 2025-05-30",
+   "etki": "~13 aylik urun omru; issue->spec->plan->PR fikri yasadi, arac olmedi",
+   "kaynak": "https://githubnext.com/projects/copilot-workspace/"
+  },
+  {
+   "katman": "ajan cercevesi",
+   "olay": "AutoGen ve Semantic Kernel bakim moduna alindi; halef Microsoft Agent Framework (onizleme 2025-10-01, 1.0 GA 2026-04-03)",
+   "tarih": "2025-10-01 / 2026-04-03",
+   "etki": "AutoGen uzerine kurulan sistemler icin yeniden yazim/gecis",
+   "kaynak": "https://visualstudiomagazine.com/articles/2025/10/01/semantic-kernel-autogen--open-source-microsoft-agent-framework.aspx ; https://visualstudiomagazine.com/articles/2026/04/06/microsoft-ships-production-ready-agent-framework-1-0-for-net-and-python.aspx"
+  },
+  {
+   "katman": "ajan cercevesi",
+   "olay": "LangChain 1.0 / LangGraph 1.0: LangChain kapsamini daraltti, eski islevler langchain-classic'e tasindi; create_react_agent kullanimdan kaldirildi, Python 3.9 destegi dustu. LangGraph'ta kirici degisiklik yok",
+   "tarih": "2025-10-22",
+   "etki": "0.1->0.2->0.3->1.0 hattinda her ana surum goc gerektirdi; 1.0 ile '2.0'a kadar kirici degisiklik yok' taahhudu",
+   "kaynak": "https://www.langchain.com/blog/langchain-langgraph-1dot0 ; https://docs.langchain.com/oss/python/release-policy"
+  },
+  {
+   "katman": "ajan cercevesi",
+   "olay": "OpenHands V0 ajan sistemi kullanimdan kaldirildi; V1 cekirdegi ayri software-agent-sdk deposuna tasindi; ana OpenHands deposu (89k yildiz) artik TypeScript 'Agent Canvas': 'Run OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent'. SDK'da CI 'Deprecation deadlines' kapisi kaldirma tarihlerini zorluyor",
+   "tarih": "2025-08 (SDK deposu) -> 2026 (Agent Canvas); V0 kaldirma hedefi 2026-04-01 (ikincil kaynak: DeepWiki)",
+   "etki": "Harness saglayicisinin kendisi harness-bagimsiz kontrol merkezine (ACP) donustu: pazar harness katmaninda standart bir dikise yakinsiyor. Python V0 backend'ine yaslanan entegrasyonlar kirildi.",
+   "kaynak": "https://github.com/OpenHands/OpenHands (README, gh api 2026-09-27) ; https://github.com/OpenHands/software-agent-sdk/issues/5106 ; https://deepwiki.com/OpenHands/OpenHands/6-configuration-system"
+  },
+  {
+   "katman": "dugum-grafigi araci",
+   "olay": "Flowise: Workday satin aldi (2025-08-14); ardindan urun omrunun sonu - kod dondurma 2026-07-29, depo arsivlendi 2026-08-13, cekirdek destek 2026-08-31",
+   "tarih": "2025-08-14 -> 2026-08-13",
+   "etki": "Gerekce: 'the typical rigid workflow low-code approach quickly hits the limit when it comes to complexity'; resmi goc yolu yok, 'fork edin'",
+   "kaynak": "https://newsroom.workday.com/2025-08-14-Workday-Acquires-Flowise,-Bringing-Powerful-AI-Agent-Builder-Capabilities-to-the-Workday-Platform ; https://github.com/FlowiseAI/Flowise/discussions/6727 ; https://github.com/FlowiseAI/Flowise"
+  },
+  {
+   "katman": "dugum-grafigi araci",
+   "olay": "Langflow: DataStax satin aldi (2024-04), DataStax'i IBM satin aldi (kapanis 2025-05-28)",
+   "tarih": "2024-04 / 2025-05-28",
+   "etki": "18 ayda iki sahiplik degisimi",
+   "kaynak": "https://www.datastax.com/press-release/datastax-acquires-langflow-to-make-building-genai-apps-100x-easier-faster-more-fun ; https://iconnect007.com/article/145543/ibm-officially-closes-deal-acquiring-datastax/145540/ein"
+  },
+  {
+   "katman": "orkestrasyon",
+   "olay": "Netflix, Conductor OSS bakimini birakti, depo arsivlendi; Orkes toplulugu fork'la devraldi",
+   "tarih": "2023-12-13",
+   "etki": "Buyuk kurum destekli orkestrator bile sahipsiz kalabiliyor",
+   "kaynak": "https://techcrunch.com/2023/12/13/orkes-forks-conductor-as-netflix-abandons-the-open-source-project/ ; https://github.com/Netflix/conductor"
+  },
+  {
+   "katman": "orkestrasyon",
+   "olay": "Apache Airflow 3.0: SubDAG kaldirildi, gorev kodunun meta veritabanina dogrudan erisimi yasaklandi (REST API/istemci zorunlu)",
+   "tarih": "2025-04-22",
+   "etki": "Aracin ic veritabanina dogrudan yaslanan tum kod kirildi - 'gercegi aracin icinden okumak' kirilganligi",
+   "kaynak": "https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading_to_airflow3.html ; https://github.com/apache/airflow/discussions/51680"
+  },
+  {
+   "katman": "orkestrasyon",
+   "olay": "Temporal: eski Worker Versioning V1 (Version Sets)/V2 API'leri v1.32'de son kez, v1.33'te kaldiriliyor; Worker Deployment API'leri v1.31'de GA",
+   "tarih": "2026",
+   "etki": "Secilen dayanikli yurutme motorunda bile surumleme API'si degisiyor",
+   "kaynak": "https://github.com/temporalio/temporal/releases (A2 arastirmasindan; A2-platform-ve-kapasite.json)"
+  },
+  {
+   "katman": "sandbox/runtime",
+   "olay": "Gitpod -> Ona (ajan platformuna pivot, 2025-09); Gitpod Classic kullandikca ode 2025-10-15'te kapandi; OpenAI Ona'yi satin alma karari (2026-06-11)",
+   "tarih": "2025-09 / 2025-10-15 / 2026-06-11",
+   "etki": "Gelistirme ortami saglayicisi 9 ayda iki kez kimlik degistirdi, sonunda bir model saglayicisina gecti",
+   "kaynak": "https://www.theregister.com/software/2025/09/03/gitpod-rebrands-as-ona-now-an-ai-driven-dev-platform/295031 ; https://www.forbes.com/sites/janakirammsv/2026/06/13/openai-buys-ona-to-run-codex-agents-inside-enterprise-clouds/"
+  },
+  {
+   "katman": "sandbox/runtime",
+   "olay": "Together AI CodeSandbox'i satin aldi",
+   "tarih": "2024-12-12",
+   "etki": "Sandbox saglayicisi bir model/cikarim saglayicisina katildi",
+   "kaynak": "https://siliconangle.com/2024/12/12/together-ai-acquires-codesandbox-adds-code-interpreter-ai-development-platform/"
+  },
+  {
+   "katman": "sandbox/runtime",
+   "olay": "Daytona eski gelistirme ortami urununu kapatip AI ajan sandbox'ina pivot etti; yeni urun 2025-04 sonu",
+   "tarih": "2025-02 / 2025-04",
+   "etki": "Mevcut musteri tabani birakildi",
+   "kaynak": "https://www.zenml.io/blog/e2b-vs-daytona ; https://github.com/daytonaio/daytona (pivot ayrintisi ikincil kaynak; birincil duyuru dogrulanamadi)"
+  },
+  {
+   "katman": "is takip (tracker)",
+   "olay": "GitHub Projects (classic) kapatildi; otomasyonlar, triage ve etkinlik gecmisi tasinmadi; 1.200+ ogeli projelerde bir kismi arsive gitti",
+   "tarih": "2024-08-23",
+   "etki": "Aracin icindeki davranis (otomasyon) goc etmez, yalnizca veri kismen goc eder",
+   "kaynak": "https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/"
+  },
+  {
+   "katman": "is takip (tracker)",
+   "olay": "Atlassian Data Center urunlerinin omrunun sonu: yeni lisans satisi 2026-03-30'da bitti, 2029-03-28'de salt-okunur",
+   "tarih": "duyuru 2025-09; EOL 2029-03-28",
+   "etki": "Kurum ici Jira/Confluence kurulumlari buluta zorunlu goc",
+   "kaynak": "https://www.atlassian.com/licensing/data-center-end-of-life"
+  },
+  {
+   "katman": "lisans",
+   "olay": "n8n: Apache 2.0 + Commons Clause'dan Sustainable Use License'a (yalniz ic is amaclari)",
+   "tarih": "2022-03-17",
+   "etki": "Ticari gomme/SaaS kullanimi kisitli; 'acik kaynak' degil 'fair-code'",
+   "kaynak": "https://docs.n8n.io/privacy-and-security/sustainable-use-license ; https://blog.n8n.io/announcing-new-sustainable-use-license/"
+  },
+  {
+   "katman": "lisans",
+   "olay": "HashiCorp Terraform/Vault/Nomad MPL -> BUSL 1.1; topluluk OpenTofu fork'u (LF kabul 2023-09-20, 1.6.0 GA 2024-01-10)",
+   "tarih": "2023-08-10",
+   "etki": "5 ayda uretime hazir, durum dosyasi ve HCL uyumlu fork",
+   "kaynak": "https://opentofu.org/manifesto/ ; https://en.wikipedia.org/wiki/OpenTofu"
+  },
+  {
+   "katman": "lisans",
+   "olay": "Redis BSD -> RSALv2/SSPL (7.4); Linux Foundation Valkey fork'u (Redis 7.2.4'ten) 2024-04; Redis 8 ile AGPLv3 eklendi",
+   "tarih": "2024-03 / 2024-04 / 2025-05-01",
+   "etki": "Ayni protokol (RESP) sayesinde bulut saglayicilari hizla Valkey'e gecti",
+   "kaynak": "https://en.wikipedia.org/wiki/Valkey ; https://redis.io/blog/agplv3/"
+  },
+  {
+   "katman": "lisans",
+   "olay": "Elastic: 2021'de Apache 2.0 -> SSPL/ELv2; 2024-08-29'da AGPL secenegi eklendi",
+   "tarih": "2021-01 / 2024-08-29",
+   "etki": "Lisans 3 yilda iki kez degisti",
+   "kaynak": "https://www.elastic.co/blog/elasticsearch-is-open-source-again"
+  },
+  {
+   "katman": "arac protokolu",
+   "olay": "MCP 2025-03-26 surumu HTTP+SSE tasimasini Streamable HTTP ile degistirdi; MCP 2025-12-09'da Linux Foundation Agentic AI Foundation'a devredildi (AGENTS.md ve goose ile)",
+   "tarih": "2025-03-26 / 2025-12-09",
+   "etki": "Standart bile ilk 5 ayinda tasima katmanini kirdi; ama yonetisim tarafsizlasti",
+   "kaynak": "https://modelcontextprotocol.io/specification/2025-03-26/basic/transports ; https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation"
+  },
+  {
+   "katman": "ajanlar arasi protokol",
+   "olay": "IBM ACP (Agent Communication Protocol), A2A ile birlesti; depo arsivlendi",
+   "tarih": "2025-08-27/29",
+   "etki": "Rakip standartlar konsolide oluyor: erken secilen standart da olebilir",
+   "kaynak": "https://lfaidata.foundation/communityblog/2025/08/29/acp-joins-forces-with-a2a-under-the-linux-foundations-lf-ai-data/ ; https://github.com/i-am-bee/acp"
+  },
+  {
+   "katman": "ajan kosum/harness (kullanim kosulu)",
+   "olay": "Anthropic Claude Code 'Legal and compliance' dokumanini guncelledi: Free/Pro/Max OAuth tokenlarinin ucuncu taraf urunlerde (Agent SDK dahil) kullanimi yasak; 'may do so without prior notice'",
+   "tarih": "2026-02-19",
+   "etki": "Kosul metni onceden haber vermeden uygulama hakkini sakli tutuyor: harness+kimlik dogrulama secimi sozlesme riskidir",
+   "kaynak": "https://www.theregister.com/2026/02/20/anthropic_clarifies_ban_third_party_claude_access/ ; https://code.claude.com/docs/en/legal-and-compliance"
+  },
+  {
+   "katman": "merge queue",
+   "olay": "bors-ng kullanimdan kaldirildi ('use GitHub's built-in merge queue'), depo arsivlendi; GitHub merge queue 2023-07-12'de GA - CI'nin 'merge_group' olayini dinlemesi gerekiyor",
+   "tarih": "2023-07-12 / arsiv (son push 2024-04-04)",
+   "etki": "Kuyruk araci degisince CI tetikleyici sozlesmesi de degisiyor",
+   "kaynak": "https://github.com/bors-ng/bors-ng ; https://github.blog/changelog/2023-07-12-pull-request-merge-queue-is-now-generally-available/ ; https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue"
+  }
+ ],
+ "dugum_grafigi_araclari": {
+  "ana_tez": "Dugum grafigi araclarinda 'fis cek-tak' yalnizca iki dugum arasindaki veri sozlesmesi (girdi/cikti JSON'u) sabitken ucuzdur. Durum, bekleme, yeniden deneme, surumleme, sirlar ve testler dugumde degil PLATFORMUN kendisinde yasar; grafigin kendisi de aracin ozel bicimidir. Yani n8n'de bir dugumu degistirmek kolaydir; n8n'i degistirmek kolay degildir.",
+  "araclar": [
+   {
+    "ad": "n8n",
+    "grafik_bicimi": "Ozel is akisi JSON'u; her dugum 'type' + 'typeVersion' tasir. Kaydedilmis is akisi dugumun eski surumunde kalir, yeni is akislari en son surumu yukler (dugum sozlesmesini dondurmanin iyi bir ornegi).",
+    "durum": "Calisma verisi n8n veritabaninda; Wait dugumu 65 sn ustu beklemede calisma verisini veritabanina bosaltir ve kosul gelince yeniden yukler.",
+    "uzun_bekleme_zamanlama": "Varsayilan zamanlayici bellek icidir: 'Restarts lose pending runs' - kapali kalinan surede kacirilan calismalar atlanir. Veritabani destekli 'durable scheduler' 2.36.0'dan itibaren ve varsayilan KAPALI.",
+    "yeniden_deneme": "Dugum bazli 'Retry On Fail' ve hata is akislari (platform ayari; grafik JSON'unda saklanir).",
+    "surumleme_git": "Kaynak kontrolu/ortamlar yalnizca Business ve Enterprise planlarinda. Dokuman: 'you shouldn't view n8n's source control as full version control'; n8n icinde PR tarzi inceleme yok; 'n8n can't detect conflicts on workflows'; kimlik bilgileri Git'e yalnizca taslak (ID, ad, tur) olarak gider; yayinlanan degil kaydedilen surum itilir.",
+    "sirlar": "Kimlik bilgileri ~/.n8n'deki anahtar ile sifrelenip n8n veritabaninda tutulur; kuyruk modunda tum isciler ayni N8N_ENCRYPTION_KEY'i almali. Anahtar platforma baglidir.",
+    "test": "Veri sabitleme/mock yalnizca gelistirme icin ('Data pinning isn't available for production'); AI is akislari icin 'Evaluations'. Dugum grafigini CI'da birim/sozlesme testinden geciren yerlesik bir cerceve dokumanda bulunamadi (dogrulanamadi).",
+    "lisans": "Sustainable Use License (2022-03-17'den beri): yalniz ic is amaclari.",
+    "kaynaklar": [
+     "https://docs.n8n.io/connect/create-nodes/build-your-node/reference/versioning.md",
+     "https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.wait/",
+     "https://docs.n8n.io/deploy/host-n8n/configure-n8n/durable-scheduler.md",
+     "https://docs.n8n.io/administer/use-source-control-and-environments.md",
+     "https://docs.n8n.io/administer/use-source-control-and-environments/use-git-in-n8n.md",
+     "https://docs.n8n.io/administer/use-source-control-and-environments/push-and-pull-changes.md",
+     "https://docs.n8n.io/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key.md",
+     "https://docs.n8n.io/build/work-with-data/pin-and-mock-data.md",
+     "https://docs.n8n.io/privacy-and-security/sustainable-use-license"
+    ]
+   },
+   {
+    "ad": "Flowise",
+    "grafik_bicimi": "Ozel chatflow/agentflow JSON'u (LangChain.js sarmalayici dugumler).",
+    "durum_ve_kader": "Workday satin aldi (2025-08-14); EOL: kod dondurma 2026-07-29, depo arsiv 2026-08-13, destek sonu 2026-08-31; resmi goc yolu yok, 'fork edin'. Gerekce: 'the typical rigid workflow low-code approach quickly hits the limit when it comes to complexity'.",
+    "ders": "Grafikler aracin JSON'unda kaldigi icin, arac olunce elde calistirilabilir varlik olarak yalnizca bakimsiz bir fork kaliyor.",
+    "kaynaklar": [
+     "https://github.com/FlowiseAI/Flowise/discussions/6727",
+     "https://newsroom.workday.com/2025-08-14-Workday-Acquires-Flowise,-Bringing-Powerful-AI-Agent-Builder-Capabilities-to-the-Workday-Platform"
+    ]
+   },
+   {
+    "ad": "Langflow",
+    "grafik_bicimi": "Disa aktarilan akis JSON'u dugum+kenar+meta veri icerir; bilesenin Python kodu da akisin icinde saklanir (ozel bilesenler kapaliyken kod yalnizca kimlik icin kullanilir).",
+    "kiricilik": "Dokuman: bilesen girdi/ciktisini degistiren kirici degisiklikler bilesenlerin baglantisini koparir ve akisi bozar; sinif/ad degisikligi 'breaks the component for all existing users'. Yukseltme oncesi disa aktarma yedegi oneriliyor; 'lfx upgrade <flow.json>' araci var.",
+    "sahiplik": "DataStax (2024-04) -> IBM (2025-05-28).",
+    "kaynaklar": [
+     "https://docs.langflow.org/concepts-flows-import",
+     "https://docs.langflow.org/contributing-components",
+     "https://docs.langflow.org/deployment-block-custom-components",
+     "https://github.com/langflow-ai/langflow/issues/8479"
+    ]
+   },
+   {
+    "ad": "Zapier",
+    "grafik_bicimi": "Kapali, SaaS icinde; Zap'lar JSON olarak disa/ice aktarim yalnizca Team/Enterprise planlarinda ve Zapier hesaplari arasinda tasima amacli.",
+    "ders": "Baska platforma goc pratikte elle yeniden kurulumdur (topluluk goc rehberleri).",
+    "kaynaklar": [
+     "https://help.zapier.com/hc/en-us/articles/8496308481933-Import-and-export-Zap-workflows-in-your-Team-or-Enterprise-account",
+     "https://dev.to/elestio/how-to-migrate-from-zapier-make-to-n8n-4e8j"
+    ]
+   },
+   {
+    "ad": "LangGraph",
+    "grafik_bicimi": "Kod (Python/JS) - tasinabilir bir grafik dosyasi yok.",
+    "durum": "Checkpointer'lar her super-step sinirinda thread durumunu kaydeder (thread_id birincil anahtar); InMemorySaver yeniden baslatmada her seyi kaybeder, uretim icin PostgresSaver. Durum JsonPlusSerializer (ormsgpack/JSON, istege bagli pickle) ile LangGraph'a ozgu bicimde serilestirilir.",
+    "dayaniklilik": "Uc dayaniklilik modu ('exit','async','sync'); 'async'te surec cokerse checkpoint yazilmayabilir. Replay'de checkpoint sonrasi LLM cagrilari, API istekleri ve interrupt'lar YENIDEN tetiklenir (yan etki idempotensi uygulamaya kalir).",
+    "ders": "Dayanikli durum var ama sema ve serilestirme aracin; alt grafikler kendi checkpoint ad alanini tutar.",
+    "kaynaklar": [
+     "https://docs.langchain.com/oss/python/langgraph/checkpointers.md",
+     "https://docs.langchain.com/oss/python/langgraph/persistence"
+    ]
+   },
+   {
+    "ad": "OpenAI Agent Builder (AgentKit)",
+    "grafik_bicimi": "Gorsel kanvas, OpenAI platformunda.",
+    "kader": "Lansman 2025-10-06; kullanimdan kaldirma duyurusu 2026-06-03; kapanis 2026-11-30. Goc yolu: Agents SDK (kod) veya ChatGPT Workspace Agents.",
+    "kaynaklar": [
+     "https://developers.openai.com/api/docs/deprecations"
+    ]
+   },
+   {
+    "ad": "Kestra (kullanicinin pilotu)",
+    "gozlem": "21-22 flow, 1.641 satir YAML; Kestra is yapmiyor, LoopUntil ile 15 sn'de bir Postgres durum tablosunu yokluyor; lease/heartbeat/outbox/retry/devam Python+SQL'de elle yazilmis; delivery'de 0 retry, 1 Pause; V1-4 kok gorevi 'LoopUntil maxDuration: P7D' dolunca KESTRA_FAILED. 'Iki beyin': gercek durum Postgres'te, orkestrator paralel bir kopya tutuyor.",
+    "kaynaklar": [
+     "A0-mevcut-pilot-inceleme.md (yerel pilot incelemesi: SF/flows/delivery.yaml:32-43, SF/factory_service.py:22-29)"
+    ]
+   }
+  ],
+  "grafik_bicimi_kilidi": "Is akisi grafikleri icin tarafsiz standartlar mevcut ama arac destegi zayif: BPMN 2.0 (ISO/IEC 19510), CNCF Serverless Workflow 1.0.0 (2025-01-28, YAML/JSON DSL; HTTP/gRPC/OpenAPI/AsyncAPI cagri, CloudEvents), OpenAPI Initiative Arazzo 1.0.0 (2024-05, API cagri dizileri). Incelenen n8n/Flowise/Langflow/Zapier/LangGraph dokumanlarinda bu standartlara ice/disa aktarma bulunamadi (dogrulanamadi - yokluk kaniti). Sonuc: grafik bicimi aracin kendisine kilitli.",
+  "grafik_standart_kaynaklari": [
+   "https://open-workflow-specification.org/blog/releases/release-100/",
+   "https://www.cncf.io/projects/serverless-workflow/",
+   "https://www.openapis.org/arazzo-specification",
+   "https://spec.openapis.org/arazzo/latest.html"
+  ],
+  "benzetmenin_siniri": [
+   "Dugum degisimi = adaptor degisimi. Ancak iki dugum ayni veri semasini konusuyorsa ucuz; sema degisirse (Langflow ornegi) baglantilar kopar.",
+   "Orkestrator degisimi = durum gocu. Uzun bekleyen calismalar, zamanlanmis tetikler, yeniden deneme sayaclari, onay beklemeleri aracin veritabanindadir (n8n Wait, LangGraph checkpoint, Kestra execution, Assistants thread).",
+   "Grafik degisimi = yeniden yazim. Grafik ozel JSON/kod oldugu icin tasinmaz (Flowise EOL, Zapier->n8n elle yeniden kurulum, Agent Builder -> Agents SDK kodu).",
+   "Sirlar ve kimlik platforma baglidir (n8n sifreleme anahtari, OAuth baglantilari).",
+   "Test yeri: dugum grafigi araclari gelistirme ici sabit veri/degerlendirme sunar; bagimsiz, aractan bagimsiz kabul testleri yoksa degisimin ise yaradigini kanitlayamazsiniz."
+  ]
+ },
+ "ilkeler": [
+  {
+   "ad": "1. Gercegi aractan disari al: kendi durum/olay defterin (event log)",
+   "ne_saglar": "Arac yalnizca gercegin bir yurutucusu olur; degistirildiginde yeni arac defterden beslenir. 'Arac ancak gercek icinde degilse degistirilebilir.'",
+   "kanit": "OpenAI Assistants->Conversations gocu: resmi rehber 'use your stored messages instead' diyor, yani thread'lerin kendi kopyasini tutmayan uygulama gecmisini kaybediyor. Airflow 3 gorev kodunun meta veritabanina dogrudan erisimini yasakladi; aracin ic DB'sine yaslanan kod kirildi. GitHub Projects (classic) kapanisinda otomasyonlar ve etkinlik gecmisi tasinmadi. Netflix Clouddriver'da gorev durumu instance-yerel idi, surec cokunce is kayboluyordu. Kullanicinin pilotunda Kestra ile Postgres ayni isin durumunu paralel tutuyordu ('iki beyin'), V1-4 kok gorevi P7D zaman asimiyla dustu.",
+   "maliyet_ve_karsi_kanit": "Iki kaynak arasinda uzlasma (reconciliation) yuku; durum semasini senin surdurmen gerekir. Dayanikli yurutme motoru (Temporal) kendi olay gecmisini zaten tutar: kural 'is alani gercegi (gorev, deneme, karar, kanit, artefakt) sende; zamanlayici/yeniden deneme durumu motorda' seklinde bolunmeli, iki motorda ayni alan durumu tutulmamali.",
+   "kaynak": [
+    "https://developers.openai.com/api/docs/assistants/migration",
+    "https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading_to_airflow3.html",
+    "https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/",
+    "https://cd.foundation/blog/community/2026/02/03/netflix-spinnaker/",
+    "https://martinfowler.com/eaaDev/EventSourcing.html",
+    "A0-mevcut-pilot-inceleme.md"
+   ]
+  },
+  {
+   "ad": "2. Portlar ve adaptorler (hexagonal) + yolsuzluk onleyici katman (ACL)",
+   "ne_saglar": "Cekirdek is mantigi (gorev yasam dongusu, kabul kurallari, SAFe politikalari) disaridaki araclarin kavramlarini gormez; her dis sistem kendi adaptoruyle cevrilir.",
+   "kanit": "Cockburn (2005): uygulamanin 'kullanicilar, programlar, otomatik testler veya toplu betikler tarafindan esit sekilde surulebilmesi ve calisma zamani aygitlarindan yalitik gelistirilip test edilebilmesi'. Netflix, Temporal gecisinde Orca'da bir CloudOperationRunner arayuzu kurdu; eski yol ile Temporal yolu arasinda asama tipi, hesap, uygulama ve islem tipine gore dinamik yapilandirmayla gecis yapti; iki ceyrekte tum uygulamalar tasindi, gecici hata orani %4'ten %0,0001'e indi. Azure ACL deseni: yeni sistemin tasarimini eski/dis sistemin modeline bagimli kilmamak.",
+   "maliyet_ve_karsi_kanit": "Netflix'te maliyetin cogu adaptorde degil, aktiviteleri idempotent olacak sekilde yeniden yazmaktaydi. Adaptor, anlam farkini (semantik) saklayamaz: dis arac farkli bir hata/yeniden deneme modeline sahipse port sozlesmesi bunu acikca tanimlamali.",
+   "kaynak": [
+    "https://alistair.cockburn.us/hexagonal-architecture",
+    "https://cd.foundation/blog/community/2026/02/03/netflix-spinnaker/",
+    "https://netflixtechblog.com/how-temporal-powers-reliable-cloud-operations-at-netflix-73c69ccb5953",
+    "https://learn.microsoft.com/en-us/azure/architecture/patterns/anti-corruption-layer"
+   ]
+  },
+  {
+   "ad": "3. Sabit sozlesme + uyumluluk (conformance/TCK) test takimi: her yeni adaptor ayni testi gecmek zorunda",
+   "ne_saglar": "'Degistirilebilir' iddiasini kanitlanabilir kilar; yeni adaptor ayni kara kutu testlerini gecince tak-cikar yapilmis sayilir.",
+   "kanit": "Kubernetes CRI: dockershim v1.20'de kullanimdan kaldirildi, v1.24'te silindi; OCI imajlari containerd/CRI-O ile degismeden calisti - arayuz + imaj standardi sayesinde calisma zamani degisti. MCP resmi 'conformance' takimi istemci/sunucu senaryolarini (initialize, tools-call, OAuth) calistirir ve SDK katmanlamasi (SEP-1730) buna baglidir. A2A TCK; gRPC/JSON-RPC/HTTP+JSON uzerinde MUST/SHOULD/MAY seviyelerinde test eder, JUnit XML rapor uretir (CI'ya baglanabilir). CNCF k8s-conformance programi urunleri sertifikalandirir. OpenHands SDK kaldirma tarihlerini CI'da 'deprecation gate' ile zorluyor.",
+   "maliyet_ve_karsi_kanit": "Test takimi yazmak ve guncel tutmak maliyetli; takim spesifikasyondan geride kalirsa sahte guven verir. LLM tabanli adaptorlerde (model/harness) cikti belirlenimsiz: uyumluluk testi 'ayni cikti' degil 'ayni kabul kriterlerini gecme orani' olarak istatistiksel tanimlanmali.",
+   "kaynak": [
+    "https://kubernetes.io/blog/2022/05/03/kubernetes-1-24-release-announcement/",
+    "https://kubernetes.io/blog/2022/02/17/dockershim-faq",
+    "https://github.com/modelcontextprotocol/conformance",
+    "https://github.com/a2aproject/a2a-tck",
+    "https://github.com/cncf/k8s-conformance",
+    "https://github.com/OpenHands/software-agent-sdk/issues/5106"
+   ]
+  },
+  {
+   "ad": "4. Acik standartlari dikis yeri (seam) olarak kullan",
+   "ne_saglar": "Adaptoru herkesin konustugu bir sozlesmeye baglamak; yeni arac standardi zaten konusuyorsa adaptor ince kalir.",
+   "kanit": "Git (kod+spec+test tek gercek), OCI imajlari (CRI ornegi), OpenAPI/AsyncAPI/JSON Schema (sozlesme), CloudEvents (CNCF mezun 2024-01-25; olay zarfı), OpenTelemetry (GenAI semantik kurallari: model/agent span'lari, olaylar, metrikler, MCP - durum 'Development', 2026-05'te ayri depoya tasindi), MCP (2025-12-09 LF AAIF'e devredildi; resmi conformance), A2A (LF 2025-06-23; v1.0 2026-03; 100+ sirket), Agent Client Protocol (Zed+JetBrains; kayit defterinde Claude Code, Codex CLI, Copilot CLI, OpenCode, Gemini CLI), AGENTS.md (AAIF altinda; 20-30+ ajan okuyor), Agent Skills (agentskills.io, 2025-12-18; Hermes ve 20+ platform), SPDX (ISO/IEC 5962:2021) ve CycloneDX (ECMA-424, 2024-06), OpenFeature (CNCF incubating 2023-12-19), CNCF Serverless Workflow 1.0 (2025-01-28).",
+   "maliyet_ve_karsi_kanit": "Standartlar da oynak: MCP ilk 5 ayinda tasima katmanini degistirdi (HTTP+SSE -> Streamable HTTP); IBM ACP 5 ayda A2A'ya katilip arsivlendi; OTel GenAI hala 'Development'. 'ACP' adi en az iki farkli protokole isaret ediyor (IBM Agent Communication Protocol - arsiv; Zed Agent Client Protocol - aktif). Standart surumunu sabitle ve kendi uyumluluk testinle dogrula.",
+   "kaynak": [
+    "https://www.cncf.io/announcements/2024/01/25/cloud-native-computing-foundation-announces-the-graduation-of-cloudevents/",
+    "https://github.com/open-telemetry/semantic-conventions-genai",
+    "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation",
+    "https://opensource.googleblog.com/2026/04/a-year-of-open-collaboration-celebrating-the-anniversary-of-a2a.html",
+    "https://zed.dev/blog/acp-registry",
+    "https://agents.md/",
+    "https://venturebeat.com/ai/anthropic-launches-enterprise-agent-skills-and-opens-the-standard",
+    "https://www.cncf.io/blog/2023/12/19/openfeature-becomes-a-cncf-incubating-project/",
+    "https://modelcontextprotocol.io/specification/2025-03-26/basic/transports",
+    "https://lfaidata.foundation/communityblog/2025/08/29/acp-joins-forces-with-a2a-under-the-linux-foundations-lf-ai-data/"
+   ]
+  },
+  {
+   "ad": "5. Varliklari aractan bagimsiz bicimde tut: talimat, skill, bellek, spec",
+   "ne_saglar": "Harness degisince 'ogrenilmis' bilgi (kurallar, skill'ler, proje talimatlari) kaybolmaz.",
+   "kanit": "Roo Code kapaninca ozel bicimleri (.roo/rules, .roomodes, .rooignore) sahipsiz kaldi; Kilo goc rehberi modlari/MCP yapilandirmasini otomatik ceviriyor ama API anahtarlari tasinmiyor ve '.roorules -> AGENTS.md' elle yapiliyor. Hermes 'hermes claw migrate' ile OpenClaw'dan ayar, bellek, skill ve anahtarlari iceri aliyor; skill'ler agentskills.io biciminde. Spec Kit 30+ ajanla calisiyor: spec/plan/gorev dosyalari ajana bagli degil.",
+   "maliyet_ve_karsi_kanit": "Ortak payda bicimleri (AGENTS.md serbest Markdown) aracin ozel yeteneklerini (ör. alt-ajan tanimlari, izin kurallari, hook'lar) ifade etmez; bunlar icin ince, test edilen donusturuculer gerekir.",
+   "kaynak": [
+    "https://kilo.ai/articles/roo-to-kilo-migration-guide",
+    "https://github.com/PIsberg/vibetags/issues/664",
+    "https://github.com/nousresearch/hermes-agent",
+    "https://agents.md/",
+    "https://visualstudiomagazine.com/articles/2026/05/12/github-spec-kit-takes-off-as-antidote-to-piecemeal-vibe-coding.aspx"
+   ]
+  },
+  {
+   "ad": "6. Spesifikasyon ve kabul testleri kalici varliktir (spec-driven development)",
+   "ne_saglar": "Araclar gelir gider; 'ne yapilacak' (spec) ve 'bitti mi' (kabul testi) depoda kalir ve yeni harness/model ayni kapidan gecer. Bu, degisim testinin oracle'idir.",
+   "kanit": "GitHub Spec Kit (2025-09-02; specify/plan/tasks; 30+ ajan). Kiro spec'leri, OpenSpec, BMAD Method acik kaynak ve depo-ici Markdown. Copilot Workspace (2024-04 -> 2025-05-30) oldu ama issue->spec->plan->PR fikri Copilot coding agent'ta yasadi: urun kisa omurlu, is akisi kalici.",
+   "maliyet_ve_karsi_kanit": "Bockeler (martinfowler.com, 2025-10-15): Kiro/spec-kit tek is akisini her boyuta dayatıyor (basit hata duzeltmesine 4 kullanici hikayesi, 16 kabul kriteri), spec-kit 'a LOT of markdown files' uretiyor ve incelemesi yorucu, ajanlar ayrintili spec'e ragmen talimatlari yok sayabiliyor; 'spec-as-source' model gudumlu gelistirmenin (MDD) basarisizligina benzeyebilir. Oneri: spec-anchored (spec+kabul testi kalici) ama spec-as-source degil; kabul testleri calistirilabilir olmali.",
+   "kaynak": [
+    "https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/",
+    "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html",
+    "https://github.com/github/spec-kit",
+    "https://github.com/Fission-AI/OpenSpec",
+    "https://github.com/bmad-code-org/BMAD-METHOD",
+    "https://githubnext.com/projects/copilot-workspace/"
+   ]
+  },
+  {
+   "ad": "7. Evrimsel mimari ve uygunluk fonksiyonlari (fitness functions)",
+   "ne_saglar": "Mimari kurallari (ör. 'cekirdek hicbir araç SDK'sini import etmez', 'her adaptor TCK'yi gecer', 'olay defteri tek gercek') CI'da otomatik olculur; insan incelemesine birakilmaz.",
+   "kanit": "Thoughtworks tanimi: uygunluk fonksiyonu 'bir mimari ozelligin nesnel butunluk degerlendirmesi'dir; test, metrik, izleme ile uygulanir. Thoughtworks Radar'da teknik olarak yer aliyor. OpenHands SDK'daki kaldirma-tarihi kapisi CI'da calisan bir uygunluk fonksiyonu ornegi.",
+   "maliyet_ve_karsi_kanit": "Olculemeyen ozellikler (kavramsal sizinti) icin fonksiyon yazmak zor; cok sayida kural CI'yi yavaslatir.",
+   "kaynak": [
+    "https://www.thoughtworks.com/radar/techniques/architectural-fitness-function",
+    "https://www.oreilly.com/library/view/building-evolutionary-architectures/9781491986356/ch02.html",
+    "https://github.com/OpenHands/software-agent-sdk/issues/5106"
+   ]
+  },
+  {
+   "ad": "8. Strangler fig + ozellik bayragi ile kademeli degisim (OpenFeature)",
+   "ne_saglar": "Buyuk patlama (big-bang) yerine eski ve yeni adaptor yan yana; trafik yuzdesiyle kaydirilir, geri donus tek bayrak.",
+   "kanit": "Fowler Strangler Fig (2004, 2024-08-22 guncellendi). Netflix Temporal gecisi tam olarak bu: port + dinamik yapilandirma ile asama/hesap/uygulama bazinda kaydirma, 2 ceyrek. OpenFeature saglayici modeli bayrak saglayicisini (LaunchDarkly, Flagsmith, flagd...) koddan ayirir.",
+   "maliyet_ve_karsi_kanit": "Iki yolu ayni anda isletmek gecici olarak maliyeti ikiye katlar; 'gecici' iki beyin kalici olursa (pilot ornegi) tam da kacinilmak istenen durum olusur - bitis kosulu ve tarihi olmali.",
+   "kaynak": [
+    "https://www.martinfowler.com/bliki/StranglerFigApplication.html",
+    "https://cd.foundation/blog/community/2026/02/03/netflix-spinnaker/",
+    "https://openfeature.dev/",
+    "https://www.cncf.io/blog/2023/12/19/openfeature-becomes-a-cncf-incubating-project/"
+   ]
+  },
+  {
+   "ad": "9. Tasinabilir CI ve altyapi (Dagger, OpenTofu, OCI)",
+   "ne_saglar": "Is mantigi CI saglayicisinin YAML'inda degil, konteynerde calisan kodda; CI saglayicisi ince bir tetikleyiciye iner.",
+   "kanit": "Dagger: ayni pipeline kodu yerelde ve GitHub Actions/GitLab/Jenkins'te konteyner icinde calisir. GitHub Actions Importer bile gorev ve yapilarin '%90'indan fazlasini' cevirir ama sirlar, self-hosted runner'lar, izinler ve seyrek gorevler elle yapilir - tasinmayan kisim platforma ozgu kisimdir. OpenTofu Terraform 1.5.x'ten fork edildi ve ayni durum (state) bicimini okur/yazar; 5 ayda GA.",
+   "maliyet_ve_karsi_kanit": "Dagger bir ek katman ve bagimliliktir (kendi motoru); OpenTofu ile Terraform surumler ilerledikce ayrisiyor - fork'lar zamanla uyumsuzlasir.",
+   "kaynak": [
+    "https://docs.dagger.io/",
+    "https://github.blog/enterprise-software/ci-cd/introducing-github-actions-importer/",
+    "https://docs.github.com/actions/migrating-to-github-actions/automated-migrations/migrating-from-circleci-with-github-actions-importer",
+    "https://opentofu.org/docs/intro/migration/",
+    "https://en.wikipedia.org/wiki/OpenTofu"
+   ]
+  },
+  {
+   "ad": "10. Cikis plani ve degisim tatbikati (replacement drill)",
+   "ne_saglar": "'Degistirilebilir' iddiasi periyodik olarak prova edilir; prova edilmeyen cikis plani varsayimdir.",
+   "kanit": "AB DORA (2022/2554) md. 28: finans kuruluslari icin ICT ucuncu taraf saglayicilarina yonelik cikis planlari 'comprehensive, documented and ... sufficiently tested and reviewed periodically' olmali; 2025-01-17'den beri uygulanıyor. Anthropic kosul metni onceden haber vermeden uygulama hakkini sakli tutuyor; Windsurf 5 gunden kisa bildirimle erisim kaybetti.",
+   "maliyet_ve_karsi_kanit": "Tatbikat zaman ve para ister; her katman icin degil, oynak ve kritik katmanlar icin yapilmali.",
+   "kaynak": [
+    "https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng",
+    "https://www.digital-operational-resilience-act.com/Article_28.html",
+    "https://code.claude.com/docs/en/legal-and-compliance",
+    "https://www.forbes.com/sites/johanmoreno/2025/06/05/anthropic-cuts-windsurfs-claude-access-before-openai-acquisition/"
+   ]
+  },
+  {
+   "ad": "KARSI KANIT A: Soyutlama vergisi / en kucuk ortak payda",
+   "ne_saglar": "Soyutlama katmani her saglayicinin ortak alt kumesini sunar; ayirt edici ozellikler kaybolur.",
+   "kanit": "Anthropic'in OpenAI SDK uyumluluk katmani 'not considered a long-term or production-ready solution'; strict tool sema garantisi yok sayiliyor, prompt caching desteklenmiyor, response_format/seed/reasoning_effort yok sayiliyor, 'Most unsupported fields are silently ignored'. LiteLLM gibi gecitler her saglayici surumunu kovaliyor: GPT-5'in cikisindan bir gun sonra 'reasoning_effort' hatasi (#13402, 2025-08-08), Claude 4 icin 'Add Claude4' (#11057, 2025-05-22), gpt-5-codex ile Codex CLI proxy hatasi (#14846), 2026-09'da imzali thinking bloklarinin dusurulmesi hatalari (#41361, #42550 acik).",
+   "maliyet_ve_karsi_kanit": "Cozum: soyutlamayi 'ortak API' yerine 'is sozlesmesi' seviyesinde kur (ör. 'bu gorevi calistir, su kabul testlerini gecir, su izleri uret'); saglayiciya ozgu ozellikleri adaptor icinde kullanmaya izin ver.",
+   "kaynak": [
+    "https://platform.claude.com/docs/en/api/openai-sdk",
+    "https://github.com/BerriAI/litellm/issues/13402",
+    "https://github.com/BerriAI/litellm/issues/11057",
+    "https://github.com/BerriAI/litellm/issues/14846",
+    "https://github.com/BerriAI/litellm/issues/41361",
+    "https://github.com/BerriAI/litellm/issues/42550"
+   ]
+  },
+  {
+   "ad": "KARSI KANIT B: Sizinti yapan soyutlamalar ve cerceve karmasikligi",
+   "ne_saglar": "Cerceveler hata ayiklamayi zorlastirabilir; soyutlama arkasindaki davranis farki uretimde ortaya cikar.",
+   "kanit": "Anthropic 'Building effective agents' (2024-12-19): cerceveler 'often create extra layers of abstraction that can obscure the underlying prompts and responses, making them harder to debug'; oneri 'start by using LLM APIs directly'. Hohpe (martinfowler.com, 2019-09-09): kilitlenmeden kacinmanin maliyeti; 'Avoiding one lock-in often comes at the expense of another one'; karmasiklik 'too often ignored'; degisim olasiligi x degisim maliyeti matrisi ve opsiyon dusuncesi. Uyumluluk katmaninda davranis farki: Anthropic uyumlulukta birden fazla system mesajini tek mesaja birlestiriyor.",
+   "maliyet_ve_karsi_kanit": "Ne zaman SOYUTLAMA YAPMAMALI: (a) degisim olasiligi dusuk ve maliyeti dusuk katmanlar (Hohpe matrisi); (b) tek saglayicinin ayirt edici ozelligine (prompt caching, yapisal cikti, thinking) dayanan akislar - bunlar adaptor icinde kalir; (c) ikinci somut uygulama yokken ('rule of three' - dogrulanamadi, genel ilke). Yerine: arayuzu dar tut, ikinci adaptor gerektiginde cikar.",
+   "kaynak": [
+    "https://www.anthropic.com/engineering/building-effective-agents",
+    "https://martinfowler.com/articles/oss-lockin.html",
+    "https://platform.claude.com/docs/en/api/openai-sdk"
+   ]
+  },
+  {
+   "ad": "KARSI KANIT C: Onerilen goc hedefi de olebilir",
+   "ne_saglar": "Soyutlamanin hedefi bile oynak oldugunda, dogru yatirim 'ara hedef'e degil kendi varliklarina yapilir.",
+   "kanit": "OpenAI Assistants gocu rehberi 'Assistants -> Prompts' esleme oneriyordu; ancak reusable prompts (v1/prompts) 2026-06-03'te kullanimdan kaldirildi (kapanis 2026-11-30) ve oneri 'move reusable prompt content into your application code'. Agent Builder (2025-10) de ayni gun kaldirildi, yerine kod tabanli Agents SDK.",
+   "maliyet_ve_karsi_kanit": "Ders: talimatlari/promptlari depoda surumlenen dosyalar olarak tut; saglayicinin 'nesne' deposuna tasima.",
+   "kaynak": [
+    "https://developers.openai.com/api/docs/assistants/migration",
+    "https://developers.openai.com/api/docs/deprecations"
+   ]
+  }
+ ],
+ "katmanlar": [
+  {
+   "katman": "1. Is girisi / tracker (Plane, Jira, GitHub Issues, Linear)",
+   "oynaklik": "ORTA",
+   "kanit": "GitHub Projects (classic) 2024-08-23 kapandi, otomasyon tasinmadi; Atlassian Data Center 2029-03-28 salt-okunur; pilotta Plane durum UUID'leri projeye ozgu (A2).",
+   "standart_dikis": "Kendi 'WorkItem' JSON Schema'si + gelen webhook'lari CloudEvents zarfina ceviren adaptor; tracker yalnizca bir 'gorunum'.",
+   "icerde_tutulacak": "Kanonik gorev modeli, durum makinesi, dis ID eslemesi, denetim izi (olay defterinde).",
+   "degisim_testi": "Yeni tracker'i 2 hafta golge (shadow) senkronla calistir; kayitli webhook'larla sozlesme testi; gidis-donus (round-trip) farki sifir olmali."
+  },
+  {
+   "katman": "2. Portfoy / SAFe politikasi (ART, PI, WIP, onay kurallari)",
+   "oynaklik": "DUSUK",
+   "kanit": "SAFe 2011'den beri 6 ana surum; 6.0 2023-03 (yaklasik 2 yilda bir). Politikayi degistiren kurum karari, arac degil.",
+   "standart_dikis": "Politika-kod: depo icinde surumlenen kurallar (YAML+JSON Schema veya OPA/Rego); karar = olay.",
+   "icerde_tutulacak": "Kurallarin tamami, ART/takim eslemesi, WIP limitleri, onay matrisi.",
+   "degisim_testi": "Politika birim testleri + gecen PI'nin kararlarini defterden yeniden oynat; yeni politika motoru ayni kararlari vermeli."
+  },
+  {
+   "katman": "3. Orkestrasyon / dayanikli yurutme (Kestra, Temporal, Airflow, LangGraph)",
+   "oynaklik": "ORTA",
+   "kanit": "Netflix Conductor OSS 2023-12 terk; Airflow 3 (2025-04) DB erisimini kaldirdi; Temporal worker-versioning API'leri v1.33'te kaldiriliyor ve server 2 haftada bir surum cikarabiliyor; n8n dayanikli zamanlayici varsayilan kapali; pilot: Kestra 'iki beyin'.",
+   "standart_dikis": "Kendi 'Run' portu: start/signal/query/cancel + idempotency anahtari; alan olaylari CloudEvents; aktiviteler idempotent. Motor, alan durumunun sahibi DEGIL.",
+   "icerde_tutulacak": "Alan defteri (Postgres): gorev, deneme, karar, kanit; aktivite kodu; idempotency; yeniden deneme politikasinin tanimi.",
+   "degisim_testi": "Kill -9 kaos testi (her adimda surec oldur, tekrar-yok/kayip-yok); ayni 20 altin gorevi eski ve yeni motorda bayrakla kostur (Netflix yontemi); motor verisini silip defterden yeniden kurma provasi."
+  },
+  {
+   "katman": "4. Ajan harness (Claude Code, Codex CLI, OpenHands, OpenClaw, Hermes...)",
+   "oynaklik": "YUKSEK",
+   "kanit": "2025-06..2026-08 arasinda: Terragon, Crystal, Vibe Kanban sirketi, Roo Code (3M kurulum), Cody Free/Pro, Copilot Workspace, Flowise kapandi/kaldirildi; OpenClaw 4 gunde 2 isim; OpenHands ana deposu harness-bagimsiz Agent Canvas'a donustu; Anthropic abonelik/harness kurali 6 ayda 5 kez degisti.",
+   "standart_dikis": "Agent Client Protocol (ACP) veya en azindan basliksiz CLI sozlesmesi (girdi: gorev zarfi; cikti: JSON olay akisi + cikis kodu + diff/PR); talimatlar AGENTS.md; yetenekler Agent Skills; araclar MCP.",
+   "icerde_tutulacak": "Gorev zarfi ve sonuc zarfi semalari, harness uyumluluk takimi (TCK), butce/izin politikasi, kimlik bilgisi yonetimi (API anahtari; abonelik OAuth'una dayanma).",
+   "degisim_testi": "Harness TCK: gercek backlog'dan 20-50 altin gorev; kabul testi gecme orani, maliyet, sure, guvenlik ihlali sayisi mevcut harness'in toleransi icinde olmali; ceyrekte bir ikinci harness'la tatbikat."
+  },
+  {
+   "katman": "5. Model",
+   "oynaklik": "YUKSEK",
+   "kanit": "Anthropic 2025 snapshot'lari ~12-13 ayda emekli, bildirim >=60 gun; OpenAI 2025'te >=12, 2026'da >=9 kaldirma duyurusu; Opus 4.7+ temperature/top_p/top_k 400 hatasi; Windsurf <5 gun bildirimle erisim kaybi.",
+   "standart_dikis": "Saglayicinin YEREL API'si ince adaptor arkasinda (en kucuk ortak payda gecidi degil); olcum icin OTel GenAI span'lari (surum sabitli).",
+   "icerde_tutulacak": "Degerlendirme seti (altin gorevler + kabul testleri), talimat/prompt dosyalari depoda, yonlendirme politikasi, maliyet butcesi.",
+   "degisim_testi": "Emeklilik tarihinden once: aday modeli degerlendirme setinde A/B; gecme orani ve maliyet esikleri; kanarya %10 -> %100."
+  },
+  {
+   "katman": "6. Arac protokolu (MCP; ajanlar arasi A2A)",
+   "oynaklik": "ORTA",
+   "kanit": "MCP 5 ayda tasima katmanini degistirdi; IBM ACP A2A'ya katildi ve arsivlendi; ama MCP (2025-12) ve A2A (2025-06) LF yonetisimine gecti, A2A v1.0 2026-03.",
+   "standart_dikis": "MCP (spec surumu sabit) + resmi conformance takimi; A2A yalnizca gercekten ajanlar arasi devir gerekiyorsa + A2A TCK.",
+   "icerde_tutulacak": "Arac sunuculari, yetkilendirme/izin politikalari, arac cagrisi denetim kaydi.",
+   "degisim_testi": "MCP conformance'i CI'da kostur; yeni istemci/sunucu surumunde senaryo testleri."
+  },
+  {
+   "katman": "7. Sandbox / calisma zamani (Docker, Firecracker, E2B, Daytona, Modal...)",
+   "oynaklik": "ORTA-YUKSEK",
+   "kanit": "Gitpod->Ona pivotu (2025-09), Gitpod Classic kapanisi (2025-10-15), OpenAI'nin Ona'yi almasi (2026-06-11); CodeSandbox->Together AI (2024-12); Daytona pivotu (2025). Hermes 7 arka ucu destekliyor: arka uc degisebilir bir parca.",
+   "standart_dikis": "OCI imaji + Dev Container spec (containers.dev) + kendi 'Workspace' portu (create/exec/copy/snapshot/destroy).",
+   "icerde_tutulacak": "Temel imajlar, ag cikis (egress) politikasi, sir enjeksiyonu, kaynak kotalari.",
+   "degisim_testi": "Ayni altin gorevleri iki arka uçta calistir; sonuc esitligi + guvenlik testleri (egress engelli mi, sir sizmiyor mu)."
+  },
+  {
+   "katman": "8. Kod barindirma (GitHub)",
+   "oynaklik": "DUSUK (Git) / ORTA (barindirici ozellikleri)",
+   "kanit": "Git protokolu sabit; barindirici ozellikleri degisiyor (Projects classic kapanisi, merge queue 2023 GA).",
+   "standart_dikis": "Git; PR/checks/webhook icin adaptor; kurallar (branch protection, CODEOWNERS) kod olarak.",
+   "icerde_tutulacak": "Dal/birlesme politikasi, inceleme kurallari, depo sablonlari.",
+   "degisim_testi": "Depoyu ikinci barindiriciya (ör. Gitea/GitLab) aynala; pipeline'in ve ajanin orada da PR acabildigini dogrula."
+  },
+  {
+   "katman": "9. CI",
+   "oynaklik": "ORTA",
+   "kanit": "GitHub Actions Importer yapilarin >%90'ini cevirir ama sirlar, runner'lar, izinler elle - tasinmayan kisim platforma ozgu kisimdir.",
+   "standart_dikis": "Is mantigi depo-ici betikler/Dagger (konteynerde); CI YAML ince tetikleyici; sonuc bicimi JUnit XML / SARIF.",
+   "icerde_tutulacak": "Build/test betikleri, onbellek stratejisi, kalite kapilari.",
+   "degisim_testi": "Ayni pipeline'i ayda bir yerelde ve ikinci CI saglayicisinda kostur; sure ve sonuc farki raporla."
+  },
+  {
+   "katman": "10. Merge queue",
+   "oynaklik": "ORTA",
+   "kanit": "bors-ng kullanimdan kaldirildi ve arsivlendi (GitHub merge queue onerildi); GitHub kuyrugu CI'nin 'merge_group' olayini dinlemesini sart kosuyor.",
+   "standart_dikis": "'Gerekli kontroller' sozlesmesi (hangi check'ler yesil olmali) + kuyruk adaptoru.",
+   "icerde_tutulacak": "Birlesme politikasi, kararsiz test karantinasi, oncelik kurallari.",
+   "degisim_testi": "Bir depoda bir hafta alternatif kuyrukla calis; verim, bekleme suresi, yanlis-birlesme sayisini karsilastir."
+  },
+  {
+   "katman": "11. Dagitim (alpha.example.com)",
+   "oynaklik": "DUSUK-ORTA",
+   "kanit": "Terraform BUSL (2023-08-10) -> OpenTofu (2024-01-10 GA, ayni state bicimi); Redis->Valkey kesintisiz gecis (AWS 2024-10).",
+   "standart_dikis": "OCI imajlari + OpenTofu/Compose/K8s manifestolari depoda (GitOps); saglayiciya ozgu betik yok.",
+   "icerde_tutulacak": "Ortam tanimlari, gizli anahtar referanslari, geri alma (rollback) proseduru.",
+   "degisim_testi": "Felaket tatbikati: sifir sunucuya yalnizca depodan alpha'yi yeniden kur; sure hedefi belirle."
+  },
+  {
+   "katman": "12. Onizleme ortami (PR basina)",
+   "oynaklik": "ORTA",
+   "kanit": "Gelistirme ortami saglayicilari pivot ediyor (Gitpod/Ona, Daytona, CodeSandbox).",
+   "standart_dikis": "Dagitimla ayni OCI + manifesto; Dev Container spec.",
+   "icerde_tutulacak": "Ortam sablonu, veri tohumlama (seed), yasam suresi politikasi.",
+   "degisim_testi": "Bir PR'dan onizlemeyi yalnizca depo artefaktlariyla ve ikinci bir calisma zamaninda ayağa kaldir."
+  },
+  {
+   "katman": "13. Gozlemlenebilirlik",
+   "oynaklik": "DUSUK (OTel/OTLP) / ORTA (GenAI kurallari)",
+   "kanit": "OTel GenAI semantik kurallari 'Development' durumunda ve 2026-05'te ayri depoya tasindi.",
+   "standart_dikis": "OTel SDK + OTLP; GenAI semconv surumu sabit; gorev->kosu->PR izlerini baglayan kendi kimlikleri.",
+   "icerde_tutulacak": "Iz kimligi semasi, SLO'lar, maliyet muhasebesi.",
+   "degisim_testi": "Ayni anda iki arka uca cift disa aktarim (dual export); panolar yalnizca OTLP verisinden uretilebilmeli."
+  },
+  {
+   "katman": "14. Test oracle / kabul spesifikasyonlari",
+   "oynaklik": "DUSUK (olmasi GEREKEN en kalici katman)",
+   "kanit": "Copilot Workspace olup is akisi yasadi; Spec Kit 30+ ajanla calisiyor; Bockeler: spec'ler cok ayrintili/uzun olursa inceleme yuku ve ajanin yok saymasi riski.",
+   "standart_dikis": "Depo-ici Markdown spec (spec-anchored) + calistirilabilir kabul testleri; sonuc JUnit XML; her spec en az bir calistirilabilir teste bagli.",
+   "icerde_tutulacak": "Tamami: spec'ler, kabul testleri, altin gorev seti, Definition of Done.",
+   "degisim_testi": "Uygunluk fonksiyonu: bagli testi olmayan spec = CI kirmizi; mutasyon testiyle oracle gucunu olc; harness/model degisiminde ayni kabul takimi hakem."
+  },
+  {
+   "katman": "15. Bilgi / bellek",
+   "oynaklik": "YUKSEK (arac bicimleri) / DUSUK (depo-ici Markdown)",
+   "kanit": "Roo'nun .roo/rules, Memory Bank bicimleri sahipsiz kaldi; Kilo gocunde '.roorules -> AGENTS.md' elle; Hermes OpenClaw bellegini iceri aliyor.",
+   "standart_dikis": "AGENTS.md, ADR'ler, sozluk, Agent Skills dizinleri depoda; vektor indeksi yeniden uretilebilir onbellek.",
+   "icerde_tutulacak": "ADR'ler, alan sozlugu, skill'ler, ogrenilmis dersler (Kaizen) - hepsi dosya.",
+   "degisim_testi": "Vektor indeksini silip depodan yeniden kur; harness degistir ve ayni skill/talimatlarla altin gorev basarisini karsilastir."
+  },
+  {
+   "katman": "16. Insan inceleme arayuzu",
+   "oynaklik": "ORTA",
+   "kanit": "Vibe Kanban, Crystal, Terragon arayuzleri 2026'da kapandi/degisti; OpenHands arayuzu yeniden yazildi.",
+   "standart_dikis": "Kod barindiricinin PR arayuzu + tracker; inceleme karari CloudEvents olayi olarak deftere.",
+   "icerde_tutulacak": "Inceleme rubrigi, karar semasi (onay/red/gerekce), yetki matrisi.",
+   "degisim_testi": "Ayni incelemeyi iki arayuzden yap; defterde ayni olaylar olusmali."
+  },
+  {
+   "katman": "17. (Capraz) Saglayici sozlesmesi / kimlik / fiyatlama",
+   "oynaklik": "YUKSEK",
+   "kanit": "Anthropic: 2026-01-09 teknik engel, 2026-02-19 dokuman, 2026-04-04 kapatma, 2026-05-13 kredi ile geri acma, 2026-06-15 programatik kullanim ayri kredi; 'may do so without prior notice'.",
+   "standart_dikis": "API anahtari tabanli kimlik; maliyet olcumu OTel'den; saglayici basina kota ve butce.",
+   "icerde_tutulacak": "Maliyet modeli, saglayici cikis plani (DORA md.28 mantigi), sozlesme takvimi.",
+   "degisim_testi": "Ceyreklik: bir saglayiciyi kapatip sistemi ikincisiyle 1 gun isletme tatbikati."
+  }
+ ],
+ "vakalar": [
+  {
+   "ad": "Kubernetes: Docker (dockershim) -> containerd/CRI-O",
+   "tarih": "v1.20 kaldirma karari, v1.24 (2022-05-03) silme",
+   "katman": "calisma zamani / sandbox",
+   "ucuz_mu_pahali_mi": "UCUZ (cogu kullanici icin)",
+   "neden": "CRI arayuzu + OCI imaj standardi: imajlar degismeden calisti; yalnizca Docker Engine'e ozgu davranisa yaslananlar (docker.sock) etkilendi.",
+   "kaynak": [
+    "https://kubernetes.io/blog/2022/05/03/kubernetes-1-24-release-announcement/",
+    "https://kubernetes.io/blog/2022/02/17/dockershim-faq"
+   ]
+  },
+  {
+   "ad": "AWS ElastiCache: Redis OSS -> Valkey",
+   "tarih": "2024-10-08",
+   "katman": "veri/altyapi bileseni (lisans kaynakli)",
+   "ucuz_mu_pahali_mi": "UCUZ",
+   "neden": "Ayni kod tabani (Redis 7.2.4 fork'u) ve ayni tel protokolu (RESP): yerinde, kesintisiz yukseltme; uygulama kodu degismiyor; fiyat Serverless'ta %33, dugum bazinda %20 dusuk.",
+   "kaynak": [
+    "https://aws.amazon.com/about-aws/whats-new/2024/10/amazon-elasticache-valkey",
+    "https://aws.amazon.com/blogs/database/amazon-elasticache-and-amazon-memorydb-announce-support-for-valkey/"
+   ]
+  },
+  {
+   "ad": "Terraform -> OpenTofu",
+   "tarih": "BUSL 2023-08-10; OpenTofu GA 2024-01-10",
+   "katman": "IaC / dagitim",
+   "ucuz_mu_pahali_mi": "UCUZ (1.5.x'te) - zamanla pahalilasiyor",
+   "neden": "Ayni HCL ve ayni state bicimi; rehber 'safe and reversible' goc tarif ediyor. Terraform 1.6+ ozelliklerine gecenler icin uyumsuzluk riski artiyor (ikincil kaynak).",
+   "kaynak": [
+    "https://opentofu.org/docs/intro/migration/",
+    "https://opentofu.org/docs/intro/migration/migration-guide/",
+    "https://oneuptime.com/blog/post/2026-02-23-use-opentofu-with-existing-terraform-state/view"
+   ]
+  },
+  {
+   "ad": "Netflix Spinnaker: ev yapimi saga/yeniden deneme -> Temporal",
+   "tarih": "2025-12 (blog)",
+   "katman": "orkestrasyon / dayanikli yurutme",
+   "ucuz_mu_pahali_mi": "ORTA - basarili",
+   "neden": "UCUZLATAN: CloudOperationRunner arayuzu (port) + dinamik yapilandirma ile kademeli kaydirma; 2 ceyrekte tamamlandi; Clouddriver durumsuzlasti. PAHALI: aktivitelerin idempotent olacak sekilde yeniden yazilmasi. SONUC: gecici hata %4 -> %0,0001.",
+   "kaynak": [
+    "https://cd.foundation/blog/community/2026/02/03/netflix-spinnaker/",
+    "https://netflixtechblog.com/how-temporal-powers-reliable-cloud-operations-at-netflix-73c69ccb5953"
+   ]
+  },
+  {
+   "ad": "OpenAI Assistants API -> Responses/Conversations",
+   "tarih": "duyuru 2025-08-26; kapanis 2026-08-26",
+   "katman": "ajan API / durum",
+   "ucuz_mu_pahali_mi": "PAHALI (durumu saglayicida tutanlar icin)",
+   "neden": "Thread'ler saglayicida; kapanistan sonra otomatik goc yok, 'use your stored messages instead'. Orkestrasyon (gecmis budama, arac dongusu, yeniden deneme) uygulamaya geciyor. Onerilen ara hedef 'Prompts' nesnesi de 2026-06-03'te kaldirildi.",
+   "kaynak": [
+    "https://developers.openai.com/api/docs/assistants/migration",
+    "https://developers.openai.com/api/docs/deprecations"
+   ]
+  },
+  {
+   "ad": "GitHub Projects (classic) -> yeni Projects",
+   "tarih": "2024-08-23",
+   "katman": "is takip",
+   "ucuz_mu_pahali_mi": "KISMEN PAHALI",
+   "neden": "Veri otomatik tasindi ama otomasyonlar, triage, etkinlik gecmisi tasinmadi; son 1 yilda guncellenmeyen kartlar tasinmadi; 1.200+ ogede arsivleme. Davranis araca gomuluyse tasinmaz.",
+   "kaynak": [
+    "https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/",
+    "https://news.ycombinator.com/item?id=41474642"
+   ]
+  },
+  {
+   "ad": "CI saglayicisi degisimi (Jenkins/CircleCI/GitLab/Azure DevOps -> GitHub Actions)",
+   "tarih": "2022-11-10 (Importer)",
+   "katman": "CI",
+   "ucuz_mu_pahali_mi": "ORTA",
+   "neden": "Importer yapilarin %90'indan fazlasini ceviriyor; sirlar, self-hosted runner'lar, izinler, seyrek gorevler elle. Is mantigi depo-ici betik/konteynerdeyse (Dagger) CI degisimi ince sarmalayici degisimine iner.",
+   "kaynak": [
+    "https://github.blog/enterprise-software/ci-cd/introducing-github-actions-importer/",
+    "https://docs.dagger.io/"
+   ]
+  },
+  {
+   "ad": "Roo Code -> Kilo Code / Cline (harness degisimi)",
+   "tarih": "Roo kapanis 2026-05-15; Kilo rehberi 2026-04-22",
+   "katman": "ajan harness",
+   "ucuz_mu_pahali_mi": "ORTA",
+   "neden": "Kilo sihirbazi modlari ve MCP yapilandirmasini ceviriyor; API anahtarlari tasinmiyor ('Keys don't port'); '.roorules -> AGENTS.md' elle. Acik bicimde (AGENTS.md, MCP) tutulan her sey ucuz tasindi, ozel bicimde tutulan her sey elle.",
+   "kaynak": [
+    "https://kilo.ai/articles/roo-to-kilo-migration-guide",
+    "https://www.bodegaone.ai/blog/roo-code-shutdown-alternatives"
+   ]
+  },
+  {
+   "ad": "OpenClaw -> Hermes Agent",
+   "tarih": "2026",
+   "katman": "kisisel/otonom ajan harness",
+   "ucuz_mu_pahali_mi": "UCUZ (arac destekli)",
+   "neden": "'hermes claw migrate' ayar, bellek, skill ve API anahtarlarini iceri aliyor; skill'ler agentskills.io standardinda. Harness degisiminin maliyeti varlik biciminin acikligina bagli.",
+   "kaynak": [
+    "https://github.com/nousresearch/hermes-agent"
+   ]
+  },
+  {
+   "ad": "Flowise kullanicilari (EOL)",
+   "tarih": "2026-08-13",
+   "katman": "dugum grafigi araci",
+   "ucuz_mu_pahali_mi": "PAHALI",
+   "neden": "Resmi goc yolu yok; akislar Flowise'a ozgu JSON; tek secenek fork veya yeniden yazim.",
+   "kaynak": [
+    "https://github.com/FlowiseAI/Flowise/discussions/6727"
+   ]
+  },
+  {
+   "ad": "Kullanicinin pilotu: Kestra -> Temporal",
+   "tarih": "2026-09 (kullanici beyani; A0 incelemesi)",
+   "katman": "orkestrasyon",
+   "ucuz_mu_pahali_mi": "Gozlem: Kestra 'orkestrator' degil yoklayici ve form ekraniydi",
+   "neden": "Gercek is (lease, heartbeat, outbox, retry, devam) Python+Postgres'te; Kestra 15 sn'de bir tabloyu yokluyordu -> 'iki beyin'. Gecisin ucuz olmasinin kosulu: Postgres'teki is alani gercegi tek kaynak olarak kalir, Temporal yalnizca yurutme durumunu tutar; eski yol ile yeni yol bir port arkasinda bayrakla kaydirilir; bitis tarihi konur. Pahali olan: aktivitelerin idempotent yeniden yazimi (Netflix ile ayni).",
+   "kaynak": [
+    "A0-mevcut-pilot-inceleme.md (SF/flows/delivery.yaml:32-43; SF/factory_service.py:22-29)",
+    "https://cd.foundation/blog/community/2026/02/03/netflix-spinnaker/"
+   ]
+  }
+ ],
+ "oneri": {
+  "dogrudan_cevap": "Tak-cikar, 'bir araci digeriyle degistirebilmek' degil; bir bileseni degistirirken sistemin gercegini (durum, spec, kabul testi, bilgi) kaybetmemek ve degisimin ise yaradigini otomatik olarak KANITLAYABILMEKTIR. Uc kosulu var: (1) Gercek aracta degil sende: kendi olay defterin + depodaki spec/test/talimat. (2) Arac ile sistem arasinda dar, yazili, surumlu bir sozlesme (port) ve her adaptorun gecmek zorunda oldugu uyumluluk takimi (TCK); mumkunse acik standart (Git, OCI, OTel, CloudEvents, MCP, ACP). (3) Prova edilmis bir gecis yolu: port arkasinda bayrakla kademeli kaydirma, bitis tarihi, periyodik degisim tatbikati. n8n'de dugum degistirmek kolaydir cunku durum, sir, yeniden deneme ve surumlemeyi n8n platformu tasir; ayni sebeple n8n'in kendisini degistirmek zordur. Sizin cercevenizde 'n8n'in yaptigi isi' (durum, sozlesme, test) siz sahiplenmelisiniz.",
+  "dikis_haritasi": [
+   {
+    "dikis": "S1 Is girisi",
+    "port": "WorkItemPort (JSON Schema)",
+    "standart": "CloudEvents (gelen webhook zarfi)",
+    "adaptorler": "Plane, Jira, GitHub Issues",
+    "sahiplik": "kanonik gorev modeli + ID eslemesi"
+   },
+   {
+    "dikis": "S2 Politika",
+    "port": "PolicyPort",
+    "standart": "depo-ici politika-kod (YAML+JSON Schema veya OPA/Rego)",
+    "adaptorler": "yerlesik degerlendirici",
+    "sahiplik": "SAFe/ART kurallari, WIP, onay matrisi"
+   },
+   {
+    "dikis": "S3 Alan defteri (TEK GERCEK)",
+    "port": "LedgerPort (append-only olaylar)",
+    "standart": "CloudEvents zarfi, JSON Schema olay tipleri",
+    "adaptorler": "Postgres",
+    "sahiplik": "TAMAMEN iceride - hicbir arac alan durumunun sahibi olmaz"
+   },
+   {
+    "dikis": "S4 Yurutme",
+    "port": "RunPort: start/signal/query/cancel + idempotency anahtari",
+    "standart": "yok (motor API'leri farkli) -> kendi dar sozlesmen",
+    "adaptorler": "Temporal (bugun), Kestra (emekli), gelecekte baska motor",
+    "sahiplik": "aktivite kodu (idempotent), yeniden deneme tanimi"
+   },
+   {
+    "dikis": "S5 Ajan yurutucu",
+    "port": "AgentExecutorPort: TaskEnvelope -> ResultEnvelope (diff/PR, olay akisi, maliyet, cikis kodu)",
+    "standart": "Agent Client Protocol (ACP) veya basliksiz CLI; AGENTS.md; Agent Skills; MCP",
+    "adaptorler": "Claude Code, Codex CLI, OpenHands, Hermes, ...",
+    "sahiplik": "zarf semalari, harness TCK, butce/izin politikasi"
+   },
+   {
+    "dikis": "S6 Model",
+    "port": "ModelPort (saglayici basina yerel API adaptoru)",
+    "standart": "OTel GenAI span'lari (olcum icin, surum sabit)",
+    "adaptorler": "Anthropic, OpenAI, acik agirlikli modeller",
+    "sahiplik": "degerlendirme seti, talimat dosyalari, yonlendirme politikasi"
+   },
+   {
+    "dikis": "S7 Araclar",
+    "port": "MCP istemci/sunucu",
+    "standart": "MCP (spec surumu sabit) + resmi conformance",
+    "adaptorler": "kendi MCP sunuculari",
+    "sahiplik": "yetkilendirme, denetim kaydi"
+   },
+   {
+    "dikis": "S8 Calisma alani",
+    "port": "WorkspacePort: create/exec/copy/snapshot/destroy",
+    "standart": "OCI imaji + Dev Container spec",
+    "adaptorler": "Docker/Colima, Firecracker tabanli, E2B/Daytona/Modal",
+    "sahiplik": "temel imajlar, egress politikasi, sir enjeksiyonu"
+   },
+   {
+    "dikis": "S9 Kod ve birlesme",
+    "port": "CodeHostPort (PR, checks, webhook), MergePolicy",
+    "standart": "Git; 'gerekli kontroller' sozlesmesi; JUnit XML/SARIF",
+    "adaptorler": "GitHub (+ merge queue), alternatif barindirici",
+    "sahiplik": "dal/birlesme politikasi, kararsiz test karantinasi"
+   },
+   {
+    "dikis": "S10 CI/dagitim/onizleme",
+    "port": "BuildPort, DeployPort",
+    "standart": "OCI, Dagger veya depo-ici betikler, OpenTofu/Compose/K8s manifestolari",
+    "adaptorler": "GitHub Actions, yerel, ikinci CI",
+    "sahiplik": "betikler, ortam tanimlari, rollback"
+   },
+   {
+    "dikis": "S11 Gozlem",
+    "port": "OTel SDK",
+    "standart": "OpenTelemetry/OTLP + GenAI semconv",
+    "adaptorler": "herhangi OTLP arka ucu",
+    "sahiplik": "iz kimligi semasi (gorev->kosu->PR->dagitim), SLO, maliyet"
+   },
+   {
+    "dikis": "S12 Insan incelemesi",
+    "port": "ReviewPort: Verdict olayi",
+    "standart": "CloudEvents",
+    "adaptorler": "PR arayuzu, tracker, ozel pano",
+    "sahiplik": "rubrik, karar semasi"
+   }
+  ],
+  "kalici_varliklar_depoda": [
+   "spec'ler (spec-anchored, spec-as-source degil)",
+   "calistirilabilir kabul testleri ve Definition of Done",
+   "altin gorev seti (harness/model degerlendirmesi icin)",
+   "AGENTS.md ve Agent Skills dizinleri",
+   "politika-kod dosyalari",
+   "port semalari (JSON Schema/OpenAPI/AsyncAPI) ve uyumluluk takimlari",
+   "ADR'ler ve alan sozlugu"
+  ],
+  "kurallar": [
+   {
+    "kural": "K1 - Her dis arac bir port arkasinda; port sozlesmesi depoda surumlu; her adaptor ayni uyumluluk takimini (TCK) gecmeden devreye giremez.",
+    "kanit": "Kubernetes CRI/dockershim; MCP conformance + SDK tiering; A2A TCK"
+   },
+   {
+    "kural": "K2 - Alan gercegi tek yerde (olay defteri). Orkestrator yalnizca yurutme durumunu tutar. Ayni alan alanini iki sistemin yazmasi ('iki beyin') CI'da uygunluk fonksiyonuyla engellenir.",
+    "kanit": "Pilot Kestra/Postgres; Assistants 'use your stored messages'; Airflow 3; Netflix instance-yerel durum"
+   },
+   {
+    "kural": "K3 - Kalici varliklar arac-bagimsiz bicimde depoda: spec, kabul testi, altin gorev seti, AGENTS.md, Agent Skills, politika. Saglayicinin 'nesne deposuna' (prompt objeleri, gorsel kanvas) is kurali konmaz.",
+    "kanit": "Roo bicimlerinin sahipsiz kalmasi; OpenAI Prompts/Agent Builder kaldirma; Hermes goc komutu; Spec Kit 30+ ajan"
+   },
+   {
+    "kural": "K4 - Once acik standart (Git, OCI, OTel, CloudEvents, MCP, ACP); yoksa kendi dar is sozlesmen. Model icin en kucuk ortak payda gecidi degil, saglayici basina yerel adaptor.",
+    "kanit": "Anthropic OpenAI-uyumluluk katmani 'not production-ready'; LiteLLM surum takibi hatalari"
+   },
+   {
+    "kural": "K5 - Soyutlama yatirimi oynaklik x degisim maliyetine gore: YUKSEK (harness, model, sandbox, saglayici sozlesmesi) -> port+TCK+tatbikat; DUSUK (Git, SAFe politikasi, OTLP) -> dogrudan kullan, soyutlama ekleme.",
+    "kanit": "Hohpe 2019; katman tablosu"
+   },
+   {
+    "kural": "K6 - Her degisim strangler + bayrak + BITIS TARIHI ile: eski ve yeni yol en fazla belirli bir sure yan yana; bitis kriteri 'altin gorevlerde esit veya daha iyi kabul orani'.",
+    "kanit": "Netflix 2 ceyrek, dinamik yapilandirma; pilotta gecici ikiligin kaliciya donusmesi"
+   },
+   {
+    "kural": "K7 - Degisim tatbikati: her ceyrek oynak katmanlardan biri (harness, model, sandbox, saglayici) ikincil adaptore gecirilip en az bir gun gercek isle calistirilir; olcum: kabul orani, maliyet, sure, guvenlik ihlali.",
+    "kanit": "DORA md.28 test edilmis cikis plani; Anthropic 'without prior notice'; Windsurf <5 gun"
+   },
+   {
+    "kural": "K8 - Surum sabitleme + kanarya + kaldirma takvimi kapisi: harness/SDK/model/spec surumleri sabit; guncelleme kanaryayla; kaldirma tarihleri CI'da izlenir.",
+    "kanit": "OpenHands 'Deprecation deadlines' CI kapisi; model emeklilik takvimleri"
+   },
+   {
+    "kural": "K9 - Mimari uygunluk fonksiyonlari CI'da: (a) cekirdek hicbir saglayici SDK'sini import etmez, (b) her spec en az bir calistirilabilir teste bagli, (c) her adaptorun TCK'si yesil, (d) defter disinda alan durumu yazan kod yok, (e) kaldirma tarihi gecen ozellik yok.",
+    "kanit": "Thoughtworks fitness function tanimi"
+   },
+   {
+    "kural": "K10 - Kimlik ve maliyet: otomasyonda abonelik OAuth'u degil API anahtari; saglayici basina butce ve kota; maliyet OTel'den olculur.",
+    "kanit": "Anthropic legal-and-compliance (2026-02-19) ve 2026-06-15 programatik kredi degisikligi"
+   }
+  ],
+  "olcek_notu_12x12": "144 takimda her takim kendi arac ciftini baglarsa entegrasyon sayisi N x M buyur; standart dikis (ACP kayit defteri 'register once, available to every ACP client' mantigi, MCP) bunu N + M'ye indirir. Ayni sebeple TCK merkezi bir platform ekibinde tutulmali, adaptorler takimlara acik olmali (dogrulanamadi: 144 takim icin olculmus bir vaka bulunamadi).",
+  "yapilmamasi_gerekenler": [
+   "Her katmani soyutlamak (Hohpe: karmasiklik maliyeti)",
+   "LCD model gecidini tek yol yapmak",
+   "Dugum-grafigi aracini alan durumunun sahibi yapmak",
+   "Spec'i tek kaynak yapip kodu 'uretilmis cikti' saymak (spec-as-source; Bockeler MDD uyarisi)",
+   "Gecici paralel yolu bitis tarihsiz birakmak"
+  ]
+ },
+ "degisim_ozet_olcum": {
+  "not": "Resmi bir 'arac yarilanma omru' calismasi bulunamadi (dogrulanamadi). Asagidaki sayilar yalnizca bu dosyadaki dogrulanmis orneklerden turetildi; secim yanliligi vardir.",
+  "harness_orkestrator_omurleri_ay": {
+   "Crystal": "~8 (2025-06-05 depo -> 2026-02 kaldirma)",
+   "Vibe Kanban sirketi": "~10 (2025-06-14 -> 2026-04-10)",
+   "OpenAI Agent Builder": "~8 ay karar, ~14 ay kapanis (2025-10-06 -> 2026-06-03 / 2026-11-30)",
+   "Copilot Workspace": "~13 (2024-04 -> 2025-05-30)",
+   "Roo Code": "~18 (2024-10-31 -> 2026-05-15)",
+   "Flowise": "~40 (2023-03-31 -> 2026-08-13)",
+   "Terragon": "kapanis 2026-02-09 (lansman tarihi dogrulanamadi)"
+  },
+  "model_snapshot_omru": "Anthropic'te 2025 snapshot'lari cogunlukla 12-13 ay (Sonnet 3.7: 2025-02-19->2026-02-19; Sonnet/Opus 4: 2025-05-14->2026-06-15; Opus 4.1: 2025-08-05->2026-08-05). Bildirim taahhudu en az 60 gun.",
+  "saglayici_politika_degisimi": "Anthropic ucuncu taraf harness/abonelik kurali 2026-01-09, 2026-02 (ToS), 2026-04-04, 2026-05-13, 2026-06-15 tarihlerinde degisti (6 ayda 5 olay)."
+ }
+}

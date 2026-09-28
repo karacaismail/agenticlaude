@@ -1,0 +1,41 @@
+{
+  "sema": "mimari-haritasi/harita@1",
+  "baslik": "Agentic fabrika mimarisi",
+  "tarih": "2026-09-27",
+  "amac": "Plane'de In Progress'e alınan görevi ajanlarla baştan sona yürütüp alpha deposuna ve alpha ortamına teslim etmek; insan girdiyi tanımlar ve çıktıyı test eder.",
+  "kod": "../agentic-fabrika",
+  "gorsel": "../agentic-fabrika/docs/agentic-fabrika.html",
+  "belgeler": [
+    "../agentic-fabrika/README.md",
+    "../agentic-fabrika/docs/MIMARI.md",
+    "../agentic-fabrika/docs/KAPASITE.md",
+    "../agentic-fabrika/docs/ROLLER-VE-HAVUZLAR.md",
+    "../agentic-fabrika/docs/OLGUNLUK.md"
+  ],
+  "dosyalar": {
+    "bilesenler": "bilesenler.json",
+    "kararlar": "kararlar.json",
+    "pilot_dersleri": "pilot-dersleri.json",
+    "dogrulama": "dogrulama.json",
+    "arastirma": "arastirma/",
+    "codex_eklemeleri": "codex-eklemeleri.json"
+  },
+  "ozet": {
+    "bilesen": 21,
+    "karar": 25,
+    "karsilanan_ihtiyac": 116,
+    "baglanan_arac": 14,
+    "onerilen_kabul_deneyi": 28
+  },
+  "iliskili_haritalar": {
+    "ihtiyac": "../ihtiyac-haritasi",
+    "arac": "../arac-haritasi",
+    "risk": "../risk-haritasi"
+  },
+  "guncelleme": {
+    "tarih": "2026-09-27",
+    "kaynak": "E4 Codex mimari karşılaştırması (arastirma/E4-codex-mimari.json)",
+    "eklenen": "M-B15–M-B21, M-K13–M-K25, dogrulama.json M-D01–M-D28 + test envanteri düzeltmesi + Codex deney kanıtları, codex-eklemeleri.json",
+    "not": "Yeni bileşenlerin çoğu 'onerildi' ya da 'uygulandi-kismen'; karsilanan_ihtiyac sayısı önerilen bileşenlerin eşlemelerini de içerir (yalnız M-B01–M-B14: 98)."
+  }
+}

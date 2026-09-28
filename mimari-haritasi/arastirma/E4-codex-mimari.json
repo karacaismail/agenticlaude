@@ -1,0 +1,347 @@
+{
+  "meta": {
+    "gorev": "E4 — Mimari / sistem tasarımı karşılaştırması (Codex agentic-sistem ↔ mimari-haritasi + agentic-fabrika)",
+    "tarih": "2026-09-27",
+    "codex_dizini": "/Users/w6x/Documents/otomasyon coding 2 (salt okunur; claude-karsilastirma/ klasörü kapsam dışı)",
+    "incelenen": [
+      "agentic-sistem/README.md",
+      "raporlar/01–05",
+      "data/02_mimari/*",
+      "data/03_izlenebilirlik/01",
+      "data/04_sozlesmeler/*",
+      "data/05_havuzlar/*",
+      "data/07_olgunluk/01",
+      "data/09_dogrulama/01–03,06",
+      "data/10_tikaniklik_ve_toparlanma/*",
+      "data/12_fabrika_cercevesi/03,08",
+      "data/13_evrilebilirlik/*",
+      "semalar/*",
+      "diagrams/02,03,06",
+      "yonergeler/*",
+      "agents/AR04",
+      "mcp/*",
+      "skills/SK01–SK21",
+      "deneyler/engine-stall-probe/*",
+      "deneyler/progress-supervisor/*",
+      "uygulama/ (README, status.json, agentic_factory/*.py, evidence/*, deploy/*, tests/, examples/)"
+    ],
+    "bizde_incelenen": [
+      "mimari-haritasi/*",
+      "agentic-fabrika/README.md, docs/*.md, fabrika/faaliyetler/sandbox.py, depo.py, giris/plane_olay.py, gozcu.py, akis/gorev_akisi.py (seçili bölümler), config/politika.yaml, projeler.yaml, tests/ (envanter)"
+    ],
+    "birincil_kaynak_dogrulamalari": [
+      "Temporal Python hata yönetimi belgesi",
+      "kernel cgroup-v2 belgesi",
+      "GitHub Actions tetikleme belgesi",
+      "GitHub depo aktarma belgesi",
+      "gh api advisories (CVE-2026-21858)",
+      "makeplane/plane preview webhook_task.py + gh code search",
+      "developers.plane.so webhooks",
+      "man7 execve(2)",
+      "agentskills.io belirtimi"
+    ],
+    "yontem": "Yalnız okuma; Codex testleri ve deneyleri çalıştırılmadı; kanıt dosyaları (history JSON, sha256) çapraz denetlendi.",
+    "ara_notlar": "scratchpad/e4/notlar.md (oturum geçici)"
+  },
+  "codex_fazlasi_eklenenler": [
+    {
+      "ne": "Durum otoriteleri matrisi ve 8 değişmez",
+      "nereye_eklendi": "kararlar.json M-K13; codex-eklemeleri.json yetki_ve_durum_otoriteleri",
+      "codex_kaynagi": "agentic-sistem/data/02_mimari/03_yetki_ve_durum_otoriteleri.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Kabul ve dış etki defteri (niyet → makbuz / uzlaştırma, unknown_effect)",
+      "nereye_eklendi": "bilesenler.json M-B15 (codex_uygulamasi dahil); kararlar.json M-K14",
+      "codex_kaynagi": "agentic-sistem/uygulama/agentic_factory/ledger.py; agentic-sistem/uygulama/evidence/qualification.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Semantik girdi özeti, nesil, iptal kimliği, çift kabul ve kabul sonrası süreç kaybı kurtarma",
+      "nereye_eklendi": "kararlar.json M-K15; bilesenler.json M-B15; dogrulama.json M-D01, M-D04",
+      "codex_kaynagi": "agentic-sistem/uygulama/agentic_factory/contracts.py; intake.py; ledger.py",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Tipli 6 terminal sonuç; ready_for_review ≠ Done",
+      "nereye_eklendi": "kararlar.json M-K16; codex-eklemeleri.json yasam_dongusu",
+      "codex_kaynagi": "agentic-sistem/data/04_sozlesmeler/02_cikti_sozlesmesi.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Canlılık ≠ ilerleme; exit 137 ≠ OOM; meşru uzun sessizlik penceresi",
+      "nereye_eklendi": "kararlar.json M-K17; dogrulama.json M-D05–M-D10",
+      "codex_kaynagi": "agentic-sistem/deneyler/progress-supervisor/; agentic-sistem/data/10_tikaniklik_ve_toparlanma/03_gozetim_ve_kurtarma.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "İş akışı dışı gözlemci (WFT hata döngüsü) ve toparlanma dağıtıcısı",
+      "nereye_eklendi": "bilesenler.json M-B16; kararlar.json M-K18; dogrulama.json M-D13",
+      "codex_kaynagi": "agentic-sistem/deneyler/engine-stall-probe/evidence.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Kaynak ölçüm sözleşmesi RM01–RM10 ve ölçüme dayalı yuva formülü",
+      "nereye_eklendi": "bilesenler.json M-B17; codex-eklemeleri.json gozetim_ve_toparlanma",
+      "codex_kaynagi": "agentic-sistem/data/10_tikaniklik_ve_toparlanma/04_kaynak_ve_alt_gorevler.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Yetenek sicili yaşam döngüsü (8 durum), manifest ve iş kapsamlı kiralama",
+      "nereye_eklendi": "bilesenler.json M-B18; codex-eklemeleri.json havuzlar",
+      "codex_kaynagi": "agentic-sistem/data/05_havuzlar/04_havuz_yasam_dongusu.json; agentic-sistem/yonergeler/REGISTRY-POLICY.md",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "9 adaptör yuvası ve ortak sözleşme",
+      "nereye_eklendi": "bilesenler.json M-B19; codex-eklemeleri.json adaptor_yuvalari",
+      "codex_kaynagi": "agentic-sistem/data/12_fabrika_cercevesi/03_adaptor_sozlesmeleri.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Evrilebilirlik: 10 değişim alanı, 5 geçiş yolu, 7 aşama, 19 alanlı değişim sözleşmesi, 10 kabul deneyi, 7 ölçüt",
+      "nereye_eklendi": "kararlar.json M-K19; codex-eklemeleri.json evrilebilirlik; dogrulama.json M-D20–M-D22",
+      "codex_kaynagi": "agentic-sistem/data/13_evrilebilirlik/*; agentic-sistem/raporlar/05-evrilebilir-fabrika.md",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Motor kararının geri dönüş ölçütleri ve 10 arıza sondası",
+      "nereye_eklendi": "kararlar.json M-K20",
+      "codex_kaynagi": "agentic-sistem/data/02_mimari/02_motor_karari_ve_alternatifler.json; agentic-sistem/data/10_tikaniklik_ve_toparlanma/02_motor_karsilastirma.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Çağrı öncesi fiziksel çağrı rezervasyonu ve değişmez kök çağrı limiti",
+      "nereye_eklendi": "kararlar.json M-K21; dogrulama.json M-D28",
+      "codex_kaynagi": "agentic-sistem/uygulama/agentic_factory/ledger.py (reserve_call)",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Güvenilir ajan aracısı: sabit argv, shell=False, stdin JSON, çalıştırılabilir + çağrı manifesti özeti",
+      "nereye_eklendi": "bilesenler.json M-B20; kararlar.json M-K22; dogrulama.json M-D25",
+      "codex_kaynagi": "agentic-sistem/uygulama/agentic_factory/adapters.py (TrustedBrokerAdapter)",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Yayın politikası fonksiyonu (alpha, head/base SHA, force yok, yeni commit kimliği ve iz yasağı, korunan yollar)",
+      "nereye_eklendi": "bilesenler.json M-B21; dogrulama.json M-D27",
+      "codex_kaynagi": "agentic-sistem/uygulama/agentic_factory/contracts.py (check_publish_policy)",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Dürüst durum kaydı: implemented / exercised / pending; mimaride_ele_alindi / uygulandi / tested_live",
+      "nereye_eklendi": "kararlar.json M-K23; codex-eklemeleri.json bilesen_durum_ayrimi",
+      "codex_kaynagi": "agentic-sistem/uygulama/status.json; agentic-sistem/data/03_izlenebilirlik/01_113_ihtiyac_mimari_esleme.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Depo/ortam/durum eşlemesi operatörden; 'alpha' ortam adı, depo adı sahip başına tekil",
+      "nereye_eklendi": "kararlar.json M-K24",
+      "codex_kaynagi": "agentic-sistem/uygulama/README.md; agentic-sistem/uygulama/examples/project-mapping.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Plane webhook imza ve gövde sürümü kuralı; webhook devre dışı kalma davranışı",
+      "nereye_eklendi": "kararlar.json M-K25; dogrulama.json M-D23, M-D24",
+      "codex_kaynagi": "agentic-sistem/uygulama/agentic_factory/adapters.py (verify_plane_webhook)",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Codex'in 26 kontrol kümesinin bileşenlerimize eşlemesi ve 113 ihtiyaç eşlemesi özeti",
+      "nereye_eklendi": "codex-eklemeleri.json kontrol_kumesi_esleme, codex_113_ihtiyac_eslemesi_ozeti",
+      "codex_kaynagi": "agentic-sistem/data/02_mimari/01_kontrol_kumeleri.json; agentic-sistem/data/03_izlenebilirlik/01_113_ihtiyac_mimari_esleme.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Girdi (10+12+24+23 alan) ve çıktı (6 sonuç, 20 alan) sözleşme özetleri; idempotency anahtarları; 18 iç durum",
+      "nereye_eklendi": "codex-eklemeleri.json sozlesme_ozetleri",
+      "codex_kaynagi": "agentic-sistem/data/04_sozlesmeler/*; agentic-sistem/data/02_mimari/05_kontrat_kilitleri_ve_github.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Toparlanma merdiveni, tipli engel alanları, 8 karar eylemi (RA01–RA08), alt iş DAG/sınırlı çoğaltma alanları, worktree'nin sağlamadıkları",
+      "nereye_eklendi": "codex-eklemeleri.json gozetim_ve_toparlanma",
+      "codex_kaynagi": "agentic-sistem/data/10_tikaniklik_ve_toparlanma/03,04",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Kabul deneyleri kataloğu (qualification, C01–C26 deneyleri, RT01–RT18, ET01–ET10) içinden bizde olmayan/kısmi 28 deney",
+      "nereye_eklendi": "dogrulama.json kabul_deneyleri_onerilen M-D01–M-D28",
+      "codex_kaynagi": "agentic-sistem/data/09_dogrulama/01_kabul_test_katalogu.json; agentic-sistem/data/10_tikaniklik_ve_toparlanma/05_kabul_kanitlari.json; agentic-sistem/data/13_evrilebilirlik/03_kabul_ve_sinirlar.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Codex deney kanıtlarının ne gösterip ne göstermediği (pilot, politika deneyi, motor sondası)",
+      "nereye_eklendi": "dogrulama.json codex_deney_kanitlari",
+      "codex_kaynagi": "agentic-sistem/uygulama/evidence/*; agentic-sistem/deneyler/*",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Olgunluk L0–L5 ↔ S0–S4 eşlemesi ve düzey başına geri düşme koşulu",
+      "nereye_eklendi": "codex-eklemeleri.json olgunluk_esleme",
+      "codex_kaynagi": "agentic-sistem/data/07_olgunluk/01_mvp_post_mvp_olgunluk.json",
+      "dogrulama": "kismen"
+    },
+    {
+      "ne": "Codex'in kendi sınırları ve bizdeki karşılıkları",
+      "nereye_eklendi": "codex-eklemeleri.json codex_sinirlari_ve_bizdeki_karsiliklar",
+      "codex_kaynagi": "agentic-sistem/uygulama/evidence/qualification.json; agentic-sistem/uygulama/status.json",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "ne": "Rol havuzu AR01–AR12 ↔ bizim roller; bağlantı sınıfları CO01–CO08; skill karşılaştırması",
+      "nereye_eklendi": "codex-eklemeleri.json havuzlar",
+      "codex_kaynagi": "agentic-sistem/data/05_havuzlar/01,03; agentic-sistem/skills/*",
+      "dogrulama": "dogrulandi"
+    }
+  ],
+  "eklenmeyenler": [
+    {
+      "ne": "Codex 113 ihtiyacının (I01-01…) bizim 388 ihtiyacımıza (N-Kxx-nnn) satır satır çapraz eşlemesi",
+      "neden": "İhtiyaç haritası kapsamı; bu görevde yalnız özet ve kontrol kümesi→bileşen eşlemesi eklendi."
+    },
+    {
+      "ne": "12 × 12 = 144 mantıksal ekip topolojisi, 7 platform matrisi (Paperclip, Gas Town, Warren…), 28 HRMS menüsü",
+      "neden": "Mimari değil ölçek/ürün/araç kapsamı; bizde arastirma/C1, C5, C6 çalışmaları var. Codex bunları kurmadı, 'current_platform_selection=null'."
+    },
+    {
+      "ne": "Codex'in 21 skill şablonu",
+      "neden": "Hepsi 'taslak ve etkin değil', ortak kalıp; dizin/name Agent Skills belirtimine uymuyor; skill sayısı 20–30'u geçince seçim doğruluğu düşüyor (ROLLER-VE-HAVUZLAR.md)."
+    },
+    {
+      "ne": "12 rol şablonunun (AR01–AR12) ayrı ajan olarak benimsenmesi",
+      "neden": "Bizde görev başına tek yazıcı ve rol başına ayrı çağrı (M-K02); ek roller koşullu işlev olarak eşlendi (codex-eklemeleri.json havuzlar)."
+    },
+    {
+      "ne": "Görev içi paralel alt iş DAG'ı",
+      "neden": "M-K11 (sıralı parçalar) korunur; Codex'in alanları kayda alındı, karar RT11 ölçümüne (M-D18) bağlandı."
+    },
+    {
+      "ne": "'İlk global aktif iş sınırı 2' önerisi",
+      "neden": "Ölçüm değil, ihtiyatlı ayar; bizim S1 kademeli açılışı (1→3→12 ekip) aynı amacı taşıyor; sayı ölçümle belirlenecek (M-D19)."
+    },
+    {
+      "ne": "Codex tarayıcı QA kayıtları (09_dogrulama/03–07)",
+      "neden": "Yalnız kendi görselleştirme sayfalarının UI kontrolü; fabrika kabulü değil."
+    },
+    {
+      "ne": "Codex'in SQLite nitelendirme defteri ve demo iş akışı kodu",
+      "neden": "Kod değişikliği yasak; desen M-B15/M-K14/M-K15 olarak kaydedildi."
+    },
+    {
+      "ne": "n8n'i tek dış motor seçme olasılığı",
+      "neden": "Arıza paketi hiç koşulmadı; güvenlik (CVE-2026-21858) ve lisans gerekçeli reddimiz (M-K10) sürer; olasılık M-K20 geri dönüş ölçütü olarak tutuldu."
+    }
+  ],
+  "bizde_olup_codexte_olmayan": [
+    "Uçtan uca çalışan akış: gerçek Temporal + Postgres + Docker sandbox + git (Plane/GitHub/model sahte); Codex'te model/GitHub/dağıtım faaliyetleri fikstür ve adaptörler iş akışına bağlı değil.",
+    "RED/GREEN kapıları: JUnit ile kabul testi (KT-n) RED kanıtı, RED sonrası test dosyası koruması, koşan test sayısının düşmemesi, test yapılandırması koruması.",
+    "Rejected → birleştirme kuyruğundan otomatik revert; birleştirmeden önce Plane durumunun yeniden okunması.",
+    "Proje başına birleştirme kuyruğu (kilit-<proje> iş akışı), güncel main ile entegrasyon ve kapı/CI tekrarı, alpha /_saglik kırıkken birleştirmeyi dondurma.",
+    "Hızlı ileri birleştirme ile yazar ve committer'ın korunması (GitHub squash'ında committer 'GitHub' olur); Codex bunu 'nitelendirilmeli' diye açık bırakıyor.",
+    "İnsan kararı gereken işin doğru kişiye atanması, 4/24 sa hatırlatma, 48 sa SAFe etiketiyle RTE'ye yükseltme; günlük akış gözcüsü.",
+    "Uygulanmış OOM profil merdiveni (6→12→16 GB) ve cgroup oom_kill/memory.peak okuması.",
+    "İzin listeli Squid çıkış vekili ve internal sandbox ağı (elle doğrulandı).",
+    "workflow.patched sürümleme kuralı ve kayıtlı geçmişlerin CI'da yeniden oynatılması.",
+    "Görev defteri: iş kaleminin tüm koşularında toplam maliyet tavanı; çağrı öncesi tahmini maliyet denetimi.",
+    "Katılım etiketi ('ajan'): insanın elle yürüttüğü In Progress işlere dokunmama.",
+    "Pilot (software-factory) adli kök neden analizi ve ölçülmüş kaynak kullanımı (pilot-dersleri.json).",
+    "Araç risk puanlarının bileşenlere bağlanması (risk haritası entegrasyonu) ve Hetzner kapasite tahmin tabloları.",
+    "Haftalık Kaizen raporu (kaizen.py) ve açılış yapılandırma denetimi (python -m fabrika.dogrula)."
+  ],
+  "celiskiler": [
+    {
+      "konu": "Motor / platform seçimi",
+      "codex": "Güncel üst karar platform seçmemek (candidate=null); Temporal 'tarihsel yerel pilot motoru, üretim seçimi değil'; hazır çekirdekler (Paperclip, Gas Town, Warren) aynı kabul deneyleriyle karşılaştırılmalı.",
+      "biz": "M-K01: Temporal seçildi ve uygulandı; M-K10 tek çerçeve.",
+      "dogru_olan": "Kısmen ikisi: karşılaştırmalı canlı ölçüm iki tarafta da yok. Bizim kararımız çalışan koda ve uçtan uca senaryoya dayanıyor, korunur; Codex'in geri dönüş ölçütleri ve motor bağımsız zorunlu katmanları M-K20 olarak eklendi.",
+      "kanit": "agentic-sistem/data/12_fabrika_cercevesi/08_guncel_karar.json (candidate_installations=false, new_acceptance_experiments_run=false, factory_operational=false); dogrulama.json uctan_uca"
+    },
+    {
+      "konu": "n8n dış çerçeve olarak",
+      "codex": "n8n bu dış çerçeveyi yönetebilir; aynı arıza paketini daha düşük bakım yüküyle geçerse tek dış motor seçilmeli.",
+      "biz": "M-K10: n8n çekirdek orkestratör olarak reddedildi (kritik risk, CVE-2026-21858, OSI dışı lisans); yalnız kenarlarda.",
+      "dogru_olan": "Biz (çekirdek için). Güvenlik açığı birincil kaynakla doğrulandı; Codex'in önerdiği arıza paketi hiç koşulmadı. Olasılık geri dönüş ölçütü olarak tutuldu.",
+      "kanit": "GHSA-v4pr-fm98-w9pg (gh api): kritik, CVSS 10, n8n >=1.65.0 <1.121.0"
+    },
+    {
+      "konu": "Exit 137'nin OOM sayılması",
+      "codex": "137 tek başına OOM kanıtı değildir; ilgili cgroup'ta oom_kill artışı gerekir (test_exit_137_alone_is_not_oom).",
+      "biz": "agentic-fabrika/fabrika/faaliyetler/sandbox.py siniflandir(): 'kod == 137 or OOM deseni' → KaynakYetersiz → bir üst bellek profili.",
+      "dogru_olan": "Codex. Exit 137 = SIGKILL (128+9); oom_kill sayacı zaten okunuyor, 137 koşulu elle öldürme/dış sonlandırmayı yanlışlıkla bellek sorunu sayabilir.",
+      "kanit": "https://docs.kernel.org/admin-guide/cgroup-v2.html (oom_kill tanımı); agentic-sistem/deneyler/progress-supervisor/evidence.json"
+    },
+    {
+      "konu": "Plane webhook gövde sürümü",
+      "codex": "Adaptör yalnız version=='v2' ve workitem.* olaylarını kabul ediyor (ham gövde HMAC).",
+      "biz": "M-K08 'webhook v1'; plane_olay.py event=issue ayrıştırır, X-Plane-Signature ham gövde HMAC-SHA256.",
+      "dogru_olan": "İmzada ikisi aynı ve doğru. Gövde sürümünde CE (self-host) için biz: açık kaynak kodda v2 alanları yok. v2 yalnız belgede tanımlı (edisyon belirtilmemiş). Codex bunu kendisi 'kurulu sürümü nitelendir' diye koşullamış.",
+      "kanit": "makeplane/plane preview apps/api/plane/bgtasks/webhook_task.py (blob 5184ae61); gh code search (previous_attributes, delivery_id yok); developers.plane.so/dev-tools/intro-webhooks"
+    },
+    {
+      "konu": "Error sonrası insan müdahalesi",
+      "codex": "İnsan yalnız girdi/çıktı; ara insan müdahalesi normal süreçten çıkarılır; düzeltilmiş girdi yeni revizyon/nesildir, önceki kanıt kendiliğinden geçerli değildir.",
+      "biz": "Error + paket → insan düzeltir → In Progress → aynı GorevAkisi ek bütçeyle devam (en çok 3 kez).",
+      "dogru_olan": "Kısmen ikisi: iki tasarım da insanı girdi sağlayıcı olarak tutar. Codex'in 'girdi değiştiyse yeni nesil ve eski kanıt geçersiz' kuralı daha güvenli; M-K15 ile eklendi, bizim devam döngüsü korunur.",
+      "kanit": "agentic-sistem/data/02_mimari/05_kontrat_kilitleri_ve_github.json (invariants); agentic-fabrika/docs/MIMARI.md §2"
+    },
+    {
+      "konu": "İnsan testinde sürüm kimliği",
+      "codex": "Paylaşılan alpha.* URL yetmez; insan tam commit/artefakt kimliğini incelemeli.",
+      "biz": "/_surum 'yayındaki sürüm commit'i içeriyor mu' denetimi; görev başına önizleme S2'de.",
+      "dogru_olan": "Codex ilke olarak (sonraki birleştirme test edilen sürümü değiştirebilir); bizim S2 planı çözümü içeriyor. M-D14 eklendi.",
+      "kanit": "agentic-sistem/data/02_mimari/01_kontrol_kumeleri.json C15; agentic-fabrika/docs/OLGUNLUK.md S2"
+    },
+    {
+      "konu": "Kapasite başlangıcı",
+      "codex": "İlk global aktif iş sınırı 2 (ölçüm değil); formül ölçülmüş değerlerle, hepsi null.",
+      "biz": "KAPASITE.md: AX102'de ~12 orta görev (tahmin olarak etiketli).",
+      "dogru_olan": "İkisi de ölçülmemiş; çelişki sayısal, yöntem uyumlu. Bizim S1 kademeli açılışı ölçüme bağlanır (M-D19).",
+      "kanit": "agentic-sistem/data/10_tikaniklik_ve_toparlanma/04_kaynak_ve_alt_gorevler.json capacity_model; agentic-fabrika/docs/KAPASITE.md"
+    },
+    {
+      "konu": "Görev içi alt görev paralelliği",
+      "codex": "Bölmek ve aynı anda çalıştırmak ayrı kararlar; bağımsız alt işler DAG ile paralel olabilir, kazanç ölçülmeli (RT11).",
+      "biz": "M-K11: görev içinde yalnız sıralı parçalar; paralellik görevler arasında.",
+      "dogru_olan": "Kanıt yetersiz: iki taraf da ölçmedi. MVP için bizim ihtiyatlı kararımız korunur; geri dönüş ölçütü M-D18.",
+      "kanit": "agentic-sistem/raporlar/02-tikaniklik-ve-toparlanma.md; agentic-fabrika/docs/MIMARI.md §6"
+    },
+    {
+      "konu": "Birleştirme mekanizması",
+      "codex": "GitHub merge queue yapı taşı; birleştirme committer davranışı nitelendirilmeli (github_merge_committer_must_be_qualified).",
+      "biz": "Kendi birleştirme kuyruğu + hızlı ileri gönderim; squash'ta committer GitHub olduğu için reddedildi (ISLETIM.md §4).",
+      "dogru_olan": "Biz (kişisel yazarlık politikası açısından daha eksiksiz); Codex sorunu tanımlıyor ama çözmüyor.",
+      "kanit": "agentic-sistem/data/02_mimari/05_kontrat_kilitleri_ve_github.json git_policy; agentic-fabrika/docs/ISLETIM.md §4"
+    },
+    {
+      "konu": "Doğrulama sayılarımız (iç tutarsızlık)",
+      "codex": "—",
+      "biz": "dogrulama.json: 19+17+5 = 41 geçen; README: 57 test; tests/ altında bugün 61 test fonksiyonu tanımlı.",
+      "dogru_olan": "dogrulama.json eski koşuya ait; 61 tanımlı test envanteri eklendi (geçme durumu bu incelemede doğrulanmadı).",
+      "kanit": "agentic-fabrika/tests/*.py grep sayımı (akis 30, entegrasyon 9, giris 4, havuz_kaizen 5, saf 11, yeniden_oynatma 2)"
+    }
+  ],
+  "agentic_fabrika_icin_notlar": [
+    "YALNIZ NOT — kod değişikliği yapılmadı.",
+    "sandbox.py siniflandir(): 'kod == 137' koşulu kaldırılıp OOM kararı yalnız oom_kill sayacı artışı / 'JavaScript heap out of memory' ile verilmeli (M-K17, M-D05).",
+    "Ajan komutu: istem 'claude -p \"$(cat dosya)\"' ile argv'ye veriliyor; >128 KiB istemde E2BIG. İstemi stdin'den vermek (ör. dosyayı stdin'e yönlendirmek) ve CLI ikilisinin özetini sabitlemek düşünülmeli (M-K22, M-D25).",
+    "Kabul/etki defteri: PR açma, Plane durum/yorum yazımı ve dağıtım tetikleme için niyet→makbuz kaydı; zaman aşımında önce GitHub/Plane'den salt okunur uzlaştırma (M-B15, M-K14, M-D02).",
+    "Girdi özeti ve nesil: Error → In Progress dönüşünde form özeti değiştiyse nesil artırılmalı, önceki RED/GREEN kanıtı yeniden üretilmeli (M-K15, M-D01).",
+    "İş akışı dışı gözlemci: temporal_workflow_task_execution_failed alarmı (AK-57) kurulmalı; gozcu.py yalnız günlük; geçmişte WORKFLOW_TASK_FAILED izleyen ayrı süreç (M-K18, M-D13).",
+    "Faaliyet yeniden deneme politikaları: Temporal varsayılanı sınırsız; her faaliyette maximum_attempts/zaman sınırı açık olmalı (M-K20).",
+    "Plane: aktör yetki listesi (M-D26); webhook'un 5 ağ hatasından sonra devre dışı kalmasını izleyen alarm (M-D24); gövde sürümü kurulu Plane'de sözleşme testiyle sabitlenmeli (M-D23).",
+    "Yayın geçidi: yeni commit'lerde yazar/committer ve Co-Authored-By/generated-with izi için açık denetim (M-B21, M-D27) — bugün yapısal olarak sağlanıyor, doğrulayıcı yok.",
+    "_calistir(): communicate() tüm stdout'u belleğe alıyor; çıktı bayt sınırı eklenmeli.",
+    "dogrulama.json sayıları testler yeniden koşulunca güncellenmeli (61 tanımlı test).",
+    "Codex skill şablonları içe alınmamalı; mevcut 4 skill belirtime uyumlu."
+  ],
+  "degisen_dosyalar": [
+    "mimari-haritasi/00-mimari.json",
+    "mimari-haritasi/bilesenler.json",
+    "mimari-haritasi/kararlar.json",
+    "mimari-haritasi/dogrulama.json",
+    "mimari-haritasi/codex-eklemeleri.json (yeni)",
+    "mimari-haritasi/arastirma/E4-codex-mimari.json (yeni)",
+    "mimari-haritasi/arastirma/E4-ozet.md (yeni)"
+  ]
+}

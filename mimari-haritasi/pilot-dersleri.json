@@ -1,0 +1,223 @@
+{
+  "kaynak": "A0 incelemesi (~/Developer/software-factory, salt okuma)",
+  "kok_nedenler": [
+    {
+      "neden": "Dayanıklı iş akışı ilkeleri (lease, heartbeat, retry, bekleme, devam, outbox) Python+SQL ile elle yazıldı; Kestra yalnız 15 sn yoklayıcı",
+      "kanit": "flows/delivery.yaml:32-43 (LoopUntil PT15S, P7D); factory_scheduler.py:22; factory_worker.py:755; DEVIR-RAPORU.md:47-89; logs/autonomy.log (7 DeadlockDetected, 569 recovery_dispatch_pending StopJob); sleep-tolerant-leases README:18-32 (1275 BlockageStoreError); V1-4 son hata KESTRA_FAILED (25.09, 7 gün bekleme sonrası)",
+      "etki": "Zamanın çoğu kontrol düzlemi hatalarına gitti (SAATLIK-ILERLEME:5); 198 olay kaydı, 326 SUPERSEDED_BY_CONTROLLER_CORRECTION"
+    },
+    {
+      "neden": "Canlı sistem sürüm kontrolü olmadan yamalandı; düzeltmeleri fabrika değil GUI Codex/Claude oturumları yaptı",
+      "kanit": "git: 3 commit, 87/98 modül izlenmiyor; 60 activation-manifest; SAAS-UI-FIRST-DELIVERY-REPORT.md:24; SAATLIK-ILERLEME-2026-09-14.md:42; RAPOR.md:138-142",
+      "etki": "Tekrarlanabilirlik ve geri alma yok; her kontrol kodu değişikliği eski kanıtı geçersiz kılıyor (VALIDATION-V8.md:64; CORRECTION_SOURCE_CHANGED)"
+    },
+    {
+      "neden": "Kapsam patlaması: tek pilot sonrası 7 günde SAFe/ART 9 takım, 10 uzman, ECA, Kaizen/CAPA, çoklu sağlayıcı, adaptör niteleme; ilk ürün 73 bileşenli tam kütüphane (MVP değil)",
+      "kanit": "IHTIYACLAR-VE-GAP-ANALIZI-2026-09-12.md:11-28 (16 ihtiyaç); AI-CREDIT-OPTIMIZATION-ACTION-PLAN.md:9 (225 mantıksal sorumluluk); SAAS-UI-FIRST-DELIVERY-REPORT.md:7,54; git ls-files (11 -> 98 modül)",
+      "etki": "Temel akış sağlamlaşmadan her katman yeni arıza sınıfı ekledi; 92 tablo, 27k satır"
+    },
+    {
+      "neden": "Kabul/oracle problemi: genel AC-REQUEST, dosya varlığı = kanıt sanılması, eksik probe'lar; paket yeşili ürün kabulüne dönüşmedi",
+      "kanit": "son rapor satır 7-9 (AC-REQUEST NOT_TESTED); VALIDATION-V6.md:24; VALIDATION-V8.md:40; foundation-repair README bulgu 4 (UI-09 14x review FAIL); 22 SUPERSEDED paket; RAPOR.md:106-110; DEVIR-RAPORU.md:93-101",
+      "etki": "456 çağrı ve 73 MERGED paket sonrası ürün kabul edilemedi; WAITING_DECISION/CHANGE_REQUIRED"
+    },
+    {
+      "neden": "Sağlayıcı/hesap kapasitesi darboğazı ve bakım bütçesi onarımı aç bıraktı",
+      "kanit": "README.md:31,60 (tek Codex hesabı); DEVIR-RAPORU.md:59 (2+2, kota doğrulanmamış); logs/blockages.log: 330 PROVIDER_CAPACITY_UNAVAILABLE, 56 MAINTENANCE_DAILY_BUDGET, 405 diagnostician-assigned; config/provider-concurrency.json:3; RAPOR.md:116",
+      "etki": "Coder'lar kapasiteyi tüketti; teşhis/onarım/inceleme bekledi; arızalar kapanmadı"
+    },
+    {
+      "neden": "Mac uykusu üretimi ve lease'leri kırıyor",
+      "kanit": "README.md:74; experiments/sleep-tolerant-leases-20260915/README.md:9-22 (pmset ile saniye eşleşmesi; caffeinate -i kapak uykusunu engellemez; zombi slotlar tüm kapasiteyi tuttu)",
+      "etki": "Gece üretimi durur; uyanışta SCHEDULER_LEASE_LOST, zombi slot, kurtarma döngüsü"
+    },
+    {
+      "neden": "Bütçe/tekrar sınırları adaptive modda uyarıya dönüştü",
+      "kanit": "config/policy.json:26-27 (adaptive, hard_limits []); factory_execution_policy.py:30-58; ADAPTIVE-EXECUTION-2026-09-13.md:7,13; V1-4: 456/12 çağrı, 24,1M/250k önbelleksiz girdi, 7,0M/50k çıktı",
+      "etki": "Yakınsama olmadan harcama büyüdü; 46 ERROR / 47 yeniden başlatma"
+    },
+    {
+      "neden": "Eşzamanlılık artışı verime dönüşmedi; durum doğruluğu zayıf",
+      "kanit": "README.md:31 (2) vs flows/delivery.yaml:15 (5) vs config/scheduler.json (8); RAPOR.md:51-52 (6 takım, 2 aktif çağrı); status.json (9 çocuk RUNNING, worker süreci yok); factory_core.py:63 (Plane 429); 3935 rapor dosyası",
+      "etki": "Kullanıcı gerçek ilerlemeyi göremiyor; paralel slotlar lease/kapasite hatalarıyla bloke"
+    },
+    {
+      "neden": "Çağrılar arası oturum/bağlam devamı yok; aynı iş yeniden keşfediliyor",
+      "kanit": "runtime/sdk/claude.mjs:75; runtime/sdk/codex.mjs:73; economics.md:25; V1-4 girdisinin %94'ü önbellek (395,9M/420M)",
+      "etki": "Token maliyeti yüksek; onarım çağrıları önceki muhakemeyi yeniden kuruyor"
+    },
+    {
+      "neden": "Tarayıcı test konteynerinin 1 GiB bellek sınırı büyüyen test setinde OOM verdi; 'rapor yok' sonucu ürün hatası veya ajan takılması sanıldı",
+      "kanit": "experiments/runner-environment-20260915/README.md:8-14 (UI-11, 51 test, 4,3 sn, exit 137, Colima kernel 'Memory cgroup out of memory' headless_shell/MainThread; 2g ile 3/3 PASS; örneklenen tepe 887-942 MiB, test başına ~6 MiB birikim), :33-35 (1g -> BROWSER_MEMORY 2g; TDD_BROWSER_RUNNER_KILLED ayrı ortam sınıfı), :72 (~150 testte 2g de yetmez); :85-90 (7+ bileşen aynı sayfada ERR_INSUFFICIENT_RESOURCES = test tasarımı); experiments/foundation-repair-20260915/README.md:124-129 (tek konteyner 100 test sınırı -> 50'lik gruplar), :542 (gruplar sıralı koşuyor, VM ~%19 CPU); factory_tdd_browser.py:16,204; Claude arşivi ~/.claude/projects/…scratch-2026-09-15-95eef1/937c0fea-2f31-4179-b800-431ad0f8843e.jsonl:1573 (kernel OOM satırı)",
+      "etki": "Teslimler BLOCKED; sınır 1g -> 2g -> 50'lik grup koşusu olarak üç kez yeniden tasarlandı. Host RAM darboğaz değildi; darboğaz, konteyner başına sınırın büyüyen test setine göre ölçülmeden sabit bırakılmasıydı. OOM ayrı bir ortam hata sınıfı olmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/01_kurulum_ve_kaynak.json#K03",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "İlerleme gözlemcisi ajan boşta süresi ile controller/test yürütmesini ayırmadı; uzun entegrasyon testini ajan takılması sayıp öldürdü",
+      "kanit": "experiments/foundation-repair-20260915/README.md:536-541 (Step 10al: entegrasyon paketi 570 sn -> ~70 dk; ProgressWatchdog yalnız yeni test makbuzunu ilerleme sayıyor; 600 sn boşta sınırı AGENT_PROGRESS_STALLED; kurtarma 3. olayda RECOVERY_RETRY_BOUND)",
+      "etki": "Kurtarma meşru işi üç kez öldürüp yeniden başlattı, sonra kapandı; kök iş onarıcısız ERROR'da kaldı. Model düşünmesi, controller yürütmesi, test ilerlemesi ve gerçek takılma ayrı telemetri ve ayrı son tarih ister",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/03_teshis_ve_kurtarma.json#K10",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Hata kodları alt dize eşleşmesiyle sınıflandırıldı ve büyüyen girdi/durum sınırsız bırakıldı; bağlam taşması 'kapasite beklemesi' sanılıp ilerlemesiz döngü üretti",
+      "kanit": "experiments/foundation-repair-20260915/README.md:508 (Step 10ag: UI-48 için 93 bin karakter makbuz geçmişi -> CONTEXT_CAPACITY_UNSUPPORTED; defer_failure 'CAPACITY' eşleşmesiyle PACKAGE_CAPACITY_WAIT; ~10 sn'de bir yeniden kabul; 4.762 CLAIM/RETRY olayı, 1 model çağrısı; 13 saat boşta), :553-557 (Step 10ao: TDD durumu 1.008.940 byte, 'TDD state exceeds storage limit'; sıkıştırma ile 233.073), :570-571 (Step 10ar: build kanıtı tek başına 100.248 karakter > bağlam tavanı, 55 deneme); Claude arşivi …95eef1/ecb33c63-d514-4482-a496-8eacb3028086.jsonl:138 (CLAIM 4762)",
+      "etki": "Saatlerce model çağrısı olmadan dönen döngü; tamamlanan testler kaydedilemedi, inceleme hazırlanamadı. 4.762 değeri model çağrısı değil CLAIM olayıdır. Hata sınıfları açık listeyle, her büyüyen girdi yapı gereği sınırlı, büyük kanıt hash/ref ile taşınmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/04_kapasite_ve_buyume.json#K13",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Sahipsiz bekleme: bekleme nedenini bitirecek çalışan taraf yoktu; alarm/rapor kaydı onarım yerine sayıldı",
+      "kanit": "experiments/runner-environment-20260915/README.md:91-93 (repair_handoff NEEDS_TRIAGE'ı okuyan yürütücü kodda yok); experiments/foundation-repair-20260915/README.md:519-520 (Step 10ai: 03:29-05:00 dokuz takım MERGED iken kök ~10 dk'da bir PARALLEL_CHILDREN_PENDING), :525-526 (bir gecede 4 durma aynı biçim; yalnız sahip sorunca bulundu; unutulan kabul bekletmesi ~2 sa), :528-529 (kırmızı taban çizgisi: NO_QUALIFIED_REPAIR_PROFILE, onarıcı yok), :582-587 (Step 10at family watch: WAIT_WITHOUT_OWNER / ERROR_WITHOUT_REPAIR / NO_PROGRESS; yalnız gözlemler, worker başlatmaz); docs/handoffs/2026-09-15-claude/DEVIR-RAPORU.md:103-107 (record_repair_observation worker başlatmaz)",
+      "etki": "Dokuz durmanın hepsi kullanıcı 'bitti mi?' diye sorunca fark edildi; 13 ve 5 saatlik boş beklemeler. Her bekleme gerçek sorumlu, uyanma olayı, son ilerleme ve son tarih taşımalı; yürütülebilir onarım yoksa görünür karar talebi açılmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/03_teshis_ve_kurtarma.json#K09",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Çağrının bitmesi başarı sayıldı; teşhis, kurulum, paket ve teslim durumları birbirine karıştı",
+      "kanit": "docs/handoffs/2026-09-15-claude/DEVIR-RAPORU.md:93-101 (teşhis ajanı INCIDENT.json'u okuyamadı; bakım isteği SUCCESS, blockage step=diagnosed); docs/handoffs/2026-09-15-claude/CANLI-DURUM.json:1; experiments/sleep-tolerant-leases-20260915/README.md:33-36; Claude arşivi …95eef1/937c0fea-2f31-4179-b800-431ad0f8843e.jsonl:12847 (17.09: 'Sistem kurulumu bitti … bitmek üzere'; 41 MERGED, 1 MERGING, 32 READY) ve ardından foundation-repair README.md:508 (13 saat boşta)",
+      "etki": "Kullanıcı ilerlemeyi yanlış anladı ve defalarca 'bitti mi?' sormak zorunda kaldı. Teşhis başarısı okunan kanıt + nedensel bulgu + doğrulanabilir sonraki adım istemeli (aksi hâlde NEEDS_EVIDENCE); aşama, paket, bütünleşik ürün, deploy ve insan kabulü ayrı durumlar olmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/03_teshis_ve_kurtarma.json#K08; kestra-gecmis-incelemesi/bulgular/06_girdi_ve_teslim_siniri.json#K17",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "İnsan onayı bekleyen durumun sahibi, son tarihi ve insan/bot kimlik ayrımı yoktu; bekleme 7 gün sonra yalnız Kestra P7D zaman aşımıyla bitti",
+      "kanit": "experiments/foundation-repair-20260915/README.md:589-598 (18.09 16:14 UTC teslim GREEN: 9 takım, 74/74 verified, 79 merged; mimari reviewer boş facts ile kanıt alamadı -> #562 WAITING_DECISION; 16:37 sahip onayıyla review yeniden kuyrukta); Claude arşivi …95eef1/ecb33c63-d514-4482-a496-8eacb3028086.jsonl:2269 (16:46 PLANE_RECOVERY_ACTOR_AMBIGUOUS, slot 0), :2336 ve :2341 (17:24 PLANE_RECOVERY_OWNER_STATE_PENDING; pano WAITING_DECISION, devam için ERROR/IN_PROGRESS gerekli); state/public/status.json (30bc1cb8 ERROR/review, updated_at 2026-09-25 16:14:41 UTC); evidence/autonomy-reports/30bc1cb8-…/v3494-14fda8e10afda143.md:1857 (KESTRA_FAILED); aynı klasörde 19.09 03:00 ile 25.09 19:14 TRT arasında rapor yok; flows/delivery.yaml:43 (maxDuration P7D)",
+      "etki": "Ürün birleşmiş ve regresyon yeşilken nihai kabul hiç başlamadı; 7 gün sessiz bekleme ve KESTRA_FAILED. İnsan eylemi gereken bekleme görünür bildirim, son tarih ve yükseltme taşımalı; insan ve otomasyon eylemleri ayrı doğrulanabilir kimlikle kaydedilmeli; orkestratör zaman aşımı beklemeyi bitiren tek mekanizma olmamalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/06_girdi_ve_teslim_siniri.json#K16; kestra-gecmis-incelemesi/acik-sorular.json#U01",
+      "dogrulama": "kismen"
+    },
+    {
+      "neden": "Paket bağımlılığı ve entegrasyon hazır oluşu modellenmedi; ortak temel eskiyince bütün birleşmiş paketler bayat sayıldı",
+      "kanit": "experiments/foundation-repair-20260915/README.md:508 (UI-54, UI-44'e bağımlı; 'Failed to resolve import' altyapı hatası sanıldı; kök 12:47'den beri COMPONENT_DELIVERY_BLOCKED_WAIT), :515-517 (Step 10ah: MERGED takım yeniden kuyruğa alınmıyordu, yalnız VERIFIED ele alınıyordu), :519-523 (Step 10ai/10aj: kök FOUNDATION paketi bayat -> 73 paketin hepsi stale -> integrate hiç çağrılmadı; sonraki kapı ERROR)",
+      "etki": "Yerel GREEN/VERIFIED toplamı teslim üretmedi; ortak temel kusuru birçok takımı birden durdurdu. Bağımlılık DAG'ı, ortak dosya sahipliği, birleşik aday regresyonu ve bitmiş işi geri çağırma uçtan uca sınanmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/05_entegrasyon_ve_sozlesmeler.json#K14",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Canlı onarımlar üretici/tüketici veri sözleşmelerini birlikte güncellemedi; bir düzeltme bir sonraki kapıyı bozdu",
+      "kanit": "experiments/foundation-repair-20260915/README.md:553-563 (Step 10ao makbuz listesini {count,digest}'e sıkıştırdı -> 10ap TDD_UPGRADE_DISCOVERY_MISMATCH, canlı koşu 10 dk içinde buldu), :565-568 (Step 10aq: toplu tarayıcı makbuzu tek süreç returncode şartıyla denetlendi -> CORRECTION_REGRESSION_STALE_OR_INCOMPLETE), :576-580 (Step 10as: dosya değiştirmeyen checkpoint commit'i CORRECTION_SOURCE_CHANGED)",
+      "etki": "Yüzlerce alt test yeşilken gerçek uzun akışta yeni durmalar çıktı. Sürümlü makbuz şeması, üretici/tüketici uyum testi, eski checkpoint'ten devam testi ve birleşik akış canary'si gerekli",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/05_entegrasyon_ve_sozlesmeler.json#K15",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Kapasite kararları yanlış rolden ve yanlış transaction içinden ölçüldü; tek reviewer rotası tüm kuyruğu kilitledi",
+      "kanit": "experiments/foundation-repair-20260915/README.md:232-235 (Adım 10: independent-reviewer yalnız codex-turksab rotası; 180 sn bekleyip PROVIDER_CAPACITY_UNAVAILABLE; ilk IMPLEMENTED paket her kabulde yeniden seçildi, PENDING paketlere sıra gelmedi; 22:26 UTC'den beri model çağrısız döngü), :245-248 (10b: claim() FOR UPDATE/FOR SHARE tutarken reviewer_capacity() ikinci bağlantıda jobs FOR UPDATE bekledi; işçiler kendini kilitledi, SIGTERM ile bitirildi), :249-252 (10c: kök 5 saat kabul edilmedi; kapasite scrum-coordinator/Codex rotasından ölçüldü, coder-repair/Claude hiç çalışamadı); logs/autonomy.log (7 DeadlockDetected, jobs satırı)",
+      "etki": "Coder kapasitesi varken üretim durdu; RAM eklemek bunu çözmez. Kapasite bütçesi rol/rota bazında olmalı, kabul işi yürütecek rotadan ölçülmeli, kapasite okuması kilit alınmadan önce yapılmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/04_kapasite_ve_buyume.json#K11; kestra-gecmis-incelemesi/bulgular/02_sahiplik_ve_kalici_durum.json#K07",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Hata sahibi yönlendirmesi yanlıştı: çalıştırıcı ortamı, test yazarı hatası, ürün RED'i ve sağlayıcı taşıma hatası ayrılmadı",
+      "kanit": "experiments/runner-environment-20260915/README.md:15-24 (ambient .d.ts derlenmedi -> TS2339 stage hatası; biçimsiz TDD isteği REJECTED yerine ERROR); experiments/foundation-repair-20260915/README.md:21,58 (UI-09 kapsam dışı production kanıtı için 14 review FAIL), :544-548 (Step 10am: konteyner dışı yol açan test altyapı hatası sanıldı, 3 retry, ERROR), :550-551 (Step 10an: PROVIDER_FAILED 'unknown' -> NO_QUALIFIED_REPAIR_PROFILE), :224-230 (Plane 3 sn'de bir GET, 9 kez 429; API yeniden kurulurken 502 'unknown' -> BLOCKED)",
+      "etki": "Yanlış onarım rotası, gereksiz retry ve sonuç üretemeyen doğrulama döngüleri. Her hata sınıfının açık sahibi (ortam / test yazarı / ürün / sağlayıcı / kullanıcı kararı) ve rotası olmalı",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/05_entegrasyon_ve_sozlesmeler.json#K18; kestra-gecmis-incelemesi/bulgular/04_kapasite_ve_buyume.json#K12",
+      "dogrulama": "dogrulandi"
+    },
+    {
+      "neden": "Kurulum yapılandırması başlatmadan önce doğrulanmadı (Caddy sözdizimi, Kestra eklenti dizini izni)",
+      "kanit": "logs/startup.log:4,8 (Caddyfile:28 'acme_ca' argüman hatası; toplam 10 satır), logs/startup.log:50-56 (Kestra 'Cannot create local repository for plugins'; AccessDeniedException: /app/storage/plugins, 2 satır)",
+      "etki": "Ajanlar çalışmadan erişim ve akış motoru durabildi. Üretilen yapılandırma gerçek değerlerle ve servisin gerçek UID/GID'siyle başlangıç öncesi sınanmalı. Kestra çekirdek hatası değil, volume izni",
+      "codex_kaynagi": "kestra-gecmis-incelemesi/bulgular/01_kurulum_ve_kaynak.json#K01; kestra-gecmis-incelemesi/bulgular/01_kurulum_ve_kaynak.json#K02",
+      "dogrulama": "dogrulandi"
+    }
+  ],
+  "tasinanlar": [
+    {
+      "parca": "Sürümlü kabul sözleşmesi + aşamaya bağlı koşullar (PENDING, eski kanıt reddi)",
+      "yol": "factory_readiness.py; factory_phase_contracts.py; docs/ADR-009-TEST-ORACLES.md",
+      "neden": "V8'de yanlış kabul bağlaması yakalandı, düzeltildi, RC'ye kadar geçti (VALIDATION-V8.md:40-52); model olarak taşınmalı"
+    },
+    {
+      "parca": "Korumalı test / evaluator kilidi; test yazarı-coder-bağımsız inceleme ayrımı; altyapı hatası RED sayılmaz",
+      "yol": "config/evaluator-lock.json; README.md:58; KAIZEN.md:13,21-27",
+      "neden": "Pilot: 133 test, 93 davranış RED -> GREEN; inceleme gerçek hata buldu (PILOT-RESULT.md:14)"
+    },
+    {
+      "parca": "Atomik bütçe sayaçları + kök bütçeye yayılım (sert limitle)",
+      "yol": "factory_core.py:295-328; factory_budget_roots.py",
+      "neden": "Eşzamanlı rezervasyon ve sayaç koruması testle doğrulandı (PILOT-RESULT.md:18; VALIDATION-V6.md:42)"
+    },
+    {
+      "parca": "Plane durum sözlüğü + outbox ile durum senkronu",
+      "yol": "scripts/bootstrap_plane.py:29; scripts/governance.sql:97,109; factory_core.py:171-294",
+      "neden": "4 görevde tutarlı geçişler (READY->IN_PROGRESS->REVIEW->RELEASED/ERROR)"
+    },
+    {
+      "parca": "Plane giriş sözleşmesi (fabrika JSON bloğu, FABRIKA: satırı, fabrika:app= etiketleri) + işaretli yorumla soru/rapor",
+      "yol": "factory_plane_intake.py:11,20-36; factory_plane_dialogue.py:19-37",
+      "neden": "Deterministik hedef çözümü; eksik bilgi soruya dönüşür, ERROR'a değil"
+    },
+    {
+      "parca": "Skills klasörü",
+      "yol": "skills/*/SKILL.md (18 dosya, 189 satır)",
+      "neden": "Kısa, rol odaklı; acceptance-contract, tdd-refactor, test-oracle, evidence-review özellikle"
+    },
+    {
+      "parca": "CI şablonu",
+      "yol": "projects/v1test/.github/workflows/ci.yml",
+      "neden": "SHA sabitli action'lar; pytest + Playwright 3 tarayıcı + axe + Storybook; PR #1/#2/#3 başarılı"
+    },
+    {
+      "parca": "Ajan sandbox parametreleri",
+      "yol": "factory_agent_runtime.py:44-68",
+      "neden": "Güvenli izolasyon; coder başına ölçülen ~210 MiB RAM (infrastructure.md:26)"
+    },
+    {
+      "parca": "SDK adaptörleri ve dürüst kullanım muhasebesi (UNKNOWN != 0)",
+      "yol": "runtime/sdk/claude.mjs; runtime/sdk/codex.mjs; factory_provider_pool.py:421",
+      "neden": "Önbellek/önbelleksiz/çıktı ayrımıyla güvenilir token kaydı"
+    },
+    {
+      "parca": "GitHub merge koruması + tek imajla alpha->beta->rc->prod terfisi",
+      "yol": "factory_worker.py:626-712; state/delivery-repo",
+      "neden": "Dört ortamda aynı imaj SHA'sı doğrulandı (PILOT-RESULT.md:12); --match-head-commit, base değişince yeniden inceleme"
+    },
+    {
+      "parca": "Hata sınıflandırma sözlüğü ve durma sebepleri",
+      "yol": "factory_core.py:347-360; factory_governance.py:232",
+      "neden": "Aynı hata tekrarını ve ürün/altyapı ayrımını yakalıyor"
+    },
+    {
+      "parca": "Mevcut denetim/devir belgeleri (hata senaryosu envanteri)",
+      "yol": "docs/audits/2026-09-14-reliability-efficiency/; docs/handoffs/2026-09-15-claude/DEVIR-RAPORU.md",
+      "neden": "Yeni sistemin kabul/regresyon test listesi olarak kullanılabilir"
+    }
+  ],
+  "olculmus_kaynak_kullanimi": {
+    "host": "Apple M5 Max, 18 CPU, 128 GiB RAM",
+    "colima_vm": "10 CPU, ~23,4 GiB (MemTotal 25145901056), 100 GiB disk",
+    "coder_ajan_konteyneri_MiB": [
+      208.5,
+      205.8
+    ],
+    "coder_ajan_limit": "2 GiB / 2 CPU",
+    "tarayici_testi": "710,5 MiB / 1 GiB, %93,9 CPU (~1 çekirdek)",
+    "kestra": "2,93 GiB / 6 GiB, %4,1 CPU",
+    "plane_celery_worker": "805,8 MiB / 2 GiB",
+    "factory_postgres": "154 MiB, %19,9 CPU",
+    "konteyner_toplami": "~6,2 GiB (tek örnek)",
+    "macos_vm_rss": "~20,18 GiB",
+    "swap_kumulatif": "9,79 GiB",
+    "eski_pilot_ortamlari": "~170 MiB (7 konteyner)",
+    "fabrika_konteyner_limit_toplami_GiB": 23.75,
+    "host_supervizor_rss": "factory_service ~133 MiB; diğer süreçler 15-90 MiB",
+    "evidence_disk": "2,4 GiB; tek görevin raporları 3935 dosya / 306 MiB",
+    "eszamanlilik": {
+      "pilot_profili": "1 proje / 1 görev",
+      "v8": "2 slot",
+      "olculen_aktif_model_cagrisi_14_09": 2,
+      "15_09_gozlenen": ">=6 eşzamanlı Claude coder çağrısı reviewer'ı aç bıraktı",
+      "yapilandirma_bugun": {
+        "scheduler_max_slots": 8,
+        "kestra_delivery_concurrency": 5,
+        "claude_hesap_basina": 4
+      },
+      "not": "belge (2), flow (5) ve scheduler (8) arasında sapma; eşzamanlılık artışının verime etkisi ölçülmedi"
+    },
+    "zaman_verimi": "V1-4 5. nesil: 9 sa 43 dk duvar saatinde ~101 dk çağrı süresi",
+    "kanit": "docs/audits/2026-09-14-reliability-efficiency/infrastructure.md:19-31; RAPOR.md:51-57; config/scheduler.json; config/provider-concurrency.json; docker inspect; ps; du"
+  }
+}

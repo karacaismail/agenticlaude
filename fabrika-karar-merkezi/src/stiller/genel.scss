@@ -1,0 +1,287 @@
+// Özel stiller (SCSS). Mantine bileşenlerinin üstüne sakin, okunaklı bir görsel dil ekler.
+// Renkler CSS değişkenleriyle; koyu tema karşılıkları aşağıda.
+
+:root {
+  --fkm-sayfa: #f4f5f7;
+  --fkm-kenar: #e4e6ea;
+  --fkm-kenar-guclu: #d3d7de;
+  --fkm-yazi-2: #5b6270;
+  --fkm-yuzey-2: #f8f9fb;
+  --fkm-vurgu: var(--mantine-color-indigo-6);
+  --fkm-vurgu-zemin: var(--mantine-color-indigo-0);
+  --fkm-dikkat: #b45309;
+  --fkm-dikkat-zemin: #fff7e6;
+}
+[data-mantine-color-scheme='dark'] {
+  --fkm-sayfa: #141518;
+  --fkm-kenar: #2a2c31;
+  --fkm-kenar-guclu: #3a3d44;
+  --fkm-yazi-2: #a4a9b4;
+  --fkm-yuzey-2: #1c1e22;
+  --fkm-vurgu: var(--mantine-color-indigo-4);
+  --fkm-vurgu-zemin: rgba(92, 124, 250, 0.12);
+  --fkm-dikkat: #f59f00;
+  --fkm-dikkat-zemin: rgba(245, 159, 0, 0.10);
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+// ---------- İskelet ----------
+.mantine-AppShell-main { background: var(--fkm-sayfa); }
+.mantine-AppShell-header {
+  background: color-mix(in srgb, var(--mantine-color-body) 90%, transparent);
+  backdrop-filter: saturate(1.2) blur(8px);
+  border-bottom: 1px solid var(--fkm-kenar);
+}
+.mantine-AppShell-navbar { border-right: 1px solid var(--fkm-kenar); }
+
+.nav-grup { padding-bottom: 6px; }
+.nav-grup-baslik {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--fkm-yazi-2);
+  padding: 14px 12px 4px;
+}
+.nav-baglanti { border-radius: var(--mantine-radius-md); }
+
+.sayfa { max-width: 1320px; margin: 0 auto; width: 100%; }
+
+// ---------- Başlıklar ----------
+.sayfa-basligi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 4px 0 6px;
+  .ust-yazi {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fkm-vurgu);
+    margin-bottom: 4px;
+  }
+  .sayfa-aciklama { color: var(--fkm-yazi-2); max-width: 78ch; margin-top: 6px; font-size: 15px; line-height: 1.55; }
+}
+.bolum-baslik { font-size: 19px !important; }
+
+// ---------- Kartlar ----------
+.mantine-Paper-root[data-with-border] { border-color: var(--fkm-kenar); box-shadow: var(--mantine-shadow-xs); }
+
+.kpi-karti { .kpi-deger { margin: 2px 0; } }
+.kpi-deger { font-size: 1.75rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
+
+.bulgu-karti {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 18px 18px 14px;
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--fkm-kenar);
+  background: var(--mantine-color-body);
+  box-shadow: var(--mantine-shadow-xs);
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  &:hover { border-color: var(--fkm-kenar-guclu); box-shadow: var(--mantine-shadow-md); transform: translateY(-1px); }
+  &:focus-visible { outline: 2px solid var(--fkm-vurgu); outline-offset: 2px; }
+  .bulgu-deger { font-size: 1.9rem; font-weight: 750; color: var(--fkm-vurgu); letter-spacing: -0.02em; line-height: 1.1; }
+  .bulgu-ok { color: var(--fkm-yazi-2); }
+}
+
+.karar-ozet {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--fkm-kenar);
+  background: var(--mantine-color-body);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  &:hover { border-color: var(--fkm-vurgu); box-shadow: var(--mantine-shadow-sm); }
+  &:focus-visible { outline: 2px solid var(--fkm-vurgu); outline-offset: 2px; }
+}
+
+.senaryo-karti {
+  cursor: pointer;
+  height: 100%;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  &:hover { border-color: var(--fkm-kenar-guclu) !important; box-shadow: var(--mantine-shadow-sm) !important; }
+  &:focus-visible { outline: 2px solid var(--fkm-vurgu); outline-offset: 2px; }
+  &.secili { border-color: var(--fkm-vurgu) !important; box-shadow: 0 0 0 2px var(--fkm-vurgu-zemin), var(--mantine-shadow-sm) !important; background: var(--fkm-vurgu-zemin); }
+}
+.senaryo-bilgi { background: linear-gradient(180deg, var(--fkm-yuzey-2), var(--mantine-color-body)); }
+.faz-kutusu { background: var(--fkm-yuzey-2); border: 1px solid var(--fkm-kenar); border-radius: var(--mantine-radius-md); padding: 14px; }
+
+// ---------- Karar ve seçenek kartları ----------
+.karar-karti { scroll-margin-top: 76px; }
+.karar-olgulari {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: var(--mantine-radius-md);
+  background: var(--fkm-yuzey-2);
+  border: 1px solid var(--fkm-kenar);
+}
+.olgu-ac { display: block; width: 100%; border-radius: 6px; &:focus-visible { outline: 2px solid var(--fkm-vurgu); } }
+
+.secenek-karti {
+  cursor: pointer;
+  height: 100%;
+  background: var(--mantine-color-body);
+  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  &:hover { border-color: var(--fkm-kenar-guclu) !important; }
+  &.secili { border-color: var(--fkm-vurgu) !important; background: var(--fkm-vurgu-zemin); box-shadow: 0 0 0 1px var(--fkm-vurgu) !important; }
+}
+.dikkat-satiri {
+  color: var(--fkm-dikkat);
+  background: var(--fkm-dikkat-zemin);
+  border-radius: 8px;
+  padding: 6px 10px;
+  .mantine-Text-root { color: inherit; }
+}
+
+.olgu-listesi {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  li::marker { color: var(--fkm-kenar-guclu); }
+  .olgu-kaynak { white-space: nowrap; }
+}
+.olgu-kutusu { background: var(--fkm-yuzey-2); }
+
+// ---------- Bulgu (kanıt) öğeleri ----------
+.kanit-ogesi {
+  padding: 12px 14px;
+  border: 1px solid var(--fkm-kenar);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-body);
+  .kanit-metin { line-height: 1.55; }
+  .kanit-meta {
+    font-size: 12px;
+    color: var(--fkm-yazi-2);
+    span { display: inline-flex; align-items: center; gap: 4px; }
+    .kanit-id { font-family: var(--mantine-font-family-monospace); font-size: 11px; opacity: 0.8; }
+  }
+}
+
+// ---------- Karşılaştırma tablosu ----------
+// Karşılaştırma tablosu kendi içinde kayar: sütun başlıkları ve ilk sütun yerinde kalır.
+.kars-kap { max-height: calc(100dvh - 210px); overflow: auto; }
+.kars-tablo {
+  min-width: 680px;
+  th, td { vertical-align: top; }
+  thead th { position: sticky; top: 0; z-index: 2; background: var(--mantine-color-body); box-shadow: inset 0 -2px 0 var(--fkm-kenar-guclu); }
+  thead th.kars-secili { background: linear-gradient(var(--fkm-vurgu-zemin), var(--fkm-vurgu-zemin)), var(--mantine-color-body); }
+  .kars-ilk { position: sticky; left: 0; z-index: 1; background: var(--mantine-color-body); min-width: 170px; }
+  thead .kars-ilk { z-index: 3; }
+  .kars-secili { background: var(--fkm-vurgu-zemin); }
+  .kars-liste { margin: 0; padding-left: 16px; }
+  .olgu-listesi { padding-left: 16px; gap: 4px; }
+}
+
+// ---------- ECA kuralları ----------
+.eca {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 6px 12px;
+  margin-top: 12px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  .eca-etiket {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    padding-top: 3px;
+    color: var(--fkm-yazi-2);
+  }
+}
+.kural-karti {
+  border-left: 4px solid var(--mantine-color-teal-6) !important;
+  &.kapali { border-left-color: var(--fkm-kenar-guclu) !important; .eca { opacity: 0.62; } }
+  &.faz-ustu { border-left-color: var(--mantine-color-orange-6) !important; }
+  &.vurgu { box-shadow: 0 0 0 3px var(--mantine-color-indigo-4) !important; }
+}
+.kural-dayanak-metni { color: var(--mantine-color-text); }
+.dayanak {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: var(--mantine-radius-md);
+  background: var(--fkm-yuzey-2);
+  border: 1px dashed var(--fkm-kenar-guclu);
+  .dayanak-ogesi { padding: 8px 10px; border-radius: 8px; background: var(--mantine-color-body); border: 1px solid var(--fkm-kenar); }
+}
+
+// ---------- FigJam benzeri tuval ----------
+.tuval {
+  position: relative;
+  background-color: #fcfcfb;
+  background-image: radial-gradient(#dcdbd4 1px, transparent 1px);
+  background-size: 18px 18px;
+  border: 1px solid #e4e3dd;
+  border-radius: 12px;
+  padding: 16px;
+  overflow-x: auto;
+  color: #0b0b0b;
+  .tuval-ic svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  &.gercek .tuval-ic svg { max-width: none !important; }
+}
+[data-mantine-color-scheme='dark'] .tuval { border-color: #383835; }
+
+// ---------- Diğer ----------
+.sayisal-tablo td, .sayisal { font-variant-numeric: tabular-nums; }
+.lejant {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 0.8rem;
+  .ornek { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid; vertical-align: -2px; margin-right: 6px; }
+}
+.kod-blok { max-height: 420px; overflow: auto; white-space: pre; font-size: 12px; }
+.gereksinim-listesi { background: var(--fkm-yuzey-2); }
+.kurulum-notu { background: var(--fkm-yuzey-2); }
+
+// ---------- Rapor (ekranda kâğıt, yazdırmada A4) ----------
+.rapor {
+  background: #fff;
+  color: #1a1a19;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 44px 52px;
+  border-radius: 10px;
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  line-height: 1.5;
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 28px 0 8px; padding-bottom: 4px; border-bottom: 2px solid #1a1a19; }
+  h3 { font-size: 15px; margin: 18px 0 6px; }
+  p { margin: 4px 0 8px; }
+  .alt { color: #52514e; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 12.5px; }
+  th, td { border: 1px solid #dcdbd4; padding: 5px 7px; text-align: left; vertical-align: top; }
+  th { background: #f4f3ef; }
+  .rozet { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; background: #eef0f3; }
+  .kritik { background: #ffe3e3; color: #a51111; }
+  .uyari { background: #fff3bf; color: #7a4d00; }
+  .bilgi { background: #e7f5ff; color: #0b5394; }
+  .iyi { background: #d3f9d8; color: #1b5e20; }
+  figure { margin: 10px 0 18px; }
+  figcaption { font-size: 12px; color: #52514e; margin-bottom: 6px; }
+  .tuval { background: #fff; background-image: none; border: 1px solid #ecebe6; padding: 8px; }
+}
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html, body, .mantine-AppShell-root, .mantine-AppShell-main { background: #fff !important; }
+  .ekran-yalniz, .mantine-AppShell-header, .mantine-AppShell-navbar { display: none !important; }
+  .mantine-AppShell-main { padding: 0 !important; min-height: 0 !important; }
+  .rapor { box-shadow: none; padding: 0; max-width: none; font-size: 10.5pt; }
+  .rapor h2 { break-after: avoid; }
+  .rapor figure, .rapor tr { break-inside: avoid; }
+  .rapor .yeni-sayfa { break-before: page; }
+  .rapor .tuval { overflow: visible; border: none; }
+  .rapor .tuval svg { max-height: 250mm; }
+  a { color: inherit; text-decoration: none; }
+}

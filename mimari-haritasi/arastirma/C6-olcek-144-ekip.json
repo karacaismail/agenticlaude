@@ -1,0 +1,578 @@
+{
+ "meta": {
+  "soru": "C6: 144 ajan ekibini (12 SAFe ART x 12 scrum ekibi) tek trunk'ta çalıştırmak gerçekte ne gerektirir — sınırlar, darboğazlar, maliyetler — ve bu yapı doğru kaldıraç mı?",
+  "tarih": "2026-09-27",
+  "durum": "tamamlandı - 7 bölüm yazıldı; özet C6-ozet.md",
+  "dil": "tr",
+  "kural": "Her sayı URL + erişim tarihi ile; birincil kaynak bulunamayanlar 'doğrulanamadı'; tahminlerde aritmetik gösterilir; sayı uydurulmadı",
+  "erisim_tarihi_varsayilan": "2026-09-27 (aksi belirtilmedikçe tüm URL'ler bu tarihte okundu)"
+ },
+ "sinirlar": [
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Aylık harcama tavanı (spend cap) — kademe bazında",
+   "deger": "Start $500/ay; Build $1.000/ay; Scale $200.000/ay; Custom: tavan yok, hesap ekibiyle anlaşma. Tavana ulaşınca istekler ayın 1'i 00:00 UTC'ye kadar HTTP 429 (enforced_spend_limit_reached, retry-after yok).",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "144 sürekli ajan ayda yüzbinlerce dolar harcar (bkz. maliyet_modeli); Scale kademesi ($200k) bile 7/24 senaryoda yetmeyebilir -> Custom kademe/kurumsal sözleşme şart. Tavan aşımı TÜM ajanları aynı anda durdurur: tek hata noktası."
+  },
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Messages API RPM / ITPM / OTPM (Opus 5.5 ve Sonnet 5 ayrı kovalar)",
+   "deger": "Start: 1.000 RPM, 2.000.000 ITPM, 400.000 OTPM; Build: 5.000 RPM, 5.000.000 ITPM, 1.000.000 OTPM; Scale: 10.000 RPM, 10.000.000 ITPM, 2.000.000 OTPM (Opus 5.5, Opus 5, Sonnet 5, Haiku 4.5 aynı değerler, model başına ayrı). Fable 5.x daha düşük (Scale: 4.000 RPM / 4M ITPM / 800k OTPM).",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Token hız limiti asıl darboğaz DEĞİL: 144 ajan x ~6,2k giriş token/dk (%10'u önbelleksiz) ≈ 89k ITPM; OTPM ≈ 62k (hesap maliyet_modeli'nde). Start kademesi bile teorik olarak yeter. Risk RPM patlamaları ve 'acceleration limits' (ani artışta 429)."
+  },
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Önbellek-farkında ITPM",
+   "deger": "'For most Claude models, only uncached input tokens count toward your ITPM rate limits.' cache_read_input_tokens ITPM'e sayılmaz (Haiku 3.5 hariç). Örnek: 2M ITPM + %80 cache hit = 10M toplam giriş/dk.",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Ajan döngüleri uzun ve tekrarlı bağlam taşıdığı için önbellek isabeti limitleri ~10x genişletir; önbellek kıran değişiklikler (araç tanımı değişimi, 5 dk'dan uzun bekleme) hem maliyeti hem limit kullanımını patlatır."
+  },
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Kısa aralıkta zorlama ve 'acceleration limits'",
+   "deger": "'a rate of 60 requests per minute (RPM) might be enforced as 1 request per second'; ani kullanım artışında ek 429'lar: 'ramp up your traffic gradually'. Token bucket algoritması.",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "144 ajanı aynı anda başlatmak (ör. PI başlangıcı, sabah dispatch) 429 fırtınası yaratır; kademeli rampa + merkezi token-bucket/kuyruk (LLM gateway) gerekir."
+  },
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Workspace başına alt limitler",
+   "deger": "Workspace'e ayrı spend ve RPM/ITPM/OTPM limiti verilebilir (default workspace hariç); 'Organization-wide limits always apply, even if Workspace limits add up to more.'",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "ART başına (12) bir workspace = SAFe 'ART bütçesi' POLİTİKA olarak doğrudan uygulanabilir; bir ART'ın kaçak ajanı diğerlerini aç bırakmaz."
+  },
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Managed Agents uç noktası limitleri",
+   "deger": "Create: 300 istek/dk; Read (retrieve/list/stream): 1.200 istek/dk; oturum çalışma süresi $0,08/oturum-saati (+ token).",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits ; https://platform.claude.com/docs/en/about-claude/pricing (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Yönetilen sandbox seçilirse 144 oturum x 24 saat x 30 gün x $0,08 = $8.294/ay yalnız çalışma süresi (token hariç)."
+  },
+  {
+   "katman": "model-saglayici/OpenAI",
+   "sinir": "Kullanım kademeleri ve aylık limit",
+   "deger": "Tier 1 ($5 ödenmiş) $100/ay; Tier 2 ($50) $500/ay; Tier 3 ($100) $1.000/ay; Tier 4 ($250) $5.000/ay; Tier 5 ($1.000) $200.000/ay. Scale Tier / Reserved Tier kurumsal seçenek olarak anılıyor.",
+   "kaynak": "https://developers.openai.com/api/docs/guides/rate-limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "İki sağlayıcıda da standart tavan ~$200k/ay; 144 ekip 7/24 bunu aşar. Model 'tak-çıkar' olsa bile sağlayıcı başına tavan yüzünden çok-sağlayıcılı yönlendirme bir kapasite aracıdır, sadece esneklik değil."
+  },
+  {
+   "katman": "model-saglayici/OpenAI",
+   "sinir": "GPT-6 Sol ve GPT-5.5 hız limitleri (model sayfaları)",
+   "deger": "GPT-6 Sol: Tier 5 = 15.000 RPM, 40.000.000 TPM; Tier 1 = 500 RPM / 500k TPM. Fiyat: $2 giriş, $0,2 önbellekli giriş, $10 çıkış (1M token). GPT-5.5: aynı limitler; $5 / $0,5 / $30.",
+   "kaynak": "https://developers.openai.com/api/docs/models/gpt-6-sol ; https://developers.openai.com/api/docs/models/gpt-5.5 (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "OpenAI TPM'in önbellekli token'ları sayıp saymadığı rehberde yazmıyor -> doğrulanamadı. Sayıyorsa 144 ajan x ~6,2k giriş/dk ≈ 0,9M TPM: Tier 3-4 gerekir."
+  },
+  {
+   "katman": "model-saglayici/Anthropic",
+   "sinir": "Fiyatlar (2026-09)",
+   "deger": "Opus 5.5: $4 giriş / $5 5dk-cache yazma / $0,20 cache okuma / $20 çıkış; Sonnet 5: $2 / $2,50 / $0,20 / $10; Haiku 4.5: $1 / $1,25 / $0,10 / $5; Batch %50 indirim; 'Claude 4.7 and later ... tokenizer produces approximately 30% more tokens'.",
+   "kaynak": "https://platform.claude.com/docs/en/about-claude/pricing (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Maliyet modelinin birim fiyatları. Çıkış token'ı giriş token'ından 5x pahalı; düşünme token'ları çıkış olarak faturalanır."
+  },
+  {
+   "katman": "kod-barindirma/GitHub REST",
+   "sinir": "Birincil hız limiti — GitHub App kurulumu",
+   "deger": "5.000 istek/saat taban; 20'den fazla repo/kullanıcı için +50/saat, tavan 12.500/saat; GitHub Enterprise Cloud kurulumu 15.000/saat; Actions GITHUB_TOKEN 1.000/saat/repo (Enterprise Cloud 15.000).",
+   "kaynak": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Tek orkestratör kimliği (tek App kurulumu) ile 144 ajan: 15.000/144 ≈ 104 istek/saat/ajan (Enterprise). Ajanlar gh CLI ile sık polling yaparsa (PR durumu, check sonuçları) bu biter; webhook-tabanlı olay dağıtımı + merkezi önbellekli GitHub proxy gerekir."
+  },
+  {
+   "katman": "kod-barindirma/GitHub REST+GraphQL",
+   "sinir": "İkincil (secondary) limitler — içerik oluşturma",
+   "deger": "Eşzamanlı ≤100 istek; REST ≤900 puan/dk; GraphQL ≤2.000 puan/dk; 60 sn'de ≤90 sn CPU; 'no more than 80 content-generating requests per minute and no more than 500 content-generating requests per hour'. Web arayüzü eylemleri de sayılır. Limitin kullanıcı/uygulama başına mı olduğu dokümanda açık değil -> kapsam doğrulanamadı.",
+   "kaynak": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api ; https://docs.github.com/en/graphql/overview/rate-limits-and-query-limits-for-the-graphql-api (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "EN SERT GitHub sınırı: 500 içerik-oluşturan istek/saat. PR başına ~5 içerik isteği (PR aç, etiket, yorum, review, kuyruğa al) varsayımıyla bir kimlik ≈100 PR/saat taşır (500/5). Ajanların 'yorumla konuşması' (agent-to-agent review yorumları) bu bütçeyi hızla tüketir -> ajan tartışması GitHub dışında (tracker/log) tutulmalı. Limiti çok kimlikle aşmaya çalışmak ToS riski taşır (doğrulanmadı; hukuki kontrol gerekir)."
+  },
+  {
+   "katman": "kod-barindirma/GitHub GraphQL",
+   "sinir": "Birincil GraphQL puan limiti",
+   "deger": "Kullanıcı 5.000 puan/saat; App kurulumu 5.000 -> 12.500 tavan; Enterprise Cloud App 10.000 puan/saat; GITHUB_TOKEN 1.000 (enterprise 15.000) puan/saat/repo; çağrı başı ≤500.000 node.",
+   "kaynak": "https://docs.github.com/en/graphql/overview/rate-limits-and-query-limits-for-the-graphql-api (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Merge-queue/PR durum panoları GraphQL ile toplu okunmalı; ajan başına ayrı polling yerine tek toplayıcı."
+  },
+  {
+   "katman": "CI/GitHub Actions",
+   "sinir": "Eşzamanlı iş (job) limiti — GitHub-hosted",
+   "deger": "Free 20; Pro 40; Team 60; Enterprise 500 standart eşzamanlı iş; larger runner'larda Team/Enterprise 1.000; macOS Team 5 / Enterprise 50. İş süresi ≤6 saat (hosted), ≤5 gün (self-hosted); kuyrukta 24 saat; matris ≤256 iş; '500 workflow runs / 10 seconds'; self-hosted kayıt 1.500 runner/5 dk; grup başına 10.000 runner.",
+   "kaynak": "https://docs.github.com/en/actions/reference/limits (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Hesap (maliyet_modeli.ci): PR başına 96 iş-dakikası varsayımıyla (3 CI turu x 4 iş x 8 dk) günde 432-1.440 PR = 41.472-138.240 iş-dk/gün; 8 saatlik pencerede ortalama 41.472/480 ≈ 86 ile 138.240/480 = 288 eşzamanlı iş (tepe daha yüksek) -> Team planı (60) yetmez; Enterprise (500) veya self-hosted/ARC gerekir."
+  },
+  {
+   "katman": "CI/GitHub Actions",
+   "sinir": "Runner dakika fiyatı",
+   "deger": "Linux 2-core x64 $0,006/dk; 4-core $0,012; 8-core $0,022; 16-core $0,042; 64-core $0,162 (1 Ocak 2026'dan itibaren %39'a varan indirimle). Self-hosted için duyurulan $0,002/dk 'platform ücreti' ERTELENDİ: 'We're postponing the announced billing change for self-hosted GitHub Actions to take time to re-evaluate our approach.'",
+   "kaynak": "https://docs.github.com/en/billing/reference/actions-runner-pricing ; https://github.com/resources/insights/2026-pricing-changes-for-github-actions (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "GitHub-hosted 2-core ile CI: 41.472-138.240 dk/gün x $0,006 = $249-$829/gün -> 22 iş günü $5.474-$18.248/ay; 30 gün $7.465-$24.883/ay. Self-hosted runner (Hetzner) bugün platform ücretsiz; ertelenen $0,002/dk ücreti gelirse üst senaryoda 138.240 x 30 x $0,002 ≈ $8.294/ay ek risk (tahmin). Enterprise planı 50.000 dahil dakika içerir (github.com/pricing) — bu hacimde ihmal edilebilir."
+  },
+  {
+   "katman": "entegrasyon/GitHub merge queue",
+   "sinir": "Merge queue parametreleri",
+   "deger": "Build concurrency 1-100 (aynı anda dağıtılan merge_group webhook sayısı); grup (merge limit) min/max 1-100; CI zaman aşımı; başarısız PR kuyruktan çıkarılır ve geçici dal yeniden kurulur; merge_group olayı zorunlu; joker karakterli koruma kuralıyla birlikte açılamaz.",
+   "kaynak": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Tek alpha dalında tek kuyruk = global serileştirme noktası. GitHub'ın yerleşik kuyruğu Shopify tarzı 'bölümlenmiş (partitioned) sanal kuyruk' sunmuyor (dokümanda yok) -> 144 ekipte modül-bazlı kuyruk için Graphite/Trunk/Mergify ya da mimari bölümleme gerekir."
+  },
+  {
+   "katman": "hesaplama/ajan süreci",
+   "sinir": "Ajan başına kaynak (Anthropic Agent SDK barındırma dokümanı)",
+   "deger": "'1 GiB RAM, 5 GiB disk, and 1 CPU per agent is a reasonable starting point for a freshly started instance. Memory usage grows with session length and tool activity'; 'The 1 GiB starting point ... is a floor, not the ceiling.' Formül: agents per host = (host RAM - overhead) / (per-session RAM ceiling). Maliyet: 'Anthropic token cost typically dominates container infrastructure cost by an order of magnitude or more. A minimally provisioned container runs roughly $0.05 per hour'.",
+   "kaynak": "https://code.claude.com/docs/en/agent-sdk/hosting (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Ajan CLI'ının kendisi ucuz; yoğunluğu build/test/tarayıcı belirler. Altyapı maliyeti token maliyetinin ~1/10'u veya altında kalır -> optimizasyon önceliği token ve insan zamanı, sunucu değil."
+  },
+  {
+   "katman": "hesaplama/OpenHands",
+   "sinir": "OpenHands minimum sistem gereksinimi",
+   "deger": "'a modern processor and a minimum of 4GB RAM is recommended to run OpenHands' (yerel kurulum); sandbox türleri: docker (varsayılan), process, remote. Eşzamanlı konuşma/sandbox başına resmi kaynak rakamı yok -> doğrulanamadı.",
+   "kaynak": "https://docs.openhands.dev/openhands/usage/run-openhands/local-setup ; https://docs.openhands.dev/openhands/usage/runtimes/overview (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Her aktif görev kendi Docker sandbox'ını açar; 4 GB tek kullanıcılı yerel minimumdur, ajan başı bütçe değildir."
+  },
+  {
+   "katman": "hesaplama/sunucu",
+   "sinir": "Mevcut sunucu sınıfı (Hetzner AX102)",
+   "deger": "AMD Ryzen 9 7950X3D, 16 çekirdek/32 iş parçacığı, 128 GB DDR5 ECC, 2x1,92 TB NVMe; aylık €257,30 + €129 kurulum (FSN1/HEL1; Hetzner canlı fiyat JSON'u, ROBOT_1721).",
+   "kaynak": "https://www.hetzner.com/dedicated-rootserver/ax102/ ; https://www.hetzner.com/_resources/app/data/app/live_data_prices.json (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Yoğunluk hesabı (tahmin; görev bütçeleri A2 araştırmasından: hafif 4 GB/1-2 vCPU, orta 8 GB/4 vCPU, ağır 16 GB/6-8 vCPU): sistem+alpha+DB için 16-24 GB ayrılırsa ajanlara 104-112 GB kalır. Orta görev: RAM 104/8=13 -112/8=14; CPU 32/4=8 (aşırı taahhütsüz) ile 16 (2x aşırı taahhüt) -> tek sunucuda ~8-14 eşzamanlı orta ajan. Hafif: ~20-28. Ağır: ~4-7. Yani bugünkü tek sunucu ≈ 1 ART'lık (12 ekip x 1 ajan) eşzamanlılık taşır, 144 değil."
+  },
+  {
+   "katman": "hesaplama/ölçek",
+   "sinir": "144 eşzamanlı orta ajan için sunucu sayısı (tahmin)",
+   "deger": "RAM: 144 x 8 GB = 1.152 GB -> 1.152/112 ≈ 10,3 -> 11 sunucu. CPU: 144 x 4 vCPU = 576 iş parçacığı -> 576/32 = 18 sunucu (aşırı taahhütsüz) veya 9 (2x). Aralık: 10-18 AX102 -> 10 x €257,30 = €2.573 ile 18 x €257,30 = €4.631 /ay (+ kurulum 10-18 x €129).",
+   "kaynak": "Hesap; fiyat: https://www.hetzner.com/_resources/app/data/app/live_data_prices.json (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Birden fazla düğüm = zamanlayıcı gerekir (Kubernetes/Nomad). ARC (self-hosted Actions runner ölçekleme) zaten 'a Kubernetes operator' -> 2-3 düğümü geçince K8s kaçınılmaz (yargı)."
+  },
+  {
+   "katman": "sandbox/kubernetes-sigs agent-sandbox",
+   "sinir": "K8s üzerinde ajan sandbox CRD'leri",
+   "deger": "Sandbox, SandboxTemplate, SandboxClaim, SandboxWarmPool CRD'leri; izolasyon RuntimeClass ile gVisor veya Kata; README v1.0.2 ve v1beta1 API. Performans/ölçek rakamı yayınlanmamış -> doğrulanamadı.",
+   "kaynak": "https://github.com/kubernetes-sigs/agent-sandbox (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Self-host + tak-çıkar için en uygun standart arayüz adayı; sıcak havuz (warm pool) soğuk başlangıcı gizler. Beta seviyesinde."
+  },
+  {
+   "katman": "sandbox/Firecracker",
+   "sinir": "microVM performansı",
+   "deger": "'Boot in <125ms'; '<5 MiB overhead per VM'; 'Create up to 150 microVMs per second per host'; KVM tabanlı izolasyon + jailer.",
+   "kaynak": "https://firecracker-microvm.github.io/ (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "İzolasyon maliyeti ihmal edilebilir; darboğaz VM değil, içindeki build/test yükü."
+  },
+  {
+   "katman": "sandbox/E2B",
+   "sinir": "Yönetilen sandbox fiyat ve eşzamanlılık",
+   "deger": "$0,000014/vCPU-sn; $0,0000045/GiB-sn; Pro $150/ay: en fazla 100 eşzamanlı sandbox, oturum ≤24 saat; Enterprise: özel, '$3,000 monthly minimum', BYOC talep üzerine.",
+   "kaynak": "https://e2b.dev/pricing (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "4 vCPU/8 GiB sandbox: 4x0,000014x3600=$0,2016 + 8x0,0000045x3600=$0,1296 = $0,331/saat. 144 x 24 x 30 = 103.680 sa -> ~$34.300/ay (7/24); 144 x 8 x 22 = 25.344 sa -> ~$8.390/ay (mesai). Pro'nun 100 eşzamanlı sınırı 144'e yetmez -> Enterprise."
+  },
+  {
+   "katman": "sandbox/Modal",
+   "sinir": "Sandbox fiyatı",
+   "deger": "Sandboxes: $0,00003942/fiziksel çekirdek-sn (=2 vCPU), $0,00000667/GiB-sn; Team planı $250/ay.",
+   "kaynak": "https://modal.com/pricing (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "2 fiziksel çekirdek + 8 GiB: 2x0,00003942x3600=$0,284 + 8x0,00000667x3600=$0,192 = $0,476/saat -> 103.680 sa x $0,476 ≈ $49.300/ay (7/24)."
+  },
+  {
+   "katman": "sandbox/Northflank",
+   "sinir": "Konteyner hesaplama fiyatı + BYOC",
+   "deger": "$0,01667/vCPU/saat; $0,00833/GB/saat; kendi AWS/GCP/Azure hesabına BYOC 'no added cost'. Sayfada microVM teknolojisi adı geçmiyor.",
+   "kaynak": "https://northflank.com/pricing (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "4 vCPU/8 GB: 4x0,01667 + 8x0,00833 = $0,133/saat -> 103.680 sa ≈ $13.800/ay (7/24)."
+  },
+  {
+   "katman": "sandbox/Daytona",
+   "sinir": "Açık kaynak durumu",
+   "deger": "'This repository is no longer maintained.' Haziran 2026'dan itibaren geliştirme özel kod tabanına taşındı; sandbox 'under 90ms' iddiası.",
+   "kaynak": "https://github.com/daytonaio/daytona (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Self-host tak-çıkar adayı olarak ELENİR (bakım yok)."
+  },
+  {
+   "katman": "CI/ARC",
+   "sinir": "Actions Runner Controller",
+   "deger": "'a Kubernetes operator that orchestrates and scales self-hosted runners'; ephemeral runner'lar; pod başlatma 5 kez yeniden denenir; iş 24 saat alınmazsa düşer. Ölçek üst sınırı dokümanda yok -> doğrulanamadı.",
+   "kaynak": "https://docs.github.com/en/actions/concepts/runners/actions-runner-controller (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Self-hosted runner'ı ölçeklemek K8s gerektirir; ajan sandbox'ları ile CI runner'ları aynı K8s havuzunu paylaşabilir."
+  }
+ ],
+ "maliyet_modeli": {
+  "varsayimlar": [
+   "V1 — Birim: 1 'ekip' = 1 eşzamanlı ajan işçisi (kuyruktan görev alan). SAFe rol-oyunu senaryosu (ekip başına 5 ajan: PO, 2 dev, QA, reviewer) ayrıca x5 olarak gösterildi.",
+   "V2 — Ajan-saat başı token profili Anthropic C derleyicisi vakasından türetildi: 372k giriş + 26k çıkış token/ajan-saat (2e9 ve 140e6 token / 5.376 ajan-saat; 16 ajanın 14 gün kesintisiz çalıştığı varsayımıyla). Kaynak: https://www.anthropic.com/engineering/building-c-compiler",
+   "V3 — Önbellek: girişin %90'ı cache okuma, %10'u 5 dk cache yazma (1,25x) olarak faturalanır (varsayım; Claude Code dokümanındaki örnek satır '91% of input tokens from cache' ile uyumlu: https://code.claude.com/docs/en/costs).",
+   "V4 — Fiyatlar (2026-09-27): Opus 5.5 $4/$5 yazma/$0,20 okuma/$20 çıkış; Sonnet 5 $2/$2,50/$0,20/$10 (https://platform.claude.com/docs/en/about-claude/pricing). Batch/indirim/kurumsal pazarlık YOK.",
+   "V5 — Çalışma profilleri: P1 'mesai' = 144 x 8 saat x 22 gün = 25.344 ajan-saat/ay; P2 '7/24' = 144 x 24 x 30 = 103.680 ajan-saat/ay.",
+   "V6 — PR hacmi: ekip başına günde 3-10 PR -> 432-1.440 PR/gün (3, OpenAI harness'in 3,5 PR/mühendis/gün değerine yakın alt sınır; 10 üst senaryo).",
+   "V7 — CI: PR başına 96 iş-dakikası (3 tur x 4 iş x 8 dk; varsayım). GitHub-hosted Linux 2-core $0,006/dk.",
+   "V8 — Sandbox: orta görev 4 vCPU / 8 GB (A2 araştırmasındaki tahmin); Hetzner AX102 €257,30/ay (canlı fiyat JSON); E2B $0,331/saat (hesap aşağıda).",
+   "V9 — İnsan maliyeti (review/kabul testi) ücret düzeyi ülkeye bağlı olduğundan parasal olarak hesaplanmadı; saat olarak insan_kapasitesi_hesabi'nda."
+  ],
+  "hesap": [
+   "Ajan-saat token maliyeti, Sonnet 5 (model-tabanlı, DÜŞÜK): 0,9x372k x $0,20/M = $0,067 + 0,1x372k x $2,50/M = $0,093 + 26k x $10/M = $0,260 -> ≈ $0,42/ajan-saat",
+   "Ajan-saat token maliyeti, Opus 5.5 (model-tabanlı, ORTA): 0,9x372k x $0,20/M = $0,067 + 0,1x372k x $5/M = $0,186 + 26k x $20/M = $0,521 -> ≈ $0,77/ajan-saat",
+   "Ajan-saat maliyeti, gözlenen (YÜKSEK): $20.000 / 5.376 ajan-saat ≈ $3,72/ajan-saat (Opus 4.6, Şubat 2026). Not: yayınlanan token sayıları liste fiyatıyla $20k'yı açıklamıyor — tüm giriş tam fiyat olsa bile 2e9x$5/M + 140e6x$25/M = $10.000 + $3.500 = $13.500; fark (yeniden denemeler, düşünme token'ı, sayım farkı?) doğrulanamadı. Bu yüzden gözlenen değer üst sınır olarak tutuldu.",
+   "P1 (mesai) aylık token: 25.344 x $0,42 = ~$10.650 | x $0,77 = ~$19.600 | x $3,72 = ~$94.300",
+   "P2 (7/24) aylık token: 103.680 x $0,42 = ~$43.600 | x $0,77 = ~$80.200 | x $3,72 = ~$385.700",
+   "SAFe rol-oyunu (ekip başı 5 ajan, 7/24): P2 x 5 = ~$218.000 | ~$401.000 | ~$1.929.000 /ay (Claude Code agent teams'in plan modunda '~7x token' notu bu çarpanın iyimser olabileceğini gösterir)",
+   "Hız limiti kontrolü (144 ajan): toplam giriş 144x372k/60 ≈ 893k token/dk, önbelleksiz %10 ≈ 89k ITPM (Start 2M'nin %4,5'i); OTPM 144x26k/60 ≈ 62,5k (Start 400k'nın %16'sı). 720 ajan (rol-oyunu): ~446k ITPM, ~312k OTPM -> hâlâ Start içinde; RPM ajan başı ~5 (Claude Code küçük-ekip önerisi 5-7) varsayımıyla 144 -> 720 RPM (Start 1.000), 720 -> 3.600 RPM (Build 5.000 gerekir).",
+   "Harcama tavanı kontrolü: P1-orta ~$19,6k ve P2-orta ~$80,2k Scale tavanı $200k altında; P2-yüksek ~$385,7k ve rol-oyunu senaryoları Scale tavanını AŞAR -> Custom kademe (Anthropic) / Scale Tier (OpenAI) sözleşmesi gerekir. Start ($500) ve Build ($1.000) tavanları daha 1 ekiplik 7/24 pilotta bile aşılır: 1 ajan x 720 saat x $0,77 = ~$554/ay.",
+   "CI (GitHub-hosted 2-core): 432-1.440 PR/gün x 96 dk = 41.472-138.240 dk/gün x $0,006 -> P1 (22 gün) $5.474-$18.248/ay; P2 (30 gün) $7.465-$24.883/ay. Self-hosted'da dakika ücreti $0 (platform ücreti ertelendi) ama donanım gerekir.",
+   "Sandbox self-host (Hetzner): 144 eşzamanlı orta ajan -> 10-18 AX102 -> €2.573-€4.631/ay + tek seferlik €1.290-€2.322 kurulum. CI runner ve alpha ortamı için ek düğüm(ler) hariç.",
+   "Sandbox yönetilen (E2B, 4 vCPU/8 GiB = $0,331/saat): P1 25.344 x $0,331 ≈ $8.390/ay; P2 103.680 x $0,331 ≈ $34.300/ay (+Enterprise $3.000/ay minimum, Pro'nun 100 eşzamanlı sınırı yetmez).",
+   "Token maliyeti / PR (P1): 25.344 ajan-saat / (432x22 = 9.504 PR) = 2,67 ajan-saat/PR -> orta $2,06/PR, yüksek $9,92/PR; 1.440 PR/gün'de 0,8 ajan-saat/PR -> orta $0,62, yüksek $2,98. Kabul oranı %20-60 (Faros 2026: 'from 20% to 60%') ile KABUL EDİLEN değişiklik başına maliyet 1/0,6 ile 1/0,2 kat, yani 1,7x-5x artar.",
+   "Karşılaştırma: PR başı insan review süresi = 200 LOC / 500 LOC/saat = 0,4 saat (alt sınır; SmartBear). Makul bir mühendis saat ücretinde 0,4 saat, PR başı $0,6-$10 token maliyetinin çoğu senaryoda üstündedir -> kabul edilen değişiklik başına maliyette baskın kalem insan zamanıdır (yargı; ücret varsayımına bağlı)."
+  ],
+  "aralik": {
+   "P1_mesai_aylik": "Token ~$10,7k-$94,3k + CI $0-$18,2k + sandbox €2,6k-€4,6k (self-host) veya ~$8,4k (E2B) => kabaca $15k-$120k/ay (insan hariç)",
+   "P2_7x24_aylik": "Token ~$43,6k-$385,7k + CI $0-$24,9k + sandbox €2,6k-€4,6k (self-host) veya ~$34,3k (E2B) => kabaca $50k-$450k/ay (insan hariç)",
+   "SAFe_rol_oyunu_7x24": "Token ~$218k-$1,93M/ay; en az bir sağlayıcıda Custom kademe şart",
+   "insan": "Her PR insan review'undan geçerse 43-144 review insanı (4 saat/gün) + kabul testçileri; parasal değer kuruma özgü",
+   "guven": "Düşük-orta. En büyük belirsizlik ajan-saat başı token (gözlenen $3,72 ile model-tabanlı $0,42-0,77 arasında ~5-9x fark). Pilotta ölçülecek ilk metrik bu."
+  }
+ },
+ "darbogazlar": [
+  {
+   "sira": 1,
+   "darbogaz": "İnsan review ve kabul testi kapasitesi",
+   "sayilar": "432-1.440 PR/gün x 200 LOC / 500 LOC/saat = 173-576 review-saati/gün -> 4 saat/gün ile 43-144 kişi. Faros 2026: review süresi '+441.5%', review'suz birleşme '+31.3%'. OpenAI: 'our bottleneck became human QA capacity'. Stripe: 'developer attention' en kısıtlı kaynak.",
+   "kaynak": "https://smartbear.com/learn/code-review/best-practices-for-peer-code-review/ ; https://www.faros.ai/blog/ai-acceleration-whiplash-takeaways ; https://jaytaylor.com/notes/node/1770842156000.html ; https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+   "etki": "Ajan sayısı insan onay kapasitesini aşınca birikim (review borcu) ya da kontrolsüz birleşme -> kalite düşüşü (Faros: olay/PR +%242,7)."
+  },
+  {
+   "sira": 2,
+   "darbogaz": "Tek trunk'ın birleştirme kuyruğu ve kırık trunk",
+   "sayilar": "Hedef hacim 432-1.440 PR/gün = GitHub'ın kendi monolitinin (~115 PR/iş günü) 4-12 katı. Uber: 16 eşzamanlı değişiklikte '%40 sorun' olasılığı; SubmitQueue öncesi ana dal zamanın %52'sinde yeşil. Google: presubmit geçenlerin '95%+' kalanını geçiyor (=~%5'e kadar sonradan kırılma). Shopify tek kuyrukta P90 693 dk; bölümleme sonrası 41 dk.",
+   "kaynak": "https://github.blog/engineering/engineering-principles/how-github-uses-merge-queue-to-ship-hundreds-of-changes-every-day/ ; https://blog.acolyer.org/2019/04/18/keeping-master-green-at-scale/ ; https://abseil.io/resources/swe-book/html/ch23.html ; https://graphite.com/customer/shopify-merge-queu",
+   "etki": "Tek global kuyruk + 20-60 dk CI ile ya saatlerce bekleme ya sık kırık alpha. Modül-bazlı bölümlenmiş kuyruk, spekülatif paralel build ve otomatik geri alma gerekir."
+  },
+  {
+   "sira": 3,
+   "darbogaz": "Paylaşılan tek alpha ortamı ve şema/veri çakışmaları",
+   "sayilar": "Uber ve Lyft paylaşılan staging'i 'flaky', 'limits how many developers can test at once', 'an unstable new feature could cause problems for the entire staging environment' diye terk etti/istek-izolasyonuna geçti. GitLab: migration başına ayrı sürüm dosyası, ≤3 dk migration, zorunlu geri alınabilirlik.",
+   "kaynak": "https://www.uber.com/us/en/blog/simplifying-developer-testing-through-slate/ ; https://www.infoq.com/news/2022/03/scaling-testing-acceptance-lyft/ ; https://docs.gitlab.com/development/migration_style_guide/",
+   "etki": "144 ekibin çıktısı tek alpha'da birbirinin kabul testini bozar; HRMS'de ortak tablolar (personel, bordro) üzerinde paralel migration'lar çakışır."
+  },
+  {
+   "sira": 4,
+   "darbogaz": "Maliyet ve sağlayıcı harcama tavanları (tek hata noktası)",
+   "sayilar": "7/24'te ~$43,6k-$385,7k/ay token; Anthropic Scale tavanı $200k, OpenAI Tier 5 $200k/ay; tavana ulaşınca istekler ay sonuna kadar 429 (retry-after yok). Kısa aralık zorlaması ve 'acceleration limits' ani başlatmada 429.",
+   "kaynak": "https://platform.claude.com/docs/en/api/rate-limits ; https://developers.openai.com/api/docs/guides/rate-limits",
+   "etki": "Tüm filo tek anda durabilir; ART başı workspace bütçesi ve merkezi LLM gateway (kota, yeniden deneme, çok-sağlayıcı) şart."
+  },
+  {
+   "sira": 5,
+   "darbogaz": "Hesaplama yoğunluğu ve GitHub API/CI limitleri",
+   "sayilar": "Tek 128 GB/32 iş parçacıklı sunucu ~8-14 orta ajan taşır (144 için 10-18 sunucu). GitHub içerik-oluşturma sınırı 80/dk ve 500/saat; Enterprise App 15.000 REST istek/saat; Actions Team planı 60 eşzamanlı iş (gereken ortalama 86-288).",
+   "kaynak": "https://code.claude.com/docs/en/agent-sdk/hosting ; https://www.hetzner.com/dedicated-rootserver/ax102/ ; https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api ; https://docs.github.com/en/actions/reference/limits",
+   "etki": "Bunlar para ve mühendislikle çözülebilir (K8s, ARC, webhook-tabanlı GitHub proxy'si) — ama 1-4. darboğazlar çözülmeden bunları çözmek boşa yatırım."
+  }
+ ],
+ "yapi_kanitlari": [
+  {
+   "kaynak": "Cursor — Scaling long-running autonomous coding (2026-01-14)",
+   "bulgu": "Düz (hiyerarşisiz) öz-koordinasyon başarısız: kilitli 20 ajan 'effective throughput of two or three'e düştü; kilitler unutuldu; iyimser eşzamanlılıkta ajanlar riskten kaçtı, 'small, safe changes' yaptı. İşe yarayan: Planner (özyinelemeli alt-planner'lar) -> Worker (birbirleriyle koordine OLMAZ) -> Judge; ayrı 'integrator' rolü 'created more bottlenecks than it solved' diye kaldırıldı; drift'e karşı 'periodic fresh starts'. Model seçimi rol başına değişiyor (GPT-5.2 uzun işte daha iyi, Opus 4.5 'stop earlier and take shortcuts' — Ocak 2026 modelleri).",
+   "url": "https://cursor.com/blog/scaling-agents (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Ajanlar arası 'scrum ekibi' iletişimi (standup, PO-dev pazarlığı) kanıtlanmış bir kazanç değil; kanıtlanan yapı: hiyerarşik planlama + birbirinden bağımsız işçiler + otomatik yargıç + taze başlangıç. Entegrasyonu ayrı bir ajan 'rolü' yapmak darboğaz üretir."
+  },
+  {
+   "kaynak": "Anthropic — C derleyicisi (2026-02-05)",
+   "bulgu": "16 ajan dosya-kilidi (current_tasks/) ile görev aldı; 'Merge conflicts are frequent'. Linux çekirdeği gibi monolitik görevde 16 ajan da aynı hatayı bulup birbirinin düzeltmesini ezdi -> paralellik sıfırlandı; çözüm GCC'yi 'known-good compiler oracle' yapıp işi dosyalara bölmek. 'it's important that the task verifier is nearly perfect'.",
+   "url": "https://www.anthropic.com/engineering/building-c-compiler (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Paralellik, işin doğrulayıcı (oracle/test) ile bağımsız parçalara bölünebildiği ölçüde çalışır. HRMS'de bordro/izin/SGK kuralları gibi çapraz-kesen iş kurallarında 144 paralel ekip aynı hataya yığılır."
+  },
+  {
+   "kaynak": "Anthropic — çok-ajanlı araştırma sistemi (2025-06-13)",
+   "bulgu": "Çok-ajan ~15x token (sohbete göre); araştırmada tek-ajana göre +%90,2; ama 'most coding tasks involve fewer truly parallelizable tasks than research' ve 'domains that require all agents to share the same context or involve many dependencies between agents are not a good fit'.",
+   "url": "https://www.anthropic.com/engineering/multi-agent-research-system (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Kodlama, çok-ajan kazancının en zayıf olduğu alanlardan biri; ek 'rol ajanları' token'ı katlar, çıktıyı katlamaz."
+  },
+  {
+   "kaynak": "Claude Code agent teams dokümanı (2026-09)",
+   "bulgu": "'Start with 3-5 teammates for most workflows'; 'Three focused teammates often outperform five scattered ones'; '5-6 tasks per teammate'; 'For sequential tasks, same-file edits, or work with many dependencies, a single session or subagents are more effective'; 'No nested teams'; plan modunda ~7x token.",
+   "url": "https://code.claude.com/docs/en/agent-teams ; https://code.claude.com/docs/en/costs (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Sağlayıcının kendi önerisi: ekip içinde 3-5 ajan üst sınır ve iç içe ekip yok -> '12 ART x 12 ekip x N rol' hiyerarşisi araçların desteklediği yapı değil; üst katmanlar deterministik orkestratör (kuyruk/iş akışı motoru) olmalı."
+  },
+  {
+   "kaynak": "MAST — Why Do Multi-Agent LLM Systems Fail? (arXiv 2503.13657; v3 2025-10-26)",
+   "bulgu": "7 popüler MAS çerçevesinden 1.600+ iz; '14 unique modes, clustered into 3 categories: (i) system design issues, (ii) inter-agent misalignment, and (iii) task verification'; kappa 0,88; 'performance gains on popular benchmarks are often minimal'.",
+   "url": "https://arxiv.org/abs/2503.13657 (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Ajanlar arası hizalanmama bir hata SINIFI; ajan sayısı ve rol sayısı arttıkça bu yüzey büyür. Doğrulama (task verification) ayrı ve deterministik olmalı."
+  },
+  {
+   "kaynak": "Towards a Science of Scaling Agent Systems (arXiv 2512.08296; rev. 2026-04-08)",
+   "bulgu": "Tek-ajana göre göreli performans '+80.8% on decomposable financial reasoning to -70.0% on sequential planning'; 'coordination yields diminishing returns once single-agent baselines exceed certain performance'; merkezi doğrulaması olmayan mimariler hataları daha çok yayıyor; 'mismatched coordination degrades the performance'.",
+   "url": "https://arxiv.org/abs/2512.08296 (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Koordinasyon yapısı iş yapısına uymalı; sıralı bağımlı işlerde (ör. şema -> servis -> UI) çok-ajan %70'e kadar kötüleştirebilir. Merkezi doğrulama (CI + oracle) şart."
+  },
+  {
+   "kaynak": "Conway (Datamation, Nisan 1968)",
+   "bulgu": "'organizations which design systems ... are constrained to produce designs which are copies of the communication structures of these organizations.'",
+   "url": "https://www.melconway.com/Home/Committees_Paper.html (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "144 ajan ekibi = 144 parçalı mimari eğilimi. Önce HRMS modül sınırları (bağlamlar) çizilmeli, ekip/kuyruk sayısı bu sınırlardan türetilmeli (ters Conway); tersi değil."
+  },
+  {
+   "kaynak": "Team Topologies",
+   "bulgu": "Dört ekip tipi (stream-aligned, enabling, complicated-subsystem, platform); üç etkileşim modu (collaboration, X-as-a-Service, facilitation); 'Teams can only handle so much complexity before breaking down.'",
+   "url": "https://teamtopologies.com/key-concepts (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Ajan bağlamında 'bilişsel yük' = bağlam penceresi + modül yüzeyi. Birim 'ekip' değil 'modül sahipliği + arayüz sözleşmesi (X-as-a-Service)'. Platform ekibi (insan) tüm ajan işçilerine CI/sandbox/merge-queue sunar."
+  },
+  {
+   "kaynak": "Brooks yasası analoğu (aritmetik)",
+   "bulgu": "İkili iletişim kanalı sayısı n(n-1)/2: 12 ekip -> 66; 144 ekip -> 144x143/2 = 10.296 kanal. 12 ART arasında -> 66.",
+   "url": "Aritmetik (Brooks, The Mythical Man-Month, 1975 kavramı; URL gerekmez)",
+   "144_ekip_icin_anlami": "Ajanlar arası serbest mesajlaşma 144 ekipte yönetilemez; iletişim yalnız sözleşmeler, kuyruk ve pano üzerinden (yıldız topolojisi) olmalı."
+  },
+  {
+   "kaynak": "SAFe (Scaled Agile Framework)",
+   "bulgu": "ART: 'generally made up of 50 -125 people'; PI: 'a timebox of 8-12 weeks'; PI amacı: 'Limit work in process (WIP)'; PI Planning çıktısı 'an ART planning board that reflects feature delivery dates and dependencies'; Lean Budgets: 'funds value streams instead of projects'.",
+   "url": "https://framework.scaledagile.com/agile-release-train ; https://framework.scaledagile.com/planning-interval ; https://framework.scaledagile.com/pi-planning ; https://framework.scaledagile.com/lean-budgets (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "SAFe boyutları insan iletişim sınırlarına (50-125 kişi) göre ayarlı; ajanlarda bu sınır yok, dolayısıyla '12x12' sayısının ajan için bir gerekçesi yok. POLİTİKA olarak değerli olanlar: WIP limiti (kuyruk derinliği), ART-başı bütçe (workspace spend limit), bağımlılık panosu (modüller arası sözleşme değişiklikleri), PI kadansı (insan kabul/demoları ve yol haritası ritmi)."
+  },
+  {
+   "kaynak": "Sahada çalışan ajan filoları",
+   "bulgu": "Stripe Minions: tek-atış (one-shot) görev -> devbox -> ≤2 CI turu -> insan review; Ramp Inspect: arka plan ajanı, sınırsız eşzamanlı oturum, insan onayı zorunlu; Spotify: dar değişiklik türleri (göç/yükseltme) için arka plan ajanı; OpenAI harness: 3-7 mühendis ajanları yönetiyor, 3,5 PR/mühendis/gün; Anthropic C derleyicisi: tek araştırmacı + 16 ajan.",
+   "url": "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents ; https://builders.ramp.com/post/why-we-built-our-background-agent ; https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1 ; https://jaytaylor.com/notes/node/1770842156000.html ; https://www.anthropic.com/engineering/building-c-compiler (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Hiçbir kamuya açık vaka kalıcı 'ajan scrum ekipleri' kullanmıyor; ortak desen: görev kuyruğu + tek-seferlik izole işçi + otomatik doğrulama + insan onay kapısı. İnsan:ajan oranı yayınlanmış olarak tek vakada açık: 1 araştırmacı:16 ajan (C derleyicisi); diğerlerinde 'mühendis başı günde ~3,5 PR' türünden verim oranı var. Genel bir 'N ajan/insan' oranı için birincil kaynak yok -> doğrulanamadı."
+  }
+ ],
+ "kademeli_plan": [
+  {
+   "kademe": 0,
+   "es_zamanli_isci": 1,
+   "kapsam": "1 HRMS modülü (ör. izin yönetimi), mevcut 128 GB sunucu, tek merge queue",
+   "altyapi": "Docker + tek düğüm; LLM gateway (kota/retry) baştan; Anthropic en az Build/Scale kademesi (1 ajan 7/24 orta senaryoda ~$554/ay > Start $500 tavanı: 720 sa x $0,77)",
+   "olculecek": "Ajan-saat başı gerçek $ ve token (model-tabanlı $0,42-0,77 ile gözlenen $3,72 arasındaki belirsizliği kapatmak), PR başı CI turu, PR başı insan review dakikası, kabul oranı, alpha'da insanların açtığı bug/kabul edilen PR",
+   "gecis_kapisi": "≥30 kabul edilmiş PR; kabul oranı ≥%50; CI turu/PR medyanı ≤2; review dakikası/PR ölçülmüş ve stabil",
+   "kanit_dayanagi": "Stripe ≤2 CI turu; Faros kabul oranı %20->%60; METR: algı ölçümle ayrışıyor -> telemetri"
+  },
+  {
+   "kademe": 1,
+   "es_zamanli_isci": 3,
+   "kapsam": "3 bağımsız modül (ayrı şema sahipliği)",
+   "altyapi": "Aynı sunucu; merge queue (build concurrency ≥3); migration politikası (zaman damgası + sürüm dosyası + geri alınabilirlik)",
+   "olculecek": "Birleştirme çakışma oranı, kırık trunk sıklığı ve süresi, merge kuyruğu P50/P90",
+   "gecis_kapisi": "Alpha trunk'ı zamanın ≥%95'inde yeşil, kırık trunk MTTR ≤60 dk; merge kuyruğu P90 ≤60 dk; kabul edilen değişiklik başı maliyet Kademe 0'dan kötü değil",
+   "kanit_dayanagi": "Uber %52 yeşil = başarısızlık örneği; Shopify bölümleme sonrası P90 ~41 dk; Google otomatik geri alma"
+  },
+  {
+   "kademe": 2,
+   "es_zamanli_isci": 12,
+   "kapsam": "≈1 ART eşdeğeri; 12 işçi bir elastik havuz, 4-6 modül",
+   "altyapi": "Tek 128 GB sunucunun tavanı (~8-14 orta ajan); modül bazlı bölümlenmiş kuyruk (Graphite/Mergify/Trunk veya kendi SubmitQueue benzeri); alpha'da tenant/istek izolasyonu veya yalnız UI PR'ları için geçici önizleme; ART workspace bütçesi; GitHub Enterprise (Actions 500 eşzamanlı iş) veya self-hosted runner",
+   "olculecek": "Review birikimi (bekleyen PR yaşı), insan review-saat/gün, kaçan hata oranı, GitHub içerik-oluşturma API kullanımı (500/saat sınırına oran)",
+   "gecis_kapisi": "Bekleyen review kuyruğu ≤1 günlük insan kapasitesi (Little yasası: WIP = throughput x süre) ve medyan bekleme artmıyor; kaçan hata/kabul edilen PR artmıyor; 4-12 review insanı fiilen ayrılmış",
+   "kanit_dayanagi": "Faros: review süresi +%441,5 ve olay/PR +%242,7 = kapısız ölçeklemenin sonucu"
+  },
+  {
+   "kademe": 3,
+   "es_zamanli_isci": "36-48",
+   "kapsam": "3-4 ART eşdeğeri / 12 HRMS alanının bir kısmı",
+   "altyapi": "Çok düğümlü K8s (3-6 AX102 sınıfı) + kubernetes-sigs/agent-sandbox (gVisor/Kata, warm pool) + ARC; webhook-tabanlı GitHub olay dağıtımı + önbellekli API proxy; Anthropic Custom kademe veya ikinci sağlayıcı; ART başı workspace spend/rate limitleri",
+   "olculecek": "Kademe 2 metrikleri + sağlayıcı 429 oranı, sandbox soğuk başlangıç, kuyruk başına P90",
+   "gecis_kapisi": "Tüm önceki kapılar 2 ardışık hafta tutuyor; insan review kapasitesi ~11-48 kişi (36/144x43 ≈ 11 ile 48/144x144 = 48); aylık maliyet bütçenin içinde ve kabul edilen değişiklik başı maliyet düşüyor veya sabit",
+   "kanit_dayanagi": "Anthropic SDK barındırma formülü; Cursor: ölçekte hiyerarşik planlayıcı + bağımsız işçi"
+  },
+  {
+   "kademe": 4,
+   "es_zamanli_isci": 144,
+   "kapsam": "12 alan x elastik işçi havuzu (sabit 144 'ekip' değil; tavan 144)",
+   "altyapi": "10-18 AX102 sınıfı düğüm (orta görev) + ayrı CI/alpha düğümleri; çok-sağlayıcı gateway; bölümlenmiş kuyruklar; otomatik geri alma",
+   "olculecek": "Aynı metrikler; ek olarak işçi başına marjinal kabul edilen değişiklik (ölçek getirisi)",
+   "gecis_kapisi": "Yalnızca 43-144 FTE eşdeğeri review/kabul kapasitesi mevcutsa VE marjinal işçi hâlâ kabul edilen değişiklik üretiyorsa; aksi halde işçi tavanını insan kapasitesine eşitle",
+   "kanit_dayanagi": "İnsan kapasitesi hesabı; Stripe/Ramp/Spotify: hepsi insan onay kapısıyla çalışıyor"
+  }
+ ],
+ "sentez": {
+  "karar": "144 kalıcı 'ajan scrum ekibi' doğru kaldıraç DEĞİL. Teknik sınırlar (token hız limiti, sandbox, GitHub API) para ve mühendislikle aşılabilir; aşılamayan kısıt insan review/kabul kapasitesi ve tek trunk'ın entegrasyon kapasitesidir. Doğru birim: modül (bağlam) sınırlarına göre bölümlenmiş iş kuyrukları + tek-seferlik izole işçiler + deterministik doğrulama + insan onay kapısı; eşzamanlı işçi sayısı sabit değil, min(insan review kapasitesi, merge kuyruğu kapasitesi, bütçe) ile dinamik belirlenir.",
+  "neden": [
+   "Token hız limitleri bağlayıcı değil: 144 ajan ≈ 89k ITPM / 62,5k OTPM, Anthropic Start kademesinin %5-16'sı; bağlayıcı olan aylık harcama tavanları ($200k) ve ani başlatma 429'ları.",
+   "Tek sunucu ~8-14 orta ajan taşır; 144 için 10-18 sunucu gerekir ama bu €2,6k-4,6k/ay — token maliyetinin çok altında (Anthropic: token maliyeti altyapıyı 'an order of magnitude or more' aşar).",
+   "Tek trunk'ta 432-1.440 PR/gün, GitHub'ın kendi monolitinin 4-12 katı; kanıtlı çözümler (Google post-submit batch + otomatik geri alma, Uber spekülatif kuyruk, Shopify bölümlenmiş kuyruk) olmadan ya saatlik beklemeler ya kırık alpha.",
+   "İnsan review'u: 43-144 kişi-eşdeğeri; Faros 2026 verisi kapasite aşıldığında review süresinin 5 katına çıktığını ve review'suz birleşmenin arttığını gösteriyor.",
+   "Ajan koordinasyon kanıtı (Cursor, MAST, Scaling Agent Systems, Claude Code agent teams, Anthropic multi-agent) serbest konuşan rol ekiplerinin kodlamada verimi düşürdüğünü, 3-5 üstünde getirinin azaldığını ve iç içe ekiplerin desteklenmediğini gösteriyor."
+  ],
+  "safe_politika_olarak": {
+   "WIP_limiti": "Modül kuyruğu başına eşzamanlı işçi ve açık PR tavanı (Little yasası ile review kapasitesinden türetilir). SAFe PI'nin 'Limit work in process' amacının doğrudan karşılığı.",
+   "ART_butcesi": "12 alan = 12 Anthropic/OpenAI workspace; her birine aylık spend ve RPM/ITPM/OTPM limiti (dokümanda destekli: 'set custom spend and rate limits per Workspace'). Lean Budgets'ın 'funds value streams instead of projects' ilkesinin uygulanabilir hali.",
+   "PI_kadansi": "İnsan tarafı ritim: kabul demoları, yol haritası, modül sınırı revizyonu, maliyet/metrik gözden geçirme (8-12 hafta). Ajanlar için sprint/standup rol-oyunu gereksiz.",
+   "bagimlilik_panosu": "Modüller arası arayüz/sözleşme ve şema değişikliklerinin panosu; bir sözleşme değişikliği tüketici modül kuyruklarını bloklar (ART planning board'un 'dependencies' işlevi).",
+   "ART_sayisi": "12 ART'ı 12 HRMS alanına (bounded context) eşlemek Conway/Team Topologies ile uyumlu olabilir; ancak alan başına 12 sabit ekip yerine alan başına 1 bölümlenmiş kuyruk + elastik işçi havuzu + 1-N insan 'kondüktör/reviewer'."
+  },
+  "insan_ajan_orani": "Genel geçer bir 'N ajan / 1 insan' oranı için birincil kaynak yok (doğrulanamadı). Yayınlanan tek açık oran: 1 araştırmacı : 16 ajan (Anthropic C derleyicisi; ama yeşil alan, mükemmele yakın test oracle'ı ve insan review'u yok). Üretimde (Stripe, Ramp, Spotify) her PR insan onaylı; OpenAI harness'te mühendis başı ~3,5 PR/gün. Bu, kondüktör başına eşzamanlı işçi sayısının review hızıyla sınırlandığını gösterir.",
+  "acik_sorular": [
+   "Ajan-saat başı gerçek maliyet (5-9x belirsizlik) — Kademe 0'da ölçülmeli.",
+   "GitHub içerik-oluşturma sınırının (500/saat) kimlik başına mı olduğu — GitHub desteğine sorulmalı.",
+   "OpenAI TPM'in önbellekli token'ları sayıp saymadığı — dokümanda yok.",
+   "Tester başı günlük kabul testi kapasitesi — birincil kaynak bulunamadı; pilotta ölçülmeli.",
+   "OpenAI harness yazısının orijinali (openai.com) 403 döndü; alıntılar ayna/InfoQ üzerinden."
+  ]
+ },
+ "tuketim_verileri": [
+  {
+   "kaynak_adi": "Claude Code maliyet dokümanı",
+   "veri": "'average cost is around $13 per developer per active day and $150-250 per developer per month, with costs remaining below $30 per active day for 90% of users' (insan-sürücülü, sürekli otonom değil).",
+   "url": "https://code.claude.com/docs/en/costs (erişim 2026-09-27)"
+  },
+  {
+   "kaynak_adi": "Claude Code ekip hız limiti önerisi",
+   "veri": "Kullanıcı başı TPM: 1-5 kullanıcı 200k-300k; 20-50: 50k-75k; 100-500: 15k-20k; 500+: 10k-15k. RPM/kullanıcı 1-5 kullanıcıda 5-7. Gerekçe: büyük örgütte eşzamanlılık düşer.",
+   "url": "https://code.claude.com/docs/en/costs (erişim 2026-09-27)",
+   "not": "Otonom ajanlar insan gibi 'dinlenmez'; eşzamanlılık varsayımı ajanlarda GEÇERSİZ -> 144 otonom ajan için küçük-ekip oranı (200k-300k TPM/ajan tepe) kullanılmalı: 144 x 250k = 36M TPM tepe (tahmin; toplam token, önbellek dahil)."
+  },
+  {
+   "kaynak_adi": "Claude Code agent teams",
+   "veri": "'Agent teams use approximately 7x more tokens than standard sessions when teammates run in plan mode'",
+   "url": "https://code.claude.com/docs/en/costs (erişim 2026-09-27)"
+  },
+  {
+   "kaynak_adi": "Anthropic çok-ajanlı araştırma sistemi (2025-06-13)",
+   "veri": "'agents typically use about 4× more tokens than chat interactions'; 'multi-agent systems use about 15× more tokens than chats'; 'token usage by itself explains 80% of the variance'; kodlama için uygun olmadığı notu: 'most coding tasks involve fewer truly parallelizable tasks than research'.",
+   "url": "https://www.anthropic.com/engineering/multi-agent-research-system (erişim 2026-09-27)"
+  },
+  {
+   "kaynak_adi": "Anthropic C derleyicisi (2026-02-05)",
+   "veri": "16 paralel ajan, ~2.000 Claude Code oturumu, 2 hafta, $20.000 API maliyeti, 2 milyar giriş + 140 milyon çıkış token'ı, 100.000 satır Rust.",
+   "url": "https://www.anthropic.com/engineering/building-c-compiler (erişim 2026-09-27)",
+   "turetilmis": "Ajan-saati = 16 x 14 gün x 24 saat = 5.376 (sürekli çalıştığı varsayımıyla; tahmin). Giriş = 2e9/5.376 ≈ 372k token/ajan-saat (≈6,2k/dk); çıkış = 140e6/5.376 ≈ 26k token/ajan-saat (≈434/dk); maliyet = $20.000/5.376 ≈ $3,72/ajan-saat. 'Giriş' rakamının önbellek okumalarını içerip içermediği yazıda yok -> doğrulanamadı."
+  },
+  {
+   "kaynak_adi": "OpenAI Harness engineering (2026-02-11)",
+   "veri": "5 ayda ~1M satır, ~1.500 PR, 3 mühendis (sonra 7); 'average throughput of 3.5 PRs per engineer per day'; 'single Codex runs work on a single task for upwards of six hours'; 'our bottleneck became human QA capacity'.",
+   "url": "https://openai.com/index/harness-engineering/ (403 döndü; alıntılar ayna: https://jaytaylor.com/notes/node/1770842156000.html ve InfoQ https://www.infoq.com/news/2026/02/openai-harness-engineering-codex/ ; erişim 2026-09-27)"
+  },
+  {
+   "kaynak_adi": "Cursor 'Scaling long-running autonomous coding' (2026-01-14)",
+   "veri": "Yüzlerce eşzamanlı worker, tek dal; 'trillions of tokens'; Java LSP 7,4k commit/550k LoC; Windows 7 emülatörü 14,6k commit/1,2M LoC. Kesin token/ajan-saat verilmiyor -> doğrulanamadı.",
+   "url": "https://cursor.com/blog/scaling-agents (erişim 2026-09-27)"
+  }
+ ],
+ "trunk_kanitlari": [
+  {
+   "kurum": "Google (monorepo, Piper/TAP)",
+   "veri": "'more than 25,000 Google software developers'; tipik iş gününde 16.000 insan değişikliği + 24.000 otomatik sistem değişikliği (2016). TAP: 'more than 50,000 unique changes and running more than four billion individual test cases' günde; her değişikliği tek tek test edemez, 'falls back to batching'; presubmit'te 'only fast, reliable ones'; 'a change that passes the presubmit has a very high likelihood (95%+) of passing the rest of the tests'; kırılınca otomatik geri alma ve batch bölme (culprit finding).",
+   "url": "https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in-a-single-repository/ (ikincil özet: https://www.seroundtable.com/25-000-google-coders-commit-16-000-code-changes-per-day-22318.html) ; https://abseil.io/resources/swe-book/html/ch23.html (erişim 2026-09-27)",
+   "ders": "Dünyanın en büyük trunk'ı SERİ ön-birleştirme kuyruğu ile değil, 'iyimser entegrasyon + post-submit batch test + otomatik rollback' ile çalışır. Presubmit geçen değişikliklerin ~%5'e kadarı sonradan kırabilir -> 'kırık trunk' olağandır, hızlı tespit/geri alma şarttır."
+  },
+  {
+   "kurum": "Uber (SubmitQueue, EuroSys 2019; ICSE 2025)",
+   "veri": "'a thousand changes per day'; SubmitQueue öncesi iOS ana dal 1 haftalık görünümde 'green only 52% of the time'; 16 eşzamanlı değişiklikte '40% chance of a problem'; iOS/Android build 30-60 dk; sıralı kuyrukta son değişikliğin bekleme süresi 'over 20 days' olurdu. 2025 iyileştirmesi: CI kaynak kullanımı ~%53, CPU %44, P95 bekleme %37 azaldı.",
+   "url": "https://blog.acolyer.org/2019/04/18/keeping-master-green-at-scale/ ; https://arxiv.org/abs/2501.03440 (erişim 2026-09-27)",
+   "ders": "Eşzamanlı değişiklik sayısı arttıkça etkileşim (semantik çakışma) olasılığı hızla artar; spekülatif paralel build + başarı tahmini olmadan kuyruk ya kırık ya çok yavaştır."
+  },
+  {
+   "kurum": "Shopify (monolit, 2019; Graphite 2025-26)",
+   "veri": "'1000+ Developers'; ~400 commit/gün master'a; günde 40 deploy; merge queue batch'i 8 PR (deploy başına kabul edilebilir en fazla); aynı anda yalnız 3 batch için CI; flaky toleransı. 2025-09 sonrası Graphite bölümlenmiş (zone-specific partitions) kuyruk: P90 birleştirme süresi 693 dk (>10 saat) -> ~41 dk; P50 ~26 dk; 27.061 mühendis-saati tasarruf.",
+   "url": "https://shopify.engineering/successfully-merging-work-1000-developers ; https://graphite.com/customer/shopify-merge-queu (erişim 2026-09-27)",
+   "ders": "Tek kuyruk ~1.000 geliştiricide 10+ saatlik P90 beklemeye çıktı; çözüm kuyruğu kod bölgesine göre bölmek oldu. 144 ekip için modül sınırlarına göre kuyruk bölümlemesi zorunlu."
+  },
+  {
+   "kurum": "GitHub (kendi monoliti, 2024-03-06)",
+   "veri": "'Every month, over 500 engineers merge 2,500 pull requests into our large monorepo'; tren başına ~15 PR -> merge queue ile '30 or more'; 'average wait time to ship a change has also been reduced by 33%'.",
+   "url": "https://github.blog/engineering/engineering-principles/how-github-uses-merge-queue-to-ship-hundreds-of-changes-every-day/ (erişim 2026-09-27)",
+   "ders": "2.500/ay ≈ 115 PR/iş günü (2.500/21,7). GitHub'ın kendi ürünüyle kanıtlanmış hacim bu mertebede; 144 ajan ekibinin olası 432-1.440 PR/gün hacmi bunun 4-12 katı."
+  },
+  {
+   "kurum": "Stripe (Minions, 2026-02)",
+   "veri": "Haftada 1.000 -> 1.300+ tamamen ajan-üretimi PR birleşiyor; insan review zorunlu; devbox 10 sn'de hazır (havuzlama); en fazla 2 CI turu, sonra insana döner; 3 milyon+ test; 'one of our most constrained resources is developer attention'.",
+   "url": "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents ; https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2 (erişim 2026-09-27)",
+   "ders": "Kamuya açık en büyük üretim ajan filolarından biri ~260 PR/iş günü (1.300/5) düzeyinde ve binlerce mühendislik organizasyonuna yayılmış insan review'uyla çalışıyor; CI turunu 2 ile sınırlayarak maliyet ve kuyruk yükünü kesiyor."
+  }
+ ],
+ "entegrasyon_kanitlari": [
+  {
+   "konu": "Paylaşılan staging'in çöküşü (Uber)",
+   "veri": "Staging sorunları: 'E2E testing in staging environments is not reliable and can be flaky'; 'Staging environment also limits how many developers can test at once'. Çözüm SLATE: üretim altyapısında kısa ömürlü ortam, istek başlığında tenancy ('request-tenancy' Jaeger baggage), varsayılan TTL 2 gün, 'SLATE only allows to associate a test user'.",
+   "url": "https://www.uber.com/us/en/blog/simplifying-developer-testing-through-slate/ (2022-10-20; erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Tek alpha.example.com'a 144 ekibin çıktısı düşerse bir ekibin kararsız özelliği herkesin kabul testini bozar. İstek-seviyesi izolasyon (tenant/başlık + test kullanıcıları) paylaşılan alpha'yı ölçeklendirmenin kanıtlanmış yolu."
+  },
+  {
+   "konu": "Kişi başı tam ortamdan paylaşılan staging + override'a geçiş (Lyft)",
+   "veri": "Onebox (100+ servisi bir VM'de ayağa kaldıran kişisel ortam) 'could not scale anymore'; paylaşılan staging'de 'an unstable new feature could cause problems for the entire staging environment'; çözüm 'staging overrides': tam izole ortam yerine isteklerin izolasyonu. Binlerce entegrasyon testi silindi/birim teste çevrildi; küçük merkezi kabul testi seti deploy'u kapılıyor; 'no measurable increase in the number of bugs making it into production'.",
+   "url": "https://www.infoq.com/news/2022/03/scaling-testing-acceptance-lyft/ (2022-03-31; erişim 2026-09-27; orijinal eng.lyft.com 403 döndü)",
+   "144_ekip_icin_anlami": "144 PR-başı tam önizleme ortamı pahalı ve yavaş; kanıt 'paylaşılan ortam + istek izolasyonu + küçük merkezi kabul testi seti' yönünde. HRMS gibi veri-ağır bir ERP'de tenant başına veri izolasyonu (test kiracısı) şart."
+  },
+  {
+   "konu": "Veritabanı göç (migration) çakışmaları (GitLab monoliti)",
+   "veri": "GitLab her migration için db/schema_migrations/<timestamp> adlı ayrı bir checksum dosyası tutar (Git'in bunları ayrı dosya görmesi ve birleştirme çakışmasını azaltmak için); structure.sql elle sıralanmaz. Kurallar: 'Migrations are not allowed to require GitLab installations to be taken offline ever'; her migration geri alınabilir olmalı; normal migration ≤3 dk, post-deploy ≤10 dk, daha uzunu batched background migration.",
+   "url": "https://docs.gitlab.com/development/migration_style_guide/ (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "144 ekip aynı şemaya paralel migration yazarsa sıralı numaralı göçler (Django tarzı tek 'leaf') sürekli çakışır. Politika: zaman damgalı + dosya-başına sürüm kaydı, geri alınabilirlik zorunlu, genişlet/daralt (expand/contract) ve modül başına şema sahipliği. Migration'lar merge queue'da ayrı sıraya alınmalı (yargı)."
+  },
+  {
+   "konu": "Trunk-based development tanımı (DORA)",
+   "veri": "'Have three or fewer active branches'; 'Merge branches to trunk at least once a day'; 'Don't have code freezes and don't have integration phases'; dal ömrü 'no more than a few hours'.",
+   "url": "https://dora.dev/capabilities/trunk-based-development/ (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "144 ekip x N ajan açık PR = yüzlerce eşzamanlı kısa ömürlü dal; DORA'nın '≤3 aktif dal' ölçütü ajan ölçeğinde doğrudan uygulanamaz, ama 'dal ömrü saatler' ölçütü uygulanabilir -> PR'ların yaşı bir kapı metriği olmalı."
+  },
+  {
+   "konu": "Google: kırılmayı önlemek değil hızla geri almak",
+   "veri": "Presubmit'te yalnız 'fast, reliable' testler; presubmit'i geçen değişikliğin kalan testleri geçme olasılığı '95%+'; post-submit batch, otomatik culprit bulma ve 'automatically roll back changes when it has high confidence'.",
+   "url": "https://abseil.io/resources/swe-book/html/ch23.html (erişim 2026-09-27)",
+   "144_ekip_icin_anlami": "Alpha'ya deploy edilen trunk'ın zaman zaman kırılacağı kabul edilmeli; ölçülecek şey 'kırık kalma süresi' ve otomatik geri alma oranı."
+  }
+ ],
+ "insan_kapasitesi_kanitlari": [
+  {
+   "kaynak": "Faros AI — AI Productivity Paradox (2025-07-23)",
+   "veri": "10.000+ geliştirici, 1.255 ekip: '21% more tasks completed', '98% more pull requests merged', 'PR review time increases 91%', '154% increase in average PR size', '9% increase in bugs per developer'; şirket düzeyinde throughput/DORA/kalite ile 'No significant correlation'.",
+   "url": "https://www.faros.ai/blog/ai-software-engineering (erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "Faros AI — AI Engineering Report 2026: The Acceleration Whiplash (2026-04-12)",
+   "veri": "22.000 geliştirici, 4.000+ ekip, 2 yıl: epik/geliştirici 'up 66%'; görev throughput 'up 33.7%'; hata/geliştirici 'up 54%'; olay/PR oranı 'up 242.7%'; code churn 'increased 861%'; kod review'da medyan süre 'up 441.5%'; review'suz birleşen PR 'up 31.3%'; 'reviewers cannot keep pace with the volume of AI-generated code'.",
+   "url": "https://www.faros.ai/blog/ai-acceleration-whiplash-takeaways (erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "DORA 2025 (2025-09-24)",
+   "veri": "~5.000 katılımcı; %90 AI kullanımı; 'positive relationship between AI adoption on both software delivery throughput and product performance' ama 'negative relationship with software delivery stability'; 'AI doesn't fix a team; it amplifies what's already there'. AI Yetenek Modeli 7 yeteneği: AI-accessible internal data, Clear and communicated AI stance, Healthy data ecosystems, Platform engineering, User-centric focus, Version control, Working in small batches.",
+   "url": "https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report ; https://dora.dev/capabilities/ (erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "METR RCT (2025-07-10) ve güncelleme (2026-02-24)",
+   "veri": "Erken 2025: 16 deneyimli OSS geliştirici, 246 görev, AI ile '19% longer' (beklenti %24 hızlanma, sonrasında algı %20 hızlanma). Geç 2025: orijinal geliştiriciler −%18 (GA −%38…+%9; n=10), yeni katılımcılar −%4 (GA −%15…+%9; n=47); yazarlar seçilim yanlılığı nedeniyle verinin 'only very weak evidence' olduğunu, gerçek hızlanmanın 'likely...much higher' olduğunu belirtiyor.",
+   "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/ ; https://metr.org/blog/2026-02-24-uplift-update/ (erişim 2026-09-27)",
+   "not": "Algılanan ile ölçülen verim ayrışabilir -> kapı metrikleri telemetriden gelmeli, ankete değil."
+  },
+  {
+   "kaynak": "GitHub Octoverse 2025 (2025-10-28, güncelleme 2026-02-28)",
+   "veri": "Ayda '43.2 million pull requests merged per month (+23% YoY)'; yıllık 518,7M PR; 986M commit (+%25); Copilot coding agent Mayıs-Eylül 2025 arasında '1+ million pull requests'.",
+   "url": "https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/ (erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "SmartBear / Cisco kod review çalışması",
+   "veri": "'review no more than 200 to 400 lines of code (LOC) at a time'; 'inspection rates should under 500 LOC per hour'; 'Do not review for more than 60 minutes at a time'; 200-400 LOC / 60-90 dk -> '70-90% defect discovery'.",
+   "url": "https://smartbear.com/learn/code-review/best-practices-for-peer-code-review/ (erişim 2026-09-27; çalışma tarihi sayfada yok)"
+  },
+  {
+   "kaynak": "OpenAI Harness engineering (2026-02-11)",
+   "veri": "3 (sonra 7) mühendis; 3,5 PR/mühendis/gün; 'our bottleneck became human QA capacity'; 'Corrections are cheap, and waiting is expensive'; flaky testler 'follow-up runs' ile.",
+   "url": "https://jaytaylor.com/notes/node/1770842156000.html (openai.com/index/harness-engineering aynası; erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "Stripe Minions (2026-02-09/19)",
+   "veri": "Haftada 1.300+ ajan PR'ı, hepsi insan review'lu; 'one of our most constrained resources is developer attention'; ≤2 CI turu sonra insana.",
+   "url": "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents (erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "Ramp Inspect",
+   "veri": "'~30% of all pull requests merged to our frontend and backend repos are written by Inspect'; Modal sandbox; 'There's no limit to how many sessions you can have running concurrently'; kendi değişikliğini onaylama engellenmiş ('You do not want to knowingly create a vector for unreviewed code'). Yayın tarihi sayfada yok -> doğrulanamadı.",
+   "url": "https://builders.ramp.com/post/why-we-built-our-background-agent (erişim 2026-09-27)"
+  },
+  {
+   "kaynak": "Spotify background coding agent (2025-11-06)",
+   "veri": "'more than 1,500 pull requests that teams across Spotify have merged'; '60–90%' zaman tasarrufu; iş tipi: çok repoda göç/yükseltme (Java records, Scio, Backstage, YAML/JSON).",
+   "url": "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1 (erişim 2026-09-27)",
+   "not": "En başarılı kurumsal ajan kullanımları 'ekip' değil, dar tanımlı değişiklik türleri için kuyruk-tabanlı arka plan işçileri."
+  }
+ ],
+ "insan_kapasitesi_hesabi": {
+  "varsayimlar": [
+   "Ajan PR'ı ortalama 200 LOC (Faros: PR boyu +%154 -> daha büyük olabilir; varsayım)",
+   "Review hızı üst sınır 500 LOC/saat (SmartBear)",
+   "Bir insan günde en fazla 4 saat odaklı review yapar (varsayım)",
+   "Günlük PR hacmi: 144 ekip x 3-10 PR/ekip/gün = 432-1.440 PR/gün (3 = OpenAI harness 3,5 PR/mühendis/gün'e yakın alt değer; 10 = üst senaryo; varsayım)"
+  ],
+  "hesap": [
+   "Günlük LOC: 432 x 200 = 86.400 ile 1.440 x 200 = 288.000 LOC/gün",
+   "Review saatleri: 86.400/500 = 173 ile 288.000/500 = 576 saat/gün",
+   "Reviewer sayısı (4 saat/gün): 173/4 ≈ 43 ile 576/4 = 144 kişi",
+   "Yani her PR insan review'undan geçerse 144 ajan ekibi ~43-144 tam zamanlı-eşdeğer review insanı ister; kabul testi (alpha üzerinde) bunun üstüne eklenir (tester başı kapasite için birincil kaynak bulunamadı -> doğrulanamadı; pilotta ölçülmeli)."
+  ],
+  "sonuc": "İnsan dikkati, token veya sunucudan çok önce bağlayan kısıttır. 144 ajan ekibi, insan review/kabul kapasitesi ölçeklenmeden 'onay bekleyen PR' birikimi (review borcu) üretir; Faros 2026 verisindeki '+%441,5 review süresi' ve '+%31,3 review'suz birleşme' tam da bu kaçış davranışıdır."
+ }
+}

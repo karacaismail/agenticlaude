@@ -1,0 +1,77 @@
+{
+  "title": "LangGraph",
+  "summary": "LangGraph’ın bu hat için tarafsız değerlendirmesi. Panolardan biri onu orkestrasyon çekirdeği olarak öneriyor.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "LangGraph",
+      "lede": "LangChain ekibinin graf tabanlı ajan kütüphanesi; 1.0 sürümü Ekim 2025’te çıktı. Ajan-sağlayıcı panosu onu akış, tekrar, blocker ve insan onayı için “tek orkestrasyon çekirdeği” olarak öneriyor. STARK ise aynı işi Temporal’a veriyor. Asıl soru hangisinin daha iyi olduğu değil, ikisinden hangisinin durum sahibi olacağı.",
+      "meta": [
+        { "label": "Hüküm", "value": "Sınırlı rol" },
+        { "label": "Katman", "value": "L3 kütüphane" },
+        { "label": "Lisans", "value": "MIT" }
+      ]
+    },
+    { "type": "heading", "text": "Ne sağlıyor?" },
+    {
+      "type": "kv",
+      "items": [
+        { "k": "StateGraph", "v": "Düğümler ve koşullu kenarlarla açık bir akış grafiği; durum tipli bir nesne." },
+        { "k": "Checkpointer", "v": "Her adımda durumu kaydeder (Postgres, SQLite vb.). Süreç yeniden başlarsa son kontrol noktasından devam eder." },
+        { "k": "interrupt()", "v": "Akışı insan onayı veya dış girdi için durdurur; aynı thread kimliğiyle devam ettirilir." },
+        { "k": "Time-travel", "v": "Önceki kontrol noktasına dönüp farklı bir dalı yeniden çalıştırma; hata ayıklamada güçlü." },
+        { "k": "Deep Agents", "v": "LangGraph üzerine kurulu hazır ajan iskeleti (planlama, alt ajan, dosya sistemi araçları)." },
+        { "k": "Platform", "v": "Ölçek, kuyruk ve dağıtım için LangChain’in ticari platformu; açık kaynak kütüphane bunları içermez." }
+      ]
+    },
+    {
+      "type": "procon",
+      "proTitle": "Lehte",
+      "conTitle": "Aleyhte ve dikkat",
+      "pros": [
+        "Çok dallı analiz için doğal ifade: panodaki edge-case.agent’ın 6 perspektifi gibi.",
+        "İnsan onayı (interrupt) ve checkpoint birinci sınıf özellik.",
+        "Time-travel ve LangGraph Studio ile hata ayıklama kolay.",
+        "Geniş topluluk, çok sayıda örnek; Python ekibine tanıdık bir API.",
+        "Tek bir süreçte, tek bir servis için gerçekten yeterli bir dayanıklılık düzeyi sunar."
+      ],
+      "cons": [
+        "Durability düğüm düzeyinde: 60 dakikalık bir kodlama düğümü çökerse düğüm baştan çalışır. Heartbeat ve iptal yayılımı yok.",
+        "Kütüphane: çalışan filosu, görev kuyruğu, günlerce süren dayanıklı zamanlayıcı ve zamanlanmış iş ayrıca kurulmalı (ya da ticari platform).",
+        "Birden çok graf arasında ortak bütçe (görev toplamı 10 deneme gibi) elle tutulur.",
+        "Temporal ile birlikte kalıcı checkpointer’la kullanılırsa iki durum sahibi oluşur: hangisi doğru, belirsizleşir.",
+        "LangChain ekosisteminde API değişim hızı tarihsel olarak yüksek; sürümü sabitleyin."
+      ]
+    },
+    { "type": "heading", "text": "Panodaki LangGraph atamaları" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "agent", "label": "Panodaki kullanım", "kind": "code" },
+        { "key": "fit", "label": "Uygun mu?", "kind": "badge" },
+        { "key": "why", "label": "Neden" }
+      ],
+      "rows": [
+        { "agent": "edge-case (6 düğüm)", "fit": { "text": "Uygun", "tone": "success" }, "why": "LangGraph’ın haklı olduğu yer. Tek aktivite içinde, kalıcı checkpointer olmadan." },
+        { "agent": "task-dependency-cluster", "fit": { "text": "Gereksiz", "tone": "warning" }, "why": "Kümeleme bir graf algoritması; networkx yeterli (panonun kendi alternatifi)." },
+        { "agent": "dependency-priority", "fit": { "text": "Gereksiz", "tone": "warning" }, "why": "Topolojik sıralama; LLM gerekmez." },
+        { "agent": "frontend-backend-router", "fit": { "text": "Gereksiz", "tone": "warning" }, "why": "Enum çıktısına göre bir if; iş akışı kodunda." },
+        { "agent": "R&D / task-spec üst akışı", "fit": { "text": "Çakışır", "tone": "danger" }, "why": "Döngü sayacı ve PO bekleyişi Temporal’ın işi." },
+        { "agent": "blocker / human approval", "fit": { "text": "Çakışır", "tone": "danger" }, "why": "Günlerce süren bekleyiş Temporal Signal/Update ile." }
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "note",
+      "title": "LangGraph çekirdek olursa?",
+      "text": "Bu meşru bir alternatif; panonun önerisi yanlış değil, iki çekirdeğin birlikte olması yanlış. LangGraph’ı çekirdek seçerseniz Temporal’ı çıkarın ve şunları kendiniz kurun: Postgres checkpointer, çalışan kuyruğu (ör. Celery veya Hatchet), günlerce süren bekleyişler için zamanlayıcı, uzun kodlama adımları için ayrı süreç ve iptal mekanizması, görev toplamı bütçesi. Bu liste uzadıkça Temporal’ın öğrenme maliyeti ucuz görünmeye başlar."
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Hüküm",
+      "text": "Durum sahibi Temporal. LangGraph yalnızca tek bir aktivitenin içinde, çok dallı analiz gereken yerlerde ve kalıcı checkpointer olmadan. Çoğu ajan için PydanticAI daha sade ve Temporal ile resmi entegrasyonu var."
+    }
+  ]
+}

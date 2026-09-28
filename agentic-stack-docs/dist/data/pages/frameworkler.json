@@ -1,0 +1,44 @@
+{
+  "title": "Framework karşılaştırması",
+  "summary": "LangGraph, CrewAI, AutoGen, Agent Framework, PydanticAI, OpenAI Agents SDK, Mastra ve Dapr Agents bu hattın ihtiyaçlarına göre yan yana.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "Framework karşılaştırması",
+      "lede": "Genel bir sıralama değil. Ölçütler bu hattın ihtiyaçlarından çıkarıldı: deterministik kontrol, Temporal ile uyum, tipli çıktı, bakım durumu. Kodlama işi zaten çalıştırıcılarda yapıldığı için framework’ün rolü L3: kısa, tipli ajanlar."
+    },
+    {
+      "type": "compare",
+      "columns": ["PydanticAI", "OpenAI Agents SDK", "LangGraph", "CrewAI", "Agent Framework", "AutoGen"],
+      "rows": [
+        { "label": "Deterministik akış kontrolü", "values": [{ "score": 3, "text": "Akış sizin kodunuz" }, { "score": 2, "text": "Handoff ile" }, { "score": 3, "text": "Açık graf" }, { "score": 1, "text": "Crews zayıf, Flows iyi" }, { "score": 3, "text": "Graf iş akışları" }, { "score": 1, "text": "Konuşma güdümlü" }] },
+        { "label": "Temporal ile uyum", "values": [{ "score": 3, "text": "Resmi entegrasyon" }, { "score": 3, "text": "Resmi, GA (Mart 2026)" }, { "score": 1, "text": "İkinci durum sahibi riski" }, { "score": 1, "text": "Flows çakışır" }, { "score": 2, "text": "Dapr ile gösterilmiş" }, { "score": 1, "text": "—" }] },
+        { "label": "Tipli / yapısal çıktı", "values": [{ "score": 3, "text": "Pydantic model" }, { "score": 2, "text": "Var" }, { "score": 2, "text": "Tipli state" }, { "score": 2, "text": "Var" }, { "score": 2, "text": "Var" }, { "score": 1, "text": "Sınırlı" }] },
+        { "label": "Bakım ve olgunluk", "values": [{ "score": 3, "text": "Aktif" }, { "score": 3, "text": "Aktif" }, { "score": 3, "text": "1.0, aktif" }, { "score": 3, "text": "Aktif" }, { "score": 3, "text": "1.0 GA" }, { "score": 1, "text": "Bakım modu" }] },
+        { "label": "Soyutlama maliyeti (yüksek puan = hafif)", "values": [{ "score": 3, "text": "İnce" }, { "score": 3, "text": "İnce" }, { "score": 2, "text": "Orta" }, { "score": 1, "text": "Kalın (rol, crew)" }, { "score": 2, "text": "Orta" }, { "score": 1, "text": "Kalın" }] }
+      ],
+      "note": "Puanlar bu hattaki rol için görelidir (3 = iyi uyum). Mastra (TypeScript), Dapr Agents (Kubernetes) ve Google ADK / Strands (bulut ekosistemi) belirli koşullarda alternatif; katalogda ayrıntılı."
+    },
+    { "type": "heading", "text": "Karar ağacı" },
+    {
+      "type": "steps",
+      "items": [
+        { "title": "Kontrol düzlemi dili Python mu?", "text": "Evet → PydanticAI (veya OpenAI Agents SDK). TypeScript → Mastra, yalnızca ajan katmanı olarak." },
+        { "title": "Ekip .NET / Azure mı?", "text": "Evet → Microsoft Agent Framework ajan katmanında; durum yine Temporal’da." },
+        { "title": "Tek bir adımda çok dallı analiz mi gerekiyor?", "text": "Evet → o aktivitenin içinde LangGraph, kalıcı checkpointer olmadan. Hayır → düz Python + PydanticAI." },
+        { "title": "Çok rollü tartışma mı isteniyor?", "text": "CrewAI tek aktivite içinde kullanılabilir; ama aynı işi PydanticAI ile paralel aktiviteler olarak yazmak daha az soyutlama getirir." },
+        { "title": "AutoGen?", "text": "Hayır. Yerine Agent Framework veya PydanticAI." }
+      ]
+    },
+    {
+      "type": "linkgrid",
+      "items": [
+        { "title": "LangGraph", "text": "Panonun çekirdek önerisi ve neden aktivite içinde kalmalı.", "href": "#/langgraph" },
+        { "title": "CrewAI", "text": "Crews ve Flows ayrımı.", "href": "#/crewai" },
+        { "title": "AutoGen", "text": "Bakım modu ve halefi.", "href": "#/autogen" },
+        { "title": "Hermes Agent", "text": "Çalıştırıcı, öğrenme döngüsü ve Kanban.", "href": "#/hermes" }
+      ]
+    }
+  ]
+}

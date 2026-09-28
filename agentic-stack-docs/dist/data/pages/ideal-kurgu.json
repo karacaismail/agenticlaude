@@ -1,0 +1,125 @@
+{
+  "title": "İdeal kurgu (panolara göre)",
+  "summary": "Panoların tarif ettiği hat, bileşenleri ve panolar arasındaki çekirdek çelişkisinin çözümü.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Mimari",
+      "title": "Panoların tarif ettiği hat",
+      "lede": "STARK panosunun başlık satırı kurguyu tek cümlede veriyor: Temporal durum, bütçe ve devamı yönetir; ajan çalışanı OpenHands, Claude Code, Codex veya Hermes’tir; model API görev politikasından seçilir; 4 görev sorumlusu vardır ve kişi başına 1 aktif iş yürür. Bu sayfa o cümleyi bileşenlere ayırıyor ve eksik kalan yerleri tamamlıyor."
+    },
+    {
+      "type": "quote",
+      "text": "TEMPORAL: durum + bütçe + devam • AJAN ÇALIŞANI: OpenHands / Claude Code / Codex / Hermes • MODEL API: görev politikasındaki sağlayıcı • 4 görev sorumlusu, kişi başına 1 aktif iş",
+      "cite": "TDD/tdd-mcp.pdf · STARK / Önerilen başlangıç politikası"
+    },
+    { "type": "heading", "text": "Akış" },
+    {
+      "type": "flow",
+      "rows": [
+        {
+          "label": "Giriş",
+          "nodes": [
+            { "title": "Plane", "sub": "Sprint, assignee, AC kimlikleri", "kind": "human" },
+            { "title": "/startask", "sub": "Webhook imzası + kullanıcı doğrulama", "kind": "event" },
+            { "title": "Temporal: run başlat", "sub": "AC sürümü + SHA + run_id + bütçe sabitlenir", "kind": "state" }
+          ]
+        },
+        {
+          "label": "Hazırlık",
+          "nodes": [
+            { "title": "Araştırma + task spec", "sub": "Kod tabanı + web, en fazla 2 döngü", "kind": "agent" },
+            { "title": "DoR + ilişki haritası", "sub": "Kod grafiği, kümeler, bağımlılık sırası", "kind": "auto" },
+            { "title": "Plan + inceleme", "sub": "Farklı model hakemi; belirsizse WAITING_FOR_PO", "kind": "human" }
+          ]
+        },
+        {
+          "label": "Geliştirme",
+          "nodes": [
+            { "title": "RED", "sub": "Test yazılır, beklenen nedenle kırmızı olduğu kanıtlanır", "kind": "agent" },
+            { "title": "GREEN", "sub": "En küçük kod; yeni + ilgili testler", "kind": "agent" },
+            { "title": "Deterministik kapılar", "sub": "Derleme, lint, güvenlik, a11y, performans", "kind": "auto" },
+            { "title": "REFACTOR", "sub": "Tek temizlik turu; bozarsa geri al", "kind": "agent" }
+          ]
+        },
+        {
+          "label": "Doğrulama",
+          "nodes": [
+            { "title": "Bağımsız QA", "sub": "Senaryolar AC’den; kodlayanın iddiası kanıt sayılmaz", "kind": "agent" },
+            { "title": "Risk sınıfı", "sub": "Yasaklı / Yüksek → insan; Orta / Düşük → devam", "kind": "human" },
+            { "title": "READY_FOR_ALPHA", "sub": "Kanıt paketi: AC + test sürümü + SHA + digest", "kind": "state" }
+          ]
+        },
+        {
+          "label": "Yayın",
+          "nodes": [
+            { "title": "Alpha → Beta → RC → Prod", "sub": "Mevcut CI/CD; test ortamı değildir", "kind": "auto" },
+            { "title": "Geri besleme", "sub": "Bulgu → bağlantılı bug → DEV’de regresyon testi → A1", "kind": "event" }
+          ]
+        }
+      ],
+      "legend": [
+        { "kind": "human", "label": "İnsan kararı" },
+        { "kind": "agent", "label": "Ajan" },
+        { "kind": "auto", "label": "Deterministik" },
+        { "kind": "state", "label": "Temporal durumu" },
+        { "kind": "event", "label": "Olay" }
+      ]
+    },
+    { "type": "heading", "text": "Katmanlar" },
+    {
+      "type": "prose",
+      "text": "Soruda n8n, Flowise, Langflow, AutoGen, Letta, goose, Temporal ve Hermes aynı listede. Oysa bunlar farklı katmanların araçları. Her katmanın tek bir sorumluluğu var; görev durumu yalnızca L1’de tutulur."
+    },
+    {
+      "type": "layers",
+      "items": [
+        { "tag": "L0", "name": "İş kaynağı", "desc": "Görev, kabul kriteri, insan kararı", "tools": ["Plane", "Plane MCP (resmi, Python)"], "tone": "neutral" },
+        { "tag": "L1", "name": "Süreç orkestratörü", "desc": "Durum, bütçe, bekleme, devam, denetim izi", "tools": ["Temporal"], "alt": "alternatif: DBOS · Restate · Hatchet · Inngest", "tone": "accent" },
+        { "tag": "L2", "name": "Ajan çalıştırıcısı", "desc": "Dosya, terminal, tarayıcı ile gerçek iş", "tools": ["Claude Code", "Codex CLI", "OpenHands SDK", "Hermes Agent"], "alt": "aday: goose · OpenCode · Aider", "tone": "violet" },
+        { "tag": "L3", "name": "Tipli ajan kütüphanesi", "desc": "Sınıflandırma, DoR, rapor gibi kısa ajanlar", "tools": ["PydanticAI"], "alt": "muadil: OpenAI Agents SDK · dar kullanım: LangGraph", "tone": "violet" },
+        { "tag": "L4", "name": "Deterministik motorlar", "desc": "LLM’in karar vermediği işler", "tools": ["OpenFGA", "networkx", "Kod grafiği (Graphify / SCIP)", "git worktree"], "tone": "success" },
+        { "tag": "L5", "name": "Kalite kapıları", "desc": "Geçer ya da kalır; yorum yok", "tools": ["GitHub Actions", "Semgrep / CodeQL", "Playwright", "Stryker / PIT", "axe", "k6"], "tone": "success" },
+        { "tag": "L6", "name": "Bağlam", "desc": "Ajanın okuduğu kurallar ve kaynaklar", "tools": ["MCP", "Context7", "AGENTS.md", "agent.kurallar.md", "skills/", "ADR"], "tone": "neutral" },
+        { "tag": "L7", "name": "Gözlem ve eval", "desc": "Maliyet, iz, kalite ölçümü", "tools": ["OpenTelemetry", "Langfuse", "Temporal UI", "Promptfoo / Inspect"], "tone": "neutral" },
+        { "tag": "L8", "name": "Yapıştırıcı", "desc": "Kritik yolun dışında", "tools": ["n8n (bildirim)", "Dify / Langflow (iç araç, RAG)"], "tone": "warning" }
+      ]
+    },
+    { "type": "heading", "text": "İki çekirdek çelişkisi", "id": "iki-cekirdek-celiskisi" },
+    {
+      "type": "prose",
+      "text": "STARK panosu durumu, bütçeyi ve devamı **Temporal**’a veriyor. Ajan-sağlayıcı panosu (“Tüm ajanlar hangi sağlayıcı yönetir ve neden?”) ise akışı, tekrarları, blocker ve insan onayını **LangGraph**’a veriyor ve bunu “üretimde tek orchestration çekirdeğini korur” diye gerekçelendiriyor. İki pano aynı işi iki farklı sisteme bırakıyor."
+    },
+    {
+      "type": "compare",
+      "columns": ["Temporal çekirdek", "LangGraph çekirdek"],
+      "rows": [
+        { "label": "Günlerce süren PO / insan bekleyişi", "values": [{ "score": 3, "text": "Dayanıklı zamanlayıcı + Signal/Update" }, { "score": 2, "text": "interrupt + Postgres checkpointer; zamanlayıcı ayrıca kurulur" }] },
+        { "label": "Görev başına bütçe ve sayaç", "values": [{ "score": 3, "text": "İş akışı durumu; replay ile korunur" }, { "score": 2, "text": "Graph state; birden çok graf arasında toplam bütçe elle" }] },
+        { "label": "Uzun süren kodlama adımı (30–120 dk)", "values": [{ "score": 3, "text": "Activity heartbeat, zaman aşımı, iptal yayılımı" }, { "score": 1, "text": "Düğüm içinde; çökme sonrası düğüm baştan" }] },
+        { "label": "Çalışan filosu ve kuyruk", "values": [{ "score": 3, "text": "Task queue, yatay ölçek" }, { "score": 1, "text": "Kütüphane; kuyruk ve worker ayrıca gerekir" }] },
+        { "label": "Ajan içi dallanma (6 perspektif gibi)", "values": [{ "score": 2, "text": "Paralel aktiviteler; kod olarak yazılır" }, { "score": 3, "text": "Conditional edge ile doğal" }] },
+        { "label": "Ekibin öğrenme maliyeti", "values": [{ "score": 1, "text": "Determinizm kuralı, versiyonlama" }, { "score": 2, "text": "Python/TS kütüphanesi; tanıdık" }] }
+      ],
+      "note": "Puanlar bu hattın ihtiyaçlarına göre göreli değerlendirmedir; genel bir sıralama değildir."
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Çözüm",
+      "text": "**Tek durum sahibi Temporal.** LangGraph yalnızca tek bir aktivitenin içinde, çok dallı analiz gereken yerlerde (edge-case.agent’ın 6 perspektifi gibi) ve kalıcı checkpointer olmadan kullanılabilir. Çoğu ajan için PydanticAI yeterli; PydanticAI’nin Temporal entegrasyonu model ve araç çağrılarını zaten dayanıklı aktivitelere çeviriyor. Panodaki “blocker / human approval → LangGraph” satırı Temporal Signal/Update ile değiştirilmeli."
+    },
+    { "type": "heading", "text": "Kurallar nerede yaşar?" },
+    {
+      "type": "kv",
+      "items": [
+        { "k": "rules.master.agent", "v": "Panoda “orkestra şefi”. Yönlendirme **önerir** (frontend mi backend mi, hangi alt ajan). Durum geçişi, sayaç ve kapı kararı Temporal iş akışı kodundadır." },
+        { "k": "agent.kurallar.md / AGENTS.md", "v": "Her ajanın sınırı ve görev tanımı. Rules deposunda sürümlenir; değişiklik PR + eval ile girer." },
+        { "k": "skills/", "v": "Tekrar eden prosedürler (ör. TDD skill’i). Hat modunda salt-okunur. Hermes’in ürettiği skill’ler yalnızca öneri olarak gelir." },
+        { "k": "ADR", "v": "Teknoloji sınırı kararları. technology-boundary.agent önce buraya bakar: “çözülmüş probleme ikinci teknoloji ekleme”." },
+        { "k": "policy.yaml", "v": "Deneme, süre, maliyet tavanları. Panolarda dağınık olan sayılar burada tekleşir; run başında sabitlenir." },
+        { "k": "MCP", "v": "Plane, GitHub, Context7, dokümanlar. Tüm çalıştırıcılara aynı araç arayüzü." }
+      ]
+    }
+  ]
+}

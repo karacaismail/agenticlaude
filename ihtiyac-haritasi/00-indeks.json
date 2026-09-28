@@ -1,0 +1,305 @@
+{
+  "sema": "ihtiyac-haritasi/indeks@1",
+  "baslik": "Ajan destekli yazılım teslimi — ihtiyaç haritası",
+  "tarih": "2026-09-27",
+  "surum": "1.1.0",
+  "amac": "Klasördeki kaynakları (54 PDF, görseller, türev raporlar) ve markasız dış araştırmayı; yalnız ihtiyaç ve çözülecek sorun olarak, ana amaç altında kümelenmiş JSON dosyalarına dönüştürmek. Araç önermez, projelendirme yapmaz; projelendirme için eksiksiz girdi sağlar.",
+  "okuma_sirasi": [
+    "01-cerceve/ana-amac.json",
+    "03-analizler/cember-analizi.json",
+    "03-analizler/gap-analizi.json",
+    "03-analizler/bilinmeyenler-analizi.json",
+    "02-ihtiyac-kumeleri/",
+    "01-cerceve/yetenek-siniflari.json",
+    "04-projelendirme-girdileri/"
+  ],
+  "kimlik_kurallari": {
+    "N-Kxx-nnn": "ihtiyaç",
+    "Kxx": "küme",
+    "Y-nn": "yetenek sınıfı",
+    "S-nnn": "kaynak (S-001..S-063 yerel, S-090 kullanıcı talimatı, S-091 araştırma, S-092..S-094 türev veri ve araştırma, S-095 ikinci ihtiyaç atlası, S-096..S-097 pano PDF'leri, S-101..S-388 dış kanıt)",
+    "C-nnn": "çelişki",
+    "Q-nnn": "açık soru",
+    "A-nnn": "varsayım",
+    "R-nnn": "risk",
+    "D-nnn": "bekleyen karar",
+    "G-nnn": "boşluk",
+    "U-nnn": "bilinmeyen bilinmeyen",
+    "H-nn": "hazırlık kapısı",
+    "P-nn": "ilke",
+    "RL-nn": "rol sınıfı",
+    "ORG-nn": "organizasyon katmanı",
+    "SN-n": "ölçek senaryosu"
+  },
+  "istatistik": {
+    "ihtiyac": 395,
+    "kume": 35,
+    "alan": {
+      "A-deger-akisi": 110,
+      "B-ajan-platformu": 81,
+      "C-guvence-ve-yonetisim": 75,
+      "D-organizasyon-ve-olcek": 61,
+      "E-insan-ajan-birlikte-calisma": 36,
+      "F-guvenilir-yazilim": 32
+    },
+    "zorunluluk": {
+      "zorunlu": 265,
+      "olcege_bagli": 91,
+      "kosullu": 32,
+      "opsiyonel": 7
+    },
+    "cember": {
+      "ic_bosluk": 103,
+      "ic_tanimli": 115,
+      "dis_eksik": 177
+    },
+    "belirsizlik": {
+      "orta": 213,
+      "dusuk": 159,
+      "yuksek": 23
+    },
+    "kanit_duzeyi": {
+      "kaynakta_acik": 175,
+      "kaynakta_ima": 23,
+      "cikarim": 18,
+      "arastirma": 179
+    },
+    "yetenek_sinifi": 67,
+    "celiski": 41,
+    "acik_soru": 76,
+    "varsayim": 20,
+    "risk": 70,
+    "bekleyen_karar": 41,
+    "bosluk": 38,
+    "bilinmeyen_bilinmeyen": 77,
+    "hazirlik_kapisi": 14
+  },
+  "projelendirmede_kullanim": [
+    "Ölçek senaryosunu seç (olcek-senaryolari.json); o senaryodaki zorunlu ihtiyaç listesi kapsamın tabanıdır.",
+    "Hazırlık kapılarını kapat (hazirlik-kapilari.json): engelleyici sorular, bekleyen kararlar, çelişkiler.",
+    "Her ihtiyacın kabul ölçütü, ileride seçilecek araç veya çözümün değerlendirme ölçütüdür.",
+    "Çembere girmesi gerekenleri öncelik sırasıyla kapsama al (cember-analizi.json).",
+    "Riskleri ve varsayımları program risk yönetimine aktar."
+  ],
+  "dosyalar": [
+    {
+      "yol": "00-sema/ihtiyac-haritasi.schema.json",
+      "aciklama": "Kayıt yapısının JSON şeması."
+    },
+    {
+      "yol": "01-cerceve/ana-amac.json",
+      "aciklama": "Ana amaç, çözülecek ana sorun, başarı tanımı, ilkeler, kullanıcı kısıtları, bilinçli kapsam dışı."
+    },
+    {
+      "yol": "01-cerceve/belirsizlik-parametreleri.json",
+      "aciklama": "Tasarımın dayanıklı olması gereken belirsiz parametreler."
+    },
+    {
+      "yol": "01-cerceve/dis-kaynaklar.json",
+      "aciklama": "Dış araştırmanın kanıt bağlantıları."
+    },
+    {
+      "yol": "01-cerceve/kaynak-envanteri.json",
+      "aciklama": "54 PDF, 6 görsel, 3 türev veri seti, kullanıcı talimatı ve araştırmanın envanteri; S-095 ikinci bağımsız ihtiyaç atlası (karşılaştırma girdisi), S-096–S-097 iki pano PDF'i."
+    },
+    {
+      "yol": "01-cerceve/organizasyon-modeli.json",
+      "aciklama": "Organizasyon katmanları, insan rol sınıfları, kaynaklarda adı geçen katkı sahipleri (atama değildir)."
+    },
+    {
+      "yol": "01-cerceve/sozluk.json",
+      "aciklama": "Terimler."
+    },
+    {
+      "yol": "01-cerceve/yetenek-siniflari.json",
+      "aciklama": "Markasız teknoloji yetenek sınıfları: 'gerçekte ne gerekli?' sorusunun cevabı."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K01-talep-gorev-tanimi-ve-hazir-olma.json",
+      "aciklama": "K01 Talep, görev tanımı ve hazır olma — 14 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K02-backlog-ayristirma-bagimlilik-ve-onceliklendirme.json",
+      "aciklama": "K02 Backlog, ayrıştırma, bağımlılık ve önceliklendirme — 13 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K03-kod-tabani-baglami-ve-mimari-sinirlar.json",
+      "aciklama": "K03 Kod tabanı bağlamı ve mimari sınırlar — 12 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K04-uygulama-ve-tasarim-kalitesi.json",
+      "aciklama": "K04 Uygulama ve tasarım kalitesi — 14 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K05-dogrulama-test-oracle-ve-kalite-kapilari.json",
+      "aciklama": "K05 Doğrulama, test oracle ve kalite kapıları — 31 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K06-entegrasyon-surum-kontrolu-ve-yayin.json",
+      "aciklama": "K06 Entegrasyon, sürüm kontrolü ve yayın — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K07-dokumantasyon-ve-kurumsal-bilgi.json",
+      "aciklama": "K07 Dokümantasyon ve kurumsal bilgi — 8 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/A-deger-akisi/K08-geri-bildirim-isletim-ve-surekli-iyilestirme.json",
+      "aciklama": "K08 Geri bildirim, işletim ve sürekli iyileştirme — 8 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K09-model-erisimi-secimi-ve-barindirma.json",
+      "aciklama": "K09 Model erişimi, seçimi ve barındırma — 14 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K10-ajan-calisma-cercevesi.json",
+      "aciklama": "K10 Ajan çalışma çerçevesi — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K11-yetenek-paketleri-kurallar-ve-talimat-yonetimi.json",
+      "aciklama": "K11 Yetenek paketleri, kurallar ve talimat yönetimi — 11 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K12-arac-ve-baglam-erisim-protokolu-entegrasyonlar.json",
+      "aciklama": "K12 Araç ve bağlam erişim protokolü, entegrasyonlar — 6 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K13-orkestrasyon-ve-dayanikli-yurutme.json",
+      "aciklama": "K13 Orkestrasyon ve dayanıklı yürütme — 13 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K14-baglam-bilgi-erisimi-ve-bellek.json",
+      "aciklama": "K14 Bağlam, bilgi erişimi ve bellek — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K15-calisma-ortami-izolasyon-ve-kapasite.json",
+      "aciklama": "K15 Çalışma ortamı, izolasyon ve kapasite — 7 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/B-ajan-platformu/K16-ajan-platformunun-isletimi-ve-surdurulebilirligi.json",
+      "aciklama": "K16 Ajan platformunun işletimi ve sürdürülebilirliği — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K17-insan-gozetimi-onay-ve-eskalasyon.json",
+      "aciklama": "K17 İnsan gözetimi, onay ve eskalasyon — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K18-guvenlik-yetkilendirme-ve-gizlilik.json",
+      "aciklama": "K18 Güvenlik, yetkilendirme ve gizlilik — 14 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K19-izlenebilirlik-gozlemlenebilirlik-ve-denetim.json",
+      "aciklama": "K19 İzlenebilirlik, gözlemlenebilirlik ve denetim — 7 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K20-butce-maliyet-ve-deneme-politikasi.json",
+      "aciklama": "K20 Bütçe, maliyet ve deneme politikası — 9 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K21-risk-yonetimi.json",
+      "aciklama": "K21 Risk yönetimi — 7 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K22-uyum-hukuk-ve-lisans.json",
+      "aciklama": "K22 Uyum, hukuk ve lisans — 11 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/C-guvence-ve-yonetisim/K23-degerlendirme-ve-olcum.json",
+      "aciklama": "K23 Değerlendirme ve ölçüm — 17 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/D-organizasyon-ve-olcek/K24-olcekli-cevik-koordinasyon.json",
+      "aciklama": "K24 Ölçekli çevik koordinasyon — 14 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/D-organizasyon-ve-olcek/K25-roller-yetkinlik-ve-degisim-yonetimi.json",
+      "aciklama": "K25 Roller, yetkinlik ve değişim yönetimi — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/D-organizasyon-ve-olcek/K26-is-takip-sistemi-ve-is-kalemi-yasam-dongusu.json",
+      "aciklama": "K26 İş takip sistemi ve iş kalemi yaşam döngüsü — 6 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/D-organizasyon-ve-olcek/K30-ekip-calisma-sistemi-anlasmalar-ritimler-ve.json",
+      "aciklama": "K30 Ekip çalışma sistemi: anlaşmalar, ritimler ve sürekli iyileştirme — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/D-organizasyon-ve-olcek/K31-ekipler-arasi-is-birligi-sahiplik-ve-sosyo.json",
+      "aciklama": "K31 Ekipler arası iş birliği, sahiplik ve sosyo-teknik yapı — 11 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/D-organizasyon-ve-olcek/K32-calisan-haklari-is-guvencesi-ve-insan.json",
+      "aciklama": "K32 Çalışan hakları, iş güvencesi ve insan sürdürülebilirliği — 10 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/E-insan-ajan-birlikte-calisma/K27-insanajan-is-birligi-modeli-yetki-devri-ve-is.json",
+      "aciklama": "K27 İnsan–ajan iş birliği modeli, yetki devri ve iş devri — 11 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/E-insan-ajan-birlikte-calisma/K28-ortak-baglam-yonlendirme-ve-inceleme-ergonomisi.json",
+      "aciklama": "K28 Ortak bağlam, yönlendirme ve inceleme ergonomisi — 14 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/E-insan-ajan-birlikte-calisma/K29-karsilikli-ogrenme-ve-insan-yetkinliginin.json",
+      "aciklama": "K29 Karşılıklı öğrenme ve insan yetkinliğinin gelişimi — 11 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/F-guvenilir-yazilim/K33-urun-guvenilirlik-muhendisligi-ve.json",
+      "aciklama": "K33 Ürün güvenilirlik mühendisliği ve işletilebilirlik — 17 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/F-guvenilir-yazilim/K34-guvenli-ve-gizlilik-odakli-urun-tasarimi.json",
+      "aciklama": "K34 Güvenli ve gizlilik odaklı ürün tasarımı — 8 ihtiyaç."
+    },
+    {
+      "yol": "02-ihtiyac-kumeleri/F-guvenilir-yazilim/K35-mimari-uygunluk-ve-surdurulebilir-kod-sagligi.json",
+      "aciklama": "K35 Mimari uygunluk ve sürdürülebilir kod sağlığı — 7 ihtiyaç."
+    },
+    {
+      "yol": "03-analizler/acik-sorular.json",
+      "aciklama": "Cevaplanması gereken sorular ve engelleyicilikleri."
+    },
+    {
+      "yol": "03-analizler/bilinmeyenler-analizi.json",
+      "aciklama": "Dört çeyrekli bilinmeyenler (unk-unk) analizi."
+    },
+    {
+      "yol": "03-analizler/celiskiler.json",
+      "aciklama": "Kaynaklar arası çelişkiler."
+    },
+    {
+      "yol": "03-analizler/cember-analizi.json",
+      "aciklama": "Çemberin içi (tanımlı / boşluklu), dışı (eksik) ve çembere girmesi gerekenler."
+    },
+    {
+      "yol": "03-analizler/gap-analizi.json",
+      "aciklama": "Mevcut ile hedef arasındaki boşluklar; küme bazında sayısal özet."
+    },
+    {
+      "yol": "03-analizler/risk-kaydi.json",
+      "aciklama": "Program riskleri (geçici 5×5 ölçek)."
+    },
+    {
+      "yol": "03-analizler/varsayimlar.json",
+      "aciklama": "Doğrulanması gereken varsayımlar."
+    },
+    {
+      "yol": "04-projelendirme-girdileri/bekleyen-kararlar.json",
+      "aciklama": "Verilmesi gereken mimari/süreç kararları (araç değil)."
+    },
+    {
+      "yol": "04-projelendirme-girdileri/hazirlik-kapilari.json",
+      "aciklama": "Projelendirmeye başlamadan kapanması gereken kapılar."
+    },
+    {
+      "yol": "04-projelendirme-girdileri/olcek-senaryolari.json",
+      "aciklama": "Ekip sayısına göre zorunlu hale gelen ihtiyaçlar."
+    }
+  ],
+  "degisiklikler": [
+    {
+      "surum": "1.1.0",
+      "tarih": "2026-09-27",
+      "ozet": "E1 karşılaştırması: ikinci bağımsız ihtiyaç atlası (S-095), iki pano PDF'i (S-096, S-097) ve ara çıkarım dosyaları taranarak doğrulanan eksikler eklendi: 7 yeni ihtiyaç, 25 mevcut ihtiyaca kabul ölçütü, 8 bilinmeyen, 3 boşluk, 6 açık soru, 2 çelişki, 18 kaynak (S-095–S-097, S-374–S-388). İçe aktarılan her kayıt köken ve doğrulama durumu alanı taşır; ayrıntı: mimari-haritasi/arastirma/E1-codex-ihtiyac.json."
+    }
+  ]
+}

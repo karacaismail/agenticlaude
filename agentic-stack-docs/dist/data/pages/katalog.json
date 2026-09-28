@@ -1,0 +1,1407 @@
+{
+  "title": "Araç kataloğu",
+  "summary": "“Letta, goose, OpenHands, n8n, Flowise, Langflow, AutoGen gibi başka neler var?” sorusunun yanıtı: kategorilere ayrılmış, filtrelenebilir liste.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Referans",
+      "title": "Araç kataloğu",
+      "lede": "Panolarda geçen araçlar ve 23 Eylül 2026 itibarıyla güncel alternatifleri. Her kartta ne yaptığı, bu hatta nereye oturduğu ve dikkat edilecek nokta var. “Pano” etiketi aracın Figma panolarında geçtiğini, “web” etiketi durumunun web kaynaklarından doğrulandığını gösterir."
+    },
+    {
+      "type": "catalog",
+      "categories": [
+        {
+          "key": "orkestrator",
+          "label": "Süreç orkestratörü"
+        },
+        {
+          "key": "calistirici",
+          "label": "Kodlama çalıştırıcısı"
+        },
+        {
+          "key": "kutuphane",
+          "label": "Ajan kütüphanesi"
+        },
+        {
+          "key": "kisisel",
+          "label": "Kişisel / uzun ömürlü ajan"
+        },
+        {
+          "key": "koordinator",
+          "label": "Ajan panosu / paralel yönetici"
+        },
+        {
+          "key": "otomasyon",
+          "label": "Görsel otomasyon"
+        },
+        {
+          "key": "gorsel-llm",
+          "label": "Görsel LLM uygulaması"
+        },
+        {
+          "key": "spec",
+          "label": "Spec odaklı geliştirme"
+        },
+        {
+          "key": "inceleme",
+          "label": "Yapay zekâ ile kod inceleme"
+        },
+        {
+          "key": "tarayici",
+          "label": "Tarayıcı ajanı"
+        },
+        {
+          "key": "guvenlik",
+          "label": "Guardrail"
+        },
+        {
+          "key": "karar",
+          "label": "Tipli karar modeli"
+        },
+        {
+          "key": "baglam",
+          "label": "Bağlam ve kod zekâsı"
+        },
+        {
+          "key": "kalite",
+          "label": "Kalite kapıları"
+        },
+        {
+          "key": "gozlem",
+          "label": "Gözlem ve eval"
+        },
+        {
+          "key": "sandbox",
+          "label": "Sandbox"
+        },
+        {
+          "key": "protokol",
+          "label": "Protokol"
+        },
+        {
+          "key": "yetki",
+          "label": "Yetkilendirme"
+        },
+        {
+          "key": "hafiza",
+          "label": "Hafıza"
+        },
+        {
+          "key": "model",
+          "label": "Model erişimi"
+        },
+        {
+          "key": "is",
+          "label": "İş takibi"
+        },
+        {
+          "key": "diger",
+          "label": "Diğer"
+        }
+      ],
+      "verdicts": [
+        {
+          "key": "kullan",
+          "label": "Önerilen",
+          "tone": "success"
+        },
+        {
+          "key": "aday",
+          "label": "Aday",
+          "tone": "info"
+        },
+        {
+          "key": "sinirli",
+          "label": "Sınırlı rol",
+          "tone": "warning"
+        },
+        {
+          "key": "kullanma",
+          "label": "Önerilmez",
+          "tone": "danger"
+        },
+        {
+          "key": "disi",
+          "label": "Bu hat için gereksiz",
+          "tone": "neutral"
+        }
+      ],
+      "items": [
+        {
+          "name": "Temporal",
+          "cat": "orkestrator",
+          "verdict": "kullan",
+          "what": "Kod-öncelikli durable execution platformu. İş akışı durumu olay geçmişinde tutulur; çökme sonrası replay ile kaldığı yerden devam eder.",
+          "fit": "L1 omurga: bütçe, sayaç, PO bekleyişi, küme başına child workflow.",
+          "caveat": "Determinizm kuralı öğrenilmeli. Self-host’ta birden çok servis ve veritabanı; Cloud’da işlem başına ücret.",
+          "license": "MIT",
+          "url": "https://temporal.io",
+          "src": "pano+web"
+        },
+        {
+          "name": "DBOS",
+          "cat": "orkestrator",
+          "verdict": "aday",
+          "what": "Durable execution’ı mevcut Postgres’e bağlayan kütüphane. Ayrı bir orkestrasyon sunucusu gerektirmez.",
+          "fit": "Temporal’ın işletim yükü ağır gelirse ilk alternatif. PydanticAI entegrasyonu var.",
+          "caveat": "Topluluk ve araç ekosistemi Temporal’dan küçük.",
+          "license": "MIT",
+          "url": "https://www.dbos.dev",
+          "src": "pano+web"
+        },
+        {
+          "name": "Restate",
+          "cat": "orkestrator",
+          "verdict": "aday",
+          "what": "Tek binary sunucuyla çalışan hafif durable execution motoru.",
+          "fit": "Düşük işletim yüküyle benzer garantiler; PydanticAI entegrasyonu var.",
+          "caveat": "Görece genç. Lisansı kurumsal kullanım için ayrıca kontrol edilmeli.",
+          "url": "https://restate.dev",
+          "src": "web"
+        },
+        {
+          "name": "Hatchet",
+          "cat": "orkestrator",
+          "verdict": "aday",
+          "what": "Postgres tabanlı görev kuyruğu ve durable iş akışları.",
+          "fit": "Kuyruk ağırlıklı iş yükleri.",
+          "caveat": "Uzun insan bekleyişleri ve replay hikâyesi pilotta sınanmalı.",
+          "license": "MIT",
+          "url": "https://hatchet.run",
+          "src": "web"
+        },
+        {
+          "name": "Inngest",
+          "cat": "orkestrator",
+          "verdict": "sinirli",
+          "what": "Olay güdümlü durable adımlar, kuyruk ve akış kontrolü.",
+          "fit": "Olay tabanlı uygulama ekipleri.",
+          "caveat": "Hat mantığı olaylar arasında dağılır; görev başına denetim izi tek yerde toplanmaz.",
+          "url": "https://www.inngest.com",
+          "src": "web"
+        },
+        {
+          "name": "Trigger.dev",
+          "cat": "orkestrator",
+          "verdict": "sinirli",
+          "what": "Uzun süren arka plan işleri ve AI görevleri için TypeScript odaklı platform.",
+          "fit": "Kontrol düzlemi TypeScript seçilirse.",
+          "caveat": "Python kontrol düzlemiyle uyumsuz.",
+          "license": "Apache-2.0",
+          "url": "https://trigger.dev",
+          "src": "web"
+        },
+        {
+          "name": "Prefect",
+          "cat": "orkestrator",
+          "verdict": "sinirli",
+          "what": "Python iş akışı orkestratörü; PydanticAI durable entegrasyonu var.",
+          "fit": "Veri ve ML hatları.",
+          "caveat": "Günlerce süren insan bekleyişi ve uzun ajan adımları için Temporal kadar doğal değil.",
+          "license": "Apache-2.0",
+          "url": "https://www.prefect.io",
+          "src": "web"
+        },
+        {
+          "name": "Kestra",
+          "cat": "orkestrator",
+          "verdict": "sinirli",
+          "what": "YAML tanımlı, olay güdümlü orkestrasyon.",
+          "fit": "Zamanlanmış ve veri ağırlıklı hatlar.",
+          "caveat": "Ajan döngüsü ve görev başına bütçe için tasarlanmamış.",
+          "license": "Apache-2.0",
+          "url": "https://kestra.io",
+          "src": "web"
+        },
+        {
+          "name": "Airflow / Dagster",
+          "cat": "orkestrator",
+          "verdict": "disi",
+          "what": "Veri hattı orkestratörleri (DAG, zamanlama).",
+          "fit": "—",
+          "caveat": "Etkileşimli döngüler ve günlerce süren insan bekleyişi için uygun değil.",
+          "src": "web"
+        },
+        {
+          "name": "n8n",
+          "cat": "otomasyon",
+          "verdict": "sinirli",
+          "what": "Görsel iş akışı otomasyonu; çok sayıda SaaS entegrasyonu, AI Agent düğümü ve 2.6’dan beri araç bazlı insan onayı.",
+          "fit": "Bildirim ve yapıştırıcı: Plane ↔ Slack / Telegram / e-posta.",
+          "caveat": "Kuyruk modunda bekleyen yürütme bir işçiyi meşgul eder. Görev başına bütçe ve kanıt paketi için uygun değil. Panoya göre “Agent OS değildir”.",
+          "license": "Sustainable Use",
+          "url": "https://n8n.io",
+          "src": "pano+web"
+        },
+        {
+          "name": "Activepieces",
+          "cat": "otomasyon",
+          "verdict": "aday",
+          "what": "n8n’e en yakın açık kaynak alternatif; AI ajanları ve MCP desteği.",
+          "fit": "n8n lisansı sorun olursa bildirim katmanı.",
+          "caveat": "Kritik yolda durum sahibi olmamalı.",
+          "license": "MIT (çekirdek)",
+          "url": "https://www.activepieces.com",
+          "src": "web"
+        },
+        {
+          "name": "Windmill",
+          "cat": "otomasyon",
+          "verdict": "sinirli",
+          "what": "TypeScript, Python, Go script’lerini iş akışına ve iç araçlara çeviren kod-öncelikli platform.",
+          "fit": "Dahili operasyon araçları.",
+          "caveat": "Hat için Temporal ile örtüşen ikinci bir orkestratör olur.",
+          "license": "AGPL-3.0",
+          "url": "https://www.windmill.dev",
+          "src": "web"
+        },
+        {
+          "name": "Zapier / Make",
+          "cat": "otomasyon",
+          "verdict": "disi",
+          "what": "Kapalı kaynak SaaS otomasyon.",
+          "fit": "—",
+          "caveat": "Self-host yok; kod ve sırlar dışarı çıkar.",
+          "src": "web"
+        },
+        {
+          "name": "Dify",
+          "cat": "gorsel-llm",
+          "verdict": "sinirli",
+          "what": "Görsel AI uygulaması, RAG, workflow, API. Agent düğümü Function Calling veya ReAct ile çalışır; max iterations sınırı var.",
+          "fit": "Geliştirici olmayanlar için doküman soru-cevabı, iç araç.",
+          "caveat": "Agent düğümü dokümanında dayanıklılık, retry ve insan onayı anlatılmıyor. Çok kiracılı SaaS kullanımında lisans kısıtı.",
+          "url": "https://docs.dify.ai/en/cloud/use-dify/nodes/agent",
+          "src": "pano+web"
+        },
+        {
+          "name": "Langflow",
+          "cat": "gorsel-llm",
+          "verdict": "sinirli",
+          "what": "Görsel ajan ve RAG akışları. MCP istemcisi olabilir ve bir akışı MCP sunucusu olarak dışa açabilir.",
+          "fit": "Prototip; bir akışı diğer ajanlara araç olarak sunmak.",
+          "caveat": "Görev başına bütçe ve durable durum yok. Panoya göre hazır Telegram/WhatsApp gateway’i ve yerleşik scheduler yok.",
+          "license": "MIT",
+          "url": "https://www.langflow.org",
+          "src": "pano+web"
+        },
+        {
+          "name": "Flowise",
+          "cat": "gorsel-llm",
+          "verdict": "kullanma",
+          "what": "Görsel multi-agent ve RAG. AgentflowV2: 14 düğüm tipi, Human Input, Loop (varsayılan 5), checkpoint ile devam.",
+          "fit": "—",
+          "caveat": "GitHub deposu 13 Ağustos 2026’da arşivlendi; issue ve PR kilitli, resmi destek bitti. Dokümanda dayanıklılık garantisi tanımlanmıyor.",
+          "url": "https://docs.flowiseai.com/using-flowise/agentflowv2",
+          "src": "pano+web"
+        },
+        {
+          "name": "RAGFlow",
+          "cat": "gorsel-llm",
+          "verdict": "sinirli",
+          "what": "Belge işleme, kaynaklı yanıt, GraphRAG ve subagent içeren görsel ajan sistemi.",
+          "fit": "Oracle makaleleri ve kurallar gibi belgelerde kaynaklı arama.",
+          "caveat": "Panoya göre en az 16 GB RAM öneriliyor; kurumsal bilgi sistemi, ajan hattı değil.",
+          "license": "Apache-2.0",
+          "url": "https://ragflow.io",
+          "src": "pano"
+        },
+        {
+          "name": "AnythingLLM",
+          "cat": "gorsel-llm",
+          "verdict": "disi",
+          "what": "Hazır arayüz, RAG, no-code Agent Flow, zamanlanmış işler.",
+          "fit": "—",
+          "caveat": "Panoya göre scheduler ve Telegram modu tek kullanıcıya bağlı; gerçek çoklu ajan ekip sistemi değil.",
+          "license": "MIT",
+          "url": "https://anythingllm.com",
+          "src": "pano"
+        },
+        {
+          "name": "PydanticAI",
+          "cat": "kutuphane",
+          "verdict": "kullan",
+          "what": "Tipli, structured output’lu Python ajan kütüphanesi. Temporal, DBOS, Prefect ve Restate ile dayanıklı çalışma entegrasyonu resmi olarak destekleniyor.",
+          "fit": "DoR, sınıflandırma, rapor ajanları (L3). Panoda en çok atanan kütüphane.",
+          "caveat": "Uzun kodlama işi için değil; o iş çalıştırıcının.",
+          "license": "MIT",
+          "url": "https://ai.pydantic.dev",
+          "src": "pano+web"
+        },
+        {
+          "name": "OpenAI Agents SDK",
+          "cat": "kutuphane",
+          "verdict": "aday",
+          "what": "Hafif ajan döngüsü, handoff, guardrail, session ve tracing. Temporal Python entegrasyonu Mart 2026’da GA oldu.",
+          "fit": "PydanticAI muadili.",
+          "caveat": "İki kütüphaneyi birden standart yapmayın; birini seçin.",
+          "license": "MIT",
+          "url": "https://openai.github.io/openai-agents-python/",
+          "src": "pano+web"
+        },
+        {
+          "name": "Claude Agent SDK",
+          "cat": "kutuphane",
+          "verdict": "aday",
+          "what": "Claude Code’un ajan döngüsünü Python ve TypeScript kütüphanesi olarak sunar.",
+          "fit": "Claude Code’u Temporal aktivitesinden programatik sürmek.",
+          "caveat": "Anthropic modellerine bağlı.",
+          "url": "https://docs.claude.com/en/api/agent-sdk/overview",
+          "src": "web"
+        },
+        {
+          "name": "LangGraph",
+          "cat": "kutuphane",
+          "verdict": "sinirli",
+          "what": "Graf tabanlı ajan akışı; checkpoint, interrupt, resume, time-travel.",
+          "fit": "Tek aktivite içinde çok dallı analiz (edge-case.agent’ın 6 perspektifi).",
+          "caveat": "Kalıcı checkpointer ile kullanılırsa Temporal’ın yanında ikinci durum sahibi olur. Panonun “tek orkestrasyon çekirdeği” önerisiyle STARK çelişiyor.",
+          "license": "MIT",
+          "url": "https://www.langchain.com/langgraph",
+          "src": "pano+web"
+        },
+        {
+          "name": "Microsoft Agent Framework",
+          "cat": "kutuphane",
+          "verdict": "aday",
+          "what": "AutoGen ve Semantic Kernel’in halefi; Python ve .NET için 1.0 GA Nisan 2026.",
+          "fit": ".NET / Azure ağırlıklı ekipler.",
+          "caveat": "Python ekibi için PydanticAI’ye göre ek değer sınırlı.",
+          "license": "MIT",
+          "url": "https://github.com/microsoft/agent-framework",
+          "src": "pano+web"
+        },
+        {
+          "name": "AutoGen",
+          "cat": "kutuphane",
+          "verdict": "kullanma",
+          "what": "Microsoft’un çoklu ajan konuşma framework’ü.",
+          "fit": "—",
+          "caveat": "Ekim 2025’ten beri bakım modunda; yeni özellik gelmiyor. Microsoft yeni projelere Agent Framework’ü öneriyor.",
+          "url": "https://github.com/microsoft/autogen",
+          "src": "pano+web"
+        },
+        {
+          "name": "AG2",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "AutoGen’in topluluk çatalı.",
+          "fit": "—",
+          "caveat": "Bu hat için daha net bir yol var (PydanticAI veya Agent Framework).",
+          "url": "https://ag2.ai",
+          "src": "web"
+        },
+        {
+          "name": "CrewAI",
+          "cat": "kutuphane",
+          "verdict": "kullanma",
+          "what": "Rol, görev, ekip ve yönetici ajan soyutlaması.",
+          "fit": "—",
+          "caveat": "Panoya göre kontrol seviyesi LangGraph’tan düşük; sıkı kapı ve bütçe kurallarını zorlaştırır.",
+          "license": "MIT",
+          "url": "https://www.crewai.com",
+          "src": "pano+web"
+        },
+        {
+          "name": "Mastra",
+          "cat": "kutuphane",
+          "verdict": "aday",
+          "what": "TypeScript ajan framework’ü: workflow, hafıza, subagent, scheduler, Studio. 1.0 sürümü Ocak 2026.",
+          "fit": "Kontrol düzlemi TypeScript seçilirse PydanticAI’nin karşılığı.",
+          "caveat": "Kendi workflow motoru Temporal ile örtüşür; yalnızca ajan katmanı olarak kullanın.",
+          "url": "https://mastra.ai",
+          "src": "pano+web"
+        },
+        {
+          "name": "Google ADK",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "Graf tabanlı multi-agent ve A2A desteği; Gemini / GCP entegrasyonu.",
+          "fit": "GCP ağırlıklı ekip.",
+          "caveat": "Bu hatta ek değer sınırlı.",
+          "license": "Apache-2.0",
+          "url": "https://google.github.io/adk-docs/",
+          "src": "pano+web"
+        },
+        {
+          "name": "Strands Agents",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "AWS’nin açık kaynak ajan SDK’sı; Graph, Swarm ve Workflow.",
+          "fit": "AWS / Bedrock ekipleri. Panoda bazı analiz ajanlarına alternatif.",
+          "caveat": "Bu hatta ek değer sınırlı.",
+          "license": "Apache-2.0",
+          "url": "https://strandsagents.com",
+          "src": "pano+web"
+        },
+        {
+          "name": "Agno",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "Hafif Python ajan çalışma zamanı (eski adı Phidata).",
+          "fit": "—",
+          "caveat": "PydanticAI ile örtüşür.",
+          "url": "https://www.agno.com",
+          "src": "web"
+        },
+        {
+          "name": "smolagents",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "Hugging Face’in kod yazarak araç çağıran küçük ajan kütüphanesi.",
+          "fit": "Panoda web-research için alternatif.",
+          "caveat": "Üretim hattı için kontrol yüzeyi dar.",
+          "license": "Apache-2.0",
+          "url": "https://github.com/huggingface/smolagents",
+          "src": "pano+web"
+        },
+        {
+          "name": "Claude Code",
+          "cat": "calistirici",
+          "verdict": "kullan",
+          "what": "Anthropic’in terminal ajanı; headless mod, hooks, subagent, skills, MCP.",
+          "fit": "Birincil kodlama ve araştırma çalışanı.",
+          "caveat": "Kapalı kaynak; Anthropic modellerine bağlı.",
+          "url": "https://docs.claude.com/en/docs/claude-code/overview",
+          "src": "pano+web"
+        },
+        {
+          "name": "Codex CLI",
+          "cat": "calistirici",
+          "verdict": "kullan",
+          "what": "OpenAI’nin açık kaynak terminal kodlama ajanı.",
+          "fit": "Bağımsız QA ve yedek ajan; farklı sağlayıcı, farklı kör noktalar.",
+          "caveat": "OpenAI hesabı ve modelleri merkezli.",
+          "license": "Apache-2.0",
+          "url": "https://github.com/openai/codex",
+          "src": "pano+web"
+        },
+        {
+          "name": "OpenHands",
+          "cat": "calistirici",
+          "verdict": "kullan",
+          "what": "Açık kaynak yazılım ajanı platformu. V1 Software Agent SDK; sandbox’lı yürütme, yaşam döngüsü kontrolü, çok modelli yönlendirme, güvenlik analizi.",
+          "fit": "Self-host ve açık ağırlıklı model senaryosu. Panoda en çok atanan çalıştırıcı.",
+          "caveat": "Açık modellerle kalite pilotta ölçülmeli.",
+          "license": "MIT (çekirdek)",
+          "url": "https://github.com/OpenHands/software-agent-sdk",
+          "src": "pano+web"
+        },
+        {
+          "name": "goose",
+          "cat": "calistirici",
+          "verdict": "aday",
+          "what": "Block’un geliştirdiği açık kaynak ajan. Aralık 2025’te Linux Foundation altındaki Agentic AI Foundation’a (MCP ve AGENTS.md ile birlikte) kurucu proje olarak katıldı; depo ve yönetişim Nisan 2026’da devredildi. CLI + masaüstü, 25’ten fazla model sağlayıcısı, MCP uzantıları.",
+          "fit": "Panoda dokümantasyon ve araştırma ajanı için alternatif.",
+          "caveat": "Yerel/masaüstü kullanım odaklı; başsız hat entegrasyonu pilotta sınanmalı.",
+          "license": "Apache-2.0",
+          "url": "https://goose-docs.ai",
+          "src": "pano+web"
+        },
+        {
+          "name": "OpenCode",
+          "cat": "calistirici",
+          "verdict": "aday",
+          "what": "Terminal odaklı açık kaynak kodlama ajanı; çok sayıda model sağlayıcısı.",
+          "fit": "Açık modelle Claude Code muadili.",
+          "caveat": "Hat entegrasyonu pilotta sınanmalı.",
+          "license": "MIT",
+          "url": "https://opencode.ai",
+          "src": "web"
+        },
+        {
+          "name": "Aider",
+          "cat": "calistirici",
+          "verdict": "sinirli",
+          "what": "Git-native terminal eşli programlama aracı; her değişiklik bir commit.",
+          "fit": "Panoda git-scenario için önerilmiş.",
+          "caveat": "Git işlemleri deterministik aktivite olmalı; Aider’ı yalnızca kod düzenleme için düşünün.",
+          "license": "Apache-2.0",
+          "url": "https://aider.chat",
+          "src": "pano+web"
+        },
+        {
+          "name": "Cline",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "VS Code / JetBrains eklentisi olarak çalışan ajan.",
+          "fit": "Geliştiricinin kendi masasında.",
+          "caveat": "IDE’ye bağlı; başsız hatta kullanılamaz. Panoda mobile-first için önerilmiş.",
+          "license": "Apache-2.0",
+          "url": "https://cline.bot",
+          "src": "pano+web"
+        },
+        {
+          "name": "Kilo Code",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "IDE ve CLI kodlama ajanı; çok sayıda model.",
+          "fit": "—",
+          "caveat": "Hatta mevcut seçeneklere ek değer sağlamıyor.",
+          "url": "https://kilo.ai",
+          "src": "web"
+        },
+        {
+          "name": "Antigravity CLI",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "Google’ın Gemini CLI yerine getirdiği ajan. Gemini CLI bireysel hesaplarda 18 Haziran 2026’da kapandı.",
+          "fit": "—",
+          "caveat": "Gemini CLI tabanlı entegrasyon kurmayın.",
+          "url": "https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/",
+          "src": "web"
+        },
+        {
+          "name": "Hermes Agent",
+          "cat": "kisisel",
+          "verdict": "sinirli",
+          "what": "Nous Research (Şubat 2026). Deneyimden skill üretip kullandıkça iyileştiriyor; oturumlar arası tam metin arama; cron, paralel subagent, 7 terminal arka ucu.",
+          "fit": "Operasyon ajanı; isteğe bağlı kodlama çalışanı; öğrenme önerisi kaynağı.",
+          "caveat": "Ağırlık eğitmiyor, skill dosyası yazıyor. Tek kullanıcı tasarımı. Skill’ler sessizce değişirse tekrarlanabilirlik bozulur.",
+          "license": "MIT",
+          "url": "https://github.com/nousresearch/hermes-agent",
+          "src": "pano+web"
+        },
+        {
+          "name": "Letta",
+          "cat": "kisisel",
+          "verdict": "aday",
+          "what": "Durum tutan ajan platformu (eski MemGPT). Öğrenme model ağırlığıyla değil, bağlam ve hafıza blokları güncellenerek yapılır. Şubat 2026’da git tabanlı sürümlü hafıza (Context Repositories); Letta Code adlı model bağımsız çalıştırıcı.",
+          "fit": "Proje hafızası ve kalıcı uzman ajan. Git tabanlı hafıza, denetlenebilirlik açısından Hermes’in skill dosyalarından daha uygun.",
+          "caveat": "Kodlama hattının çekirdeği değil; hafıza sunucusu ayrıca işletilir.",
+          "license": "Apache-2.0",
+          "url": "https://github.com/letta-ai/letta",
+          "src": "pano+web"
+        },
+        {
+          "name": "OpenClaw",
+          "cat": "kisisel",
+          "verdict": "kullanma",
+          "what": "Kişisel asistan ajan: mesajlaşma kanalları, cron, shell, tarayıcı. Panodaki kişisel ajanlar bununla kıyaslanıyor.",
+          "fit": "—",
+          "caveat": "2026’da RCE açığı (CVE-2026-25253), skill pazarında tedarik zinciri sorunu ve açıkta kalan çok sayıda kurulum raporlandı. Hat için değil.",
+          "url": "https://en.wikipedia.org/wiki/OpenClaw",
+          "src": "pano+web"
+        },
+        {
+          "name": "IronClaw",
+          "cat": "kisisel",
+          "verdict": "aday",
+          "what": "WASM sandbox, uç nokta allowlist, gizli anahtarın host tarafında enjekte edilmesi, PostgreSQL, katmanlı güvenlik.",
+          "fit": "Panoda authorization.agent için alternatif çalıştırıcı; hassas veri.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "Moltis",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Rust tek binary; şifreli kasa, passkey, sandbox, Prometheus, OTLP, Langfuse, ACP. Codex, Claude ve Cursor ajanlarını sürebiliyor.",
+          "fit": "Panoda git-scenario için alternatif.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "ZeroClaw",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Rust tek binary; 30’dan fazla kanal, 20’den fazla model sağlayıcısı, MCP, cron; varsayılan denetimli çalışma ve OS sandbox.",
+          "fit": "Panoya göre OpenClaw’a en yakın genel amaçlı ikame.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "Agent Zero",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Ajanın kendi Docker Linux masaüstü, tarayıcı, terminal ve ofis ortamı.",
+          "fit": "Araştırma, UI, bilgisayar kullanımı. Panoda mobile-first alternatifi.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "NanoClaw",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Her ajanı kendi Linux / Apple container’ında çalıştıran küçük kod tabanı.",
+          "fit": "Güvenlik izolasyonu.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "nanobot",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Python, WebUI, API, MCP, cron, subagent; değiştirmesi görece kolay.",
+          "fit": "Hızlı prototip.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "PicoClaw",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Go tek binary; düşük bellekle edge cihazlarda çalışır.",
+          "fit": "Raspberry Pi, Android.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "QwenPaw",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "Konsol, TUI ve masaüstü; üç katmanlı hafıza, yerel modeller, MCP / A2A / ACP, ayrıntılı izin politikası.",
+          "fit": "Görsel yönetim ve yerel model isteyenler.",
+          "caveat": "Açıklama panodan; bu raporda bağımsız doğrulanmadı.",
+          "src": "pano"
+        },
+        {
+          "name": "Mem0",
+          "cat": "hafiza",
+          "verdict": "disi",
+          "what": "Uygulamalara eklenen hafıza katmanı.",
+          "fit": "—",
+          "caveat": "Hat için rules deposu + Langfuse izleri yeterli.",
+          "url": "https://mem0.ai",
+          "src": "web"
+        },
+        {
+          "name": "Zep / Graphiti",
+          "cat": "hafiza",
+          "verdict": "disi",
+          "what": "Zamansal bilgi grafiği tabanlı ajan hafızası.",
+          "fit": "—",
+          "caveat": "Hat için gerekli değil.",
+          "url": "https://www.getzep.com",
+          "src": "web"
+        },
+        {
+          "name": "git worktree + devcontainer",
+          "cat": "sandbox",
+          "verdict": "kullan",
+          "what": "Görev başına izole çalışma alanı; her deneme temiz SHA’dan başlar.",
+          "fit": "STARK’taki “izole dev alanı”.",
+          "caveat": "Container iptalde öldürülmeli (Temporal iptal yayılımı).",
+          "src": "pano"
+        },
+        {
+          "name": "Testcontainers",
+          "cat": "sandbox",
+          "verdict": "kullan",
+          "what": "Test sırasında geçici veritabanı ve servis container’ları.",
+          "fit": "Görev başına DB ve test verisi.",
+          "caveat": "—",
+          "url": "https://testcontainers.com",
+          "src": "web"
+        },
+        {
+          "name": "E2B",
+          "cat": "sandbox",
+          "verdict": "aday",
+          "what": "Ajanlar için yönetilen bulut sandbox.",
+          "fit": "Self-host container yerine.",
+          "caveat": "Kod ve veri üçüncü tarafa gider.",
+          "url": "https://e2b.dev",
+          "src": "web"
+        },
+        {
+          "name": "Daytona",
+          "cat": "sandbox",
+          "verdict": "aday",
+          "what": "Ajan ve geliştirme sandbox’ları; Hermes’in desteklediği arka uçlardan biri.",
+          "fit": "Yönetilen veya self-host sandbox.",
+          "caveat": "—",
+          "url": "https://www.daytona.io",
+          "src": "web"
+        },
+        {
+          "name": "Modal",
+          "cat": "sandbox",
+          "verdict": "disi",
+          "what": "Sunucusuz Python hesaplama; Hermes arka ucu.",
+          "fit": "—",
+          "caveat": "Hatta gerek yok.",
+          "url": "https://modal.com",
+          "src": "web"
+        },
+        {
+          "name": "MCP",
+          "cat": "protokol",
+          "verdict": "kullan",
+          "what": "Model Context Protocol: araç ve bağlam için ortak arayüz. Agentic AI Foundation projesi.",
+          "fit": "Tüm çalıştırıcılara aynı araçlar (Plane, GitHub, Context7).",
+          "caveat": "MCP sunucuları da bağımlılıktır; sürüm sabitlenmeli.",
+          "url": "https://modelcontextprotocol.io",
+          "src": "pano+web"
+        },
+        {
+          "name": "AGENTS.md",
+          "cat": "protokol",
+          "verdict": "kullan",
+          "what": "Ajan yönergeleri için ortak dosya biçimi; Agentic AI Foundation projesi.",
+          "fit": "agent.kurallar.md’nin taşınabilir karşılığı.",
+          "caveat": "—",
+          "url": "https://agents.md",
+          "src": "pano+web"
+        },
+        {
+          "name": "A2A",
+          "cat": "protokol",
+          "verdict": "disi",
+          "what": "Ajanlar arası iletişim protokolü (Google ADK ve Agent Framework destekler).",
+          "fit": "—",
+          "caveat": "Tek orkestratörlü hatta gerek yok.",
+          "src": "pano+web"
+        },
+        {
+          "name": "ACP",
+          "cat": "protokol",
+          "verdict": "disi",
+          "what": "Agent Client Protocol: editör ile kodlama ajanı arasındaki protokol.",
+          "fit": "Geliştirici masası.",
+          "caveat": "Hatta gerek yok.",
+          "src": "pano+web"
+        },
+        {
+          "name": "Plane MCP Server",
+          "cat": "baglam",
+          "verdict": "kullan",
+          "what": "Plane’in resmi MCP sunucusu (Python, FastMCP). İş öğesi, cycle, modül yönetimi. Eski Node.js sürümü kullanımdan kalktı.",
+          "fit": "Ajanların Plane’e bulgu ve soru yazması.",
+          "caveat": "Durum geçişleri yine Temporal’dan; ajan Plane durumunu kendisi değiştirmemeli.",
+          "license": "MIT",
+          "url": "https://github.com/makeplane/plane-mcp-server",
+          "src": "web"
+        },
+        {
+          "name": "Context7",
+          "cat": "baglam",
+          "verdict": "kullan",
+          "what": "Sürüme özgü resmi dokümanları ajana veren MCP.",
+          "fit": "web-research.agent (panodaki seçim).",
+          "caveat": "—",
+          "url": "https://context7.com",
+          "src": "pano"
+        },
+        {
+          "name": "Graphify",
+          "cat": "baglam",
+          "verdict": "aday",
+          "what": "Panoda ilişki ve bağımlılık haritası için anılan araç.",
+          "fit": "module.relation.map.agent.",
+          "caveat": "Bu raporda incelenmedi; SCIP / tree-sitter tabanlı seçeneklerle karşılaştırılmalı.",
+          "src": "pano"
+        },
+        {
+          "name": "SCIP / tree-sitter",
+          "cat": "baglam",
+          "verdict": "aday",
+          "what": "Kod indeksleme ve sözdizimi ağacı; deterministik bağımlılık grafiği.",
+          "fit": "İlişki haritasının deterministik temeli.",
+          "caveat": "—",
+          "src": "web"
+        },
+        {
+          "name": "OpenFGA",
+          "cat": "yetki",
+          "verdict": "kullan",
+          "what": "Zanzibar tarzı yetkilendirme motoru (RBAC / ReBAC / ABAC).",
+          "fit": "authorization.agent: LLM değil, motor karar verir.",
+          "caveat": "—",
+          "license": "Apache-2.0",
+          "url": "https://openfga.dev",
+          "src": "pano"
+        },
+        {
+          "name": "SpiceDB · Cerbos · Oso · Casbin",
+          "cat": "yetki",
+          "verdict": "aday",
+          "what": "OpenFGA alternatifleri (panoda listelenmiş).",
+          "fit": "Mevcut yığınla uyuma göre.",
+          "caveat": "—",
+          "src": "pano"
+        },
+        {
+          "name": "GitHub Actions + merge queue",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "Zorunlu kontroller; sonuç SHA’ya bağlı.",
+          "fit": "Deterministik kapılar (G).",
+          "caveat": "Jenkins de kullanılıyorsa sahiplik tek sisteme yazılmalı.",
+          "src": "pano"
+        },
+        {
+          "name": "Semgrep / CodeQL",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "Statik güvenlik analizi.",
+          "fit": "Güvenlik kapısı.",
+          "caveat": "—",
+          "src": "web"
+        },
+        {
+          "name": "gitleaks / OSV-Scanner",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "Sır sızıntısı ve bağımlılık açığı taraması.",
+          "fit": "Güvenlik kapısı.",
+          "caveat": "—",
+          "src": "web"
+        },
+        {
+          "name": "Playwright",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "E2E ve viewport testleri, ekran görüntüsü.",
+          "fit": "E2E kapısı ve mobile-first doğrulaması.",
+          "caveat": "—",
+          "src": "web"
+        },
+        {
+          "name": "Stryker / PIT",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "Mutation testing (JS/TS ve Java).",
+          "fit": "Testin gerçekten bir şey ölçüp ölçmediği; oracle problemi.",
+          "caveat": "Yavaş; yalnızca değişen modüllerde çalıştırın.",
+          "src": "pano"
+        },
+        {
+          "name": "axe-core / Lighthouse CI",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "Erişilebilirlik (WCAG) ve web performansı.",
+          "fit": "a11y ve performans kapısı.",
+          "caveat": "—",
+          "src": "pano"
+        },
+        {
+          "name": "k6",
+          "cat": "kalite",
+          "verdict": "kullan",
+          "what": "Yük ve performans testi.",
+          "fit": "performance.agent’ın deterministik ölçümü.",
+          "caveat": "—",
+          "src": "web"
+        },
+        {
+          "name": "Langfuse",
+          "cat": "gozlem",
+          "verdict": "kullan",
+          "what": "Açık kaynak LLM izleme: iz, maliyet, prompt yönetimi.",
+          "fit": "Görev başına token ve maliyet.",
+          "caveat": "—",
+          "license": "MIT (çekirdek)",
+          "url": "https://langfuse.com",
+          "src": "pano+web"
+        },
+        {
+          "name": "OpenTelemetry",
+          "cat": "gozlem",
+          "verdict": "kullan",
+          "what": "Açık iz ve metrik standardı.",
+          "fit": "Temporal, ajanlar ve CI izlerini birleştirmek.",
+          "caveat": "—",
+          "src": "pano"
+        },
+        {
+          "name": "LangSmith",
+          "cat": "gozlem",
+          "verdict": "aday",
+          "what": "LangChain’in izleme ve eval platformu.",
+          "fit": "LangGraph yoğun kullanılırsa.",
+          "caveat": "Kapalı kaynak SaaS.",
+          "src": "web"
+        },
+        {
+          "name": "Arize Phoenix",
+          "cat": "gozlem",
+          "verdict": "aday",
+          "what": "Açık kaynak LLM izleme ve eval.",
+          "fit": "Langfuse alternatifi.",
+          "caveat": "—",
+          "src": "web"
+        },
+        {
+          "name": "Promptfoo",
+          "cat": "gozlem",
+          "verdict": "kullan",
+          "what": "Prompt ve ajan eval’i, red-team; CLI ve CI dostu.",
+          "fit": "L aşaması: yönerge ve skill değişikliği karşılaştırması.",
+          "caveat": "—",
+          "license": "MIT",
+          "url": "https://www.promptfoo.dev",
+          "src": "web"
+        },
+        {
+          "name": "Inspect",
+          "cat": "gozlem",
+          "verdict": "aday",
+          "what": "UK AI Security Institute’un eval çerçevesi.",
+          "fit": "Ajan davranışı için daha derin eval.",
+          "caveat": "—",
+          "license": "MIT",
+          "url": "https://inspect.aisi.org.uk",
+          "src": "web"
+        },
+        {
+          "name": "LiteLLM",
+          "cat": "model",
+          "verdict": "aday",
+          "what": "Tek API ile çok sağlayıcı; bütçe ve anahtar yönetimi.",
+          "fit": "Görev politikasına göre model yönlendirme ve maliyet tavanı.",
+          "caveat": "Ek bir servis; sürümü sabitlenmeli.",
+          "license": "MIT (çekirdek)",
+          "url": "https://www.litellm.ai",
+          "src": "web"
+        },
+        {
+          "name": "OpenRouter",
+          "cat": "model",
+          "verdict": "disi",
+          "what": "Yönetilen çok modelli API.",
+          "fit": "—",
+          "caveat": "Veri üçüncü taraftan geçer.",
+          "src": "web"
+        },
+        {
+          "name": "Plane",
+          "cat": "is",
+          "verdict": "kullan",
+          "what": "Açık kaynak proje yönetimi; hattın giriş kapısı ve insan arayüzü.",
+          "fit": "A0 / A1 / F.",
+          "caveat": "Durumun gerçek sahibi Temporal; Plane durumu yansıtır.",
+          "license": "AGPL-3.0",
+          "url": "https://plane.so",
+          "src": "pano"
+        },
+        {
+          "name": "Dapr Workflow / Dapr Agents",
+          "cat": "orkestrator",
+          "verdict": "aday",
+          "what": "CNCF projesi Dapr’ın durable workflow ve actor modeli üzerine kurulu Python ajan framework’ü; Dapr Agents 1.0 Mart 2026’da GA oldu.",
+          "fit": "Kubernetes ağırlıklı ekiplerde Temporal alternatifi; Microsoft Agent Framework ajanlarını da dayanıklı yapabiliyor.",
+          "caveat": "Dapr sidecar mimarisi ek işletim katmanı getirir.",
+          "url": "https://docs.dapr.io/developing-ai/dapr-agents/",
+          "src": "web"
+        },
+        {
+          "name": "Conductor (Orkes)",
+          "cat": "orkestrator",
+          "verdict": "disi",
+          "what": "Netflix kökenli iş akışı orkestratörü; JSON tanımlı akışlar.",
+          "fit": "—",
+          "caveat": "Kod-öncelikli durable execution değil; ajan döngüsü için Temporal daha doğal.",
+          "url": "https://orkes.io",
+          "src": "web"
+        },
+        {
+          "name": "AWS Step Functions · Azure Durable Functions · Cloudflare Workflows",
+          "cat": "orkestrator",
+          "verdict": "disi",
+          "what": "Bulut sağlayıcılarının yönetilen durable iş akışı servisleri.",
+          "fit": "Tek buluta bağlı ekipler.",
+          "caveat": "Sağlayıcıya kilitlenme; yerel geliştirme ve replay deneyimi sınırlı.",
+          "src": "web"
+        },
+        {
+          "name": "LangChain Deep Agents",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "LangGraph üzerine kurulu, planlama, alt ajan ve dosya sistemi araçlarıyla gelen hazır ajan iskeleti.",
+          "fit": "—",
+          "caveat": "Kodlama işini zaten Claude Code / OpenHands yapıyor; ikinci bir çalıştırıcı katmanı gereksiz.",
+          "url": "https://github.com/langchain-ai/deepagents",
+          "src": "web"
+        },
+        {
+          "name": "LlamaIndex Workflows",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "Olay güdümlü, adım tabanlı iş akışları; belge ağırlıklı RAG hatlarında güçlü.",
+          "fit": "Belge ve bilgi tabanı işleri.",
+          "caveat": "Kod üretim hattında ek değer sınırlı.",
+          "url": "https://www.llamaindex.ai/workflows",
+          "src": "web"
+        },
+        {
+          "name": "Semantic Kernel",
+          "cat": "kutuphane",
+          "verdict": "kullanma",
+          "what": "Microsoft’un kurumsal ajan SDK’sı.",
+          "fit": "—",
+          "caveat": "Microsoft Agent Framework’e birleşti; yeni projede doğrudan MAF kullanın.",
+          "src": "pano+web"
+        },
+        {
+          "name": "OpenAI Swarm",
+          "cat": "kutuphane",
+          "verdict": "kullanma",
+          "what": "OpenAI’nin deneysel çoklu ajan örneği.",
+          "fit": "—",
+          "caveat": "Yerini OpenAI Agents SDK aldı; üretim için hiç önerilmedi.",
+          "src": "web"
+        },
+        {
+          "name": "BeeAI Framework",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "IBM kökenli, Linux Foundation altında açık kaynak çoklu ajan framework’ü (Python ve TypeScript).",
+          "fit": "—",
+          "caveat": "Bu hatta PydanticAI ile örtüşür.",
+          "license": "Apache-2.0",
+          "url": "https://framework.beeai.dev",
+          "src": "web"
+        },
+        {
+          "name": "AgentScope",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "Alibaba kökenli çoklu ajan framework’ü.",
+          "fit": "—",
+          "caveat": "Bu hatta ek değer sınırlı.",
+          "url": "https://github.com/agentscope-ai/agentscope",
+          "src": "web"
+        },
+        {
+          "name": "DSPy",
+          "cat": "kutuphane",
+          "verdict": "aday",
+          "what": "Prompt yazmak yerine modülleri ve metrikleri tanımlayıp promptları otomatik optimize eden Stanford kütüphanesi.",
+          "fit": "L aşaması: sınıflandırma ajanlarının (DoR, risk, router) promptlarını sabit örnek kümesine karşı optimize etmek.",
+          "caveat": "Ölçülebilir metrik ve etiketli örnek ister.",
+          "license": "MIT",
+          "url": "https://dspy.ai",
+          "src": "web"
+        },
+        {
+          "name": "Haystack",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "deepset’in RAG ve ajan hattı framework’ü.",
+          "fit": "Belge arama hatları.",
+          "caveat": "Kod üretim hattında ek değer sınırlı.",
+          "license": "Apache-2.0",
+          "url": "https://haystack.deepset.ai",
+          "src": "web"
+        },
+        {
+          "name": "Vercel AI SDK",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "TypeScript için model erişimi, araç çağrısı ve arayüz akışı kütüphanesi.",
+          "fit": "Ajan arayüzü veya TS kontrol düzlemi.",
+          "caveat": "Orkestrasyon sağlamaz.",
+          "url": "https://ai-sdk.dev",
+          "src": "web"
+        },
+        {
+          "name": "MetaGPT · CAMEL",
+          "cat": "kutuphane",
+          "verdict": "disi",
+          "what": "Rol tabanlı “yazılım şirketi” simülasyonu yapan araştırma odaklı çoklu ajan sistemleri.",
+          "fit": "—",
+          "caveat": "Araştırma prototipi; kapı ve bütçe kontrolü yok.",
+          "src": "web"
+        },
+        {
+          "name": "SWE-agent",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "Princeton kökenli, SWE-bench için geliştirilmiş araştırma kodlama ajanı.",
+          "fit": "Ajan davranışını ölçmek ve karşılaştırmak.",
+          "caveat": "Üretim hattı için değil.",
+          "license": "MIT",
+          "url": "https://swe-agent.com",
+          "src": "web"
+        },
+        {
+          "name": "Roo Code · Continue",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "IDE içinde çalışan açık kaynak kodlama ajanları.",
+          "fit": "Geliştiricinin kendi masası.",
+          "caveat": "IDE’ye bağlı; başsız hatta kullanılamaz.",
+          "src": "web"
+        },
+        {
+          "name": "Qwen Code",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "Qwen modelleri için terminal kodlama ajanı.",
+          "fit": "Panodaki Qwen modelleri seçilirse denenebilir.",
+          "caveat": "Hat entegrasyonu pilotta sınanmalı.",
+          "license": "Apache-2.0",
+          "src": "web"
+        },
+        {
+          "name": "Devin · Jules · Copilot coding agent · Factory · Amp",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "Barındırılan (SaaS) otonom kodlama ajanları; görevi alıp PR açarlar.",
+          "fit": "Karşılaştırma için referans.",
+          "caveat": "Kendi Temporal hattınızın dışında çalışırlar; bütçe, kapı ve kanıt kurallarını siz kontrol edemezsiniz.",
+          "src": "web"
+        },
+        {
+          "name": "GitHub Spec Kit",
+          "cat": "spec",
+          "verdict": "aday",
+          "what": "Spec → plan → görev akışı için şablonlar, script’ler ve CLI; ajan bağımsız.",
+          "fit": "A2/A4: task spec ve plan formatını standartlaştırmak. Panodaki görev çerçevesiyle aynı fikir.",
+          "caveat": "Bir süreç iskeleti; kapı ve bütçe getirmez.",
+          "license": "MIT",
+          "url": "https://github.com/github/spec-kit",
+          "src": "web"
+        },
+        {
+          "name": "Kiro",
+          "cat": "spec",
+          "verdict": "disi",
+          "what": "AWS’nin spec odaklı IDE’si: gereksinim → user story → kabul kriteri → tasarım → görev.",
+          "fit": "Yöntem olarak ilham verici.",
+          "caveat": "IDE; başsız hatta kullanılamaz.",
+          "url": "https://kiro.dev",
+          "src": "web"
+        },
+        {
+          "name": "BMAD-METHOD",
+          "cat": "spec",
+          "verdict": "disi",
+          "what": "Adlandırılmış rollerle (analist, PM, mimar, geliştirici, QA) tam SDLC’yi yöneten açık kaynak ajan yöntemi.",
+          "fit": "Rol sınırları fikri panodaki ajan listesine benziyor.",
+          "caveat": "Kendi kural ve ajan setinizle örtüşür; ikisini birden yürütmeyin.",
+          "url": "https://github.com/bmad-code-org/BMAD-METHOD",
+          "src": "web"
+        },
+        {
+          "name": "Tessl · OpenSpec",
+          "cat": "spec",
+          "verdict": "disi",
+          "what": "Spesifikasyonu birincil kaynak, kodu yeniden üretilebilir çıktı sayan yaklaşımlar.",
+          "fit": "İzlenecek yön.",
+          "caveat": "Olgunluk ve ekip alışkanlığı açısından erken.",
+          "src": "web"
+        },
+        {
+          "name": "CodeRabbit · Qodo · Greptile",
+          "cat": "inceleme",
+          "verdict": "aday",
+          "what": "PR’larda yapay zekâ ile kod incelemesi yapan servisler.",
+          "fit": "C aşamasında ek, bağımsız bir inceleyici; bulgu üretir.",
+          "caveat": "Kapı değildir; kararları deterministik kontroller ve QA verir. Kod üçüncü tarafa gider.",
+          "src": "web"
+        },
+        {
+          "name": "Playwright MCP",
+          "cat": "tarayici",
+          "verdict": "aday",
+          "what": "Ajanların Playwright üzerinden tarayıcıyı erişilebilirlik ağacıyla sürmesini sağlayan MCP sunucusu.",
+          "fit": "mobile-first ve E2E keşfi: ajan viewport’larda gezip bulgu üretir.",
+          "caveat": "Keşif içindir; kalıcı testler yine kod olarak yazılır.",
+          "url": "https://github.com/microsoft/playwright-mcp",
+          "src": "web"
+        },
+        {
+          "name": "Browser Use · Stagehand",
+          "cat": "tarayici",
+          "verdict": "disi",
+          "what": "LLM ile tarayıcı otomasyonu kütüphaneleri.",
+          "fit": "—",
+          "caveat": "Playwright MCP ve deterministik Playwright testleri yeterli.",
+          "src": "web"
+        },
+        {
+          "name": "NeMo Guardrails · Guardrails AI · LlamaFirewall",
+          "cat": "guvenlik",
+          "verdict": "aday",
+          "what": "LLM girdi/çıktı doğrulama ve prompt injection savunma katmanları.",
+          "fit": "web-research ve unknown-unknowns ajanlarının dış içerik girişinde.",
+          "caveat": "Tek başına yeterli değil; asıl savunma yetki ayrımı ve sandbox.",
+          "src": "web"
+        },
+        {
+          "name": "DeepEval · Ragas · Braintrust",
+          "cat": "gozlem",
+          "verdict": "disi",
+          "what": "LLM ve RAG değerlendirme araçları.",
+          "fit": "—",
+          "caveat": "Promptfoo ile örtüşür; birini seçin.",
+          "src": "web"
+        },
+        {
+          "name": "AgentOps · Opik · Helicone · W&B Weave",
+          "cat": "gozlem",
+          "verdict": "disi",
+          "what": "Ajan ve LLM izleme servisleri.",
+          "fit": "—",
+          "caveat": "Langfuse ile örtüşür; birini seçin.",
+          "src": "web"
+        },
+        {
+          "name": "Ollama · vLLM",
+          "cat": "model",
+          "verdict": "aday",
+          "what": "Açık ağırlıklı modelleri yerelde (Ollama) veya sunucuda yüksek verimle (vLLM) çalıştırma.",
+          "fit": "Panodaki açık modellerle (GLM, Kimi, Qwen) self-host senaryosu; OpenHands ile.",
+          "caveat": "GPU maliyeti ve kalite pilotta ölçülmeli.",
+          "src": "web"
+        },
+        {
+          "name": "Hermes Kanban",
+          "cat": "koordinator",
+          "verdict": "sinirli",
+          "what": "Hermes v0.12.0 ile gelen kalıcı çoklu ajan panosu. Görevler SQLite’ta (WAL) tutulur; profiller görevi kira (lease) + heartbeat ile sahiplenir, parent/child bağımlılıklar hazır olunca görevi otomatik “ready” yapar, engellenen görev türüne göre (dependency, needs_input, capability, transient) insana veya bekleyişe gider.",
+          "fit": "Tek makinede STARK’ın prototipi: ardışık hata sınırı (varsayılan 2), geçici hatayı bütçeden saymama, profil başına eşzamanlılık sınırı hazır geliyor.",
+          "caveat": "Tasarım gereği tek host ve “güvenilir yerel kullanıcı” tehdit modeli. Plane ve Temporal’ın yanında üçüncü bir durum sahibi olur; ekip ölçeğinde doğruluk kaynağı yapılmamalı.",
+          "license": "MIT",
+          "url": "https://hermes-agent.nousresearch.com/docs/user-guide/features/kanban",
+          "src": "web"
+        },
+        {
+          "name": "Vibe Kanban",
+          "cat": "koordinator",
+          "verdict": "disi",
+          "what": "Kodlama ajanlarını (Claude Code, Codex vb.) kanban kartlarıyla yöneten açık kaynak web uygulaması; MCP ile görev ayrıştırma.",
+          "fit": "Geliştiricinin kendi paralel ajan işleri.",
+          "caveat": "Arkasındaki şirket Bloop Nisan 2026’da kapandı; proje topluluk bakımında ve tamamen yerel.",
+          "license": "Apache-2.0",
+          "url": "https://vibekanban.com",
+          "src": "web"
+        },
+        {
+          "name": "Bernstein",
+          "cat": "koordinator",
+          "verdict": "aday",
+          "what": "Deterministik görev zamanlaması, paralel ajan yürütme ve birleştirme öncesi doğrulama (Janitor) yapan Python orkestratörü.",
+          "fit": "Mimari referans: “deterministik zamanlayıcı + ajan + merge öncesi doğrulama” deseni STARK’a çok yakın.",
+          "caveat": "Temporal yerine geçmez; fikirleri için incelenmeli.",
+          "license": "Apache-2.0",
+          "src": "web"
+        },
+        {
+          "name": "Baton · Code Conductor",
+          "cat": "koordinator",
+          "verdict": "aday",
+          "what": "GitHub Issues’ı dinleyip Claude Code’u izole worktree’lerde çalıştıran küçük daemon / CLI’lar (poll → dispatch → reconcile).",
+          "fit": "Faz 0 için referans: Plane yerine GitHub Issues kullanan aynı giriş deseni.",
+          "caveat": "Bütçe, insan bekleyişi ve kanıt paketi yok.",
+          "license": "MIT",
+          "src": "web"
+        },
+        {
+          "name": "Microsoft Conductor",
+          "cat": "koordinator",
+          "verdict": "disi",
+          "what": "GitHub Copilot ve Claude için YAML tanımlı iş akışları; paralel gruplar, alt iş akışları, web paneli.",
+          "fit": "—",
+          "caveat": "Durable execution değil; Temporal ile örtüşür.",
+          "license": "MIT",
+          "src": "web"
+        },
+        {
+          "name": "Claude Squad · Nimbalyst · Emdash · Agent Orchestrator",
+          "cat": "koordinator",
+          "verdict": "disi",
+          "what": "Birden çok kodlama ajanını paralel worktree’lerde çalıştıran masaüstü / TUI araçları.",
+          "fit": "Geliştiricinin kendi masası.",
+          "caveat": "Tek geliştirici odaklı; ekip hattının yerini tutmaz.",
+          "src": "web"
+        },
+        {
+          "name": "Agent Kanban",
+          "cat": "koordinator",
+          "verdict": "disi",
+          "what": "GitHub Copilot’u markdown tabanlı kanban şeritleriyle yöneten VS Code eklentisi.",
+          "fit": "—",
+          "caveat": "IDE’ye bağlı; lisansı ELv2.",
+          "license": "ELv2",
+          "url": "https://agent-kanban.dev",
+          "src": "web"
+        },
+        {
+          "name": "Jev (TypeSafe AI)",
+          "cat": "karar",
+          "verdict": "aday",
+          "what": "Metin üretmek yerine tipli karar döndüren barındırılan model API’si: choice (en fazla 255 etiketten seçim), score (2–10 seviyeli ölçek), olasılıklı evet/hayır. 70–500 ms yanıt.",
+          "fit": "Sınıflandırma ajanları: frontend-backend-router, maturity-level, A0’da 12.000 görevin ön triyajı, risk ön sınıflaması.",
+          "caveat": "Kapalı, barındırılan servis: görev metni dışarı çıkar. “Sıfır halüsinasyon” çıktının etiket kümesinde kalması demek, kararın doğru olması değil; doğruluk kendi etiketli örneklerinizle ölçülmeli.",
+          "url": "https://jevtypesafeai.com/",
+          "src": "web"
+        },
+        {
+          "name": "Block Buzz",
+          "cat": "koordinator",
+          "verdict": "aday",
+          "what": "Block’un Temmuz 2026’da açtığı, ekipler ve ajanları aynı kanallarda buluşturan çok kullanıcılı grup sohbeti ve koordinasyon platformu. Rust; mesajlar self-host edilebilen Nostr relay’inde imzalı olay olarak tutulur; dış kodlama ajanları Agent Client Protocol (ACP) ile bağlanır.",
+          "fit": "İnsan ↔ ajan iletişim katmanı: PO sorusu, onay isteği, blocker bildirimi. n8n + Slack yerine self-host ve imzalı kayıt isteyen ekipler için.",
+          "caveat": "Çok yeni (Temmuz 2026). Görev durumu ve bütçe yine Temporal’da kalmalı; Buzz yalnızca iletişim ve bildirim.",
+          "license": "Apache-2.0",
+          "url": "https://en.wikipedia.org/wiki/Block_Buzz",
+          "src": "web"
+        },
+        {
+          "name": "Manus",
+          "cat": "calistirici",
+          "verdict": "disi",
+          "what": "Butterfly Effect’in kapalı kaynak, barındırılan otonom genel amaçlı ajanı.",
+          "fit": "—",
+          "caveat": "Kapalı SaaS; hattın kural ve kanıt disiplinine bağlanamaz.",
+          "url": "https://en.wikipedia.org/wiki/Manus_(AI_agent)",
+          "src": "web"
+        },
+        {
+          "name": "Instinct",
+          "cat": "kisisel",
+          "verdict": "disi",
+          "what": "SMS ve telefonla kullanılan kişisel asistan ajan (davetiyeli erişim). Kurucusu Reflexion makalesinin yazarı.",
+          "fit": "—",
+          "caveat": "Kullanım koşulları kullanıcı verisine eğitim için kalıcı lisans veriyor; şirket verisi için uygun değil.",
+          "url": "https://en.wikipedia.org/wiki/Instinct_(software)",
+          "src": "web"
+        },
+        {
+          "name": "Moltbook",
+          "cat": "diger",
+          "verdict": "disi",
+          "what": "Yalnızca yapay zekâ ajanlarının paylaşım yapabildiği sosyal ağ; ajanların çoğu OpenClaw üzerinde. Mart 2026’da Meta satın aldı.",
+          "fit": "—",
+          "caveat": "Ders niteliğinde: Ocak–Şubat 2026’da kimlik doğrulama açığı ve ön yüzde açıkta kalan API anahtarıyla milyonlarca token sızdı. Ajanlara dış içerik ve sır erişimi verirken sınır çizmenin gerekçesi.",
+          "url": "https://en.wikipedia.org/wiki/Moltbook",
+          "src": "web"
+        },
+        {
+          "name": "ChatGPT Atlas",
+          "cat": "tarayici",
+          "verdict": "disi",
+          "what": "OpenAI’nin ajan özellikli web tarayıcısı.",
+          "fit": "—",
+          "caveat": "Kişisel kullanım; hatta Playwright MCP yeterli.",
+          "url": "https://en.wikipedia.org/wiki/ChatGPT_Atlas",
+          "src": "web"
+        },
+        {
+          "name": "Apple container",
+          "cat": "sandbox",
+          "verdict": "disi",
+          "what": "macOS’ta Linux container’larını hafif sanal makinelerde çalıştıran Apple aracı; NanoClaw bunu kullanıyor.",
+          "fit": "Mac geliştirici makinesinde ajan izolasyonu.",
+          "caveat": "Sunucu hattında Docker / devcontainer standart kalmalı.",
+          "url": "https://en.wikipedia.org/wiki/Apple_container",
+          "src": "web"
+        },
+        {
+          "name": "GooseAI (goose.ai)",
+          "cat": "diger",
+          "verdict": "disi",
+          "what": "Eski açık modelleri (GPT-J, GPT-NeoX vb.) API ile sunan çıkarım hizmeti.",
+          "fit": "—",
+          "caveat": "goose ajanıyla ilgisi yok; adı karışıyor.",
+          "url": "https://goose.ai",
+          "src": "web"
+        }
+      ]
+    }
+  ]
+}

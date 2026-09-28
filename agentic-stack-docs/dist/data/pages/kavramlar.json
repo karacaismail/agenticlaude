@@ -1,0 +1,72 @@
+{
+  "title": "Kavramlar",
+  "summary": "Bu referansta kullanılan terimler ve hattaki karşılıkları.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Başlangıç",
+      "title": "Kavramlar",
+      "lede": "Araç tartışmalarının çoğu terim karışıklığından çıkıyor. Aşağıdaki tanımlar Wikipedia’nın ilgili maddelerine dayanıyor; ikinci sütun her kavramın bu hatta ne anlama geldiğini söylüyor."
+    },
+    { "type": "heading", "text": "Ajan mimarisi" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "term", "label": "Kavram", "kind": "code" },
+        { "key": "def", "label": "Tanım" },
+        { "key": "here", "label": "Bu hatta" }
+      ],
+      "rows": [
+        { "term": "Agent harness", "def": "Bir LLM’i ajan yapan yazılım altyapısı: araç çağırma, hafıza ve durum, izole çalışma alanı, bağlam yönetimi, izin ve onay katmanları. Özetle **ajan = model + harness**.", "here": "L2 çalıştırıcılar: Claude Code, Codex, OpenHands, Hermes, goose. Hermes bu yüzden framework değil, harness." },
+        { "term": "Ajan framework’ü", "def": "Kod içinden çağrılan, ajan döngüsü kurmaya yarayan kütüphane.", "here": "L3: PydanticAI, OpenAI Agents SDK; dar kullanımda LangGraph." },
+        { "term": "Durable execution", "def": "Bir iş akışının durumunu kalıcı tutup çökme veya yeniden başlatmadan sonra kaldığı yerden devam ettirme.", "here": "L1: Temporal. Bütçe, sayaç ve günlerce süren bekleyiş buna dayanır." },
+        { "term": "Orkestratör", "def": "Birden çok adımı veya ajanı sıraya koyan, yönlendiren sistem. Bağlama göre süreç motoru, ajan yöneticisi veya görsel akış aracı anlamına gelir.", "here": "Tek anlamda kullanın: görev durumunun sahibi Temporal. Diğerleri “yönlendirici” veya “akış aracı”." },
+        { "term": "Neuro-symbolic AI", "def": "Sinir ağı tabanlı öğrenmeyi sembolik, kural tabanlı akıl yürütmeyle birleştiren yaklaşım.", "here": "Hattın temel ilkesi: LLM yorumlar ve üretir, deterministik motorlar (CI kapıları, OpenFGA, topolojik sıralama) karar verir." },
+        { "term": "Rule engine", "def": "Kuralları veriye uygulayarak deterministik karar veren yazılım.", "here": "Yetkilendirme (OpenFGA), risk kuralları ve policy.yaml. LLM’e bırakılmayacak kararlar." }
+      ]
+    },
+    { "type": "heading", "text": "Doğrulama" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "term", "label": "Kavram", "kind": "code" },
+        { "key": "def", "label": "Tanım" },
+        { "key": "here", "label": "Bu hatta" }
+      ],
+      "rows": [
+        { "term": "Test oracle", "def": "Bir testin sonucunun doğru olup olmadığına karar veren mekanizma. Oracle problemi, bu kararın kendisinin zor olmasıdır.", "here": "QA ajanı beklentiyi AC’den çıkarır, koddan değil. Mutation testing testin gücünü ölçer." },
+        { "term": "Agent verification", "def": "Ajanın spesifikasyonuna uygun davrandığına dair güvence toplama. Biçimsel yöntemler (model checking, teorem ispatı), biçimsel olmayan yöntemler (test, inceleme) ve simülasyon. LLM ajanlarında tam biçimsel doğrulama çoğu zaman mümkün değil; karma yaklaşım gerekir.", "here": "Karma yaklaşım: deterministik kapılar + bağımsız QA + insan onayı. Yetki modeli gibi dar alanlarda biçimsel kontrol mümkün." },
+        { "term": "LLM-as-a-Judge", "def": "Bir LLM’in başka bir çıktıyı değerlendirmesi. Bilinen yanlılıklar: sıra (position), uzunluk (verbosity) ve kendi model ailesini kayırma (self-preference).", "here": "Plan incelemesi ve QA. Önlemler: farklı model ailesinden hakem, iki sırayla karşılaştırma, rubrik ve referans cevap, insan kararıyla kalibrasyon." },
+        { "term": "AI observability", "def": "Yapay zekâ sistemlerinin girdisini, çıktısını, maliyetini ve davranışını izleme.", "here": "OpenTelemetry → Langfuse; Temporal olay geçmişi; görev başına maliyet." }
+      ]
+    },
+    { "type": "heading", "text": "Öğrenme" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "term", "label": "Kavram", "kind": "code" },
+        { "key": "def", "label": "Tanım" },
+        { "key": "here", "label": "Bu hatta" }
+      ],
+      "rows": [
+        { "term": "Reflexion", "def": "2023 tarihli, ajanların geçmiş hatalarından sözel geri bildirimle öğrendiği yöntem; model ağırlığı değişmez.", "here": "Hermes’in skill döngüsünün fikir kökü. Öğrenme dosyalarda yaşar; bu yüzden sürümlenmeli ve eval’den geçmeli." },
+        { "term": "Model collapse", "def": "Bir modelin büyük ölçüde model üretimi veriyle eğitildikçe dağılımın kuyruklarını kaybedip kalitesinin düşmesi.", "here": "Hermes trajectory’leriyle ileride ince ayar yapılırsa risk. Yalnızca kapılardan ve QA’dan geçmiş izlerle eğitin, insan verisini karıştırın." },
+        { "term": "Knowledge cutoff", "def": "Modelin eğitim verisinin bittiği tarih; sonrası hakkında bilgisi yoktur.", "here": "web-research ajanının Context7 ile sürüme özgü resmi dokümana gitmesinin gerekçesi." },
+        { "term": "Dataset shift", "def": "Eğitim ve kullanım verisinin dağılımının farklılaşması.", "here": "Sınıflandırıcı ajanlar (router, DoR, risk) için eval kümesi zamanla güncellenmeli." }
+      ]
+    },
+    {
+      "type": "sources",
+      "items": [
+        { "label": "Agent harness", "url": "https://en.wikipedia.org/wiki/Agent_harness" },
+        { "label": "Agent verification", "url": "https://en.wikipedia.org/wiki/Agent_verification" },
+        { "label": "LLM-as-a-Judge", "url": "https://en.wikipedia.org/wiki/LLM-as-a-Judge" },
+        { "label": "Neuro-symbolic AI", "url": "https://en.wikipedia.org/wiki/Neuro-symbolic_AI" },
+        { "label": "Model collapse", "url": "https://en.wikipedia.org/wiki/Model_collapse" },
+        { "label": "Knowledge cutoff", "url": "https://en.wikipedia.org/wiki/Knowledge_cutoff" },
+        { "label": "Category: Artificial intelligence", "url": "https://en.wikipedia.org/wiki/Category:Artificial_intelligence" },
+        { "label": "Category: 2026 software", "url": "https://en.wikipedia.org/wiki/Category:2026_software" }
+      ]
+    }
+  ]
+}

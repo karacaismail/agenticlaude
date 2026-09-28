@@ -1,0 +1,115 @@
+{
+  "site": {
+    "title": "Agentic Stack",
+    "subtitle": "Orkestratör ve araç referansı",
+    "version": "v2 · 23.09.2026",
+    "source": "Figma panoları (54 PDF) + web doğrulaması"
+  },
+  "nav": [
+    {
+      "group": "Başlangıç",
+      "items": [
+        {
+          "slug": "genel-bakis",
+          "title": "Genel bakış",
+          "file": "pages/genel-bakis.json"
+        },
+        {
+          "slug": "ideal-kurgu",
+          "title": "İdeal kurgu (panolara göre)",
+          "file": "pages/ideal-kurgu.json"
+        },
+        {
+          "slug": "kavramlar",
+          "title": "Kavramlar",
+          "file": "pages/kavramlar.json"
+        }
+      ]
+    },
+    {
+      "group": "Referans",
+      "items": [
+        {
+          "slug": "pipeline",
+          "title": "Pipeline aşamaları",
+          "file": "pages/pipeline.json"
+        },
+        {
+          "slug": "politika",
+          "title": "Bütçe, durum kodları, policy",
+          "file": "pages/politika.json"
+        },
+        {
+          "slug": "ajan-haritasi",
+          "title": "Ajan → sağlayıcı haritası",
+          "file": "pages/ajan-haritasi.json"
+        },
+        {
+          "slug": "katalog",
+          "title": "Araç kataloğu",
+          "file": "pages/katalog.json"
+        }
+      ]
+    },
+    {
+      "group": "Değerlendirme",
+      "items": [
+        {
+          "slug": "frameworkler",
+          "title": "Framework karşılaştırması",
+          "file": "pages/frameworkler.json"
+        },
+        {
+          "slug": "temporal",
+          "title": "Temporal",
+          "file": "pages/temporal.json"
+        },
+        {
+          "slug": "hermes",
+          "title": "Hermes Agent + Kanban",
+          "file": "pages/hermes.json"
+        },
+        {
+          "slug": "langgraph",
+          "title": "LangGraph",
+          "file": "pages/langgraph.json"
+        },
+        {
+          "slug": "crewai",
+          "title": "CrewAI",
+          "file": "pages/crewai.json"
+        },
+        {
+          "slug": "autogen",
+          "title": "AutoGen",
+          "file": "pages/autogen.json"
+        },
+        {
+          "slug": "jev",
+          "title": "Jev (TypeSafe AI)",
+          "file": "pages/jev.json"
+        },
+        {
+          "slug": "bulgular",
+          "title": "Pano bulguları",
+          "file": "pages/bulgular.json"
+        }
+      ]
+    },
+    {
+      "group": "Uygulama",
+      "items": [
+        {
+          "slug": "yol-haritasi",
+          "title": "Yol haritası",
+          "file": "pages/yol-haritasi.json"
+        },
+        {
+          "slug": "kaynaklar",
+          "title": "Kaynaklar ve yöntem",
+          "file": "pages/kaynaklar.json"
+        }
+      ]
+    }
+  ]
+}

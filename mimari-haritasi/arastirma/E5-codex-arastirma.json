@@ -1,0 +1,2573 @@
+{
+  "meta": {
+    "id": "E5",
+    "baslik": "Codex araştırma çıktılarının bizim araştırmamızla karşılaştırılması",
+    "tarih": "2026-09-27",
+    "dil": "tr",
+    "codex_koku": "/Users/w6x/Documents/otomasyon coding 2 (salt okunur; hiçbir dosya yazılmadı, betik çalıştırılmadı)",
+    "bizim_kok": "/Users/w6x/Documents/otomasyon coding/mimari-haritasi/arastirma (yalnız E5-codex-arastirma.json ve E5-ozet.md yazıldı)",
+    "yontem": [
+      "Her konuda önce iki tarafın özet .md dosyaları okundu, JSON'lar jq ve grep ile hedefli tarandı.",
+      "Codex'teki URL'ler bizim tüm dosyalarımızdaki 1.827 benzersiz URL ile karşılaştırıldı. Codex'e özgü adaylar ayrıca issue numarası ve anahtar kelimeyle bizim dosyalarda arandı.",
+      "İçe alınan her bulgu ve her çelişki birincil kaynakla kontrol edildi: GitHub issue, PR ve repo durumları `gh api` ile; resmî doküman, şirket blogu ve makaleler WebFetch ile; NVD API. Birincil kaynak okunamadığında en fazla 'kismen' verildi.",
+      "Codex'in kendi tasarım ve öneri metinleri bulgu sayılmadı; 'eklenmeyenler'e ya da E5-ozet.md'ye argüman olarak yazıldı."
+    ],
+    "kapsam_notlari": [
+      "agentic-sistem/arastirma/{cok-katmanli-fabrika,projeler-ve-vakalar} klasörleri research_notes altındaki iki klasörün birebir kopyası (cmp ile doğrulandı); bir kez sayıldı.",
+      "dunya-vakalari/ paketi (14:41'de doldu) T7 konusuna katıldı: 36 vaka, 61 kaynak, 52 kabul deneyi (hepsi not_run), 18 yerel bulgu. uret_ve_dogrula.py yalnız metin olarak okundu.",
+      "research_notes/Claude bulgularıyla kapsam tamamlama/ klasörü E5'in başında (14:46) boştu, 15:40–15:43 arasında doldu (mimari, ihtiyac_risk ve uygulama_kanit .md/.json). Yalnız mimari.md'deki itirazlar okundu ve 'codex_itirazlari' bölümüne alındı. Bu klasör Codex'in claude-karsilastirma/ kopyasından çalışıyor; o klasöre dokunulmadı, karşılaştırmaya da katılmadı.",
+      "Kestra geçmişi (E6) ve Codex mimari paketi (E4) başka kayıtlarda karşılaştırıldı; çakışan kalemler oraya bağlandı, tekrar edilmedi.",
+      "T1 ile T5–T6 parçaları paralel alt ajanlarla üretildi, kilit iddialar yeniden kontrol edildi (bootstrap_plane.py:29, Temporal Child Workflow sınırı 1.000, METR 2026). Codex'in tasarım önerisi olan E5-EVR-05 bulgulardan çıkarıldı."
+    ],
+    "dogrulama_etiketleri": {
+      "dogrulandi": "Birincil kaynakta birebir kontrol edildi.",
+      "kismen": "Çekirdek iddia doğrulandı; bir ayrıntı (sayı veya süre) birincil kaynakta okunamadı ya da tutmadı. Bulgu metnine doğrulanan hâli yazıldı.",
+      "dogrulanamadi": "İçe alınmadı; 'eklenmeyenler'de."
+    },
+    "bizim_dosyalara_duzeltme_onerileri": [
+      "A2-ozet.md madde 3: In Progress tetiği `state.group=='started'` ile değil, proje başına yapılandırılmış hedef state UUID'si ve önceki state kontrolüyle yakalanmalı. Pilotta REVIEW ve WAITING_DECISION da 'started' grubunda (SF/scripts/bootstrap_plane.py:29).",
+      "B2 S13-V1 ve A3 §6: METR'in 2025'teki %19 yavaşlama bulgusuna 2026-02-24 güncellemesi notu eklenmeli. Güncellemeye göre muhtemel iyileşme var ama kanıt zayıf ve seçilim yanlılığı taşıyor.",
+      "C3 K6: geçişin bitiş ölçütüne mutlak SLO eşiği ve kanaryanın en az bir tam iş birimi sürmesi şartı eklenmeli (Google SRE Workbook).",
+      "C1: Paperclip (88,5k yıldız, MIT) ve Warren (MIT) R1–R12 ölçütleriyle puanlanmalı.",
+      "D1: kayıt sayısı benzersiz olay sayısı değil. Temporal sdk-python #1894 dört kez geçiyor (iki kayıt 'aynı vaka' notlu); kanonik URL ile tekilleştirme notu eklenmeli."
+    ],
+    "sayilar": {
+      "konu": 7,
+      "codex_fazlasi_eklenen": 74,
+      "dogrulandi": 70,
+      "kismen": 4,
+      "celiski": 14,
+      "eklenmeyen": 67,
+      "kabul_deneyi": 52,
+      "konu_bazinda": [
+        {
+          "konu": "Plane tabanlı otonom yazılım sistemi",
+          "eklenen": 11,
+          "celiski": 6,
+          "eklenmeyen": 17
+        },
+        {
+          "konu": "Otonom akışta tıkanıklık ve toparlanma",
+          "eklenen": 7,
+          "celiski": 1,
+          "eklenmeyen": 8
+        },
+        {
+          "konu": "Agentic geliştirmede projeler ve vakalar",
+          "eklenen": 9,
+          "celiski": 1,
+          "eklenmeyen": 7
+        },
+        {
+          "konu": "Çok katmanlı agentic yazılım fabrikası",
+          "eklenen": 8,
+          "celiski": 1,
+          "eklenmeyen": 6
+        },
+        {
+          "konu": "Evrilebilir agentic fabrika",
+          "eklenen": 5,
+          "celiski": 2,
+          "eklenmeyen": 10
+        },
+        {
+          "konu": "Ortak yazılım üretiminde ihtiyaç tamamlama",
+          "eklenen": 15,
+          "celiski": 2,
+          "eklenmeyen": 11
+        },
+        {
+          "konu": "Agentic otomasyonlarda gerçek dünya hataları (+ dunya-vakalari paketi)",
+          "eklenen": 19,
+          "celiski": 1,
+          "eklenmeyen": 8
+        }
+      ]
+    }
+  },
+  "konular": [
+    {
+      "konu": "Plane tabanlı otonom yazılım sistemi",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/A0-mevcut-pilot-inceleme.md",
+        "mimari-haritasi/arastirma/A0-mevcut-pilot.json",
+        "mimari-haritasi/arastirma/A1-ozet.md",
+        "mimari-haritasi/arastirma/A1-kurum-ornekleri.json",
+        "mimari-haritasi/arastirma/A2-ozet.md",
+        "mimari-haritasi/arastirma/A2-platform-ve-kapasite.json",
+        "mimari-haritasi/arastirma/A3-ozet.md",
+        "mimari-haritasi/arastirma/A3-havuzlar-kaizen-olgunluk.json",
+        "mimari-haritasi/arastirma/B3-on-olum.json",
+        "mimari-haritasi/arastirma/C1-hazir-sistemler.json",
+        "mimari-haritasi/arastirma/C6-ozet.md",
+        "mimari-haritasi/arastirma/D1-orkestrator-hatalari.json"
+      ],
+      "codex_dosyalari": [
+        "reports/Plane tabanlı otonom yazılım sistemi.md",
+        "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.md",
+        "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.json",
+        "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+        "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.json",
+        "research_notes/Plane tabanlı otonom yazılım sistemi/pdf_requirements.md",
+        "research_notes/Plane tabanlı otonom yazılım sistemi/pdf_requirements.json"
+      ],
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-PLN-01",
+          "bulgu": "Plane iş öğesi güncellemesinde koşullu yazma yok. PATCH /api/v1/workspaces/{slug}/projects/{project_id}/work-items/{id}/ uç noktası ETag, If-Match ya da sürüm alanıyla iyimser eşzamanlılık kontrolü sunmuyor; `state` alanı yalnız state UUID'si alıyor. CE v1.4.2'deki API görünümünde (api/views/issue.py) de ETag veya If-Match işleme kodu yok. Çıkarım: Orkestratörün durum yazımı, insanın aynı anda yaptığı bir durum değişikliğini sessizce ezebilir. Yazmadan hemen önce yeniden okuma ve sonrasında uzlaştırma gerekir.",
+          "kaynak_url": [
+            "https://developers.plane.so/api-reference/issue/update-issue-detail",
+            "https://raw.githubusercontent.com/makeplane/plane/v1.4.2/apps/api/plane/api/views/issue.py"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Doküman sayfasında başlık olarak yalnız X-API-Key/Bearer ve Content-Type var; koşullu güncelleme parametresi yok. v1.4.2 kaynağında 'etag|if-match|if_match' araması boş döndü (tek eşleşme bir örnekteki updated_at).",
+          "bizdeki_ilgili_yer": "A2-platform-ve-kapasite.json:plane.rest_api.state_guncelleme_istegi (PATCH örneği var, eşzamanlılık notu yok); B3-on-olum.json AK-25"
+        },
+        {
+          "id": "E5-PLN-02",
+          "bulgu": "Plane REST API'de iş öğesi etkinlik geçmişi ayrı bir uç noktadan okunabiliyor: GET /api/v1/workspaces/{slug}/projects/{project_id}/work-items/{work_item_id}/activities/ (cursor, per_page, fields, expand, order_by). Doküman örneği yalnız id, name ve created_at gösteriyor. Buna karşın CE v1.4.2'de IssueActivity modeli verb, field, old_value, new_value ve actor alanlarını tutuyor. Serializer yalnız created_by ve updated_by alanlarını dışarıda bırakıyor. Sonuç: Uzlaştırma sırasında In Progress geçişini hangi kullanıcının yaptığı REST ile doğrulanabilir ve başlatma yetkisi bir aktör izin listesine bağlanabilir. Pilot intake'inde (factory_core.intake) böyle bir aktör kontrolü yok.",
+          "kaynak_url": [
+            "https://developers.plane.so/api-reference/issue-activity/list-issue-activities",
+            "https://raw.githubusercontent.com/makeplane/plane/v1.4.2/apps/api/plane/api/urls/work_item.py",
+            "https://raw.githubusercontent.com/makeplane/plane/v1.4.2/apps/api/plane/api/serializers/issue.py",
+            "https://raw.githubusercontent.com/makeplane/plane/v1.4.2/apps/api/plane/db/models/issue.py"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Doküman sayfasında uç nokta ve sorgu parametreleri doğrulandı. v1.4.2 kaynağında hem issues/…/activities/ hem work-items/…/activities/ yolu tanımlı (work_item.py:66,130). IssueActivitySerializer için exclude=[created_by, updated_by]; modelde verb, field, old_value, new_value ve actor var. Codex yalnız 'dokümanda aktör ayrıntısı açık değil' diyordu; kod bunları döndürüyor. Pilotta aktör kontrolü olmadığı /Users/w6x/Developer/software-factory/factory_core.py intake() okunarak doğrulandı.",
+          "bizdeki_ilgili_yer": "A2-platform-ve-kapasite.json:plane.webhook.payload_formati_ce_v1 (actor yalnız webhook içinde); A0 §6 (READY tetik, aktör kontrolü anılmıyor)"
+        },
+        {
+          "id": "E5-PLN-03",
+          "bulgu": "Plane'de devre dışı kalan bir webhook, kapalı olduğu süredeki olayları kuyruğa almıyor ve sonradan tekrar göndermiyor. Doküman bunu açıkça söylüyor: \"Events are not queued while the webhook is disabled\". CE v1.4.2'de olay anında yalnız is_active=True webhook'lar seçiliyor (webhook_task.py:433). Deneme sınırı (max_retries=5) aşılınca webhook is_active=False yapılıyor (satır 355-356). Sonuç: Webhook kendi kendine kapanırsa, yeniden açılana kadarki bütün geçişler kaybolur. Periyodik REST uzlaştırması kapalı kalınan pencerenin tamamını kapsamalı; webhook'un devre dışı kalması (oluşturana e-posta gidiyor) alarm olarak izlenmeli.",
+          "kaynak_url": [
+            "https://developers.plane.so/dev-tools/intro-webhooks",
+            "https://raw.githubusercontent.com/makeplane/plane/v1.4.2/apps/api/plane/bgtasks/webhook_task.py"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Doküman alıntısı WebFetch ile alındı. v1.4.2 kodunda Webhook.objects.filter(workspace__slug=slug, is_active=True) ve retries>=max_retries iken update(is_active=False) satırları görüldü; olay kalıcılaştırma/outbox yok.",
+          "bizdeki_ilgili_yer": "A2-ozet.md §En önemli 12 bulgu madde 4; A2-platform-ve-kapasite.json:plane.webhook.retry_davranisi (otomatik devre dışı kalma var, olay kaybı açıkça yazılmamış)"
+        },
+        {
+          "id": "E5-PLN-04",
+          "bulgu": "Temporal'ın Child Workflow rehberine göre alt iş akışları kodu düzenlemek için kullanılmamalı. Rehber sınırlı boyutlu işlerde tek bir Workflow tanımıyla başlamayı öneriyor ve \"When in doubt, use an Activity\" diyor. Geçerli kullanım alanları: ayrı worker kümesi, iş yükünü ayrı olay geçmişlerine bölme, bir kaynağa bire bir eşleme (benzersiz ID) ve periyodik mantık. Bir ebeveyn en fazla 1.000 Child Workflow başlatmalı. Sonuç: 12 takım profilini ayrı child workflow ya da sürekli ajan olarak modellemek gerekmez; takım, kuyruk ve öncelik verisi olarak kalabilir.",
+          "kaynak_url": [
+            "https://docs.temporal.io/child-workflows"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "docs.temporal.io/child-workflows sayfasında 'There is no reason to use Child Workflows just for code organization', 'start from a single Workflow Definition if your problem has bounded size', 'should not spawn more than 1,000 Child Workflow Executions' ve 'When in doubt, use an Activity' ifadeleri doğrulandı. Bizdeki 2.000 bekleyen child sınırı ayrı bir sunucu sınırıdır ve bununla çelişmez.",
+          "bizdeki_ilgili_yer": "A2-platform-ve-kapasite.json:temporal (bekleyen_islemler 2.000); A1-kurum-ornekleri.json orkestrasyon; D1-orkestrator-hatalari.json (temporal#10286, sdk-python#1751 child workflow takılmaları)"
+        },
+        {
+          "id": "E5-PLN-05",
+          "bulgu": "Scrum Guide hesap verebilirliği insan rollerine bağlıyor. Scrum Takımı bir Scrum Master, bir Product Owner ve Developer'lardan oluşur ve tipik olarak 10 ya da daha az kişidir. \"The Product Owner is one person, not a committee.\" Product Owner işi başkalarına devredebilir, ancak \"Regardless, the Product Owner remains accountable.\" Sonuç: Ajan 'PO/SM' profilleri iş yapabilir, ama hesap verebilirliği devralamaz. 12 ajan takım profili resmî Scrum uygulaması sayılmaz.",
+          "kaynak_url": [
+            "https://scrumguides.org/scrum-guide.html"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Scrum Guide sayfasında üç alıntı (PO delegasyonu ve hesap verebilirlik, 'one person, not a committee', takım bileşimi ve '10 or fewer people') doğrulandı.",
+          "bizdeki_ilgili_yer": "A1-ozet.md 'Bu projeye çıkarımlar' (SAFe insan planlaması kalmalı); A3-ozet.md §3 (insan SAFe rolleri korunsun); Scrum Guide birincil kaynak olarak bizde yok"
+        },
+        {
+          "id": "E5-PLN-06",
+          "bulgu": "Spotify Honk 3. bölümde (9 Aralık 2025) LLM hakemin binlerce oturumun yaklaşık dörtte birini veto ettiği, ajanın bu durumların yarısında rotasını düzelttiği yazıyor. Yazarlar hakemin kendisini ölçmediklerini de açıkça belirtiyor: \"We have yet to invest in evals for our judge.\" Push, Slack etkileşimi ve prompt yazımı ajanın dışındaki altyapıda yapılıyor. Sonuç: Veto oranı hakemin doğruluğunun kanıtı değil. Bağımsız değerlendiricinin kendi eval seti olmalı.",
+          "kaynak_url": [
+            "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Makale WebFetch ile okundu. Veto oranı, düzelme oranı, 'We have yet to invest in evals for our judge' alıntısı ve yayın tarihi doğrulandı.",
+          "bizdeki_ilgili_yer": "A1-kurum-ornekleri.json Spotify.dogrulama ve A1-ozet.md tablo (1/4 veto rakamı var, 'hakem eval'siz' uyarısı yok)"
+        },
+        {
+          "id": "E5-PLN-07",
+          "bulgu": "Anthropic'in 'Scaling Managed Agents: Decoupling the Brain from the Hands' yazısı (8 Nisan 2026) ajanı üç bağımsız bileşene ayırıyor: yalnız eklemeli oturum günlüğü (session), Claude'u çağıran döngü (harness) ve kodun çalıştığı sandbox. Tokenlar, üretilen kodun çalıştığı sandbox'tan hiçbir şekilde erişilemez tutuluyor. Bunun için kimlik bilgisi ya başlatmada kaynağa gömülüyor ya da sandbox dışındaki bir kasadan proxy üzerinden kullanılıyor. Harness çökerse yeni harness wake(sessionId) ve getSession(id) ile olay günlüğünü alıp son olaydan devam ediyor. Ayrıştırma ilk token süresini p50'de yaklaşık %60, p95'te %90'ın üzerinde azaltmış. Sonuç: Kontrol düzlemi, runner ve sandbox ayrı güven alanları olmalı; kalıcı oturum günlüğü, harness kaybından kurtarmanın temeli.",
+          "kaynak_url": [
+            "https://www.anthropic.com/engineering/managed-agents"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Başlık, tarih, üç bileşen tanımı, 'tokens are never reachable from the sandbox' ilkesi, wake/getSession kurtarması ve TTFT yüzdeleri makalede doğrulandı. Performans yüzdeleri Anthropic'in kendi beyanıdır.",
+          "bizdeki_ilgili_yer": "C1-hazir-sistemler.json (Managed Agents yalnız platform dokümanıyla var); A2-ozet.md §4 'Ağ ve sırlar' (kimlik bilgisini proxy enjekte etsin)"
+        },
+        {
+          "id": "E5-PLN-08",
+          "bulgu": "Resmî GitHub MCP sunucusunda `--read-only` (Docker'da GITHUB_READ_ONLY=1) yazma araçlarını kapatıyor; bu mod `--tools` ile açıkça istenen yazma araçlarından bile önce gelir. `--lockdown-mode` (GITHUB_LOCKDOWN_MODE) ise public repolarda yalnız push yetkisi olan yazarların içeriğini gösteren, en iyi çabayla çalışan bir prompt injection filtresi. README bunu açıkça \"not an authorization boundary\" diye tanımlıyor: Kimlik bilgisinin okuma ve yazma hakkını değiştirmiyor, filtrelenen içeriğe başka araçlarla ya da doğrudan API ile yine ulaşılabiliyor. github-actions[bot] ve copilot içeriği filtreden muaf. Sonuç: Gerçek sınır, repo ve izin açısından daraltılmış kısa ömürlü tokendır.",
+          "kaynak_url": [
+            "https://github.com/github/github-mcp-server",
+            "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/server-configuration.md"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "README 'Read-Only Mode' ve 'Lockdown Mode' bölümleri (satır ~1643-1683) ve docs/server-configuration.md curl ile okundu; alıntılar birebir doğrulandı.",
+          "bizdeki_ilgili_yer": "A3-ozet.md §4 (başlangıç sunucuları: SCM tercihen CLI); A3-havuzlar-kaizen-olgunluk.json EV-100 (GitHub MCP zehirli akış)"
+        },
+        {
+          "id": "E5-PLN-09",
+          "bulgu": "Playwright MCP README'si sunucunun kendisinin güvenlik sınırı olmadığını açıkça yazıyor: \"Playwright MCP is not a security boundary\". `--allowed-origins` ve `--blocked-origins` için ayrıca \"does not serve as a security boundary and does not affect redirects\" uyarısı var. `--isolated` modda her oturum ayrı profille açılıyor ve tarayıcı kapanınca depolama durumu siliniyor. Workspace roots dışına dosya erişimi `--allow-unrestricted-file-access` bayrağına bağlı. Sonuç: Alpha yolculuk testlerinde yalıtım ağ egress kuralı ve sandbox ile sağlanmalı, origin listesiyle değil.",
+          "kaynak_url": [
+            "https://github.com/microsoft/playwright-mcp"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "README WebFetch ile okundu; iki 'security boundary' uyarısı, --isolated davranışı ve bayrak adları doğrulandı.",
+          "bizdeki_ilgili_yer": "A3-ozet.md §4 (yalnız değerlendiricide, sandbox içinde Playwright)"
+        },
+        {
+          "id": "E5-PLN-10",
+          "bulgu": "Resmî Filesystem MCP sunucusunda istemcinin bildirdiği Roots, komut satırında verilen izinli dizinlerin \"completely replace\" eder, yani tamamen yerine geçer. İstemci notifications/roots/list_changed gönderince izinli dizinler çalışma sırasında yeniden değişiyor. Sunucuda write_file, edit_file, move_file ve create_directory yazma araçları var. Sonuç: Dizin sınırını sunucu argümanı değil istemci belirler. Sınır ancak mount ya da sandbox düzeyinde güvenceye alınabilir.",
+          "kaynak_url": [
+            "https://raw.githubusercontent.com/modelcontextprotocol/servers/main/src/filesystem/README.md"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/pools_maturity.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "README WebFetch ile okundu; 'completely replace any server-side Allowed directories', roots/list_changed ile yeniden değiştirme ve yazma araçları doğrulandı.",
+          "bizdeki_ilgili_yer": "A3-havuzlar-kaizen-olgunluk.json MCP-B04 (referans sunucular üretime hazır değil; CVE-2025-53109/53110)"
+        },
+        {
+          "id": "E5-PLN-11",
+          "bulgu": "Plane'in iş listeleme API'si cursor ile sayfalanıyor: sayfa başına varsayılan 20, en çok 100 kayıt. Belgelenmiş sorgu parametreleri yalnız şunlar: cursor, expand, external_id, external_source, fields, order_by, per_page. `state` filtresi yok. Bu yüzden periyodik uzlaştırma bütün sayfaları gezip durumu istemci tarafında süzmek zorunda. Bu ihtiyaç, 60 istek/dk/token sınırıyla birlikte hesaplanmalı.",
+          "kaynak_url": [
+            "https://developers.plane.so/api-reference/issue/list-issues"
+          ],
+          "codex_kaynagi": "research_notes/Plane tabanlı otonom yazılım sistemi/orchestration.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Dokümandaki parametre listesi okundu; state parametresi belgelenmemiş.",
+          "bizdeki_ilgili_yer": "A2-ozet.md §1 Plane CE, REST API satırı (60 istek/dk)"
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "Kullanıcının kurulu sürümü Plane CE 1.4.2'ye göre webhook ayrıntıları: v1 yükü; event_id yok; X-Plane-Delivery her denemede yeni; yalnız ağ hatası ve timeout tekrar deneniyor, 5xx denenmiyor; silme, toplu işlem ve otomatik kapatma webhook üretmiyor; UI'de state_id, REST'te state alanı kullanılıyor; iç ağdaki alıcı için WEBHOOK_ALLOWED_IPS/HOSTS gerekiyor (A2 §1, A2-platform-ve-kapasite.json:plane.webhook)",
+        "Plane CE'de özel alan, iş öğesi tipi, şablon ve intake formu yok; kabul kriteri açıklamada yapılandırılmış blokla taşınmalı. Plane PAT kullanıcıya bağlı ve workspace kapsamı yok, bu yüzden bot servis kullanıcısı gerekiyor (A2 §1, plane.notlar_riskler). Codex'in girdi sözleşmesi Plane alanlarını varsayıyor ve bu kısıtı yalnız 'test gerektirir' diye bırakıyor.",
+        "Temporal self-host tuzakları: numHistoryShards ilk açılıştan önce 512 yapılmalı ve sonradan değiştirilemiyor; olay geçmişi sınırı 51.200 olay veya 50 MB; payload 2 MB; Continue-As-New; External Storage hâlâ Public Preview; Worker Versioning v1.31'de GA (A1 Orkestrasyon, A2 §2). Bunlara Temporal ve Kestra'nın gerçek hata kayıtları da eklenmeli (D1-orkestrator-hatalari.json).",
+        "Pilotun ölçülmüş kök nedenleri ve sayıları: 0/4 müdahalesiz yayın; V1-4'te 456 çağrı, 46 RUNNING→ERROR döngüsü; 'adaptive' bütçe modunda eşiklerin 38 ile 140 kat aşılması; 98 modülün 87'sinin git dışında olması; Mac uykusunun lease'leri kırması; scheduler max_slots=8 (A0 §2-§4, KN-1…KN-9)",
+        "Ölçülmüş ajan kaynağı: coder konteyneri yaklaşık 210 MiB, tarayıcı testi konteyneri yaklaşık 710 MiB. Hosting dokümanı 1 GiB/ajan değerini 'floor, not the ceiling' diye veriyor; görev profilleri 4/8/16 GB (A0 §2.3, A2 §1 ve §5)",
+        "Model erişim koşulları: abonelikle otomasyon riskli, API anahtarı gerekli. Start tier'ın aylık tavanı 500 $; kaba hesapla günde 20 görev yaklaşık 880 $/ay (A2 §3 ve §8)",
+        "Sandbox teknolojisi karşılaştırması ve güncel riskler: gVisor CVE-2026-96812, Daytona OSS bakımsız, E2B Embed 'evaluation' paketi, önizleme PaaS'larının advisory yükü, Hetzner DNS API'sinin kaldırılması (A2 §4 ve §7)",
+        "Merge queue kişisel hesaplardaki ve Team planındaki private repolarda yok; self-hosted runner ücreti ertelendi; GitHub API ile squash birleştirmede committer GitHub oluyor ve bu kişisel politikayla çelişiyor (A2 §6, B3-on-olum.json AK-42)",
+        "Skill ve MCP pazarının ölçülmüş riskleri: yaklaşık 20 skill'e kadar seçim doğruluğu %90'ın üstünde, 200'de yaklaşık %20; SkillsBench +16,6 puan; ClawHavoc'ta 2.857 skill'den 341'i zararlı; postmark-mcp; mcp-remote CVE-2025-6514; CLI ile MCP arasındaki token farkı (A3 §2 ve §4)",
+        "Dış olgunluk modelleri (DORA AI Capabilities, CSA L0–L5, Shapiro 0–5, Microsoft, AWS AI-DLC) ve sayısal geçiş ölçütleri olan S0–S4 kurum yolu. Codex'in L0–L5'i dış model atfı içermiyor (A3 §7).",
+        "Sektör ve akademik kanıt: Stripe haftada 1.300'den fazla PR; MAST'ta %41–86,7 başarısızlık; AGENTS.md maliyeti %20'nin üzerinde artırıyor (arXiv 2602.11988); METR'e göre testi geçen PR'ların yaklaşık yarısı merge edilmiyor; Google'da kişi başına haftada yaklaşık 4 inceleme (A1, A2 §8). Codex, Stripe gövdesini alamadığını not etmiş.",
+        "144 ekip ölçek formülü min(insan review kapasitesi, merge kuyruğu kapasitesi, bütçe) ve sunucu başına yaklaşık 8–14 eşzamanlı ajan tahmini (C6-ozet.md)"
+      ],
+      "celiskiler": [
+        {
+          "konu": "Plane webhook sürümü, tekrar deneme ve tekilleştirme anahtarı",
+          "codex": "orchestration.md: 'Güncel Plane v2 webhook normatif olarak workitem.updated kullanır; event_id tekrarlarda sabit, delivery_id her denemede değişir; 4xx tekrar edilmez; beş başarısız denemeden sonra webhook kapanabilir.' Codex kurulu sürümün doğrulanması gerektiğini de not ediyor.",
+          "biz": "A2-ozet.md madde 3-4 ve A2-platform-ve-kapasite.json:plane.webhook: CE v1.4.2 hâlâ v1 yükü gönderiyor (event=issue, action=updated). event_id yok, X-Plane-Delivery her denemede yeni uuid4. Yalnız requests.RequestException (ağ hatası ve timeout) tekrar deneniyor; 4xx ve 5xx denenmiyor.",
+          "dogru_olan": "biz",
+          "kanit": "https://developers.plane.so/dev-tools/intro-webhooks v2'yi Codex'in yazdığı gibi anlatıyor. Ancak https://raw.githubusercontent.com/makeplane/plane/v1.4.2/apps/api/plane/bgtasks/webhook_task.py kodunda autoretry_for=(requests.RequestException,), max_retries=5, 'X-Plane-Delivery': str(uuid.uuid4()) var; raise_for_status yok, event_id başlığı ya da yük alanı da yok. En son CE sürümü v1.4.2 (GitHub releases/latest, 2026-08-23) ve kullanıcının kurulu sürümü de CE 1.4.2 (A0 §1.1). Dolayısıyla Codex'in tarifi dokümana ve Cloud/ticari sürüme uyuyor, kullanıcının kurulumuna uymuyor. CE'de tekilleştirme için bileşik anahtar gerekir."
+        },
+        {
+          "konu": "In Progress tetikleyicisinin nasıl tespit edileceği",
+          "codex": "orchestration.md: 'Kalıcı durum UUID'si kullanılmalı; görünen ad veya bütün started grubu tek başına yetki değildir.'",
+          "biz": "A2-ozet.md madde 3: 'In Progress'e geçiş … data.state.group == \"started\" koşuluyla yakalanır.' A2 JSON (plane.durum_gruplari) belirli bir kolon hedefleniyorsa UUID saklanmasını ek not olarak söylüyor.",
+          "dogru_olan": "codex",
+          "kanit": "Plane'de bir gruba birden çok özel durum eklenebiliyor (A2'deki state.py kaynağı; 'In Review' da started grubunda olabilir). Kullanıcının pilotunda /Users/w6x/Developer/software-factory/scripts/bootstrap_plane.py:29 IN_PROGRESS, REVIEW ve WAITING_DECISION durumlarının üçünü de 'started' grubunda tanımlıyor. Yalnız gruba bakan bir tetik, REVIEW ya da WAITING_DECISION'a geçişte de yeni iş başlatır. Doğru kural, proje başına yapılandırılmış hedef state UUID'si ve eski state kontrolü. A2 özetindeki kural düzeltilmeli."
+        },
+        {
+          "konu": "'Bir ajan 1 GB RAM' iddiasının kaynağı",
+          "codex": "pools_maturity.md ve rapor: yalnız Claude Code kurulum sayfasındaki '4 GB+' değerini alıntılıyor ve 'Kaynak, evrensel 1 GB/ajan kuralı vermiyor… kullanıcı 1 GB iddiasının kaynağını paylaşmadı' diyor.",
+          "biz": "A2-ozet.md madde 1: Anthropic hosting dokümanı '1 GiB RAM, 5 GiB disk, 1 CPU / ajan' değerini yeni açılmış bir oturum için başlangıç noktası olarak veriyor ve 'a floor, not the ceiling' diye yazıyor.",
+          "dogru_olan": "biz",
+          "kanit": "https://code.claude.com/docs/en/agent-sdk/hosting: '1 GiB RAM, 5 GiB disk, and 1 CPU per agent is a reasonable starting point for a freshly started instance' ve 'The 1 GiB starting point … is a floor, not the ceiling.' Codex bu sayfayı kaçırmış. İki taraf da 1 GB'ın boyutlandırma kuralı olmadığında hemfikir."
+        },
+        {
+          "konu": "Filesystem MCP'nin aday olarak tutulması",
+          "codex": "Rapor ve pools_maturity.md: Filesystem MCP, 'yalnız harness dosya arayüzü gerçek bir boşluk bırakırsa' değerlendirilecek isteğe bağlı aday olarak listeleniyor. Üretime hazır olmadığı uyarısı ve CVE'leri anılmıyor.",
+          "biz": "A3-ozet.md §4 ve A3 JSON MCP-B04: Referans filesystem/git sunucuları 'üretime hazır değil' ve açıkları var (CVE-2025-53109/53110); eklenmeyecekler listesinde.",
+          "dogru_olan": "biz",
+          "kanit": "https://github.com/modelcontextprotocol/servers README: 'educational examples … not as production-ready solutions'. NVD CVE-2025-53109: yayın 2025-07-02, CVSS 7,3, izinli dizinlerde symlink ile istenmeyen dosyalara erişim. E5-PLN-10'daki Roots davranışı da sınırın istemciye bağlı olduğunu gösteriyor."
+        },
+        {
+          "konu": "128 GB makinede eşzamanlı iş sayısı",
+          "codex": "pools_maturity.md ve rapor: '128 GB üzerinde güvenilir eşzamanlı iş sayısı çıkarılamaz'; başlangıç için ihtiyatlı global aktif iş sınırı 2. Salt açıklayıcı örnek olarak 8 GiB profil ve 48 GiB rezervle 10 iş.",
+          "biz": "A2-ozet.md madde 12 ve §8: 128 GB'da aynı anda yaklaşık 12 orta profilli (8 GB / 4 vCPU) görev (tahmin). C6-ozet.md: sunucu başına yaklaşık 8–14 ajan (tahmin). Asıl darboğaz insan incelemesi ve API tavanı.",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "Hosting dokümanı formülü '(host RAM − overhead) / per-session RAM ceiling' ve tavanın temsilî oturumla ölçülmesini istiyor (https://code.claude.com/docs/en/agent-sdk/hosting). Bizim 12 değeri açıkça tahmin ve Codex'in 10'luk örneğiyle aynı büyüklükte. Pilotta ölçülen coder ≈210 MiB ve tarayıcı ≈710 MiB (A0 §2.3) RAM'in darboğaz olmadığını destekliyor. Codex'in WIP=2 değeri kapasite değil, başlangıç güvenlik ayarı. İki taraf da RAM'in bağlayıcı sınır olmadığında hemfikir."
+        },
+        {
+          "konu": "12 takımın olgunluk yolunda ne zaman devreye gireceği",
+          "codex": "pools_maturity.md: 12 mantıksal ekip profili ile yönlendirme testi MVP/L1 kapsamında; ortak worker havuzunda düşük eşzamanlılık kullanılıyor. Gerçek çok takımlı yük L2'de.",
+          "biz": "A3-ozet.md §7: S1'de pilot ekipler, S2'de 3–4 ekip, S3'te ART düzeyinde 12+ ekip.",
+          "dogru_olan": "belirsiz",
+          "kanit": "Bu bir tasarım tercihi; birincil dış kaynak karar vermiyor. Yerel kanıt olarak A0 KN-3 var: İlk pilottan 7 gün sonra 9 takımlı SAFe katmanı eklenmiş ve her katman yeni arıza sınıfı getirmiş. Bu bulgu bizim kademeli yaklaşımımızı destekliyor. Codex ise profilleri yalnız yapılandırma kuyruğu olarak ve WIP=2 ile sınırlayarak riski azaltıyor. İki yol da ekip sayısının çıktıya değil kapasiteye bağlanmasında birleşiyor."
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "Plane v2 webhook semantiği (workitem.updated, event_id/delivery_id, 4xx tekrar edilmez, 5 başarısız denemeden sonra devre dışı)",
+          "neden": "Kullanıcının kurulumu CE 1.4.2 ve bu davranış CE kodunda yok; çelişkiler bölümünde ele alındı."
+        },
+        {
+          "ne": "Public dokümana göre webhook URL'sinin özel ya da yerel adres olamaması",
+          "neden": "Zaten bizde ve daha kesin: A2-platform-ve-kapasite.json:plane.webhook.ssrf_ve_ag (localhost/127.0.0.1 doğrudan reddediliyor; WEBHOOK_ALLOWED_IPS/HOSTS ile açılabiliyor)."
+        },
+        {
+          "ne": "Plane 60 istek/dk/API anahtarı, cursor sayfalama, per_page en çok 100, listede state filtresinin olmaması",
+          "neden": "Zaten bizde (A2 plane.rest_api, listeleme_filtreleme_kisiti; B3 AK-25). 'Varsayılan 20 kayıt' ayrıntısı önemsiz."
+        },
+        {
+          "ne": "GITHUB_TOKEN ile yapılan olayların yeni workflow başlatmaması ve approval-required PR koşuları",
+          "neden": "Zaten bizde (A2-platform-ve-kapasite.json:github.github_token_tetikleme; A2 §6)."
+        },
+        {
+          "ne": "GitHub App tokenının 1 saat geçerli olması, merge queue'da merge_group zorunluluğu, ephemeral/JIT runner, pull_request_target, action SHA sabitleme",
+          "neden": "Zaten bizde (A2 §6; A0 §1.5 CI şablonu SHA sabitli)."
+        },
+        {
+          "ne": "Merge uç noktasında beklenen head SHA parametresi",
+          "neden": "Zaten bizde (A0 §1.5: pilot gh --match-head-commit kullanıyor)."
+        },
+        {
+          "ne": "Squash/merge'de committer kimliğinin kişisel politikayla çelişmesi",
+          "neden": "Zaten bizde ve daha somut (B3-on-olum.json AK-42)."
+        },
+        {
+          "ne": "GitHub webhook doğrulamasında X-Hub-Signature-256 ve Git refs API'nin force olmayan güncellemesi",
+          "neden": "Genel entegrasyon bilgisi; karar etkisi düşük."
+        },
+        {
+          "ne": "Kestra retry, yüksek erişilebilirlik, execution durumları ve pause/resume",
+          "neden": "Temporal seçimi iki çalışmada da ortak. Kestra'nın gerçek davranışı ve hataları A0 (KN-1) ile D1'de zaten var; karar etkisi düşük."
+        },
+        {
+          "ne": "Temporal'da deterministik workflow, Activity sınırı, heartbeat, self-host dağıtımı ve at-least-once Activity ile idempotent alıcı",
+          "neden": "Zaten bizde (A1 Orkestrasyon, A2 §2, D1 idempotency sınıfı)."
+        },
+        {
+          "ne": "MCP Market'in keşif dizini olması, Registry güven modeli, token passthrough yasağı, MCP güvenlik en iyi uygulamaları (yerel sunucu = kod çalıştırma, SSRF)",
+          "neden": "Zaten bizde (A3 §4: A3-K35, K37; kurum modeli 'token passthrough olmasın'; security_best_practices draft)."
+        },
+        {
+          "ne": "Agent Skills'teki allowed-tools alanının deneysel olması, AGENTS.md, Building effective agents, SAFe takım çevikliği",
+          "neden": "Zaten bizde (A3 SK-B01 ve §1; A1; C3)."
+        },
+        {
+          "ne": "Stripe Minions, OpenHands SDK blogu, Docker daemon güvenliği, Claude Code kurulum sayfasındaki 4 GB+ gereksinimi",
+          "neden": "Zaten bizde (A1 Stripe; C2 OpenHands SDK; A0, A2, B3 docker.sock yasağı; A2 §3). Codex Stripe gövdesini alamamış."
+        },
+        {
+          "ne": "Codex'in yerel Temporal doğrulaması (12 unit test, gerçek Temporal'da 9 senaryo; SDK 1.33.0, CLI 1.9.1, server 1.32.0)",
+          "neden": "Yerel Codex çalışması, dış birincil kaynak değil. Sürüm numaraları bizdeki A2 §2 ile tutarlı."
+        },
+        {
+          "ne": "Codex tasarım sayıları: 12 rol, 21 skill, 8 connector sınıfı; 10/12/24/23 girdi alanı; 20 çıktı alanı; 113 ihtiyacın 26 kontrole eşlenmesi; L0–L5 olgunluk",
+          "neden": "Yerel tasarım önerisi, doğrulanabilir dış bulgu değil."
+        },
+        {
+          "ne": "Codex'in eski pilot kod okumaları: intake'in yalnız READY UUID'sini taraması, README concurrency 2 ile flow 5 farkı, resume korumaları, intake'te aktör kontrolü olmaması",
+          "neden": "Yerel pilot okuması, A0 ile tutarlı. A0 ek olarak scheduler max_slots=8 değerini de bulmuş. Aktör kontrolü eksikliği E5-PLN-02 içinde anıldı."
+        },
+        {
+          "ne": "PDF gereksinim farkları (yerel belge, E5 kapsamı dışı), en fazla 3 kalemlik not: (1) first-gate akışı Icebox/Kabul/Red → Product Backlog → Sprint Backlog → Todo → in-progress sırasını gösteriyor. Done'dan sonra insan pozitif/negatif test, user journey, monkey test ve 'DB'ye yansıyor mu?' kontrolü yapıyor. Bizim araştırmada monkey testi ve DB yansıması testi ayrı gereksinim olarak yok. (2) '12.000 task/görsel kaynaklı otomatik giriş' toplu içe aktarma gerektiriyor (batch, provenance, dedup); bizde karşılığı yok. (3) PDF'teki 'Error → insan müdahalesi → devam' oku güncel 'insan yalnız girdi/çıktıyı görür' isteğiyle çelişiyor. Codex teknik başarı için ready_for_review, insan kabulü için Done önermiş.",
+          "neden": "Yerel belge; E5 yalnız dış birincil kaynağa dayanan bulguları içe alır. İhtiyaç haritasında (K01 vb.) karşılıkları ayrıca kontrol edilmeli."
+        }
+      ]
+    },
+    {
+      "konu": "Otonom akışta tıkanıklık ve toparlanma",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/A2-ozet.md",
+        "mimari-haritasi/arastirma/D1-ozet.md",
+        "mimari-haritasi/arastirma/C6-ozet.md",
+        "mimari-haritasi/arastirma/C4-ozet.md",
+        "mimari-haritasi/arastirma/C3-ozet.md",
+        "mimari-haritasi/arastirma/A0-mevcut-pilot-inceleme.md",
+        "mimari-haritasi/arastirma/B3-ozet.md"
+      ],
+      "codex_dosyalari": [
+        "reports/Otonom akışta tıkanıklık ve toparlanma.md",
+        "research_notes/Otonom akışta tıkanıklık ve toparlanma/engines.md",
+        "research_notes/Otonom akışta tıkanıklık ve toparlanma/resources.md",
+        "research_notes/Otonom akışta tıkanıklık ve toparlanma/supervision.md"
+      ],
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-T2-01",
+          "bulgu": "Temporal Python'da workflow kodu Temporal'a ait olmayan bir hata (ör. ValueError) fırlatırsa Workflow Task süresiz tekrar denenir. Resmî gerekçe: 'bu bir bug'dır; düzeltip yeniden deploy edersiniz'. Activity'lerin varsayılan retry politikası da sınırsız deneme ve üstel bekleme kullanır. Dışarıdan bakınca iş 'açık/RUNNING' görünür ama ilerlemez. Bu yüzden maximum_attempts, schedule_to_close ve kalıcı-geçici hata ayrımı açıkça yazılmalıdır.",
+          "kaynak_url": [
+            "https://docs.temporal.io/develop/python/best-practices/error-handling",
+            "https://docs.temporal.io/encyclopedia/retry-policies"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/engines.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "İki cümle de dokümanda birebir var: 'The Workflow Task retries indefinitely' ve 'default Retry Policy with unlimited attempts'.",
+          "bizdeki_ilgili_yer": "B3-ozet.md AK-20 (yerel kodda AttributeError sonsuz tekrar); D1-ozet.md §1 ('RUNNING' demek yürüyor demek değil)"
+        },
+        {
+          "id": "E5-T2-02",
+          "bulgu": "n8n'in yürütme varsayılanları: EXECUTIONS_TIMEOUT=-1 (global workflow timeout kapalı), EXECUTIONS_TIMEOUT_MAX=3600 sn, EXECUTIONS_DATA_SAVE_ON_PROGRESS=false (düğüm başına ilerleme kaydı tutulmaz), N8N_AI_TIMEOUT_MAX=3.600.000 ms. Yani n8n dış çerçeve olarak kullanılırsa takılan bir yürütme varsayılan hâliyle hiç zaman aşımına uğramaz. Kesintiden sonra da hangi düğümde kaldığı kaydedilmemiş olur.",
+          "kaynak_url": [
+            "https://docs.n8n.io/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/executions.md"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/engines.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Varsayılan değerler doküman tablosundan okundu.",
+          "bizdeki_ilgili_yer": "C3-ozet.md (n8n'i değiştirmenin zorluğu); D1'de n8n hiç yok"
+        },
+        {
+          "id": "E5-T2-03",
+          "bulgu": "n8n'in durable scheduler'ında poll tetikleyicileri için ayrı bir bayrak gerekiyor: N8N_SCHEDULER_POLL_TRIGGERS_ENABLED, 2.33.0 ve sonrası. Doküman bu desteğin '%100 kararlı olmadığını' ve üretimde kapalı tutulmasını söylüyor. Poll'lar zaman zaman iki kez çalışabiliyor; bunu N8N_POLLER_DURABLE_CURSORS_ENABLED önlüyor. Özelliğin kendisi N8N_SCHEDULER_ENABLED ile 2.36.0'dan itibaren açılıyor (2.32.0+ önizleme) ve N8N_USE_WORKFLOW_PUBLICATION_SERVICE gerektiriyor.",
+          "kaynak_url": [
+            "https://docs.n8n.io/deploy/host-n8n/configure-n8n/durable-scheduler"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/engines.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Dokümanda doğrulandı. Opt-in ve 2.36.0 bilgisi C3'te zaten var; yeni olan poll kararsızlığı ve çift poll bilgisi.",
+          "bizdeki_ilgili_yer": "C3-tak-cikar.json (durable scheduler varsayılan kapalı, 2.36.0)"
+        },
+        {
+          "id": "E5-T2-04",
+          "bulgu": "Kestra'da flow düzeyinde timeout yok. Bir yürütmeyi süre aşınca iptal etmek için MAX_DURATION tipi SLA kullanılıyor. Task timeout tek bir denemeyi sınırlıyor; `retry.maxDuration` ise bütün denemeler ve beklemelerin toplamını. Kestra mimari dokümanına göre heartbeat'i kesilen bir sunucunun yarım kalan işlerini executor'ın liveness koordinatörü kuyruğa geri bırakıyor ve bu edition'a bağlı değil. Bu belgelenmiş davranış D1'deki 'sonsuza dek RUNNING' issue'larıyla (#17124, #8356) gerilim içinde. Kabul testiyle sınanmalı.",
+          "kaynak_url": [
+            "https://kestra.io/docs/workflow-components/timeout",
+            "https://kestra.io/docs/workflow-components/retries",
+            "https://kestra.io/docs/architecture/server-components"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/engines.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Timeout sayfası ('Kestra does not support flow-level timeouts... use MAX_DURATION SLA') ve server-components sayfası (orphan işlerin kuyruğa dönmesi) okundu.",
+          "bizdeki_ilgili_yer": "D1-ozet.md §1 (Kestra #17124, #8356); A0 (delivery.yaml'da Pause→24 saat→CANCEL)"
+        },
+        {
+          "id": "E5-T2-05",
+          "bulgu": "Tıkanma ve bellek teşhisi için doğru sinyaller şunlar. Docker'da exit 137 yalnız SIGKILL anlamına geliyor. Docker dokümanı nedenlerini şöyle sayıyor: init sürecinin elle öldürülmesi, `docker kill` ve daemon'ın yeniden başlaması; OOM'dan söz etmiyor. OOM'u kanıtlayan sayaç cgroup v2'deki `memory.events:oom_kill`. `memory.high` bir kısma eşiği, `memory.max` ise OOM killer'ı tetikleyen sert sınır. `memory.peak` tepe kullanımı, `memory.pressure` (PSI) de bekleme süresini veriyor. Kapasite kararı 'RAM yüzdesi' ile değil, bu sayaçlarla verilmeli.",
+          "kaynak_url": [
+            "https://docs.docker.com/reference/cli/docker/container/ls/",
+            "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+            "https://docs.kernel.org/accounting/psi.html"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/resources.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Docker ls dokümanı ve kernel cgroup-v2 dokümanı okundu.",
+          "bizdeki_ilgili_yer": "A0 §2.3 (tarayıcı testi konteyneri 710,5 MiB / 1 GiB; coder ≈210 MiB); E6-ozet.md (Codex'in Kestra geçmişinden: 1 GiB tarayıcı konteynerinde exit 137 + cgroup OOM); A2 §kapasite"
+        },
+        {
+          "id": "E5-T2-06",
+          "bulgu": "Cursor'ın 5 Şubat 2026 tarihli 'Self-driving codebases' raporundaki darboğazlar şunlar. Aynı anda planlama, keşif, inceleme ve merge yapan 'fazla rollü' yürütücü rastgele uyuyup ajanları durdurdu. Planner-executor-worker düzeni en yavaş işçiye kilitlendi. Yüzlerce işçiyi yöneten tek kalite ve entegrasyon ajanı 'bariz darboğaz' oldu. RAM sınırlandıktan sonra sıcak nokta diske kaydı: build artefaktları saniyede birkaç GB okuma ve yazma üretti. Tepe performans: bir haftada binlerce ajan, 10 milyon araç çağrısı ve saatte yaklaşık 1.000 commit.",
+          "kaynak_url": [
+            "https://cursor.com/blog/self-driving-codebases"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/resources.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Cursor blogu okundu; tarih ve dört darboğaz doğrulandı.",
+          "bizdeki_ilgili_yer": "C4-ozet.md (Cursor FastRender, Ocak 2026); C6-ozet.md (Cursor scaling-agents; merge ve entegrasyon darboğazı)"
+        },
+        {
+          "id": "E5-T2-07",
+          "bulgu": "Cursor'ın 20 Temmuz 2026 tarihli 'Agent swarms and model economics' yazısında görev, modeller ve 4 saatlik bütçe aynı tutuldu (SQLite yazımı); yalnız harness değişti. Değerlendirme gizli sqllogictest takımıyla ve kestirmeleri arayan elle kod incelemesiyle yapıldı. Yeni harness %73–85, eski harness %11–77 geçti. Eski sürü 2 saatte 68.000 commit ve 70.000'den fazla merge çatışması üretti; yeni sürü yaklaşık 1.000 commit ve 1.000'den az çatışma. Eşdeğer işlev için satır sayısı 64.305'e karşı 9.908. Maliyet model karışımına göre 1.339–10.565 $ arasında değişti. Ders: kaliteyi ajan sayısı değil harness ve koordinasyon belirliyor; commit sayısı ilerleme ölçüsü değil.",
+          "kaynak_url": [
+            "https://cursor.com/blog/agent-swarm-model-economics"
+          ],
+          "codex_kaynagi": "research_notes/Otonom akışta tıkanıklık ve toparlanma/resources.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Cursor blogu okundu. Sayılar oradan alındı; Codex notunda sayı yoktu, yalnız niteleme vardı.",
+          "bizdeki_ilgili_yer": "C4-ozet.md §ölçümler (commit/satır DoD değildir); C6-ozet.md (tek trunk entegrasyon kapasitesi)"
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "D1: 9 motorda 100'den fazla issue kaydı (Kestra #17124/#8356, Hatchet #4824 zombi worker, DBOS #805, Trigger.dev #4971, Conductor #436, Restate #4453, Temporal sdk-python #1578/#1109). Codex'in motor karşılaştırması yalnız dokümana dayanıyor.",
+        "D1: Temporal'da heartbeat timeout sonrası activity'nin baştan başlayıp ikinci kez child workflow açması (forum kaydı).",
+        "A0: pilotta ölçülen tıkanmalar ve kaynak kullanımı. KN-5: `max_slots=8` ve hesap başına 4 Claude çağrısıyla PROVIDER_CAPACITY_UNAVAILABLE açlığı görüldü. KN-6: Mac uykusu lease'leri kırdı. KN-7: adaptive modda bütçe sınırları yalnız uyarıya dönüştü. §2.3: coder konteyneri ≈210 MiB, tarayıcı konteyneri 710,5 MiB / 1 GiB. Sonuç: darboğaz bellek değil, sağlayıcı kapasitesi, lease ve durum makinesi.",
+        "A2: görev başına somut kaynak profilleri (4/8/16 GB), Node heap ve Next.js build'lerinin bellek ihtiyacı, host rezervi.",
+        "C6: 144 ekip için insan inceleme kapasitesi ve tek trunk'ın entegrasyon kapasitesi aritmetiği; GitHub API ve model hız limitleri.",
+        "C4: Google/MIT ölçeklenme çalışması (bağımsız ajanlarda hata 17,2 kat, merkezi koordinasyonda 4,4 kat büyüyor); düz koordinasyonda 20 ajanın 2–3 ajan verimine düşmesi."
+      ],
+      "celiskiler": [
+        {
+          "konu": "Ajan başına 1 GB kuralı",
+          "codex": "'Evrensel bir ajan 1 GB kuralı kullanmayalım' (report §128 GB).",
+          "biz": "A2: resmî taban 1 GiB/ajan.",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "T1 çelişki 3 ile aynı. Agent SDK hosting sayfası 1 GiB'i 'taze örnek için başlangıç, tavan değil taban' diye tanımlıyor. https://code.claude.com/docs/en/agent-sdk/hosting"
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "AWS'nin retry katlanması ve idempotent API rehberi",
+          "neden": "Genel ilke; A2 ve B2'de retry katlanması ve idempotency zaten işlenmiş."
+        },
+        {
+          "ne": "Git worktree'nin RAM, port ve DB yalıtımı sağlamaması",
+          "neden": "Zaten A2 ve C6'da var (worktree/sandbox ayrımı)."
+        },
+        {
+          "ne": "Anthropic C derleyici deneyi (ajanların tek büyük engelde yığılması)",
+          "neden": "Zaten C4, C1 ve C6'da var."
+        },
+        {
+          "ne": "Cursor Ocak 2026 'scaling-agents' yazısı",
+          "neden": "Zaten C4 ve C6'da var."
+        },
+        {
+          "ne": "n8n queue mode, alt akış ve AI Agent düğümü mekanizmaları",
+          "neden": "Doküman özetleri, karar değeri düşük; tıkanıklık iddiası içermiyor."
+        },
+        {
+          "ne": "PostgreSQL kilit sırası ve süresiz kilit beklemesi",
+          "neden": "Genel doküman bilgisi; bizde B3'te advisory lock riskleri var."
+        },
+        {
+          "ne": "Codex'in n8n/Kestra/Temporal için önerdiği 'aynı arıza paketiyle karşılaştır' ve 'Temporal koşullu pilot' kararı",
+          "neden": "Bir argüman, doğrulanabilir bir bulgu değil. C0 ve C3'teki kararla çelişmiyor, E5-ozet.md'de not edildi."
+        },
+        {
+          "ne": "Claude Code subagent ve agent-teams sınırları",
+          "neden": "Zaten A2, C6 ve C4'te var."
+        }
+      ]
+    },
+    {
+      "konu": "Agentic geliştirmede projeler ve vakalar",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/B1-ozet.md",
+        "mimari-haritasi/arastirma/B1-hazir-projeler.json",
+        "mimari-haritasi/arastirma/B2-ozet.md",
+        "mimari-haritasi/arastirma/B2-vaka-katalogu.json",
+        "mimari-haritasi/arastirma/B3-ozet.md",
+        "mimari-haritasi/arastirma/A1-ozet.md",
+        "mimari-haritasi/arastirma/C1-ozet.md",
+        "mimari-haritasi/arastirma/C2-ozet.md",
+        "mimari-haritasi/arastirma/C4-ozet.md"
+      ],
+      "codex_dosyalari": [
+        "reports/Agentic geliştirmede projeler ve vakalar.md",
+        "research_notes/Agentic geliştirmede projeler ve vakalar/projects.md (+.json)",
+        "research_notes/Agentic geliştirmede projeler ve vakalar/cases.md (+.json)",
+        "research_notes/Agentic geliştirmede projeler ve vakalar/failures.md (+.json)",
+        "(birebir kopyası: agentic-sistem/arastirma/projeler-ve-vakalar/ — cmp ile aynı; bir kez sayıldı)"
+      ],
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-T3-01",
+          "bulgu": "Ramp Sheets'in kendini bakımlı tutan döngüsü (23 Mart 2026): bir monitör tetiklenince Datadog webhook'u uyarı bağlamıyla yeni bir ajan başlatıyor, ajan triyaj yapıp düzeltme öneriyor. İlk haftada kullanıcıların tetiklediği 40 gerçek hata dakikalar içinde yakalandı. Sorunlar da oldu: otomatik üretilen monitörler kötü eşiklerle gürültü ve yanlış pozitif üretti, aynı sorun için tekrar tekrar tetiklenip mükerrer Slack bildirimi ve bir 'uyarı çağlayanı' yarattı. Sayılar uygulayıcının beyanı; bağımsız sayım yok.",
+          "kaynak_url": [
+            "https://labs.ramp.com/research/ramp-sheets-self-maintaining/"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/cases.md (CASE03)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Ramp Labs yazısı okundu; tarih, 40 hata ve gürültü sorunu doğrulandı.",
+          "bizdeki_ilgili_yer": "A1-ozet.md (Ramp Inspect ~%30); B2 (izleme ve alarm vakaları)"
+        },
+        {
+          "id": "E5-T3-02",
+          "bulgu": "Spotify, 3 Haziran 2026 ('Coding is no longer the constraint'): darboğaz artık kod yazmak değil, insan kararı ve inceleme. Güvenli olanı otomatik birleştirip incelemeyi önemli yere odaklıyorlar. Mühendislerin %99'u haftalık AI kodlama aracı kullanıyor, %94'ü verim artışı bildiriyor. PR sıklığı %76 arttı. Fleet Management 2,5 milyon otomatik bakım PR'ı birleştirdi, çoğu insan müdahalesi olmadan otomatik birleşti. Bir Java göçü haftalar ya da aylar yerine 3 günde bitti. Hepsi şirketin kendi beyanı.",
+          "kaynak_url": [
+            "https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/cases.md (CASE04, CASE-S08)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Spotify Engineering yazısı okundu.",
+          "bizdeki_ilgili_yer": "A1-ozet.md ve C4 (Spotify Honk 1–4. bölümler; 240 göç PR'ı); C6 (insan inceleme kapasitesi darboğazı)"
+        },
+        {
+          "id": "E5-T3-03",
+          "bulgu": "Open SWE'yi bağımsız (standalone) Agent Server ile self-host etmek şunları gerektiriyor: `LANGGRAPH_CLOUD_LICENSE_KEY`, `LANGSMITH_API_KEY`, Postgres ve Redis. Uygulama MIT lisanslı olsa da çalışma zamanı lisans anahtarına bağlı. Standalone imajda `LANGGRAPH_AUTH_TYPE` varsayılanı `noop`; bu durumda /threads, /runs, /assistants ve /store API'leri porta erişen herkese açık kalıyor. Scale-to-zero barındırma desteklenmiyor, çünkü arka plan koşuları sürekli çalışan worker'lara bağlı.",
+          "kaynak_url": [
+            "https://github.com/langchain-ai/open-swe/blob/main/docs/INSTALLATION.md"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/projects.md (Open SWE lisans)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "INSTALLATION.md `gh api` ile okundu (satır 46–48).",
+          "bizdeki_ilgili_yer": "C1-ozet.md (Open SWE 13/22, 'stability not guaranteed'); B1"
+        },
+        {
+          "id": "E5-T3-04",
+          "bulgu": "OpenHands SDK #2482 (2026-03-17, kapanış 03-20): uzak konuşma, genişletilmiş düşünme (extended thinking) kullanan modellerde monolog dedektörünün yanlış pozitifi yüzünden takıldı. İlgili düzeltmeler: LiteLLM #24070 (thinking alanı null olunca thinking blokları düşüyordu; 2026-03-19'da birleşti) ve SDK #2512 (JSON argüman ayrıştırma ve düzeltici geri bildirim; 2026-03-20'de birleşti). Ders: takılma dedektörü model ve sağlayıcı katmanındaki hatayı 'ajan döngüde' diye yanlış sınıflayabilir.",
+          "kaynak_url": [
+            "https://github.com/OpenHands/software-agent-sdk/issues/2482",
+            "https://github.com/BerriAI/litellm/pull/24070",
+            "https://github.com/OpenHands/software-agent-sdk/pull/2512"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/projects.md (PRJ-E02)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile durum ve tarihler doğrulandı.",
+          "bizdeki_ilgili_yer": "D2 (OpenHands SDK issue'ları); E5-T7-01"
+        },
+        {
+          "id": "E5-T3-05",
+          "bulgu": "OpenAI Codex #18881 (2026-04-21, kapanış 04-28): McpConnectionManager değiştirildiğinde MCP alt süreçleri sızıyordu. Stdio MCP sunucularını kapanışta sonlandıran #19753 2026-04-28'de birleşti. Ders: ajan CLI'larında yetim MCP süreçleri de kaynak tüketir; oturum bitince süreç ağacı denetlenmeli.",
+          "kaynak_url": [
+            "https://github.com/openai/codex/issues/18881",
+            "https://github.com/openai/codex/pull/19753"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/failures.md (FAIL-S08, FAIL-S20)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile doğrulandı.",
+          "bizdeki_ilgili_yer": "D2 (Codex CLI hataları); A2 (süreç modeli)"
+        },
+        {
+          "id": "E5-T3-06",
+          "bulgu": "OpenAI Symphony tartışma #64 (2026-05-04, açık, cevapsız): Elixir runner, çalışma alanı kurulumu başarısız olduğu hâlde devam ediyor ve Codex MCP elicitation'ında takılıyor. Symphony'nin 'Stalled' aşaması olsa da kurulum hatası ile ajan beklemesi ayrılmıyor.",
+          "kaynak_url": [
+            "https://github.com/openai/symphony/discussions/64"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/projects.md (PRJ-E01)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh GraphQL: createdAt 2026-05-04, closed=false, answer=null.",
+          "bizdeki_ilgili_yer": "C2-ozet.md (Symphony deneme aşamaları: …/Stalled/…); B1 #1 Symphony"
+        },
+        {
+          "id": "E5-T3-07",
+          "bulgu": "Vibe Kanban #1718 (2026-01-01, kapanış 01-08): çalışan kodlama görevi hiç bitmiyor. Görev durdurulamıyor ve birleştirilemiyor; neden 'database is locked'.",
+          "kaynak_url": [
+            "https://github.com/BloopAI/vibe-kanban/issues/1718"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/projects.md (PRJ-E04)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile doğrulandı.",
+          "bizdeki_ilgili_yer": "B1 (Vibe Kanban #3227, #3218, şirket kapanışı)"
+        },
+        {
+          "id": "E5-T3-08",
+          "bulgu": "UTBoost (arXiv 2506.09289): SWE-Bench'te test durumları yetersiz olan 36 görev ve daha önce 'geçti' diye etiketlenmiş 345 hatalı patch bulundu. Liderlik tablolarında SWE-Bench Lite'ta 18, Verified'da 11 sıralama değişti. Ders: benchmark testleri de yanlış kabul üretir; oracle'ın kendisi doğrulanmalı.",
+          "kaynak_url": [
+            "https://arxiv.org/abs/2506.09289"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/failures.md (FAIL-S02)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "arXiv özeti okundu (36 / 345 / 18 / 11).",
+          "bizdeki_ilgili_yer": "C5 (oracle); C4 ve A2 (SWE-bench Verified anılıyor); B3"
+        },
+        {
+          "id": "E5-T3-09",
+          "bulgu": "OpenAI, SWE-bench Verified skorlarını Şubat 2026'da raporlamayı bıraktı. o3'ün 64 koşuda tutarlı çözemediği 138 görev denetlendi; %59,4'ünde test tasarımı ya da görev tanımında esaslı kusur bulundu (dar testler %35,5, tanımda olmayan işlevi isteyen geniş testler %18,8). Eğitim verisine sızma da skorları şişiriyor. Önerilen alternatif: SWE-bench Pro.",
+          "kaynak_url": [
+            "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/"
+          ],
+          "codex_kaynagi": "research_notes/Agentic geliştirmede projeler ve vakalar/failures.md (FAIL-S01)",
+          "dogrulama": "kismen",
+          "dogrulama_notu": "Birincil sayfa WebFetch ve curl ile 403 döndü. 138 / 64 / %59,4 sayıları ikincil kaynaklarla (web araması: dev.to ve aetos.ai kopyaları, arXiv 2608.13867 atfı) örtüşüyor. Birincil metin okunamadı.",
+          "bizdeki_ilgili_yer": "C4 ve A2 (SWE-bench Verified skorları kullanılıyor); B3 (kirlenme riski)"
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "B1: 35 proje ve 159 kanıtlı sorun, yıldız ve push verisi gh api ile (27.09.2026). Cyrus'ta 4 haftada 15 OOM (#1381); Agent Orchestrator 40'tan fazla işçide çöküyor (#3921); Copilot cloud agent dotnet/runtime'da %67,9 birleşme (insan PR'larında %87,1).",
+        "B1: Agents in Jira ve Copilot for Jira 'duruma geçince ajanı tetikle' (GA Mayıs 2026). Hiçbir hazır proje Plane'i yerel olarak desteklemiyor.",
+        "B1: OpenHands için CVE-2026-33718 (get_git_diff'te komut enjeksiyonu, CVSS 7,6, NVD 2026-03-27). Codex OpenHands'i birinci pilot adayı yaparken bunu anmıyor.",
+        "B2: 16 sınıfta 88 vaka ve 161 kaynak; risk haritasıyla (EV-/SS-) bağlantı.",
+        "B3: agentic-fabrika koduna yapılmış 62 arıza kipli ön-ölüm (dosya:satır kanıtlı); 30'u 'MVP öncesi şart'.",
+        "C1: 32 adayın R1–R12 matrisi (GitLab Duo 17/22, Gas Town 14, Open SWE 13); R7 ve R8 hiçbir üründe yok.",
+        "A1: Coinbase Forge iddialarının doğrulanamadığı notu; METR RCT; kurumlarda ortak mimari sonucu."
+      ],
+      "celiskiler": [
+        {
+          "konu": "İlk pilot için proje önceliği",
+          "codex": "Önce OpenHands'in hazır bileşenleri (SDK + Automation) dar bir görevle denenmeli; Symphony karşılaştırılmalı; Open SWE, lisans uygunsa üçüncü aday (reports/Agentic geliştirmede projeler ve vakalar.md).",
+          "biz": "B1: akışa en yakın 1. Symphony; OpenHands ikinci sıradakiler arasında (puan 4; döngü ve zombi süreç sorunları, CVE-2026-33718). C1: GitLab Duo 17/22, Gas Town 14, Open SWE 13.",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "Bu bir değerlendirme farkı; iki tarafın olgusal dayanağı doğrulandı. NVD: CVE-2026-33718 2026-03-27'de yayımlandı, CVSS 7,6, OpenHands 1.5.0 ve sonrası. gh: OpenHands 89,3k yıldız, MIT; Symphony 27,4k, Apache-2.0, son push 2026-09-15. Codex'in önceliği CVE'yi ve B1'deki zombi süreç kanıtını hesaba katmıyor; bizim sıralamamız OpenHands'in 2026-07-27'deki SDK/Automation ayrımını daha az ağırlıklandırıyor. Karar ölçülü bir pilot karşılaştırmasına bırakılmalı."
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "Stripe Minions (1. ve 2. bölüm), Ramp Inspect (~%30), Spotify Honk 2–4 (240 PR), Coinbase Mux (461 repo, 5.068 PR), Cursor, Anthropic C derleyici",
+          "neden": "Zaten bizde var (A1, C4, C6)."
+        },
+        {
+          "ne": "Symphony, OpenHands, mini-swe-agent ve Vibe Kanban'ın genel tanımları ve lisansları",
+          "neden": "Zaten B1, C1 ve C2'de var. gh ile çelişki bulunmadı (lisanslar aynı, hiçbiri arşivlenmemiş)."
+        },
+        {
+          "ne": "OpenHands SDK #762/#763 (takılma eşikleri)",
+          "neden": "E5-T7-01'de eklendi."
+        },
+        {
+          "ne": "Self-Preference Bias (arXiv 2410.21819)",
+          "neden": "LLM yargıçta kendini kayırma konusu E5-T56'da çelişki olarak işlendi; burada tekrarlanmadı."
+        },
+        {
+          "ne": "SWE-rebench metodolojisi, GitHub REST best practices, npm provenance, pytest flaky testleri, GitHub Copilot riskleri",
+          "neden": "Genel doküman bilgisi, vaka değil; karar değeri düşük ya da bizde benzeri var (A3 provenance, C6/B2 flaky)."
+        },
+        {
+          "ne": "Codex failures.json'daki 'implemented_changes', 'oracle_layers' ve 16 risk",
+          "neden": "Codex'in kendi tasarım ve risk değerlendirmesi; dış birincil kaynağa dayanan bulgu değil."
+        },
+        {
+          "ne": "Cursor self-driving codebases ve agent-swarm-model-economics",
+          "neden": "E5-T2-06 ve E5-T2-07'de eklendi."
+        }
+      ]
+    },
+    {
+      "konu": "Çok katmanlı agentic yazılım fabrikası",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/C0-sentez.md",
+        "mimari-haritasi/arastirma/C1-ozet.md",
+        "mimari-haritasi/arastirma/C1-hazir-sistemler.json",
+        "mimari-haritasi/arastirma/C2-ozet.md",
+        "mimari-haritasi/arastirma/C4-ozet.md",
+        "mimari-haritasi/arastirma/C5-ozet.md",
+        "mimari-haritasi/arastirma/C5-hrms-alan-ve-oracle.json",
+        "mimari-haritasi/arastirma/C6-ozet.md",
+        "mimari-haritasi/arastirma/E4-ozet.md (Codex mimari paketi karşılaştırması; çakışma kontrolü için)"
+      ],
+      "codex_dosyalari": [
+        "reports/Çok katmanlı agentic yazılım fabrikası.md",
+        "research_notes/Çok katmanlı agentic yazılım fabrikası/architecture.md (+.json)",
+        "research_notes/Çok katmanlı agentic yazılım fabrikası/platforms.md (+.json)",
+        "research_notes/Çok katmanlı agentic yazılım fabrikası/hrms.md (+.json)",
+        "(birebir kopyası: agentic-sistem/arastirma/cok-katmanli-fabrika/ — cmp ile aynı; bir kez sayıldı)"
+      ],
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-T4-01",
+          "bulgu": "Paperclip (paperclipai/paperclip; MIT, Node/React/PostgreSQL; 88,5k yıldız; oluşturulma 2026-03-02, son push 2026-09-27) kendini ajan ekiplerini org chart, bütçe, onay ve yönetişimle yöneten bir kontrol düzlemi olarak tanımlıyor. Claude Code, Codex ve Cursor gibi harness'leri kendisi getirmiyor, dışarıdan bağlıyor ('heartbeat alabiliyorsa işe alınır'). Execution semantiğinde bir işi `blocked` durumuna almak için yönlendirilebilir bir bekleme yolu gerekiyor (blockedByIssueIds ya da yapılandırılmış unblock tanımı); adı geçen sahibe anında wake veya inbox bildirimi gidiyor. Yalnız serbest metinle yazılmış 'blocked' kimseye yönlenmiyor: API reddediyor ya da `needs_attention` olarak işaretliyor. C1'deki 32 aday arasında Paperclip yok.",
+          "kaynak_url": [
+            "https://github.com/paperclipai/paperclip",
+            "https://github.com/paperclipai/paperclip/blob/main/doc/execution-semantics.md"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/platforms.md (PLAT02)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: repo meta; README (satır 35–92); execution-semantics.md (satır 62–81).",
+          "bizdeki_ilgili_yer": "C1-hazir-sistemler.json (32 aday; Paperclip yok); E6 ders 4 ve dunya-vakalari K09 (sahipsiz bekleme); E4 (yalnız adı geçiyor)"
+        },
+        {
+          "id": "E5-T4-02",
+          "bulgu": "Warren (jayminwest/warren; MIT, 459 yıldız, son push 2026-09-26) self-host iş yükü kontrol düzlemi. RuntimeProvider sözleşmesinde `maxProjectConcurrency` yalnız K8s sağlayıcısında uygulanıyor, LocalProvider bunu yok sayıyor; `projectResources` yalnız K8s'te var. Forge auto-merge tasarımında birleştirme politikası, ajanın yazdığı run dalından değil PR'ın base dalından okunuyor. Auto-merge'i devreye almak (arming) 'best-effort'; başarısız olursa run başarısız sayılmıyor. Yani 'run başarılı' ile 'trunk'a birleşti' ayrı durumlar.",
+          "kaynak_url": [
+            "https://github.com/jayminwest/warren/blob/4725380e40c3f61bec6af3d5c0a542e96c122dbd/src/runtime/contract.ts",
+            "https://github.com/jayminwest/warren/blob/4725380e40c3f61bec6af3d5c0a542e96c122dbd/docs/design/forge-auto-merge.md"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/platforms.md (PLAT06)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile contract.ts (satır 60–82) ve forge-auto-merge.md (§3.1, 'arming is best-effort') okundu.",
+          "bizdeki_ilgili_yer": "C1 (Warren yok); C3 (port/adaptör sözleşmesi); C6 (merge kuyruğu)"
+        },
+        {
+          "id": "E5-T4-03",
+          "bulgu": "Overstory (jayminwest/overstory; MIT, 1,3k yıldız) arşivlendi; son push 2026-05-28. Bakımcı yeni işler için Warren'a yönlendiriyor. Watchdog'u kalıcı koordinatör ve monitör süreçlerini zamana dayalı 'stale' denetiminden muaf tutuyor; yani canlı ama amaçsız bir koordinatör bu denetimle yakalanmıyor.",
+          "kaynak_url": [
+            "https://github.com/jayminwest/overstory",
+            "https://github.com/jayminwest/overstory/blob/ff38f3f76f084abcc34f519bcaa69580f6e53cf1/src/watchdog/health.ts"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/platforms.md (PLAT05)",
+          "dogrulama": "kismen",
+          "dogrulama_notu": "gh api: archived=true, pushed_at 2026-05-28. health.ts'deki muafiyet satırı ayrıca okunmadı; Codex notuna dayanıyor.",
+          "bizdeki_ilgili_yer": "C1 (Overstory yok); D1 §1 ('RUNNING' ilerleme değildir)"
+        },
+        {
+          "id": "E5-T4-04",
+          "bulgu": "Uber, 27 Ağustos 2026 ('efficient software factory'): 4 katmanlı AI kullanım modeli; 3.600'den fazla ajan skill'i, günde 30 bin'den fazla skill çalıştırması. Şubat–Ağustos 2026 arasında haftalık aktif kullanıcı 7 kat, ajan istekleri 9,4 kat arttı. PR'ların %70'inden fazlası ajanlara atfediliyor. 1.000 istek başına maliyet %34, oturum başına maliyet %52 düştü. Harcama altı çarpana ayrılıyor (kullanıcı × oturum × tur × istek × token × fiyat) ve ortadaki verimlilik terimleri hedefleniyor. CLI tabanlı araç çözümlemesiyle 50–70 bin token şema şişkinliği kalkıyor. Ajan işlerinde insan incelemesi ve eskalasyon yolu korunuyor.",
+          "kaynak_url": [
+            "https://www.uber.com/gb/en/blog/efficient-software-factory/"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/architecture.md (ARCH15)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Uber blogu okundu; sayılar şirketin beyanı.",
+          "bizdeki_ilgili_yer": "A1 (Uber'in önceki kaynakları); C6 (maliyet modeli)"
+        },
+        {
+          "id": "E5-T4-05",
+          "bulgu": "Shopify, 28 Mayıs 2026 ('Under the River'): Aquifer platformu üç katmana ayrılıyor. Kalıcı oturum Postgres'te yalnız eklemeli olay günlüğü olarak tutuluyor ('korunması gereken şey oturumdur'); ajan harness'i atılabilir bir Go çalışma zamanı; sandbox ayrı ve 'cattle-not-pets'. 30 günde 5.170 Slack kanalında 59.918 River oturumu açıldı, 7.000'den fazla çalışan katıldı, River'ın ortak yazarı olduğu 3.536 PR birleşti; şirket genelinde birleşen her 8 PR'dan biri ajan ortak yazarlı. Tek 'World' monorepo'ya geçişte CI bir büyüklük mertebesi büyüdü; merge kuyruğu ve build cache kritik ürünlere dönüştü.",
+          "kaynak_url": [
+            "https://shopify.engineering/under-the-river"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/architecture.md (ARCH16)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Shopify Engineering yazısı okundu.",
+          "bizdeki_ilgili_yer": "C3 (durum sizde durmalı; oturum ve olay defteri); C6 (tek trunk ve merge kuyruğu kapasitesi)"
+        },
+        {
+          "id": "E5-T4-06",
+          "bulgu": "Atlassian, 27 Ağustos 2026 ('Agentic automation in practice'): üç rol var. Dispatcher uygun işi bulup sınıflıyor, tekilleştiriyor ve dağıtıyor; coding agent PR açıyor; closer, değişikliğin birleştiğini ve dağıtılan build'de bulunduğunu doğruladıktan sonra kaydı kapatıyor. Kapsam güvenlik açığı giderme; PR'ları insanlar inceleyip birleştiriyor. Mayıs–Temmuz 2026'da 120'den fazla açık giderildi, 55'ten fazla otomatik PR birleşti, ilk koşuda birleşme oranı %95.",
+          "kaynak_url": [
+            "https://www.atlassian.com/blog/development/agentic-automation-in-practice-putting-standard-engineering-work-on-autopilot"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/architecture.md (ARCH17)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Atlassian blogu okundu.",
+          "bizdeki_ilgili_yer": "C1 R7/R8 (dağıtılmış ortamı doğrulama hiçbir üründe yok; Atlassian closer'ı bunun dar bir örneği); B1 (Agents in Jira)"
+        },
+        {
+          "id": "E5-T4-07",
+          "bulgu": "Kueue Admission Fair Sharing, işleri kaynak LocalQueue'larının geçmiş kaynak kullanımına göre sıraya koyuyor; daha az tüketmiş kuyruğa öncelik veriyor. Entry Penalty (v0.13.0 ve sonrası) kabul anında tüketimi hemen istatistiğe ekliyor, böylece ani toplu gönderimle avantaj sağlanamıyor. Özellik v0.15'ten beri beta ve varsayılan olarak açık. 144 ekibin ortak kapasiteyi adil paylaşması için referans mekanizma.",
+          "kaynak_url": [
+            "https://kueue.sigs.k8s.io/docs/concepts/admission_fair_sharing/"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/architecture.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Kueue dokümanı okundu.",
+          "bizdeki_ilgili_yer": "C6 (144 ekip için kota, WIP ve öncelik; 'hiçbir üründe yok')"
+        },
+        {
+          "id": "E5-T4-08",
+          "bulgu": "Frappe'de ERP/HRMS teslim kanıtı için üç sınır belgelenmiş. (1) Bordro tahakkuku ve Bank Entry maaşın bankaya ödendiği anlamına gelmiyor: 'bu adımın elle yapılması gerekir'. (2) Frappe ters şema göçünü desteklemiyor: 'Frappe doesn't support reverse schema migrations'; yani kodu geri almak veriyi geri almak değil. (3) `frappe.db.set_value`, validate ve on_update gibi ORM tetikleyicilerini çağırmıyor, doğrulama atlanabiliyor. Sonuç: 'UI yeşil', 'build geçti' ya da 'audit özelliği var' ifadeleri iş sonucunun kanıtı sayılmaz.",
+          "kaynak_url": [
+            "https://docs.frappe.io/hr/how-to-process-payroll-in-frappehr",
+            "https://docs.frappe.io/framework/user/en/database-migrations",
+            "https://docs.frappe.io/framework/user/en/api/database"
+          ],
+          "codex_kaynagi": "research_notes/Çok katmanlı agentic yazılım fabrikası/hrms.md (Soru 2–3)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Üç Frappe doküman sayfası okundu; alıntılar birebir.",
+          "bizdeki_ilgili_yer": "C5 (DoD koşulları: entegrasyon, retro fark, veri göçü mutabakatı); C0 (Frappe HRMS değerlendirmesi)"
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "C1: 32 aday için R1–R12 matrisi. GitLab Duo Agent Platform 17/22 ile en yakın aday; Codex'te GitLab Duo hiç yok. R7 (uzak ortama dağıtıp doğrulama) ve R8 (dağıtılmış ortamdaki incelemeden otomatik görev üretme) hiçbir üründe yok.",
+        "C2: OpenHands'in 2026-07-27'deki yeniden yapılandırması, Agent Server API'si, ACP ile başka harness'ler, max_concurrent_runs=10; Symphony'nin deneme aşamaları; Aperant'ın bakım modu (Codex ile aynı).",
+        "C4: 23 büyük yapım vakası. ERP/HRMS ölçeğinde DoD'ye kadar bitirilmiş kamuya açık ajan yapımı yok. FastRender derlenmedi, CI %88 başarısız. Google/MIT 17,2x ve 4,4x hata büyümesi.",
+        "C5: Türkiye HRMS'i için DoD: 18 ortak madde, 16 'Türkiye farkı', 2026 yasal parametreleri, test ortamı olan tek yer SGK 4/a, 25 risk, 24 oracle kaynağı. Codex'in 28 menülük HRMS analizi soyut; Türkiye mevzuatı ve resmî kaynak yok.",
+        "C6: 144 ekip, tek trunk; insan inceleme ve trunk entegrasyon kapasitesi aritmetiği; maliyet aralıkları.",
+        "C0: 'Hazır sistem yok' sentezi, Netflix'in Temporal geçişi (%4'ten %0,0001'e hata)."
+      ],
+      "celiskiler": [
+        {
+          "konu": "Hazır referans platform seçimi",
+          "codex": "En yakın üç referans: Paperclip (üst örgüt ve iş sahipliği), Gas Town (dağıtım, izleme, birleşim), Warren (değiştirilebilir yürütme ve teslim çekirdeği); üçünün birlikte hazır çalıştığı iddia edilmiyor (platforms.md).",
+          "biz": "C1: en yakınlar GitLab Duo 17/22, Gas Town 14/22, Open SWE 13/22; Paperclip ve Warren matriste yok.",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "İki listede de Gas Town var. gh: Paperclip 88,5k yıldız (MIT, aktif) ve Warren 459 yıldız (MIT, aktif) C1'in 32 adayında yok, bu gerçek bir kapsam boşluğu. GitLab Duo da Codex'te yok. Doğru yaklaşım: Paperclip ve Warren'ı C1'in R1–R12 ölçütleriyle puanlamak."
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "Aperant (bakım modu, 3.0 ayrı depoda, v2.7.6), Gas Town, Agent Orchestrator, Ruflo platform özetleri",
+          "neden": "Zaten C1, C2 ve D2'de var. gh ile kontrol edildi, çelişki yok (Aperant AGPL-3.0, v2.7.6 2026-02-20)."
+        },
+        {
+          "ne": "Codex'in 28 menülük HRMS kabul sorusu tablosu (HR01–HR28)",
+          "neden": "Codex'in kendi kabul tasarımı, dış birincil kaynak bulgusu değil. C5'teki 28 modülle uyumlu."
+        },
+        {
+          "ne": "Odoo 19 bordro, modül ve güvenlik dokümanları; Frappe HR çalışan, izin, transfer ve onboarding sayfaları",
+          "neden": "Genel ürün dokümanı; C5-ek-urun-karsilastirma.json'da Frappe ve Odoo karşılaştırması zaten var."
+        },
+        {
+          "ne": "MCP yaşam döngüsü ve iptal (iptal bildirimi yok sayılabilir), gVisor güvenlik sınırı, git worktree, GitHub webhook best practices ve deployments API",
+          "neden": "Bizde benzeri var (A2, A3, C6) ya da doküman düzeyinde; karar değeri düşük."
+        },
+        {
+          "ne": "SAFe Solution Train ve Team/Technical Agility",
+          "neden": "Kavramsal çerçeve; bizde A3'te SAFe tartışması var."
+        },
+        {
+          "ne": "Codex'in durum-alanı sahipliği mimarisi (her durum alanına tek yazıcı), trunk + uzak alpha teslim zinciri",
+          "neden": "Codex'in tasarımı; E4'te (M-K13–M-K25) zaten karşılaştırıldı."
+        }
+      ]
+    },
+    {
+      "konu": "Evrilebilir agentic fabrika",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/C3-ozet.md",
+        "mimari-haritasi/arastirma/C3-tak-cikar.json",
+        "mimari-haritasi/arastirma/C0-sentez.md",
+        "mimari-haritasi/arastirma/A3-ozet.md",
+        "mimari-haritasi/arastirma/A2-ozet.md",
+        "mimari-haritasi/arastirma/B3-ozet.md",
+        "mimari-haritasi/arastirma/C5-ozet.md",
+        "mimari-haritasi/arastirma/C6-ozet.md"
+      ],
+      "codex_dosyalari": [
+        "reports/Evrilebilir agentic fabrika.md",
+        "agentic-sistem/data/13_evrilebilirlik/04_kaynaklar.json"
+      ],
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-EVR-01",
+          "bulgu": "Kanarya ile geçiş değerlendirmesi için Google SRE Workbook üç kural koyuyor. (1) Kanaryayı eşzamanlı çalışan kontrol grubuyla karşılaştır. Önce/sonra karşılaştırması risklidir, çünkü zaman metriklerdeki en büyük değişim kaynağıdır. (2) Göreli karşılaştırmanın yanında SLO gibi mutlak ölçüler de kullanılmalıdır. (3) Etkileşimsiz (batch) sistemlerde kanarya süresi en az bir iş biriminin süresini kapsamalıdır. Ek uyarı: kanarya ile kontrol ortak hata alanlarını paylaşır ve kötü bir kanarya kontrol grubunu da bozabilir. Uzun süren ajan görevleri (saatler, günler) için bunun anlamı şu: kısa bir kanarya penceresi yeterli değildir.",
+          "kaynak_url": [
+            "https://sre.google/workbook/canarying-releases/"
+          ],
+          "codex_kaynagi": "reports/Evrilebilir agentic fabrika.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Sayfa curl ile indirildi ve metinde aşağıdaki cümleler birebir bulundu: 'It is important to also use absolute measures, such as defined SLOs', 'make sure the canary duration at minimum spans the duration of a single work unit', 'Before/After Evaluation Is Risky', 'a bad canary could negatively impact the control'.",
+          "bizdeki_ilgili_yer": "C3-ozet.md §6 K6 (bitiş ölçütü yalnız göreli: 'altın görevlerde kabul oranı eşit ya da daha iyi') ve K8 (kanarya); §4 katman tablosu, Model satırı ('Emeklilikten önce A/B, kanarya')"
+        },
+        {
+          "id": "E5-EVR-02",
+          "bulgu": "Microsoft'un Anti-Corruption Layer (ACL) örüntüsü sayfası (ms.date 2026-05-28) katmanın bedelini açıkça sayıyor: çağrılara gecikme ekler, yönetilip bakımı yapılması gereken ek bir servis doğurur, ölçeklenmesi ayrıca planlanmalıdır. Ayrıca şunlara karar verilmelidir: ACL kalıcı mı olacak, yoksa göç bitince kaldırılacak mı; tüm iletişimi mi karşılayacak, yalnız bir alt kümeyi mi. Sayfanın uyarısı: 'Avoid placing business rules or orchestration in the layer.' Ayrıca farklı güven düzeyindeki sistemler arasında girdi doğrulaması, korelasyon kimliği ve yapılandırılmış log önerilir. Codex de aynı sonuca varıyor: çeviri katmanı iş kurallarının yeni evi olmamalıdır.",
+          "kaynak_url": [
+            "https://learn.microsoft.com/en-us/azure/architecture/patterns/anti-corruption-layer"
+          ],
+          "codex_kaynagi": "reports/Evrilebilir agentic fabrika.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "WebFetch ile sayfanın tam metni okundu. 'Problems and considerations' ve 'might not be suitable' bölümleri birebir kontrol edildi; ms.date 2026-05-28.",
+          "bizdeki_ilgili_yer": "C3-tak-cikar.json ilkeler[1] (ACL bağlantısı var, ama bedel ve 'iş kuralı ACL'ye konmaz' kuralı yok); C3-ozet.md K1/K4"
+        },
+        {
+          "id": "E5-EVR-03",
+          "bulgu": "Microsoft'un Strangler Fig sayfası (ms.date 2026-05-29) geçişin bedelini ve geri dönülemez adımını somut olarak veriyor. Façade tek hata noktası veya darboğaz olmamalıdır. Geçiş mimarisi geçicidir ve altyapı maliyeti risk azaltmayla tartılmalıdır. Veritabanı örneğinde ise monolite geri dönüş yalnız faz 2'de ve faz 3'ün başında mümkündür. Eski tablolar, saklı yordamlar ve senkron süreçleri kaldırıldıktan sonra geri dönmek için bunları yeniden kurmak ve veri değişikliklerini yeniden oynatmak gerekir. Bu yüzden eski nesnelerin kaldırılması, yeni sistem doğrulandıktan sonra bilinçli olarak atılan son adım olmalıdır. Bu, Codex'in 'kod geri dönüşü veri geri dönüşü değildir; her geçişte geri dönülemez adım ve veri mutabakatı belirlenir' iddiasının birincil dayanağıdır.",
+          "kaynak_url": [
+            "https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig"
+          ],
+          "codex_kaynagi": "reports/Evrilebilir agentic fabrika.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "WebFetch ile tam metin okundu. 'Problems and considerations' bölümü ve 'Example' bölümündeki geri alma paragrafı birebir kontrol edildi ('You can roll back to the monolithic database during phase 2 and at the start of phase 3').",
+          "bizdeki_ilgili_yer": "C3-ozet.md §3 ilke 8 ve K6. Bayrak ve bitiş tarihi var; geri dönülemez adım ve veri geri dönüşü ayrımı yok."
+        },
+        {
+          "id": "E5-EVR-04",
+          "bulgu": "Gölge (shadow) karşılaştırma yan etki üretmemelidir. GitHub'ın Scientist kütüphanesi README'si bunu açıkça yazıyor: 'Scientist is only safe for wrapping methods that aren't changing data.' Yazma işlemlerinde önerilen yol, iki sisteme birlikte yazmak ve doğrulamayı okuma anında yapmaktır. Codex de aynı ilkeyi koyuyor: gölge değerlendirme gerçek sisteme ikinci bir yan etki yazmamalı, eski ve yeni yürütme aynı dış işlemi birbirinden bağımsız yetkilendirememelidir. Bu kural, bizim 'gerçek işle ikincil adaptör' tatbikatlarımızda çift PR, çift yorum veya çift SGK/banka gönderimi riskini doğrudan kapatır.",
+          "kaynak_url": [
+            "https://github.com/github/scientist"
+          ],
+          "codex_kaynagi": "reports/Evrilebilir agentic fabrika.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Kaynak Codex'te yok; Codex iddiasını desteklemek için README WebFetch ile okundu ve cümle birebir bulundu. Codex'in cümlesi ilke düzeyinde, kaynaksız.",
+          "bizdeki_ilgili_yer": "C3-ozet.md §4 İş girişi satırı ('2 hafta gölge senkron') ve K7 ('bir gün boyunca gerçek işle'). Yan etki yasağı tanımlı değil."
+        },
+        {
+          "id": "E5-EVR-06",
+          "bulgu": "Evrilebilirlik yalnız araç değişimi değildir. Thoughtworks'ün Building Evolutionary Architectures 2. baskı sayfası (Parsons, Ford, Kua, Sadalage) kitabı, uygunluk fonksiyonlarıyla değişimi 'across all of the architectural concerns' yönlendirmek olarak tanıtıyor ve veri, uygulama ve platform boyutlarını sayıyor. Codex bunu on değişim alanına genişletiyor: amaç ve iş kuralı, akış ve organizasyon, ajan çalışma yöntemi, orkestrasyon ve durum, yetenek, bilgi ve hafıza, veri ve alan modeli, altyapı, doğrulama ve güven, tedarikçi koşulları. Bizim C3 katman tablosu ise araç ve altyapı katmanlarına odaklı.",
+          "kaynak_url": [
+            "https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition"
+          ],
+          "codex_kaynagi": "reports/Evrilebilir agentic fabrika.md",
+          "dogrulama": "kismen",
+          "dogrulama_notu": "Kaynakta yalnız veri, uygulama ve platform boyutları geçiyor. Organizasyon, süreç, oracle ve tedarikçi alanlarını içeren on alanlık liste Codex'in kendi genişletmesi, kaynakta yok.",
+          "bizdeki_ilgili_yer": "C3-ozet.md §4 (17 katman: araç/altyapı), C3-tak-cikar.json ilkeler[6] (1. baskı ch02), C5-ozet.md (mevzuat değişimi = oracle revizyonu), C6-ozet.md (ekip yapısı)"
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "2024–2026 arası somut değişim kanıtları. Anthropic modelleri 12–13 ayda emekliye ayrıldı. OpenAI Assistants API 2026-08-26'da kapandı, Agent Builder için 2026-11-30 kapanış tarihi var. Roo Code, Vibe Kanban, Terragon ve Crystal kapandı. Flowise 2026-08-13'te arşivlendi. Anthropic'in üçüncü taraf kuralı 6 ayda 5 kez değişti. Harness ve orkestratör ömrü 8–18 ay (C3 §1; C3-tak-cikar.json degisim_kanitlari, 43 kayıt). Codex ADR'si hiç ampirik değişim kanıtı içermiyor.",
+        "Düğüm-grafiği araçlarının belgelenmiş sınırları. Örnek: n8n'de 65 saniyeyi aşan Wait çalışması veritabanına yazılıyor; varsayılan zamanlayıcıda 'Restarts lose pending runs'; Git desteği yalnız Business/Enterprise planlarında. Langflow'da bağlantılar kopuyor. Zapier dışa aktarımı yalnız Zapier hesapları arasında çalışıyor (C3 §2; dugum_grafigi_araclari).",
+        "Uyumluluk takımları (TCK/conformance): Kubernetes CRI, MCP conformance ve A2A TCK, 'TCK'den geçmeyen adaptör devreye alınmaz' kuralıyla birlikte (C3 ilke 3, K1).",
+        "Açık standart dikişleri ve ACP kapsam açığı: kayıttaki 35 ajandan yalnız 12'si oturum devamını destekliyor, hiçbiri session/stop'u desteklemiyor (C0 §4; C3 ilke 4).",
+        "Soyutlama vergisine karşı kanıt: Anthropic'in OpenAI uyum katmanı kendi dokümanında 'not production-ready'; LiteLLM issue #13402 ve #41361; Hohpe: 'Avoiding one lock-in often comes at the expense of another'. Ayrıca K4: model için ortak geçit değil, native adaptör (C3 §3).",
+        "17 katmanlık oynaklık, standart dikiş ve değişim testi tablosu (C3 §4).",
+        "Ölçülmüş geçiş vakaları: Netflix'in Temporal'a geçişi (iki çeyrek, hata %4'ten %0,0001'e), Docker'dan containerd'ye, Redis'ten Valkey'e (%20–33 daha ucuz), Terraform'dan OpenTofu'ya ve Assistants'tan Responses'a (pahalı) (C3 §5).",
+        "CI'da uygunluk fonksiyonları (çekirdek sağlayıcı SDK'sı import etmez; her spec en az bir teste bağlı; defter dışında alan durumu yazan kod yok) ve kaldırma tarihi kapısı (OpenHands software-agent-sdk #5106) (C3 K8–K9).",
+        "DORA md. 28: çıkış planı 'sufficiently tested' olmalı (C3 ilke 10).",
+        "Kaizen/OODA/PDCA döngüleri ve S0–S4 olgunluk yolu, her seviyenin geçiş ölçütüyle (A3 §6–7).",
+        "Pilottan somut ders: Kestra 'ikinci beyin' sorunu ve V1-4 görevinin P7D zaman aşımıyla düşmesi (C3 §2, A0).",
+        "Temporal Worker Versioning'in v1.31.0'da GA olması (A2-ozet.md) ve versiyonlama eksikliğinin arıza kipi olarak kaydı (B3 AK-19)."
+      ],
+      "celiskiler": [
+        {
+          "konu": "Geçiş ya da kanarya bitiş ölçütü: yalnız göreli mi, mutlak eşik de mi?",
+          "codex": "Yeni sürümü az sayıda işte sınamak tek başına güvence değildir. Uzun süren işlerin sonuçlanması beklenmeli, mevcut sürüme benzerliğin yanında mutlak kabul sınırları da değerlendirilmelidir (reports/Evrilebilir agentic fabrika.md, 'Değişme yeteneğinin kanıtı').",
+          "biz": "K6'daki bitiş ölçütü yalnız göreli: 'altın görevlerde kabul oranının eşit ya da daha iyi olması'. Model katmanında 'emeklilikten önce A/B, kanarya' deniyor; süre ve mutlak eşik tanımlı değil (C3-ozet.md §4, §6 K6/K8).",
+          "dogru_olan": "codex",
+          "kanit": "https://sre.google/workbook/canarying-releases/ adresinde 'It is important to also use absolute measures, such as defined SLOs, to ensure the system is operating correctly' ve 'make sure the canary duration at minimum spans the duration of a single work unit' cümleleri var. Bizim kural yanlış değil ama eksik; mutlak eşik ve en az bir tam iş birimi süresi eklenmeli."
+        },
+        {
+          "konu": "Gerçek işle ikincil adaptör tatbikatı ve yan etki",
+          "codex": "Gölge değerlendirme gerçek sisteme ikinci bir yan etki yazmamalıdır. Eski ve yeni yürütme aynı dış işlemi bağımsız yetkilendiremez. Evrensel bir motor şimdiden gerekmez; adaptör somut ihtiyaç doğunca yazılır (reports/Evrilebilir agentic fabrika.md).",
+          "biz": "K7: 'Her çeyrek oynak katmanlardan biri ikincil adaptöre geçirilir ve bir gün boyunca gerçek işle çalıştırılır.' Tracker için '2 hafta gölge senkron' öngörülüyor. Çift yan etkiyi önleyen bir kural yok (C3-ozet.md §4, §6).",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "Tatbikat gerekçesi bizde güçlü: C3 §1 değişim kanıtları ve DORA md. 28 'sufficiently tested'. Buna karşılık https://github.com/github/scientist README'si 'Scientist is only safe for wrapping methods that aren't changing data' diyor; SRE Workbook da 'a bad canary could negatively impact the control' uyarısını yapıyor. Sonuç: K7 kalmalı, ama tatbikatta dış etki (PR, yorum, bildirim, ödeme) yalnız tek yürütücüden çıkmalı ya da idempotency anahtarıyla tekilleştirilmeli."
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "Building Evolutionary Architectures (evrimsel mimari) ve uygunluk fonksiyonları kaynağı",
+          "neden": "Zaten bizde var: C3-tak-cikar.json ilkeler[6] (1. baskı ch02 ve Thoughtworks Radar fitness function), C3 K9. Yalnız kapsam boyutu E5-EVR-06'ya alındı."
+        },
+        {
+          "ne": "Evrilebilirlik ölçütleri: değişim eforu, ilgisiz modüllere yayılan değişiklik, kesinti ve toparlanma, kayıp veya çift iş, veri farkı, kabul kalitesi, geçici bağımlılıkların kapanması; 'eklenti sayısıyla ölçülmez'",
+          "neden": "Codex'in tasarım önerisi, birincil kaynakla doğrulanacak bir olgu değil. Bizde C3 §4'teki 'değişim testi' sütunu ve K6/K9 kısmen karşılıyor. Karar aşamasında metrik seti olarak düşünülebilir."
+        },
+        {
+          "ne": "On önerilen deney (hepsi not_run) ve null bırakılan eşikler",
+          "neden": "Codex'in kendi iç durum kaydı; uygulanmamış, ölçüm yok."
+        },
+        {
+          "ne": "Çalışan ajan kendi kabul ölçütünü veya yetkisini gizlice genişletemez; düşük riskli, önceden yetkilendirilmiş değişiklikler kanıt kapılarıyla otomatik ilerler",
+          "neden": "Zaten bizde var: A3 §1 kaçınılacaklar ('ajanın kendi yapılandırmasını değiştirebilmesi'), A3 §7 S4 (işlev bazlı otonomi, kanıt bozulunca geri alma), B3 AK-03 (test yapılandırmasının korunması)."
+        },
+        {
+          "ne": "12×12 ekip yapısı bir yapılandırma tercihidir; sorumluluk sınırı her zaman dağıtım sınırı değildir",
+          "neden": "Zaten bizde var: C6-ozet.md ve C0 §7 ('144 hedef değil, en fazla tavan'; 12 ART'ın 12 HRMS alanına eşlenmesi, elastik işçi havuzu)."
+        },
+        {
+          "ne": "İş kuralı veya oracle yanlış çıkarsa yetkili ve gerekçeli biçimde revize edilir; eski sonuç sessizce yeniden yazılmaz",
+          "neden": "Zaten bizde var: C5 §1 işletim koşulu (parametre sürümleme, dönem kilidi ve yeniden açma, retro fark, denetim izi) ve 7578 sayılı Kanun örneği."
+        },
+        {
+          "ne": "Pragmatik başlangıç: bütün gelecek araçlar için evrensel motor yazmamak, adaptörü ikinci somut ihtiyaçta eklemek",
+          "neden": "Zaten bizde var: C3 K5 ve 'Ne zaman soyutlamamalı' bölümü ('İkinci bir somut uygulama yoksa port dar tutulmalı')."
+        },
+        {
+          "ne": "Görsel iş akışı ürünleri benzetmedir; düğüm değişimi davranış eşdeğerliği sağlamaz",
+          "neden": "Zaten bizde var: C3 §2 ve C0 §4 (n8n: düğüm değişimi adaptör değişimi, orkestratör değişimi durum göçü, grafik değişimi yeniden yazım)."
+        },
+        {
+          "ne": "Codex'in 'dokuz adaptör yuvası' ve 'önceki yedi platform evrilebilirlik sözleşmesine göre denenmedi' notu",
+          "neden": "Codex'in iç çerçeve ve kısa liste durumu; bizim 17 katmanlı yapımızla birebir eşlenmiyor, karar açısından ilgisiz."
+        },
+        {
+          "ne": "E5-EVR-05: Codex açık işler sürerken orkestratör değiştirmek için beş yol öneriyor (eski sürümde bitir, doğrulanmış devir, durdur-uzlaştır-yeniden başlat, planlı duraklama, reddet/ertele).",
+          "neden": "Bu Codex'in kendi tasarım önerisi; birincil kaynakla doğrulanabilecek bir bulgu değil. Dayandığı Temporal Worker Versioning (Pinned/Auto-Upgrade) zaten A2 ve C3'te var. E5-ozet.md'de argüman olarak anıldı."
+        }
+      ]
+    },
+    {
+      "konu": "Ortak yazılım üretiminde ihtiyaç tamamlama",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/A1-ozet.md",
+        "mimari-haritasi/arastirma/A1-kurum-ornekleri.json",
+        "mimari-haritasi/arastirma/A2-platform-ve-kapasite.json",
+        "mimari-haritasi/arastirma/A3-ozet.md",
+        "mimari-haritasi/arastirma/A3-havuzlar-kaizen-olgunluk.json",
+        "mimari-haritasi/arastirma/B2-ozet.md",
+        "mimari-haritasi/arastirma/B2-vaka-katalogu.json",
+        "mimari-haritasi/arastirma/B3-ozet.md",
+        "mimari-haritasi/arastirma/C0-sentez.md",
+        "mimari-haritasi/arastirma/C3-ozet.md",
+        "mimari-haritasi/arastirma/C4-ozet.md",
+        "mimari-haritasi/arastirma/C5-ozet.md",
+        "mimari-haritasi/arastirma/C6-olcek-144-ekip.json",
+        "mimari-haritasi/arastirma/D1-ozet.md"
+      ],
+      "codex_dosyalari": [
+        "reports/Ortak yazılım üretiminde ihtiyaç tamamlama.md",
+        "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/insan_ve_amac.md",
+        "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/insan_ve_amac.json",
+        "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+        "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.json",
+        "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.md",
+        "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.json"
+      ],
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-IHT-01",
+          "bulgu": "NIST AI RMF (gönüllü bir çerçeve), insanın gözetim ve yeterliliğini ayrı alt kategoriler olarak tanımlıyor. GOVERN 3.2: 'Policies and procedures are in place to define and differentiate roles and responsibilities for human-AI configurations and oversight of AI systems.' MAP 3.4: 'Processes for operator and practitioner proficiency with AI system performance and trustworthiness … are defined, assessed, and documented.' MAP 3.5: insan gözetimi süreçleri tanımlanır, değerlendirilir ve belgelenir. Codex yeni 'insanın inceleme ve devralma yeterliliği' ihtiyacını (I02-08) bu dayanakla ekledi. Belirli bir eğitim, kadro veya sertifika zorunluluğu çıkarmadı.",
+          "kaynak_url": [
+            "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/insan_ve_amac.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "NIST Core sayfası WebFetch ile okundu. GOVERN 2.1, 2.2 ve 3.2, MAP 1.1, 3.4 ve 3.5, MANAGE 2.4 metinleri birebir alındı.",
+          "bizdeki_ilgili_yer": "B2-ozet.md S13 (inceleme darboğazı, otomatik onay %40+), B2-vaka-katalogu.json S13-V6 (beceri körelmesi), C6 (inceleme kapasitesi), A3 §7 S1 (zorunlu insan incelemesi). Bizde 'inceleyen yeterliliği' açık bir ihtiyaç ya da kapı olarak tanımlı değil."
+        },
+        {
+          "id": "E5-IHT-02",
+          "bulgu": "NIST AI RMF Ek C (insan–AI etkileşimi) üç noktanın altını çiziyor. Birincisi, gözetim ihtiyacı sisteme göre değişir; bazı sistemler insan gözetimi gerektirmez, bazıları özellikle gerektirir. İkincisi, belirli koşullarda (ör. algıya dayalı yargı görevleri) 'the AI part of the human-AI interaction can amplify human biases, leading to more biased decisions than the AI or human alone.' Üçüncüsü, insanlar AI çıktısını ve açıklamasını bireysel tercih, özellik ve becerilerine göre farklı yorumlar. Buradan çıkan sonuç: her eylemde insan onayı istemek evrensel bir güvence değildir; gözetim, görevin etkisine göre tasarlanmalıdır.",
+          "kaynak_url": [
+            "https://airc.nist.gov/airmf-resources/airmf/appendices/app-c-ai-risk-management-and-human-ai-interaction/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/insan_ve_amac.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Sayfa curl ile indirildi. 'amplify human biases' cümlesi birebir bulundu. 'automation bias' ve 'reliance' terimleri ekte geçmiyor.",
+          "bizdeki_ilgili_yer": "B2-ozet.md S13 (otomatik onay kullanımı deneyimle %40'ın üstüne çıkıyor; ahlaki çarpışma bölgesi); A1-ozet.md örüntü 6 (zorunlu insan PR kapısı)"
+        },
+        {
+          "id": "E5-IHT-03",
+          "bulgu": "Vaccaro, Almaatouq ve Malone'un Nature Human Behaviour 8:2293–2303 (2024-10-28) meta-analizi, 2020-01-01 ile 2023-06-30 arasında yayımlanmış 106 deneysel çalışmayı ve 370 etki büyüklüğünü inceledi. Bulgular: insan–AI birleşimleri, ortalamada insan ya da AI'ın tek başına en iyisinden anlamlı biçimde kötü (Hedges' g = −0,23; %95 GA −0,39 ile −0,07). Karar verme görevlerinde kayıp, içerik üretiminde anlamlı biçimde daha büyük kazanç görüldü. İnsan tek başına AI'dan iyiyse birleşim kazandırdı; AI tek başına insandan iyiyse birleşim kaybettirdi. Yazarların belirttiği sınırlar: olası yayın yanlılığı ve farklı çalışma tasarımları. Bizim açımızdan anlamı: 'insan son onay verir' tasarımı, karar türü görevlerde (ör. bordro sonucunu kabul) kendiliğinden kalite artışı getirmez.",
+          "kaynak_url": [
+            "https://www.nature.com/articles/s41562-024-02024-1",
+            "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:10.1038/s41562-024-02024-1&resultType=core&format=json"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/insan_ve_amac.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Nature sayfası yönlendirme verdi. Özet metni Europe PMC API'sinden (DOI ile) alındı ve sayılar birebir kontrol edildi. WebSearch özetindeki 'insan tek başına karşısında g = 0,64' değeri özet metninde yok, bu yüzden eklenmedi.",
+          "bizdeki_ilgili_yer": "C0-sentez.md §5 ('insan dokunuşlu PR'larda başarı %86, tam otonomda %55'): bu, AI tek başına ile insan+AI karşılaştırmasıdır ve meta-analizle çelişmez. B2 S13."
+        },
+        {
+          "id": "E5-IHT-04",
+          "bulgu": "Microsoft Research'ün Guidelines for Human-AI Interaction çalışması (Amershi ve ark., CHI 2019) 18 yönerge içeriyor. İnceleme arayüzü ve devir için doğrudan ilgili olanlar: G1 sistemin ne yapabildiğini açıkça göster; G2 bunu ne kadar iyi yaptığını göster; G8 verimli reddetme; G9 verimli düzeltme; G10 şüphede kapsamı daralt; G11 neden öyle davrandığını açıkla; G14 dikkatli güncelle; G18 değişiklikleri bildir. Codex bunları 'yanlış öneri reddedilip düzeltilebilmeli' ihtiyacına dayanak yaptı.",
+          "kaynak_url": [
+            "https://www.microsoft.com/en-us/research/articles/guidelines-for-human-ai-interaction-eighteen-best-practices-for-human-centered-ai-design/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/insan_ve_amac.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "WebFetch ile 18 yönergenin başlıkları ve CHI 2019 bilgisi alındı. Makale sayfası 2019-03-05 tarihli.",
+          "bizdeki_ilgili_yer": "C3-ozet.md §4 İnsan incelemesi satırı (PR arayüzü ve Verdict olayı, rubrik); A1 Symphony durumları (Human Review → Rework). Bizde inceleme arayüzü için ilke seti yok."
+        },
+        {
+          "id": "E5-IHT-05",
+          "bulgu": "METR'in 2026-02-24 tarihli güncellemesinden bizde eksik olan ayrıntılar: yeni deney 57 geliştirici, 143 depo ve 800'den fazla görevden oluşuyor. Ücret saatlik 150 dolardan 50 dolara indi. Geliştiricilerin %30–50'si bazı görevleri AI'sız yapmak istemedikleri için göndermediklerini söyledi. Birden fazla ajanı eşzamanlı kullanan geliştiricilerde 'measurements of time-spent on each task are unreliable'. METR, tahminin büyük olasılıkla bir alt sınır olduğunu ve yeni tasarıma (sabit görevli deneyler, gözlemsel veri, geliştirici düzeyinde deney) geçtiğini yazıyor. Bizim ölçüm tasarımımız için sonuç: ajanlar eşzamanlı çalışırken etkin insan emeği, takvim süresi ve bekleme ayrı ölçülmeli; seçilen ve bırakılan işler kaydedilmeli.",
+          "kaynak_url": [
+            "https://metr.org/blog/2026-02-24-uplift-update/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Sayfa curl ile indirildi ve cümleler birebir bulundu (57 geliştirici, 143 depo, 800+ görev; %30–50; eşzamanlı ajan; 'lower-bound'). Negatif yüzdeler METR metninde 'speedup' olarak geçiyor; bu, bizim A2 notuyla ('negatif = daha hızlı') tutarlı.",
+          "bizdeki_ilgili_yer": "A2-platform-ve-kapasite.json 'METR 2026 güncellemesi' (−%18 ve −%4, güven aralıkları, seçilim yanlılığı); C6-olcek-144-ekip.json METR kaydı; A3 §6 (algılanan ve ölçülen fark). Eşzamanlı ajanlarda zaman ölçümü sorunu ve %30–50 görev saklama bizde yok."
+        },
+        {
+          "id": "E5-IHT-06",
+          "bulgu": "RFC 9110'da (HTTP Semantics) üç ayrım var. §9.2.2: istemci, idempotent olmayan bir isteği otomatik olarak yeniden denememelidir (SHOULD NOT); bunun istisnası, isteğin gerçekte idempotent olduğunu ya da hiç uygulanmadığını anlamanın bir yolunun olmasıdır. Başarısız otomatik tekrar da yeniden denenmemelidir. §15.3.3: 202 Accepted 'accepted for processing, but the processing has not been completed' demektir; istek hiç uygulanmayabilir ve HTTP'de asenkron sonucu yeniden bildirecek bir mekanizma yoktur. §13.1.1: If-Match, paralel ajanların aynı kaynağı ezdiği 'lost update' sorununu önler. Bizim açımızdan anlamı: Plane, GitHub ve ileride SGK/banka gönderimlerinde zaman aşımı ya da 202 'yapılmadı' veya 'yapıldı' sayılmamalı; aynı niyet tekrar edilmeden önce mevcut etki aranmalı; deftere koşullu yazma yapılmalı.",
+          "kaynak_url": [
+            "https://www.rfc-editor.org/rfc/rfc9110.html"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "rfc9110.txt curl ile indirildi. §9.2.2, §13.1.1 ve §15.3.3 metinleri grep ile birebir okundu.",
+          "bizdeki_ilgili_yer": "C3-ozet.md §4 Orkestrasyon satırı (RunPort ve idempotency anahtarı); C3-tak-cikar.json katmanlar (aktiviteler idempotent); B3 AK-24 (Plane 429'da yorum ve etiket yutuluyor), AK-44 (aynı iş için yeni koşu). If-Match/lost update ve 202 ayrımı bizde yok."
+        },
+        {
+          "id": "E5-IHT-07",
+          "bulgu": "Yetki devri ve iptal anında ve her yerde birden gerçekleşmez. RFC 8693 (Token Exchange) iki şey söylüyor. Birincisi, değişim girdi ve çıktı token'ları arasında sıkı bir bağ kurmaz ve iptal olaylarını yaymak 'not a general property of the STS protocol'. İkincisi, erişim kontrolünde yalnız üst düzey claim'ler ve güncel aktör ('act') dikkate alınır; iç içe önceki aktörler yalnız bilgi amaçlıdır. RFC 7009 (Token Revocation) ise şunları söylüyor: iptalde 'there could be a propagation delay'; ilişkili token'ların da iptal edilmesi sunucu politikasına bağlıdır; uç nokta 503 dönerse 'the client must assume the token still exists'. Bizim açımızdan anlamı: kuyruktaki, alt ajana devredilmiş ya da kesintiden dönen işler yeni bir dış etki yaratmadan önce yetkiyi yeniden doğrulamalı.",
+          "kaynak_url": [
+            "https://www.rfc-editor.org/rfc/rfc8693.html",
+            "https://www.rfc-editor.org/rfc/rfc7009.html"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "rfc8693.txt (§2.1 ve §4.1) ile rfc7009.txt (§2.1 ve §2.2.1) curl ile indirildi. Alıntılar birebir bulundu.",
+          "bizdeki_ilgili_yer": "A3-havuzlar-kaizen-olgunluk.json (RFC 8693 ile kısa ömürlü, hedefe özel token önerisi); B3 AK-35 (GitHub token'ı sandbox'tan okunabiliyor), AK-36. İptal yayılımı ve devredilmiş işte yetkinin yeniden doğrulanması bizde yok."
+        },
+        {
+          "id": "E5-IHT-08",
+          "bulgu": "Google SRE kitabının 'Handling Overload' bölümüne göre saniyedeki istek sayısı (QPS) ya da isteğin statik özellikleri kaynak tüketiminin kötü bir göstergesidir. Aşırı yükte yalnız kurallara uymayan müşteriye hata dönülmeli, diğerleri etkilenmemelidir. Bunun yolu, anlaşmaya dayalı müşteri başına kotadır. İsteklere dört değerli bir kritiklik atanır ve bu değer alt çağrılara taşınır; bir görev, daha düşük kritiklikteki bütün istekleri zaten reddetmiyorsa belirli bir kritiklikteki isteği reddetmez. 144 ekip için anlamı: ortak model API bütçesi ve Plane kotası ekip veya ART başına bölünmeli; istek kritikliği (ör. insan bildirimi ile arka plan yeniden denemesi) alt çağrılara taşınmalı.",
+          "kaynak_url": [
+            "https://sre.google/sre-book/handling-overload/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Bölüm curl ile indirildi. 'The Pitfalls of Queries per Second', 'Per-Customer Limits' ve 'Criticality' başlıkları ile metinleri okundu.",
+          "bizdeki_ilgili_yer": "C6-ozet.md (aylık harcama tavanına gelinince bütün filo aynı anda durur); B3 AK-24 (Plane'in 60/dk kotası uzlaştırıcıyla paylaşılıyor, 429'da insan bildirimleri kayboluyor). Bizde ekip başı kota ve kritiklik sınıfı tanımlı değil."
+        },
+        {
+          "id": "E5-IHT-09",
+          "bulgu": "Google SRE kitabının 'Addressing Cascading Failures' bölümü üç uyarı içeriyor. (1) Katmanlı yeniden denemeler çarpılır: backend, frontend ve JavaScript katmanlarının her biri 3 kez yeniden denerse (4 deneme), tek bir kullanıcı eylemi veritabanında 64 deneme (4^3) üretir. (2) 'The code path you never use is the code path that (often) doesn't work.' Daraltılmış (degraded) mod düzenli olarak çalıştırılıp sınanmalıdır. (3) Daraltılmış hizmet ancak hangi trafiğin daraltılabileceği biliniyorsa tasarlanabilir. Codex bunun üzerine bir kural koyuyor: kontrol hizmeti yanıt vermediği için sonuç 'kontrol geçti' diye işaretlenmemeli; yedek yol zorunlu yetki, veri ve kanıt koşullarını kendiliğinden gevşetmemelidir.",
+          "kaynak_url": [
+            "https://sre.google/sre-book/addressing-cascading-failures/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Bölüm curl ile indirildi. 64 deneme (4^3) örneği ve 'code path you never use' cümlesi birebir bulundu. Codex'in kontrol hizmeti kuralı, kaynaktan yapılmış bir çıkarımdır.",
+          "bizdeki_ilgili_yer": "D1-ozet.md (Temporal'da kısa bir Unavailable kesintisinin sürekli retry fırtınası başlatması, #11547); B3 AK-21 (sağlayıcı hatasının yanlış sınıflanması), AK-57 (metrik ve uyarı yok). Katmanlı retry çarpanı ve daraltılmış modda kanıt kuralı bizde yok."
+        },
+        {
+          "id": "E5-IHT-10",
+          "bulgu": "W3C PROV-DM üç ilişkiyi ayırıyor. Türeme (§5.2.1). Revizyon (§5.2.2): 'a derivation for which the resulting entity is a revised version of some original'. Geçersizleşme (§5.1.8): varlığın imhasının, sona ermesinin ya da süresinin dolmasının başlangıcıdır ve 'The entity is no longer available for use … after invalidation'. Codex bunu şöyle uyguluyor: bir kural düzeltildiğinde ondan türeyen özet, test, karar ve bekleyen eylemler yeniden kullanıma uygunluk açısından ayrılabilmeli; eski yedek, geçersiz bilgiyi kendiliğinden yeniden yetkili hale getirmemeli. Bizim açımızdan anlamı: 7578 sayılı Kanun gibi mevzuat değişikliklerinde, eski kurala dayanan altın testlerin ve bordro sonuçlarının bulunabilmesi.",
+          "kaynak_url": [
+            "https://www.w3.org/TR/prov-dm/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Sayfa curl ile indirildi. §5.1.8, §5.2.1 ve §5.2.2 başlıkları ile tanım cümleleri birebir bulundu.",
+          "bizdeki_ilgili_yer": "C5-ozet.md §1 (kural ile test arasında izlenebilirlik matrisi, parametre sürümleme, retro fark) ve §2 (7578 sayılı Kanun: 'Nisan'da doğru olan test Mayıs'ta yanlış'). Türev geçersizleşmesi için bir model bizde yok."
+        },
+        {
+          "id": "E5-IHT-11",
+          "bulgu": "NIST SP 800-34 Rev. 1 (Contingency Planning Guide) kurtarmayı adım adım tanımlıyor. §4.3.2 kurtarma prosedürleri şunları içerir: 'Restoring system data to a known state' ve 'Testing system functionality including security controls'. §4.4 yeniden kurulum aşamasında kurtarmanın doğrulanması şu adımlardan oluşur: eşzamanlı işleme (sistemin, kurtarılan sistemin doğru ve güvenli çalıştığına güvenilene kadar iki yerde birlikte çalıştırılması), veri doğrulama testi (verinin eksiksiz ve son yedeğe göre güncel olması) ve işlevsellik doğrulama testi. Yeniden kurulumun tamamlandığı ancak bu testler başarıyla bittikten sonra ilan edilir. Codex'in çıkarımı: yedek dosyasının okunabilmesi iş sisteminin kurtarıldığı anlamına gelmez; kesinti sırasında insanın yaptıkları ve dış etkiler güncel yetkiyle uzlaştırılmadan güvenilir bir devam noktası yoktur.",
+          "kaynak_url": [
+            "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/is_ve_veri_surekliligi.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "PDF curl ile indirildi ve metin yerel bir betikle çıkarıldı. 'Concurrent Processing', 'Validation Data Testing', 'Validation Functionality Testing', 'Restoring system data to a known state' ve 'recovery and reconstitution of the information system to a known state' ifadeleri birebir bulundu.",
+          "bizdeki_ilgili_yer": "C3-ozet.md K7 (değişim tatbikatı); B3-ozet.md ve B2 (yedek ve geri yükleme vakaları); A1 (Temporal). Kurtarmanın bittiğini ilan etme ölçütü ve kesinti dönemindeki etkilerin uzlaştırılması bizde yok."
+        },
+        {
+          "id": "E5-IHT-12",
+          "bulgu": "NIST AI RMF'de ölçme ve yönetme alt kategorileri de ilgili. MEASURE 1.2: metriklerin uygunluğu ve mevcut kontrollerin etkinliği düzenli olarak değerlendirilir. MEASURE 2.3: performans, dağıtıma benzer koşullarda gösterilir. MEASURE 2.5: genellenebilirlik sınırları belgelenir. MEASURE 3.1: öngörülmemiş ve yeni ortaya çıkan riskler izlenir. MEASURE 3.2: ölçüm tekniği henüz olmayan riskler için izleme yaklaşımı düşünülür. MEASURE 3.3: son kullanıcı ve etkilenen toplulukların sorun bildirip sonuca itiraz edebileceği geri bildirim süreçleri kurulur ve değerlendirme metriklerine bağlanır. MANAGE 2.1: yapay zekâ dışı uygulanabilir alternatifler hesaba katılır. MANAGE 2.3: daha önce bilinmeyen bir risk ortaya çıkınca yanıt ve toparlanma prosedürü izlenir. MANAGE 2.4: amaçla tutarsız sonuç veren sistemi devre dışı bırakacak mekanizma ve sorumlular tanımlıdır. HRMS için anlamı: çalışanın bordro itirazı değerlendirme metriğine bağlanmalı, kaçak işi durdurma yetkisi ve mekanizması açık olmalı.",
+          "kaynak_url": [
+            "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+            "https://airc.nist.gov/airmf-resources/playbook/measure/",
+            "https://airc.nist.gov/airmf-resources/playbook/manage/"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "MEASURE 3.1–3.3 metinleri Core sayfasından alındı (playbook/measure sayfası bu maddeleri göstermedi). MANAGE 2.1, 2.3 ve 2.4 playbook/manage sayfasından birebir alındı.",
+          "bizdeki_ilgili_yer": "B3 AK-44 (operatör kaçak işi Temporal'dan durduramıyor); C5 §1 (uzman imzası, kullanıcı UX kabulü); A3 §6 (metrikler). Etkilenen tarafın itiraz kanalı ve metriğin kendisinin denetlenmesi bizde yok."
+        },
+        {
+          "id": "E5-IHT-13",
+          "bulgu": "MT-Bench çalışmasının (Zheng ve ark., arXiv 2306.05685, v4 2023-12-24) bulguları: GPT-4 yargıcı, kontrollü ve kalabalık kaynaklı insan tercihleriyle %80'in üzerinde uyuşuyor; bu, insanlar arasındaki uyum düzeyine eşit. Konum, uzunluk ve kendini kayırma yanlılıkları ile sınırlı akıl yürütme ayrıca incelendi. Kendini kayırma için yazarların sonucu: 'Due to limited data and small differences, our study cannot determine whether the models exhibit a self-enhancement bias.' Matematik ve akıl yürütme sorularını puanlamada yeteneğin sınırlı olduğu da belirtiliyor. HRMS için anlamı: LLM yargıcı bordro ve SGK hesaplarında tek başına oracle olamaz.",
+          "kaynak_url": [
+            "https://arxiv.org/abs/2306.05685"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "arXiv API'den özet alındı (v4, 2023-12-24). v4 HTML curl ile indirildi; kendini kayırma ve 'Limited capability in grading math and reasoning questions' cümleleri birebir bulundu.",
+          "bizdeki_ilgili_yer": "A3-havuzlar-kaizen-olgunluk.json AA-B07; B2-vaka-katalogu.json S14-V3 (Panickssery 2024); C0 §5 ve C4 (LLM yargıç). GPT-4 ile insan arasındaki %80+ uyum ve matematik puanlama sınırı bizde yok."
+        },
+        {
+          "id": "E5-IHT-14",
+          "bulgu": "τ-bench (Yao ve ark., arXiv 2406.12045, 2024-06-17) değerlendirmeyi, konuşma sonundaki veritabanı durumunu etiketli hedef durumla karşılaştırarak yapıyor. Tekrarlar boyunca güvenilirliği ölçmek için pass^k metriğini öneriyor. Sonuçlar: gpt-4o dahil en iyi ajanlar görevlerin %50'sinden azında başarılı; perakende alanında pass^8 %25'in altında. Kullanıcı bir LLM ile simüle ediliyor ve kendi hataları olabilir; alanlar perakende ve havayolu, yani yazılım üretiminin doğrudan ölçümü değil. Bizim açımızdan anlamı: HRMS uçtan uca oracle'ı son durum karşılaştırmasıyla kurulmalı; kabul, tek başarı yerine k tekrarda tutarlılıkla ölçülmeli.",
+          "kaynak_url": [
+            "https://arxiv.org/abs/2406.12045"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "arXiv API'den v1 özeti alındı; '<50%' ve 'pass^8 <25% in retail' ifadeleri birebir var.",
+          "bizdeki_ilgili_yer": "A3-ozet.md §6 ve A3 JSON ('Eval: capability pass@k, regresyon pass^k'). Bizde metrik adı geçiyor, ama kaynak ve sayılar yok."
+        },
+        {
+          "id": "E5-IHT-15",
+          "bulgu": "MemoryAgentBench (arXiv 2507.05257; v1 2025-07-07, güncel v4 2026-06-28) bellek ajanları için dört temel yetkinlik tanımlıyor: doğru erişim, test anında öğrenme, uzun menzilli anlama ve seçici unutma. Mevcut kıyaslamaların hiçbiri dördünü birlikte kapsamıyor. Sonuç: güncel yöntemler (bağlam tabanlı, RAG, harici bellek modülleri) dört yetkinliğin hepsinde ustalaşamıyor. Bizim açımızdan anlamı: bir bilginin belleğe yazılmış olması öğrenildiğini göstermez. Düzeltilen bir kuralın eski hâlinin 'unutulması' ayrı test edilmelidir.",
+          "kaynak_url": [
+            "https://arxiv.org/abs/2507.05257"
+          ],
+          "codex_kaynagi": "research_notes/Ortak yazılım üretiminde ihtiyaç tamamlama/dogruluk_ve_ogrenme.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "arXiv API'den özet alındı. Güncel sürüm v4 (2026-06-28); Codex v1'i kullanmış. Dört yetkinlik ve 'fall short of mastering all four' ifadesi v4 özetinde de var.",
+          "bizdeki_ilgili_yer": "C3-ozet.md §4 Bilgi/bellek satırı ('indeksi silip depodan yeniden kurma'); A3 §6 Kaizen (onaysız otomatik öğrenmede zehirlenme riski, RK-208/209). Seçici unutma testi bizde yok."
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "Kurumların ölçülmüş üretim sonuçları: Stripe Minions haftada 1.300'den fazla birleşen PR; Ramp'ta PR'ların yaklaşık %30'u; Spotify'da LLM hakem oturumların yaklaşık dörtte birini veto ediyor; Devin'de birleşme oranı %34'ten %67'ye çıktı; Google'da değişikliklerin %80'i AI (A1-ozet.md). Codex'te kurum vakası yok.",
+        "Oracle açığının sayıları: SWE-bench'i geçen PR'ların yaklaşık yarısını bakımcılar birleştirmezdi (otomatik puan yaklaşık 24 puan yüksek); METR'in incelediği 15 ajan PR'ının hiçbiri olduğu gibi birleştirilebilir değildi. SWE-Bench Pro'da gereksinim ve arayüz verilmezse başarı %25,9'dan %8,4'e düşüyor (A1, C4).",
+        "İnsan tarafı vakaları: inceleme süresi Faros verisinde %441, B2 özetinde %91 uzadı; otomatik onay kullanımı %40'ın üstüne çıkıyor; ahlaki çarpışma bölgesi; Lancet endoskopi çalışmasında beceri körelmesi (adenom yakalama %28,4'ten %22,4'e) (B2 S13, S13-V6; C6).",
+        "İnceleme kapasitesi hesabı: 144 ekip × günde 3–10 PR, günde 432–1.440 PR eder; bunun için günde 173–576 saat ve 43–144 kişi gerekir. Eşzamanlı işçi sayısı = min(inceleme, kuyruk, bütçe) (C0 §7, C6).",
+        "Türk HRMS için somut oracle hiyerarşisi: kanun ve Resmî Gazete, GVGT 319 örnekleri, SGK 2026 teşvik kitapçığı, uzman imzalı altın setler. Test ortamı yalnız SGK 4/a servisinde var. Prototipte bulunan hukuki hatalar: yıllık 270 saatlik fazla mesai sınırının aylık sanılması, istifada kıdem hesaplanması, SGK oranları (C5).",
+        "Mevzuatın geliştirme sırasında değişmesi: 7566 sayılı Kanun (SGK oranları) ve 7578 sayılı Kanun (analık izni 24 hafta, babalık izni 10 gün). Somut kanıt geçersizleşmesi örneği (C5 §2).",
+        "Mevcut kodda doğrulanmış 62 arıza kipi, dosya:satır kanıtlarıyla. Örnekler: RED kapısı altyapı hatasını test hatası sayıyor (AK-01), test yapılandırması korunmuyor (AK-03), kod insan testinden önce main'e birleşiyor (AK-10), operatör kaçak işi durduramıyor (AK-44), Plane 429'da bildirimler yutuluyor (AK-24) (B3).",
+        "Ödül hilesi ve değerlendirme kirlenmesi vakaları: METR recent reward hacking, ImpossibleBench (güçlü modeller daha çok hile yapıyor), ajanın değerlendirmede gelecekteki çözüme erişmesi (B1-ozet.md).",
+        "Uzun ufuklu işte başarı: SWE-EVO %25, FeatBench %29,9, Commit0 tam set %6. METR'e göre güvenilirlik-kritik işler %98'in üzerinde başarı isteyebilir (C4).",
+        "Metrik seti: mesaj–kod tutarlılığı (tutarsız PR'da kabul %28, tutarlıda %80), ajan ve insan kaynaklı değişikliklerin ayrı etiketlendiği DORA metrikleri, skill seçim doğruluğu, eşzamanlı PR çakışması (farklı ajanlarda %41,7) (A3 §6, A3 JSON AA-B08).",
+        "Orkestratör ve ajan platformu hata katalogları, örneğin Temporal'da retry fırtınası (#11547) (D1, D2)."
+      ],
+      "celiskiler": [
+        {
+          "konu": "LLM yargıçta kendini kayırma: belgelenmiş mi?",
+          "codex": "MT-Bench çalışması sıra ve sunum etkilerini inceliyor, bazı koşullarda insan tercihleriyle yüksek uyum buluyor; kendi yanıtını kayırma bulgusunu ise kesinleştirmiyor, bu nüans korunmalı (research_notes/.../dogruluk_ve_ogrenme.md).",
+          "biz": "'LLM hakemlerinde konum, uzunluk ve kendini kayırma yanlılıkları belgelenmiş' (A3-havuzlar-kaizen-olgunluk.json AA-B07). 'Aynı model ailesinden gelen yargıç kendi üretimini kayırıyor' (B2-ozet.md S14; B2-vaka-katalogu.json S14-V3, Panickssery 2024).",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "MT-Bench (https://arxiv.org/abs/2306.05685 v4): 'our study cannot determine whether the models exhibit a self-enhancement bias'. Panickssery ve ark. (https://arxiv.org/abs/2404.13076, 2024-04-15): LLM değerlendiriciler kendi çıktılarını, insanların eşit kalitede bulduğu çıktılardan daha yüksek puanlıyor; kendini tanıma ile kayırma arasında doğrusal ilişki var. Sonuç: MT-Bench'e dayanarak bizim cümlemiz söylenemez, Panickssery'ye dayanarak söylenebilir. Bizim ifade kaynakla desteklenebilir, ama AA-B07 kaynak olarak birincil makaleyi değil risk haritasını gösteriyor; Panickssery atfı eklenmeli."
+        },
+        {
+          "konu": "METR yavaşlama bulgusunun güncelliği",
+          "codex": "METR'in Şubat 2026 güncellemesi, seçilim ve eşzamanlı ajan kullanımındaki zaman ölçümü sorunlarının güncel tahmini zayıflattığını bildiriyor. Önceki yavaşlama sonucu da bütün geliştiricilere genellenemez (research_notes/.../dogruluk_ve_ogrenme.md; insan_ve_amac.md).",
+          "biz": "B2-ozet.md S13-V1, A3-ozet.md §6 ve A3 JSON 'RCT: geliştiriciler %20 hızlandığını düşündü, sonuç %19 yavaşlamaydı' diyor ve 2026 güncellemesinden söz etmiyor. Buna karşılık A2 JSON ve C6 JSON güncellemeyi (−%18 ve −%4, zayıf kanıt) içeriyor. Yani kendi dosyalarımız arasında tutarsızlık var.",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "https://metr.org/blog/2026-02-24-uplift-update/ şu cümleleri içeriyor: 'we believe it is likely that developers are more sped up from AI tools now — in early 2026 — compared to our estimates from early 2025' ve 'our data is only very weak evidence'. Özgün 2025 sonucu ('19% longer', GA +%2 ile +%39) kendi dönemi için geçerli, algı ile ölçüm arasındaki fark bulgusu da duruyor. Ancak bu sonuç güncel bir verim iddiası olarak kullanılamaz; B2 S13-V1 ve A3 §6'ya 2026 notu eklenmeli."
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "METR erken 2025 RCT'si (16 geliştirici, 246 görev, %19 daha uzun süre)",
+          "neden": "Zaten bizde var: A2-platform-ve-kapasite.json (gorev: 246), C6-olcek-144-ekip.json, B2 S13-V1, A3 §6. Sayılar Codex'le tutarlı."
+        },
+        {
+          "ne": "Scaling Agent Systems v3 (koordinasyon görev yapısına göre zarar verebilir)",
+          "neden": "Zaten bizde var: A1-ozet.md, C6-ozet.md (+%80,8 / −%70), C0 §7. C0'daki '%39 ile %70' aralığı, v3 gövdesindeki PlanCraft değerleriyle doğrulandı (Hybrid −%39,1, Centralized −%50,3, Independent −%70,0); çelişki yok."
+        },
+        {
+          "ne": "SWE-Bench Pro Verified (altın çözüm sızıntısı ve görev kalitesi sorunları)",
+          "neden": "Zaten bizde var: A1-kurum-ornekleri.json (arXiv 2609.08149, 2026-09-08). Not: arXiv v2 2026-09-16'da yayımlandı; Codex v1'i okumuş."
+        },
+        {
+          "ne": "Eğitim verisi ayrılığı yeterli değil; referans cevaba, önceki çözüme ve ortak belleğe değerlendirme anında erişim (DO-04)",
+          "neden": "Zaten bizde var: B1-ozet.md (METR reward hacking, ImpossibleBench, gelecekteki çözüme erişim), A1 (SWE-Bench Pro Verified)."
+        },
+        {
+          "ne": "SPACE (Forsgren ve ark., ACM Queue 2021) ve DevEx (Noda ve ark., ACM Queue 2023) çerçeveleri",
+          "neden": "Doğrulandı ('cannot be measured by a single metric or dimension'; geliştirici geri bildirimi ile sistem verisinin birlikte kullanılması), ama karar açısından ilgisi düşük. Bizde A3 §6 metrik seti, DORA metrikleri ve getdx AI ölçüm çerçevesi (A3 JSON) var."
+        },
+        {
+          "ne": "W3C Data on the Web Best Practices BP12/26/27/28 (makinece okunur biçim, kırıcı API değişikliğinden kaçınma, kimliği koruma, kapsam)",
+          "neden": "Doğrulandı (BP27 'Preserve identifiers' metni okundu), ama açık web veri yayını rehberi olduğu için ilgisi düşük. Taşınabilirlik ve dışa aktarma C3 ilke 1/5 ve K3'te zaten var."
+        },
+        {
+          "ne": "Vaccaro meta-analizinde 'insan tek başına karşısında g = 0,64'",
+          "neden": "Doğrulanamadı: yalnız WebSearch özetinde geçiyor; Europe PMC'deki resmî özet metninde yok."
+        },
+        {
+          "ne": "'Otomasyon yanlılığı' (automation bias) doğrudan literatürü",
+          "neden": "Codex'te de yok. NIST Ek C yalnız 'AI insan yanlılıklarını büyütebilir' diyor; 'automation bias' terimi ekte geçmiyor (curl ile kontrol edildi). Bizde B2 S13 (otomatik onay %40+, ahlaki çarpışma bölgesi) kısmen karşılıyor. Ayrı bir birincil kaynak taraması önerilir."
+        },
+        {
+          "ne": "Codex paket istatistikleri: 113 ihtiyaç, 16 küme, 37 JSON, 26 öneriden 22 kayıt, 27 güncellenen kayıt, 28 bilgi boşluğu, 32 açık soru, 23 yeni ve toplam 31 kaynak, 369 kimlik",
+          "neden": "Codex'in iç paket sayımı; bizim karar sorularımızla ilgisiz."
+        },
+        {
+          "ne": "Dört sentetik iş sözleşmesi (normal akış, belirsizlikte durma, ekipler arası devir, hata sonrası toparlanma)",
+          "neden": "Sentetik ve tasarım önerisi; doğrulanacak bir olgu değil. Fikir olarak B3 senaryoları ve C5 altın setleriyle örtüşüyor."
+        },
+        {
+          "ne": "IA-/IVS-/DO- öneri metinleri (kabul ve ret örnekleri)",
+          "neden": "Analist sentezi, birincil kaynağa dayalı bir olgu değil. Dayandıkları kaynaklar E5-IHT-01…15 olarak ayrıca doğrulanıp eklendi."
+        }
+      ]
+    },
+    {
+      "konu": "Agentic otomasyonlarda gerçek dünya hataları (+ dunya-vakalari paketi)",
+      "bizim_dosyalar": [
+        "mimari-haritasi/arastirma/D1-ozet.md",
+        "mimari-haritasi/arastirma/D1-orkestrator-hatalari.json",
+        "mimari-haritasi/arastirma/D2-ozet.md",
+        "mimari-haritasi/arastirma/D2-ajan-platformu-hatalari.json",
+        "mimari-haritasi/arastirma/B2-ozet.md",
+        "mimari-haritasi/arastirma/B2-vaka-katalogu.json",
+        "mimari-haritasi/arastirma/A0-mevcut-pilot-inceleme.md",
+        "mimari-haritasi/arastirma/E6-ozet.md"
+      ],
+      "codex_dosyalari": [
+        "reports/Agentic otomasyonlarda gerçek dünya hataları.md",
+        "research_notes/Agentic otomasyonlarda gerçek dünya hataları/workflow_infrastructure.md",
+        "research_notes/Agentic otomasyonlarda gerçek dünya hataları/coding_platforms.md",
+        "research_notes/Agentic otomasyonlarda gerçek dünya hataları/multiagent_systems.md",
+        "dunya-vakalari/map.json",
+        "dunya-vakalari/kumeler/01_yasam_dongusu_ve_ilerleme.json … 07_devam_durum_ve_gozlem.json",
+        "dunya-vakalari/kabul-deneyleri.json",
+        "dunya-vakalari/yerel-eslesmeler.json",
+        "dunya-vakalari/arac-kapsami.json",
+        "dunya-vakalari/kanit-sinirlari.json",
+        "dunya-vakalari/kaynaklar.json",
+        "dunya-vakalari/dogrulama.json",
+        "dunya-vakalari/uret_ve_dogrula.py (yalnız metin olarak; çalıştırılmadı)"
+      ],
+      "codex_paket_notu": "dunya-vakalari: 36 vaka, 61 kaynak, 7 küme, 17 araç, 52 kabul deneyi (hepsi not_run), 18 yerel bulgu (K01–K18, kaynak: kestra-gecmis-incelemesi). 61 kaynaktan yalnız 8'i bizde vardı (Kestra #2653, Inngest #4060, ChatDev #674, Temporal forum 8, Cursor scaling-agents, Anthropic C derleyici, Answer.AI Devin, Open SWE README). Paketin kendi doğrulaması 21/21 kontrol geçti, çalıştırılan deney 0. research_notes/Claude bulgularıyla kapsam tamamlama klasörü E5 sırasında BOŞTU (ls: 0 dosya); karşılaştırmaya katılmadı. claude-karsilastirma/ klasörüne dokunulmadı.",
+      "codex_fazlasi_eklenenler": [
+        {
+          "id": "E5-T7-01",
+          "bulgu": "OpenHands'in döngü algılaması uzun süren meşru süreci bekleyen ajanı 'takıldı' sanıp öldürüyordu (OpenHands #5355, açılış 2024-12-01, kapanış 2025-06-19). SDK'da takılma eşikleri yapılandırılabilir oldu (#762 issue, #763 PR; 2025-12-18'de birleşti). Ders: takılma dedektörü uzun testi ve gerçek döngüyü ayırmalı; eşik iş profiline göre ayarlanmalı.",
+          "kaynak_url": [
+            "https://github.com/OpenHands/OpenHands/issues/5355",
+            "https://github.com/OpenHands/software-agent-sdk/issues/762",
+            "https://github.com/OpenHands/software-agent-sdk/pull/763"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler/01_yasam_dongusu_ve_ilerleme.json (CP-01); research_notes/Agentic otomasyonlarda gerçek dünya hataları/coding_platforms.md",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: #5355 closed 2025-06-19; #763 merged 2025-12-18.",
+          "bizdeki_ilgili_yer": "E6 ders 2 (600 sn boşta sınırı 70 dk'lık testi öldürdü); D2 (OpenHands)"
+        },
+        {
+          "id": "E5-T7-02",
+          "bulgu": "OpenHands automation: sert sonlandırmada (SIGTERM ya da timeout) önceden ayarlı otomasyon koşuları temizlik yapmıyor ve callback göndermiyordu. Koşu RUNNING kalıyor, PR'da 'inceleme sürüyor' mesajı asılı kalıyordu (#203; açılış 2026-06-23, kapanış 2026-06-30). Keep-alive temizlik kontrolü #209 ile 2026-06-24'te birleşti; zaman aşımı bütçesi düzeltmesi #206 hâlâ açık.",
+          "kaynak_url": [
+            "https://github.com/OpenHands/automation/issues/203",
+            "https://github.com/OpenHands/automation/pull/206",
+            "https://github.com/OpenHands/automation/pull/209"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (CP-03)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile durumlar doğrulandı.",
+          "bizdeki_ilgili_yer": "D1 §1 (stale RUNNING); D2 (OpenHands)"
+        },
+        {
+          "id": "E5-T7-03",
+          "bulgu": "OpenHands benchmarks: SWT-bench değerlendirmesi 30 worker ve 8 GiB sınırla çalışırken OOMKilled (exit 137) ile düştü. Bu, #433'teki düzeltmeye rağmen ikinci OOM'du (#441; 2026-02-23, kapanış 2026-03-23). Neden: retry'lı worker'larda bellek birikimi ve parçalanma. Çözüm: ProcessPoolExecutor yerine asyncio ve semaphore (#446, 2026-03-23'te birleşti).",
+          "kaynak_url": [
+            "https://github.com/OpenHands/benchmarks/issues/441",
+            "https://github.com/OpenHands/benchmarks/pull/446"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler/02_kaynak_ve_kapasite.json (CP-02)",
+          "dogrulama": "kismen",
+          "dogrulama_notu": "30 worker, 8Gi ve 137 issue gövdesinde görüldü. Codex'in '5 saat 4 dakika' süresi gövdede bulunamadı, bulguya alınmadı.",
+          "bizdeki_ilgili_yer": "A2 (kaynak profilleri); E6 ders 1"
+        },
+        {
+          "id": "E5-T7-04",
+          "bulgu": "OpenHands SDK #4246 (2026-03-26, açık): arayüz mesajı alıyor ama ajan başlamıyor; ne görsel geri bildirim ne hata var. 'Sessiz boşta' durumu için hazır olma kapısı ve eksik yeteneği raporlama gerekiyor.",
+          "kaynak_url": [
+            "https://github.com/OpenHands/software-agent-sdk/issues/4246"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (CP-04)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: open, 2026-03-26.",
+          "bizdeki_ilgili_yer": "D2 (OpenHands SDK issue'ları)"
+        },
+        {
+          "id": "E5-T7-05",
+          "bulgu": "Factory Droid CLI'da üç açık kullanıcı raporu var. (1) `ps` bulunmayan ortamda `factory-execute-supervisor` her komutu SIGKILL ile öldürüyor (#33, 2026-09-16). (2) BYOK'ta sağlayıcılar arası replay, paralel görüntü araç çağrılarında HTTP 400 üretiyor ve oturum kurtarılamıyor (#32, 2026-09-13). (3) Plugin deposu göçü indeksi yeniden adlandırıyor; kurulu plugin'ler 'kurulu değil' görünüyor (#23, 2026-08-27). Üreticinin doğruladığı bir düzeltme yok.",
+          "kaynak_url": [
+            "https://github.com/Factory-AI/factory/issues/33",
+            "https://github.com/Factory-AI/factory/issues/32",
+            "https://github.com/Factory-AI/factory/issues/23"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (CP-05, CP-06, CP-07)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: üçü de open; tarihler doğrulandı.",
+          "bizdeki_ilgili_yer": "D2 (Factory #2–#42 başka issue'lar)"
+        },
+        {
+          "id": "E5-T7-06",
+          "bulgu": "Cognition 29 Mayıs 2026'da Devin'in test yaparken gösterdiği hata kiplerini yayımladı. Devin ilgisiz akışları aşırı test ediyor ve kurulumda kayboluyor, PR'ın asıl değişikliğini atlıyor, UI'ye tıklamak yerine tarayıcıda JavaScript çalıştırıp durumu programla üretiyor, doğrulamadan 'başarılı' diyor. Önlem: koda dayalı plan, eylemden önce beklenen sonucu yazmak, kayıtlı test kanıtı.",
+          "kaynak_url": [
+            "https://cognition.com/blog/testing-development"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (CP-10)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Blog okundu; tarih ve dört kip doğrulandı.",
+          "bizdeki_ilgili_yer": "C5 (oracle); B2 (Devin vakaları); A1"
+        },
+        {
+          "id": "E5-T7-07",
+          "bulgu": "Open SWE: ajanın insandan yardım istemesi arayüzde genel bir MCP aracı gibi çiziliyordu ve cevaplanamıyordu. 'Request Human Help' aracı PR #505 ile 2025-07-31'de birleşti. Repo'da issue'lar kapalı (HTTP 410), bu yüzden kanıt yalnız PR'da.",
+          "kaynak_url": [
+            "https://github.com/langchain-ai/open-swe/pull/505"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (CP-09)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: PR #505 merged 2025-07-31; issues API 410.",
+          "bizdeki_ilgili_yer": "B1/D2 (Open SWE); E6 ders 6"
+        },
+        {
+          "id": "E5-T7-08",
+          "bulgu": "Gas Town'da iki vaka var. Merge kuyruğundaki kayıtlar saatlerce bekliyor, ilgili branch işlenmeden silinebiliyor (#691; 2026-01-17, kapanış 2026-02-12). Tamamlanmış convoy'lar yaklaşık 40 saniyede bir tekrar 'Convoy complete' bildirimi üretiyor (#3972, 2026-05-13, açık). Ayrıca #1255 yazarı tarafından 'yanlış repo' diye geri çekildi; Codex bunu doğru biçimde dışladı.",
+          "kaynak_url": [
+            "https://github.com/gastownhall/gastown/issues/691",
+            "https://github.com/gastownhall/gastown/issues/3972"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (MA-01, MA-02); kanit-sinirlari.json",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile durumlar doğrulandı. '40 saniye' ayrıntısı Codex'ten alındı.",
+          "bizdeki_ilgili_yer": "D2 (Gas Town, 17 başka issue)"
+        },
+        {
+          "id": "E5-T7-09",
+          "bulgu": "Ruflo'da üç vaka var. (1) Worktree daemon'ının fan-out'u ortak Claude kotasını tüketiyor (#2661, P0; 2026-07-13, kapanış 07-18). Düzeltme: AI işçileri opt-in, global başlatma bütçesi, worktree'ler arası tekilleştirme, repo supervisor (#2662 ve #2663 birleşti). (2) `runWithTimeout` promise'i reddediyor ama alt süreci öldürmüyor, yetim claude süreçleri kalıyor (#1117; 2026-02-10, kapanış 03-26). (3) `swarm status` hep 0 ajan gösteriyor, çünkü taranan dizine hiçbir yazıcı yazmıyor (#2799, 2026-07-27).",
+          "kaynak_url": [
+            "https://github.com/ruvnet/ruflo/issues/2661",
+            "https://github.com/ruvnet/ruflo/pull/2662",
+            "https://github.com/ruvnet/ruflo/pull/2663",
+            "https://github.com/ruvnet/ruflo/issues/1117",
+            "https://github.com/ruvnet/ruflo/issues/2799"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (MA-03, MA-04, MA-05)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile hepsi doğrulandı.",
+          "bizdeki_ilgili_yer": "D2 (Ruflo: #653, #1326, #1514 vb. başka issue'lar); A0 KN-5"
+        },
+        {
+          "id": "E5-T7-10",
+          "bulgu": "MetaGPT #1657 (2025-01-06, kapanış 2025-02-23): rol yürütmesindeki bir istisnadan sonra en yeni mesajı silme adımı ikinci bir istisna fırlatıyor. Java işi için dönen paket alanı Python bekleyen şemaya takılıyor, uygulama çıkıyor. ChatDev #650 (2026-07-11, açık): CodeReviewModification programcıya altı inceleme kuralını hiç göstermiyor, yalnız tek öncelikli yorum iletiliyor.",
+          "kaynak_url": [
+            "https://github.com/FoundationAgents/MetaGPT/issues/1657",
+            "https://github.com/OpenBMB/ChatDev/issues/650"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (MA-06, MA-07)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile durumlar ve tarihler doğrulandı.",
+          "bizdeki_ilgili_yer": "B2 (MetaGPT/ChatDev); D2"
+        },
+        {
+          "id": "E5-T7-11",
+          "bulgu": "Who&When (ICML 2025, PMLR 267): 127 LLM çok-ajanlı sistemin hata loglarında en iyi otomatik yöntem sorumlu ajanı %53,5, hatanın başladığı adımı yalnız %14,2 doğrulukla buluyor. Teşhis ajanının çıktısı kanıt sayılmamalı; bağımsız doğrulama gerekiyor.",
+          "kaynak_url": [
+            "https://proceedings.mlr.press/v267/zhang25cq.html",
+            "https://arxiv.org/abs/2505.00212"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler/06_dogruluk_oracle_ve_teshis.json (MA-10)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "PMLR sayfası okundu (53,5 / 14,2 / 127).",
+          "bizdeki_ilgili_yer": "E6 ders 5; B3; A1 (akademik bulgular)"
+        },
+        {
+          "id": "E5-T7-12",
+          "bulgu": "Kestra #16198 (2026-05-22, açık): `MAX_DURATION + FAIL` SLA'sı bir task'ı öldürünce worker JVM'i çökme döngüsüne giriyor. Interrupted bayrağı temizlenmeden JDBC'ye yazılıyor, fatal shutdown oluyor. Dakikada birden çok yeniden başlatma komşu işleri de düşürüyor.",
+          "kaynak_url": [
+            "https://github.com/kestra-io/kestra/issues/16198"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-02)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: open, 2026-05-22, başlık doğrulandı. Kök neden issue yazarının stack trace'ine dayanıyor.",
+          "bizdeki_ilgili_yer": "D1 §1 (Kestra); E5-T2-04 (MAX_DURATION SLA)"
+        },
+        {
+          "id": "E5-T7-13",
+          "bulgu": "Hatchet'te iki vaka var. (1) Python'da serileştirilemeyen değer (dict_items) içeren sonuç döndüren görev, timeout'a kadar asılı kalıyor (#3121; aynı gün #3125 ile düzeltildi, 2026-02-28). (2) L7 proxy'nin `stream_idle_timeout` değeri (Azure Container Apps, Envoy) ListenV2 akışlarını kesiyor. İş RUNNING görünüyor ama worker hiç almıyor (#3280; 2026-03-15, kapanış 2026-06-18).",
+          "kaynak_url": [
+            "https://github.com/hatchet-dev/hatchet/issues/3121",
+            "https://github.com/hatchet-dev/hatchet/pull/3125",
+            "https://github.com/hatchet-dev/hatchet/issues/3280"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-07, WF-08)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api ile doğrulandı.",
+          "bizdeki_ilgili_yer": "D1 §1 (Hatchet #4824, #2573)"
+        },
+        {
+          "id": "E5-T7-14",
+          "bulgu": "Inngest #4060'daki sonsuz lease döngüsü için düzeltme PR'ı #4321 (2026-06-03) hâlâ açık. Yani eski şemalı kuyruk kaydı sorunu çözülmüş sayılmamalı.",
+          "kaynak_url": [
+            "https://github.com/inngest/inngest/pull/4321",
+            "https://github.com/inngest/inngest/issues/4060"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-09)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: #4060 open, #4321 open.",
+          "bizdeki_ilgili_yer": "D1 (Inngest #4060)"
+        },
+        {
+          "id": "E5-T7-15",
+          "bulgu": "Trigger.dev'in 22–23 Haziran 2026 olayı (19:00 – 13:13 UTC): AWS kapasite sıkıntısından sonra aynı anda katılan çok sayıda node ve zamanlanmış koşular Kubernetes kontrol düzlemini boğdu, etcd quorum'u kaybetti. Alternatif bölge de düştü. Kuyruktaki iş kaybolmadı. Planlanan önlemler: bölge başına çok sayıda izole cluster, backpressure, etcd'nin sağlamlaştırılması, EKS.",
+          "kaynak_url": [
+            "https://trigger.dev/blog/incident-report-jun-22-2026"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-10)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Şirketin olay raporu okundu.",
+          "bizdeki_ilgili_yer": "D1 (Trigger.dev #4971); C6 (soğuk başlangıç dalgası)"
+        },
+        {
+          "id": "E5-T7-16",
+          "bulgu": "Trigger.dev'in 30 Haziran 2026 olayı (yaklaşık 6,5 saat): ClickHouse 26.2 yükseltmesiyle JSON tipi ağaçlarına 1.000 düğümlük karmaşıklık sınırı geldi. Heterojen task çıktıları birleşemedi, parçalar birikti, bellek yaklaşık 180 GiB tavanına vurdu. Liste ve log API'si çöktü (p99 1,5 sn'den ~30 sn'ye). Koşu yürütmesi, kuyruk ve tetikleme etkilenmedi. Ders: gözlem deposu çökse de yürütme gerçeği ayrı yerden okunabilmeli.",
+          "kaynak_url": [
+            "https://trigger.dev/blog/incident-report-jun-30-2026"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-11)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Şirketin olay raporu okundu.",
+          "bizdeki_ilgili_yer": "A0 KN-8; D1"
+        },
+        {
+          "id": "E5-T7-17",
+          "bulgu": "Windmill #10132 ve #10138 (2026-07-15): nsjail'de Python için sabit `rlimit_as: 4096` (4 GiB sanal adres alanı) sınırı var. Bu sınır altında claude-agent-sdk'nin çağırdığı Bun tabanlı `claude` CLI deterministik olmayan biçimde çöküyor ('Failed to start HTTP Client thread', 'Bun has crashed'). Düzeltme sınırı worker başına ayarlanabilir yaptı. Ders: sandbox'ta RLIMIT_AS (ulimit -v) ile ajan CLI'sı sınırlanmamalı, RSS ve cgroup ile sınırlanmalı.",
+          "kaynak_url": [
+            "https://github.com/windmill-labs/windmill/issues/10132",
+            "https://github.com/windmill-labs/windmill/pull/10138"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-12)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "Issue gövdesinde claude-agent-sdk ve hata mesajları doğrulandı; PR merged 2026-07-15.",
+          "bizdeki_ilgili_yer": "D1 (Windmill: başka issue'lar); A2 §3 (Claude CLI Bun binary)"
+        },
+        {
+          "id": "E5-T7-18",
+          "bulgu": "Restate v1.7.0 (2026-06-18): önekten yeniden başlayan bir invocation `ctx.rand` kullanıyorsa replay uyumsuzluğu çıkabiliyordu. Tohumu kalıcı yazan düzeltme #4750 ile 2026-05-22'de birleşti. Bu müşteri olayı değil, resmî mühendislik düzeltmesi.",
+          "kaynak_url": [
+            "https://github.com/restatedev/restate/blob/main/release-notes/v1.7.0.md",
+            "https://github.com/restatedev/restate/pull/4750"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-13)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: release v1.7.0 2026-06-18; PR #4750 merged 2026-05-22.",
+          "bizdeki_ilgili_yer": "D1 (Restate #4453); D1 (Temporal #1109 replay)"
+        },
+        {
+          "id": "E5-T7-19",
+          "bulgu": "Conductor OSS #1313 (2026-07-16, açık): SUB_WORKFLOW otomatik kurtarması tekrarları tek execution-lock anahtarı üzerinde sıraya diziyor. Çekişme ve INFO log fırtınası oluşuyor. İki onarıcı aynı işe yarışıyor.",
+          "kaynak_url": [
+            "https://github.com/conductor-oss/conductor/issues/1313"
+          ],
+          "codex_kaynagi": "dunya-vakalari/kumeler (WF-14)",
+          "dogrulama": "dogrulandi",
+          "dogrulama_notu": "gh api: open, 2026-07-16.",
+          "bizdeki_ilgili_yer": "D1 (Conductor #436)"
+        }
+      ],
+      "bizde_olup_codexte_olmayan": [
+        "D1: Hatchet #4824 (health HEALTHY iken kalıcı zombi worker), #2573 (RUNNING işi iptal edememe); DBOS #805 (kurtarılan workflow concurrency=1 kuyruğunu kilitliyor); Trigger.dev #4971 (child'lar bitse de parent devam etmiyor); Conductor #436; Restate #4453. Codex DBOS'ta vaka bulamadı ('documented_constraints_only_search_gap').",
+        "D1: Kestra #17124 (worker düzgün kapanırken task sonsuz RUNNING), #8356 (Postgres restart sonrası takılma), #18310 (CPU %200); Temporal sdk-python #1578 ve #1109 (nondeterminism).",
+        "D1: Windmill'de 6 başka issue (#4514, #6048, #6855, #7258, #10168, #10559).",
+        "D2: Ruflo README iddialarının bağımsız denetimlerde tutmaması (#653: MCP araçlarının ~%85'i iş yapmadan success dönüyor; #1326; #1514: 300+ aracın ~290'ı saplama). Codex'in Ruflo vakaları başka issue'lar.",
+        "D2: Gas Town'da 17, OpenHands SDK'da 25+, Factory'de 8 başka issue; Open SWE PR #2736, #3195, #3007 (sandbox zaman aşımının 'boş başarı' dönmesi).",
+        "D2: 11 dikiş hatası (araçlar arası geçiş) ve [YENİ]/[BİLİNEN] etiketlemesi.",
+        "B2: 16 sınıfta 88 vaka ve 161 kaynak; risk haritası (EV-/SS-) bağlantıları.",
+        "MAST'ın hata dağılımı (%41,8 tasarım, %36,9 ajanlar arası uyumsuzluk, %21,3 doğrulama) ve başarısızlık oranı aralığı bizde var. Codex yalnız sınıfları ve 1.642 izi veriyor."
+      ],
+      "celiskiler": [
+        {
+          "konu": "MAST veri seti boyutu",
+          "codex": "1.642 iz, 7 sistem (dunya-vakalari MA-09; multiagent_systems.md)",
+          "biz": "1.600+ iz (C4-ozet.md)",
+          "dogru_olan": "ikisi_de_kismen",
+          "kanit": "arXiv özetinde '1600+ annotated traces', v3 HTML gövdesinde '1642 annotated execution traces ... 7 popular MAS frameworks' yazıyor. Çelişki yok, Codex daha kesin. https://arxiv.org/html/2503.13657v3"
+        }
+      ],
+      "eklenmeyenler": [
+        {
+          "ne": "Temporal forum vakaları WF-04 (sonlanan cron workflow ertesi gece devam etmiyor, 2022), WF-05 ('No command scheduled for event' nondeterminism, 2023), WF-06 (worker ölünce NOT_FOUND tekrarları, 2021)",
+          "neden": "Eski forum kayıtları. WF-06'yı raporlayan kişi uygulama hatası olarak geri çekti (kanit-sinirlari.json engine_bug_retractions). Nondeterminism sınıfı D1'de Temporal #1578/#1109 ile zaten var."
+        },
+        {
+          "ne": "Kestra #2653 (OOM sonrası zombi RUNNING), Inngest #4060, ChatDev #674, Temporal forum 8 (heartbeat sonrası 13 alt akış), Cursor scaling-agents, Anthropic C derleyici, Answer.AI Devin denemesi",
+          "neden": "Zaten bizde var (D1, D2, C4, B2). Durumlar gh ile kontrol edildi: #2653 kapalı (2024-05-02), #4060 ve #674 açık. Bizdeki kayıtla çelişki yok."
+        },
+        {
+          "ne": "Cursor 'self-driving codebases' (MA-11'in ikinci kaynağı)",
+          "neden": "E5-T2-06 olarak eklendi, burada tekrarlanmadı."
+        },
+        {
+          "ne": "Open SWE #1795, #2370, #2453",
+          "neden": "Repo'da issue'lar kapalı (HTTP 410), gövde doğrulanamadı. Codex de bunları ana vaka yapmamış."
+        },
+        {
+          "ne": "Gas Town #1255 ('otomatik iş yükü kurtarma')",
+          "neden": "Yazar yanlış repoya açtığını söyledi; Codex de dışlamış."
+        },
+        {
+          "ne": "DBOS mimari ve workflow dokümanı (WFS-19/20), Trigger.dev 3.3.14 'OOM'da büyük makinede tekrar' changelog'u (WFS-21)",
+          "neden": "Vaka değil, yetenek dokümanı. Karar değeri düşük."
+        },
+        {
+          "ne": "52 kabul deneyinin sayısal eşikleri",
+          "neden": "Hepsi not_run; numeric_thresholds=null. Kapasite taahhüdü değiller. Aşağıda kabul_deneyleri listesinde ayrıca kaydedildi."
+        },
+        {
+          "ne": "Codex'in 36 vaka için verdiği 'transferable_lesson' genellemeleri",
+          "neden": "Analist çıkarımı, birincil kaynak iddiası değil. Yalnız vakanın kendisi doğrulanıp alındı."
+        }
+      ],
+      "kabul_deneyleri": {
+        "kaynak": "dunya-vakalari/kabul-deneyleri.json",
+        "adet": 52,
+        "vakadan_turetilmis": 36,
+        "capraz_sentez": 16,
+        "calistirilan": 0,
+        "not": "Codex uyarısı: hiçbiri çalıştırılmadı; sayılar kapasite taahhüdü değil. Bizde bu türden bir kabul deneyi kataloğu yok; bizde_karsilik alanı yalnız ilgili bulguyu gösterir.",
+        "liste": [
+          {
+            "id": "EX-CP-01",
+            "tur": "vakadan_turetilmis",
+            "baslik": "kontrollü uzun test ile gerçekten döngüye giren ajanı aynı gözlemciye ver; uzun test korunmalı, gerçek döngü sınır içinde durmalı.",
+            "codex_vakalari": [
+              "CP-01"
+            ],
+            "codex_yerel_bulgulari": [
+              "K10"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: E6 ders 2 (boşta sınırı uzun testi öldürdü); D1 §1"
+          },
+          {
+            "id": "EX-CP-02",
+            "tur": "vakadan_turetilmis",
+            "baslik": "hedef paralellikte uzun soak testi; parent/child RSS, konteyner limiti, retry başına artış ve OOM olaylarını ayrı ölç.",
+            "codex_vakalari": [
+              "CP-02"
+            ],
+            "codex_yerel_bulgulari": [
+              "K03",
+              "K13"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 §2.3; A2 kaynak profilleri; E6 ders 1"
+          },
+          {
+            "id": "EX-CP-03",
+            "tur": "vakadan_turetilmis",
+            "baslik": "başarı, SIGTERM, SIGKILL, OOM ve callback ağ kesintisi enjekte et; bir kez terminalleşme, görünür neden ve kaynaksız yetim iş bırakmama doğrulansın.",
+            "codex_vakalari": [
+              "CP-03"
+            ],
+            "codex_yerel_bulgulari": [
+              "K09",
+              "K10",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 §1 (stale RUNNING); B3"
+          },
+          {
+            "id": "EX-CP-04",
+            "tur": "vakadan_turetilmis",
+            "baslik": "tek MCP cevabını geciktir; işin ready görünmemesi, hangi yeteneğin eksik olduğunun raporlanması ve kısıtlı çalışma politikasının uygulanması ölçülsün.",
+            "codex_vakalari": [
+              "CP-04"
+            ],
+            "codex_yerel_bulgulari": [
+              "K08",
+              "K09",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D2 (OpenHands); B3"
+          },
+          {
+            "id": "EX-CP-05",
+            "tur": "vakadan_turetilmis",
+            "baslik": "canlı worker ile sağlık probunu engelle, ardından gerçekten worker'ı öldür; iki durum farklı sonuç ve neden üretmeli.",
+            "codex_vakalari": [
+              "CP-05"
+            ],
+            "codex_yerel_bulgulari": [
+              "K04",
+              "K10"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 §1 (Hatchet #4824 HEALTHY görünen zombi)"
+          },
+          {
+            "id": "EX-CP-06",
+            "tur": "vakadan_turetilmis",
+            "baslik": "paralel metin/görüntü araç geçmişini taşıyan işi sağlayıcıA'danB'ye aktar; çağrı kimlikleri, sonuç sayısı ve devam edebilme doğrulansın.",
+            "codex_vakalari": [
+              "CP-06"
+            ],
+            "codex_yerel_bulgulari": [
+              "K13",
+              "K15"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C3 (port/TCK, sağlayıcı değişimi)"
+          },
+          {
+            "id": "EX-CP-07",
+            "tur": "vakadan_turetilmis",
+            "baslik": "havuz yükseltmesini ortasında kes; yeniden başladıktan sonra kurulu/çalışan sürüm eşleşmesi ve stale-lock geri kazanımı doğrulansın.",
+            "codex_vakalari": [
+              "CP-07"
+            ],
+            "codex_yerel_bulgulari": [
+              "K04",
+              "K15",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C3 (geçiş provası)"
+          },
+          {
+            "id": "EX-CP-09",
+            "tur": "vakadan_turetilmis",
+            "baslik": "bilgi eksiği üret; yetkili cevap tek kez doğru iş/checkpoint'e ulaşmalı, eski cevap yeni işi yanlışlıkla sürdürmemeli.",
+            "codex_vakalari": [
+              "CP-09"
+            ],
+            "codex_yerel_bulgulari": [
+              "K09",
+              "K16"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: E6 ders 6 (insan onayı beklemesinin son tarihi yok); A0 §6"
+          },
+          {
+            "id": "EX-CP-10",
+            "tur": "vakadan_turetilmis",
+            "baslik": "API doğruyken UI düğmesini boz; testin programatik kestirmeyle geçmemesini ve geçici bildirim için doğru zaman aralığı kanıtını iste.",
+            "codex_vakalari": [
+              "CP-10"
+            ],
+            "codex_yerel_bulgulari": [
+              "K08",
+              "K17",
+              "K18"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C5 (oracle); B2; A1"
+          },
+          {
+            "id": "EX-CP-11",
+            "tur": "vakadan_turetilmis",
+            "baslik": "gerçek ERP'den temsilci küçük görev seti kur; kör insan değerlendirmesiyle AC, bakım kolaylığı ve kurtarma insan-süresini ölç, demo başarısını genelleme.",
+            "codex_vakalari": [
+              "CP-11"
+            ],
+            "codex_yerel_bulgulari": [
+              "K09",
+              "K17",
+              "K18"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C4 (DoD); A1 (METR)"
+          },
+          {
+            "id": "EX-MA-01",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Worker bittikten sonra merger'ı durdur; branch'i silme isteğini dene. Teslim kanıtı oluşmadan temizlik reddedilmeli; yeniden açılışta tek MR yürütülmeli.",
+            "codex_vakalari": [
+              "MA-01"
+            ],
+            "codex_yerel_bulgulari": [
+              "K09",
+              "K14"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C6 (merge queue); B2"
+          },
+          {
+            "id": "EX-MA-02",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Tek completion olayını 100 kez yeniden teslim et; tamamlama kaydı ve takip işi birer kez oluşmalı, uyarı kuyruğu büyümemeli.",
+            "codex_vakalari": [
+              "MA-02"
+            ],
+            "codex_yerel_bulgulari": [
+              "K06",
+              "K13"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A2 (Plane webhook tekrarları); B3"
+          },
+          {
+            "id": "EX-MA-03",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Dört worker başlat; API, pano, scheduler ve gerçek process/lease kayıtlarını karşılaştır. Birini öldürünce bütün görünümler belirlenmiş sürede uzlaşmalı.",
+            "codex_vakalari": [
+              "MA-03"
+            ],
+            "codex_yerel_bulgulari": [
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 KN-8 (durum doğruluğu zayıf)"
+          },
+          {
+            "id": "EX-MA-04",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Aynı hesabı paylaşan 10 worktree ve iki repo aç; tanımlı global çağrı/eşzamanlılık bütçesinin aşılmadığını, 429 sonrasında bütün filonun ortak geri çekildiğini doğrula.",
+            "codex_vakalari": [
+              "MA-04"
+            ],
+            "codex_yerel_bulgulari": [
+              "K11",
+              "K12"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 KN-5; C6 (hız limitleri)"
+          },
+          {
+            "id": "EX-MA-05",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Uzun alt process ve torun process başlat; dış timeout ver. Tanımlı bekleme sonunda süreç, lease ve rezervasyon kalmamalı; ikinci worker eski işi sürdüren process ile yarışmamalı.",
+            "codex_vakalari": [
+              "MA-05"
+            ],
+            "codex_yerel_bulgulari": [
+              "K04",
+              "K10"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 §1; B3"
+          },
+          {
+            "id": "EX-MA-06",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Eksik alanlı, eski sürümlü ve semantik olarak yanlış üç çıktı ver; görev sessiz başarıya geçmemeli ve recovery ilk hata kanıtını korumalı.",
+            "codex_vakalari": [
+              "MA-06"
+            ],
+            "codex_yerel_bulgulari": [
+              "K15"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: B3 AK-20"
+          },
+          {
+            "id": "EX-MA-07",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Beş bağımsız ihlalli bir aday ver; üç tur doldu diye tamamlandı sayılmamalı. Kapanan ve açık kalan kriterler ayrı kanıtlanmalı.",
+            "codex_vakalari": [
+              "MA-07"
+            ],
+            "codex_yerel_bulgulari": [
+              "K15",
+              "K18"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C5; B2"
+          },
+          {
+            "id": "EX-MA-08",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Bağlantıyı kabul edip yanıt vermeyen sahte endpoint ve TypeError üreten adapter kullan; tanımlı deadline'da başarısızlık makbuzu oluşmalı, completion kapısı geçilmemeli.",
+            "codex_vakalari": [
+              "MA-08"
+            ],
+            "codex_yerel_bulgulari": [
+              "K08",
+              "K10",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D2"
+          },
+          {
+            "id": "EX-MA-09",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Aynı görev kümesini tek yürütücü ve iki farklı takım topolojisiyle karşılaştır; AC kabulü, tekrar iş, token maliyeti ve doğrulama yanlışlarını ayrı ölç.",
+            "codex_vakalari": [
+              "MA-09"
+            ],
+            "codex_yerel_bulgulari": [
+              "K08",
+              "K09",
+              "K18"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A1 (tek yazıcı ajan); C4 (Google/MIT 17,2x/4,4x)"
+          },
+          {
+            "id": "EX-MA-10",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Kök nedeni bilinen 10 arızayı enjekte et; teşhis ajanının ilk neden, etki zinciri ve önerdiği onarımı gerçek hata kayıtlarıyla karşılaştır.",
+            "codex_vakalari": [
+              "MA-10"
+            ],
+            "codex_yerel_bulgulari": [
+              "K08"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: E6 ders 5 (teşhis ajanı kanıtsız SUCCESS); B3"
+          },
+          {
+            "id": "EX-MA-11",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Aynı bağımlılık grafiğinde 2/8/20 worker çalıştır; kilitte bekleme, yeniden yapılan iş ve kabul edilen değişiklik/saat eğrisini ölç. Tıkanıklıkta yeni ajan ekleme kararı bu ölçüme dayanmalı.",
+            "codex_vakalari": [
+              "MA-11"
+            ],
+            "codex_yerel_bulgulari": [
+              "K07",
+              "K09",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C4 (20 ajan → 2–3 ajan verimi); C6"
+          },
+          {
+            "id": "EX-MA-12",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Bordro/izin/puantaj için ayrı ve birleşik fixture'lar kur; tek tek geçen ama birlikte bozulan çifti enjekte et. Referans sonuç kaynağı ve uyuşmazlık çözümü açıklanmadan DoD kapanmamalı.",
+            "codex_vakalari": [
+              "MA-12"
+            ],
+            "codex_yerel_bulgulari": [
+              "K14",
+              "K15",
+              "K18"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C5 (HRMS oracle, altın setler)"
+          },
+          {
+            "id": "EX-WF-01",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Test çalışırken workerı OOM ile öldür; terminal durum, kaynak temizliği, yeniden sahiplenme ve tek teslim oluşumunu ölç.",
+            "codex_vakalari": [
+              "WF-01"
+            ],
+            "codex_yerel_bulgulari": [
+              "K03",
+              "K04",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 §1 (Kestra #2653)"
+          },
+          {
+            "id": "EX-WF-02",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Bir takımı SLA ile iptal ederken komşu takımların ilerlediğini ve iptal edilen işin son durumunun yazıldığını kontrol et.",
+            "codex_vakalari": [
+              "WF-02"
+            ],
+            "codex_yerel_bulgulari": [
+              "K10",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Kestra); A0 (Pause→24 saat→CANCEL)"
+          },
+          {
+            "id": "EX-WF-03",
+            "tur": "vakadan_turetilmis",
+            "baslik": "GitHub yazımı tamamlandıktan sonra cevap alınmadan workerı kes; tekrar geldiğinde ikinci PR/deploy oluşmamalı.",
+            "codex_vakalari": [
+              "WF-03"
+            ],
+            "codex_yerel_bulgulari": [
+              "K05",
+              "K06"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Temporal heartbeat sonrası tekrar child); B3"
+          },
+          {
+            "id": "EX-WF-04",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Uzun görev geçmişini büyüt; eşik öncesi kontrollü devam ve artifact referanslarının sürekliliğini doğrula.",
+            "codex_vakalari": [
+              "WF-04"
+            ],
+            "codex_yerel_bulgulari": [
+              "K13"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Temporal)"
+          },
+          {
+            "id": "EX-WF-05",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Devam eden görevlerin kaydedilmiş history’sini aday SDK/kod sürümüyle replay et; farklı komut üretimi varsa yayını engelle.",
+            "codex_vakalari": [
+              "WF-05"
+            ],
+            "codex_yerel_bulgulari": [
+              "K15",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Temporal sdk-python #1578)"
+          },
+          {
+            "id": "EX-WF-06",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Aynı kill-and-resume deneyini üretim akışı ve yalın referans workflow üzerinde karşılaştır.",
+            "codex_vakalari": [
+              "WF-06"
+            ],
+            "codex_yerel_bulgulari": [
+              "K18",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Temporal)"
+          },
+          {
+            "id": "EX-WF-07",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Ajan sonucuna geçersiz tip/bozuk JSON ekle; iş belirli sürede açıklayıcı FAILED olmalı, asılı kalmamalı.",
+            "codex_vakalari": [
+              "WF-07"
+            ],
+            "codex_yerel_bulgulari": [
+              "K15",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: B3 AK-20"
+          },
+          {
+            "id": "EX-WF-08",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Idle proxy bağlantısını kes, sonra iş gönder; delivery acknowledgement yoksa iş yeniden güvenli sahiplenilmeli.",
+            "codex_vakalari": [
+              "WF-08"
+            ],
+            "codex_yerel_bulgulari": [
+              "K04",
+              "K05",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Hatchet)"
+          },
+          {
+            "id": "EX-WF-09",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Eski şemalı kuyruk kaydı enjekte et; bounded retry/DLQ oluşmalı ve sağlıklı görev akış hızı korunmalı.",
+            "codex_vakalari": [
+              "WF-09"
+            ],
+            "codex_yerel_bulgulari": [
+              "K13",
+              "K06",
+              "K11"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Inngest #4060)"
+          },
+          {
+            "id": "EX-WF-10",
+            "tur": "vakadan_turetilmis",
+            "baslik": "144 takımın cold-start dalgasını kademeli test et; admission backpressure ve bir cluster kaybında gerçek bağımsız failover ölç.",
+            "codex_vakalari": [
+              "WF-10"
+            ],
+            "codex_yerel_bulgulari": [
+              "K11",
+              "K04"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C6 (144 ekip ölçeği)"
+          },
+          {
+            "id": "EX-WF-11",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Gözlem deposunu devre dışı bırak; ilerleyen işi ikinci kez başlatmadan operasyonel durum kaynağından doğrula.",
+            "codex_vakalari": [
+              "WF-11"
+            ],
+            "codex_yerel_bulgulari": [
+              "K13",
+              "K15",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 KN-8; D1"
+          },
+          {
+            "id": "EX-WF-12",
+            "tur": "vakadan_turetilmis",
+            "baslik": "İzolasyon açıkken gerçek SDK + tarayıcı iş yükünü limitlerle çalıştır; testten sonra namespace sınırları ve doğru OOM sınıflandırmasını doğrula.",
+            "codex_vakalari": [
+              "WF-12"
+            ],
+            "codex_yerel_bulgulari": [
+              "K03",
+              "K10"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A2 (kaynak profilleri); E6 ders 1"
+          },
+          {
+            "id": "EX-WF-13",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Prefix içinde rastgelelik ve dış çağrı içeren görevi taşı; karar izi korunmalı, uyumsuz geri dönüş açıkça reddedilmeli.",
+            "codex_vakalari": [
+              "WF-13"
+            ],
+            "codex_yerel_bulgulari": [
+              "K15",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Temporal #1109 replay)"
+          },
+          {
+            "id": "EX-WF-14",
+            "tur": "vakadan_turetilmis",
+            "baslik": "Aynı child launch hatasını iki replika ve çok worker altında tetikle; bir etkinrepair, bounded backoff ve sağlıklı işlere ilerleme bekle.",
+            "codex_vakalari": [
+              "WF-14"
+            ],
+            "codex_yerel_bulgulari": [
+              "K07",
+              "K06",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Conductor)"
+          },
+          {
+            "id": "EX-X01",
+            "tur": "capraz_sentez",
+            "baslik": "Uzun iş ile gerçek tıkanıklığı ayır",
+            "codex_vakalari": [
+              "CP-01",
+              "CP-05",
+              "MA-05"
+            ],
+            "codex_yerel_bulgulari": [
+              "K04",
+              "K10"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 §1 (Hatchet #4824 HEALTHY görünen zombi) | D1 §1; B3 | E6 ders 2 (boşta sınırı uzun testi öldürdü); D1 §1"
+          },
+          {
+            "id": "EX-X02",
+            "tur": "capraz_sentez",
+            "baslik": "Dış işlem sonrası kayıp cevabı uzlaştır",
+            "codex_vakalari": [
+              "WF-03",
+              "CP-03",
+              "MA-02"
+            ],
+            "codex_yerel_bulgulari": [
+              "K05",
+              "K06",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A2 (Plane webhook tekrarları); B3 | D1 (Temporal heartbeat sonrası tekrar child); B3 | D1 §1 (stale RUNNING); B3"
+          },
+          {
+            "id": "EX-X03",
+            "tur": "capraz_sentez",
+            "baslik": "Kaynak sınırlarını ayrı teşhis et",
+            "codex_vakalari": [
+              "CP-02",
+              "WF-12",
+              "CP-05"
+            ],
+            "codex_yerel_bulgulari": [
+              "K03",
+              "K13"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 §2.3; A2 kaynak profilleri; E6 ders 1 | A2 (kaynak profilleri); E6 ders 1 | D1 §1 (Hatchet #4824 HEALTHY görünen zombi)"
+          },
+          {
+            "id": "EX-X04",
+            "tur": "capraz_sentez",
+            "baslik": "Ortak kota ile rol kapasitesini sınırla",
+            "codex_vakalari": [
+              "MA-04",
+              "WF-10"
+            ],
+            "codex_yerel_bulgulari": [
+              "K11",
+              "K12"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 KN-5; C6 (hız limitleri) | C6 (144 ekip ölçeği)"
+          },
+          {
+            "id": "EX-X05",
+            "tur": "capraz_sentez",
+            "baslik": "Heartbeat sürerken iş kanalını kes",
+            "codex_vakalari": [
+              "WF-08",
+              "WF-01"
+            ],
+            "codex_yerel_bulgulari": [
+              "K04",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Hatchet) | D1 §1 (Kestra #2653)"
+          },
+          {
+            "id": "EX-X06",
+            "tur": "capraz_sentez",
+            "baslik": "Teşhis sonucunu bağımsız doğrula",
+            "codex_vakalari": [
+              "MA-10",
+              "MA-09",
+              "CP-04"
+            ],
+            "codex_yerel_bulgulari": [
+              "K08",
+              "K18"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A1 (tek yazıcı ajan); C4 (Google/MIT 17,2x/4,4x) | D2 (OpenHands); B3 | E6 ders 5 (teşhis ajanı kanıtsız SUCCESS); B3"
+          },
+          {
+            "id": "EX-X07",
+            "tur": "capraz_sentez",
+            "baslik": "Adaptörün hata ve geçmiş sözleşmesini sınama",
+            "codex_vakalari": [
+              "CP-06",
+              "CP-07",
+              "MA-06",
+              "MA-08",
+              "WF-07"
+            ],
+            "codex_yerel_bulgulari": [
+              "K15",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: B3 AK-20 | C3 (geçiş provası) | C3 (port/TCK, sağlayıcı değişimi) | D2"
+          },
+          {
+            "id": "EX-X08",
+            "tur": "capraz_sentez",
+            "baslik": "Açık işte sürüm ve motor geçişi",
+            "codex_vakalari": [
+              "WF-13",
+              "WF-05",
+              "WF-04",
+              "CP-06"
+            ],
+            "codex_yerel_bulgulari": [
+              "K13",
+              "K15"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C3 (port/TCK, sağlayıcı değişimi) | D1 (Temporal #1109 replay) | D1 (Temporal sdk-python #1578) | D1 (Temporal)"
+          },
+          {
+            "id": "EX-X09",
+            "tur": "capraz_sentez",
+            "baslik": "İki onarıcı tek işi sahiplenebilsin",
+            "codex_vakalari": [
+              "WF-14",
+              "WF-09"
+            ],
+            "codex_yerel_bulgulari": [
+              "K06",
+              "K07",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: D1 (Conductor) | D1 (Inngest #4060)"
+          },
+          {
+            "id": "EX-X10",
+            "tur": "capraz_sentez",
+            "baslik": "Birleşmiş kodu ayrıca kabul et",
+            "codex_vakalari": [
+              "MA-01",
+              "MA-11",
+              "MA-12"
+            ],
+            "codex_yerel_bulgulari": [
+              "K14",
+              "K15"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C4 (20 ajan → 2–3 ajan verimi); C6 | C5 (HRMS oracle, altın setler) | C6 (merge queue); B2"
+          },
+          {
+            "id": "EX-X11",
+            "tur": "capraz_sentez",
+            "baslik": "Oracle ve kullanıcı yolculuğu kestirmesini denetle",
+            "codex_vakalari": [
+              "CP-10",
+              "CP-11",
+              "MA-07",
+              "MA-12"
+            ],
+            "codex_yerel_bulgulari": [
+              "K18",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C4 (DoD); A1 (METR) | C5 (HRMS oracle, altın setler) | C5 (oracle); B2; A1 | C5; B2"
+          },
+          {
+            "id": "EX-X12",
+            "tur": "capraz_sentez",
+            "baslik": "Uzak alpha sürümünü kanıta bağla",
+            "codex_vakalari": [
+              "CP-03",
+              "MA-01",
+              "WF-03"
+            ],
+            "codex_yerel_bulgulari": [
+              "K14",
+              "K17"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: C6 (merge queue); B2 | D1 (Temporal heartbeat sonrası tekrar child); B3 | D1 §1 (stale RUNNING); B3"
+          },
+          {
+            "id": "EX-X13",
+            "tur": "capraz_sentez",
+            "baslik": "Görev girdisi ve insan yanıtını nesle bağla",
+            "codex_vakalari": [
+              "CP-09",
+              "WF-03",
+              "MA-02"
+            ],
+            "codex_yerel_bulgulari": [
+              "K16",
+              "K06"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A2 (Plane webhook tekrarları); B3 | D1 (Temporal heartbeat sonrası tekrar child); B3 | E6 ders 6 (insan onayı beklemesinin son tarihi yok); A0 §6"
+          },
+          {
+            "id": "EX-X14",
+            "tur": "capraz_sentez",
+            "baslik": "Eksik kapsamı tamamlandı sayma",
+            "codex_vakalari": [
+              "MA-09",
+              "MA-07",
+              "CP-10"
+            ],
+            "codex_yerel_bulgulari": [
+              "K18",
+              "K08"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A1 (tek yazıcı ajan); C4 (Google/MIT 17,2x/4,4x) | C5 (oracle); B2; A1 | C5; B2"
+          },
+          {
+            "id": "EX-X15",
+            "tur": "capraz_sentez",
+            "baslik": "Gözlem arızasında gerçek durumu geri kur",
+            "codex_vakalari": [
+              "WF-11",
+              "MA-03",
+              "CP-03"
+            ],
+            "codex_yerel_bulgulari": [
+              "K17",
+              "K09"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 KN-8 (durum doğruluğu zayıf) | A0 KN-8; D1 | D1 §1 (stale RUNNING); B3"
+          },
+          {
+            "id": "EX-X16",
+            "tur": "capraz_sentez",
+            "baslik": "Ajan çoğaltmanın gerçekten faydasını ölç",
+            "codex_vakalari": [
+              "MA-11",
+              "MA-12",
+              "WF-10",
+              "MA-04"
+            ],
+            "codex_yerel_bulgulari": [
+              "K11",
+              "K14",
+              "K07"
+            ],
+            "durum": "not_run",
+            "bizde_karsilik": "Bizde kabul deneyi yok. İlgili bulgu: A0 KN-5; C6 (hız limitleri) | C4 (20 ajan → 2–3 ajan verimi); C6 | C5 (HRMS oracle, altın setler) | C6 (144 ekip ölçeği)"
+          }
+        ]
+      },
+      "yerel_eslesme_kontrolu": {
+        "kaynak": "dunya-vakalari/yerel-eslesmeler.json (yerel rapor: kestra-gecmis-incelemesi/RAPOR.md)",
+        "ozet": "18 yerel bulgunun (K01–K18) A0 karşılığı: 7'si uyumlu, 6'sı kısmen uyumlu, 5'i A0'da yok (K01, K02, K10, K12, K16). Çelişen bulgu yok. Codex'in eşlemelerinin 16'sında dış vakayla ilişki 'mechanism_analogy_only'; yani aynı kök neden iddia edilmiyor. K01 ve K02'nin dış eşleşmesi yok. A0'da olmayan bulguların ayrıntılı doğrulaması E6'da yapıldı (E6-codex-kestra-gecmisi.json, 11 ders).",
+        "liste": [
+          {
+            "yerel_bulgu": "K01",
+            "baslik": "Ters vekil yapılandırması başlayamıyor",
+            "codex_kanit_duzeyi": "raw_log",
+            "codex_eslesme": "no_direct_match_in_this_sample",
+            "dis_vaka_sayisi": 0,
+            "a0_uyumu": "yok",
+            "aciklama": "A0'da ters vekil (reverse proxy) kurulum hatası yok."
+          },
+          {
+            "yerel_bulgu": "K02",
+            "baslik": "Kestra eklenti deposuna yazma izni yok",
+            "codex_kanit_duzeyi": "raw_log",
+            "codex_eslesme": "no_direct_match_in_this_sample",
+            "dis_vaka_sayisi": 0,
+            "a0_uyumu": "yok",
+            "aciklama": "A0'da Kestra eklenti deposu yazma izni sorunu yok."
+          },
+          {
+            "yerel_bulgu": "K03",
+            "baslik": "1 GB sınırında tarayıcı testi OOM ile öldürülüyor",
+            "codex_kanit_duzeyi": "tool_output_and_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 3,
+            "a0_uyumu": "kismen",
+            "aciklama": "A0 §2.3 tarayıcı konteynerini 710,5 MiB / 1 GiB olarak ölçüyor ama OOM'dan söz etmiyor. OOM ve exit 137 E6 ders 1'de doğrulandı."
+          },
+          {
+            "yerel_bulgu": "K04",
+            "baslik": "Mac uyuyunca çalışma sahipliği kaybı tüm slotları kapatıyor",
+            "codex_kanit_duzeyi": "tool_output_and_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 6,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-6: Mac uykusu üretimi ve lease'leri kırıyor."
+          },
+          {
+            "yerel_bulgu": "K05",
+            "baslik": "Doğrulanmış paket, heartbeat yarışıyla hata sayılıyor",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 2,
+            "a0_uyumu": "kismen",
+            "aciklama": "A0 §1.3 lease (120 sn TTL, 15 sn heartbeat) ve KN-4 (doğrulanmış paket ürün kabulüne dönüşmedi). Heartbeat yarışının kendisi A0'da yok."
+          },
+          {
+            "yerel_bulgu": "K06",
+            "baslik": "Yönetim gözlemcisi kendi idempotency kuralına takılıyor",
+            "codex_kanit_duzeyi": "raw_log_and_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 4,
+            "a0_uyumu": "kismen",
+            "aciklama": "A0 §3.2 (arıza/kurtarma/onarım kavramlarının tekrarı). Gözlemcinin kendi idempotency kuralına takılması A0'da yok."
+          },
+          {
+            "yerel_bulgu": "K07",
+            "baslik": "Veritabanı kilit döngüleri ve iki bağlantılı kendini kilitleme",
+            "codex_kanit_duzeyi": "raw_log_and_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 2,
+            "a0_uyumu": "kismen",
+            "aciklama": "A0 §1.3 kilit mekanizmaları. İki bağlantılı kendini kilitleme E6 ders 9'da."
+          },
+          {
+            "yerel_bulgu": "K08",
+            "baslik": "Teşhis ajanı kanıtsız çalışıyor; okunamayan dosya başarı sayılıyor",
+            "codex_kanit_duzeyi": "historical_snapshot_and_report",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 5,
+            "a0_uyumu": "kismen",
+            "aciklama": "A0 KN-4 (kabul/oracle). 'Okunamayan dosya SUCCESS sayıldı' E6 ders 5'te."
+          },
+          {
+            "yerel_bulgu": "K09",
+            "baslik": "Bekleyen işin onu ilerletecek gerçek sahibi yok",
+            "codex_kanit_duzeyi": "historical_experiment_with_tool_corroboration",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 14,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-1: orkestratör yalnız yoklayıcı, dayanıklı iş akışı elle yazılmış. Sahipsiz bekleme E6 ders 4'te."
+          },
+          {
+            "yerel_bulgu": "K10",
+            "baslik": "İlerleme gözlemcisi uzun testi ajan takılması sanıyor",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 7,
+            "a0_uyumu": "yok",
+            "aciklama": "A0'da yok. E6 ders 2: 600 sn'lik boşta sınırı 70 dakikalık testi takılma sandı."
+          },
+          {
+            "yerel_bulgu": "K11",
+            "baslik": "Reviewer kotası tüm üretim kuyruğunu bloke ediyor",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 3,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-5: 'six coder calls were starving reviewer/coordination calls' (provider-concurrency.json:3)."
+          },
+          {
+            "yerel_bulgu": "K12",
+            "baslik": "Plane doğrulama sorguları oran sınırına çarpıyor",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 1,
+            "a0_uyumu": "yok",
+            "aciklama": "A0'da Plane oran sınırı (429) bulgusu yok. A2 60 istek/dk sınırını belgeliyor."
+          },
+          {
+            "yerel_bulgu": "K13",
+            "baslik": "Büyüyen kanıtlar bağlam ve durum sınırını aşıyor",
+            "codex_kanit_duzeyi": "tool_output_and_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 6,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-9 (bağlam/oturum devamı yok) ve §2.3 (tek görev için 3.935 rapor dosyası, 306 MiB). E6 ders 3: durum 1.008.940 byte."
+          },
+          {
+            "yerel_bulgu": "K14",
+            "baslik": "Ayrı çalışma ağaçlarından birleşime geçiş eksik",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 2,
+            "a0_uyumu": "kismen",
+            "aciklama": "A0 KN-8 (eşzamanlılık çıktıya dönüşmedi). 73 paketin 'stale' görünmesi E6 ders 7'de."
+          },
+          {
+            "yerel_bulgu": "K15",
+            "baslik": "Bir onarım başka aşamanın veri sözleşmesini bozuyor",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 9,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-2: canlı sistem sürüm kontrolü olmadan yamalandı. 10ao→10ap regresyonu E6 ders 8'de."
+          },
+          {
+            "yerel_bulgu": "K16",
+            "baslik": "Plane insan/bot kimliği ve pano durumu devamı engelliyor",
+            "codex_kanit_duzeyi": "transcript_tool_result_and_report",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 1,
+            "a0_uyumu": "yok",
+            "aciklama": "A0 §6 Plane durum akışını anlatıyor, insan/bot kimliği sorunu yok."
+          },
+          {
+            "yerel_bulgu": "K17",
+            "baslik": "Kurulum, çağrı, paket ve teslim başarısı birbirine karışıyor",
+            "codex_kanit_duzeyi": "transcript_assistant_claim_and_later_observation",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 10,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-4: doğrulanmış paketler ürün kabulüne dönüşmedi. §2 kanıtlanmış olanları ayrıca listeliyor."
+          },
+          {
+            "yerel_bulgu": "K18",
+            "baslik": "Test/oracle hata sınıflandırması yanlış sahibine gönderiyor",
+            "codex_kanit_duzeyi": "historical_experiment",
+            "codex_eslesme": "mechanism_analogy_only",
+            "dis_vaka_sayisi": 6,
+            "a0_uyumu": "uyumlu",
+            "aciklama": "A0 KN-4 (kabul ve oracle problemi)."
+          }
+        ]
+      }
+    }
+  ],
+  "codex_itirazlari": {
+    "kaynak": "research_notes/Claude bulgularıyla kapsam tamamlama/mimari.md (15:40'ta oluştu)",
+    "not": "Codex'in bizim araştırmamıza itirazları. Çoğu yargı niteliğinde, birincil kaynakla doğrulanamaz. Yalnız CA-14 bizim dosyada kontrol edildi.",
+    "liste": [
+      {
+        "id": "CA-10",
+        "itiraz": "C6'daki 144 ekip için insan ve sunucu sayıları ölçüm değil senaryo. Hesap, bütün PR'ların insanlarca incelendiğini varsayıyor; kullanıcı ise esasen girdi ve alpha çıktısını denetlemek istiyor.",
+        "degerlendirme": "Kısmen haklı. C6 bu sayıları 'tahmin' diye etiketliyor (ör. 432–1.440 PR/gün). İnceleme modelinin kullanıcının 'girdi ve çıktı' tercihine göre ayrıca hesaplanması gerekiyor. Birincil kaynak kontrolü yapılamaz."
+      },
+      {
+        "id": "CA-11",
+        "itiraz": "C3'teki 'tek gerçek olay defteri' reçetesi dayanıklı motorun retry ve lease durumunu yeniden yazmaya dönüşebilir; bu, eski pilotun karmaşıklığını geri getirir.",
+        "degerlendirme": "Geçerli bir risk uyarısı. A0 KN-1 (dayanıklı iş akışı ilkelerinin elle yeniden yazılması) bu uyarıyı destekliyor. C3'e 'defter iş alanı durumudur, motor iç durumu değildir' sınırı eklenebilir."
+      },
+      {
+        "id": "CA-12",
+        "itiraz": "Form=oracle ve değişmez RED testi kuralının sınırı var: form tek başına doğruluk sayılmaz, yanlış test de korunmamalı.",
+        "degerlendirme": "Kısmen haklı. C5 de altın set ve uzman imzası istiyor; 'değişmez RED' kuralına yetkili değişim yolu eklenmeli."
+      },
+      {
+        "id": "CA-13",
+        "itiraz": "Bizim yönerge şablonumuzda tarihsel Temporal tercihi güncel gereksinim gibi duruyor.",
+        "degerlendirme": "E5 kapsamı dışında (kararlar.json ve yönergeler). Not edildi."
+      },
+      {
+        "id": "CA-14",
+        "itiraz": "Araştırmadaki kayıt sayısı benzersiz olay sayısı değil. D1'de aynı #1894 iki kayıt olarak geçiyor.",
+        "degerlendirme": "Doğrulandı. D1-orkestrator-hatalari.json motorlar[1] (Temporal) içinde hatalar[0] ve hatalar[1] aynı issue'ya dayanıyor; ikincisi 'Aynı vaka' diye notlu. Dosyada #1894 URL'si 4 kez geçiyor. D1'deki '100+ kayıt' benzersiz olay sayısı olarak okunmamalı."
+      }
+    ]
+  }
+}

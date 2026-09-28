@@ -1,0 +1,60 @@
+{
+  "title": "CrewAI",
+  "summary": "CrewAI’ın bu hat için tarafsız değerlendirmesi: Crews, Flows ve AMP.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "CrewAI",
+      "lede": "Rol, görev ve ekip soyutlamasıyla bilinen MIT lisanslı Python framework’ü. Panoya göre “uzman ajan ekiplerini hızlı kurdurur; kontrol seviyesi LangGraph’tan düşüktür”. Bu tespit Crews için doğru; 2025–2026’da olgunlaşan Flows için kısmen eskidi.",
+      "meta": [
+        { "label": "Hüküm", "value": "Çekirdek olarak önerilmez" },
+        { "label": "Katman", "value": "L3 kütüphane" },
+        { "label": "Lisans", "value": "MIT (AMP ticari)" }
+      ]
+    },
+    { "type": "heading", "text": "İki farklı CrewAI" },
+    {
+      "type": "cards",
+      "columns": 2,
+      "items": [
+        { "badge": { "text": "Crews", "tone": "warning" }, "title": "Özerk ajan ekipleri", "text": "Rol tabanlı delegasyon, yönetici ajan, dinamik karar. Akışın sırasını ajanlar belirler. Keşif ve beyin fırtınası için hızlı; deterministik kapılı bir hat için kontrolü zayıf." },
+        { "badge": { "text": "Flows", "tone": "info" }, "title": "Olay güdümlü iş akışları", "text": "Açık durum yönetimi ve koşullu yönlendirme; sıranın önemli olduğu hatlar için. Kalıcılık için kaydetme desteği var, ama çalışan filosu, heartbeat ve günlerce süren dayanıklı zamanlayıcı sunan bir durable execution motoru değil." }
+      ]
+    },
+    {
+      "type": "procon",
+      "proTitle": "Lehte",
+      "conTitle": "Aleyhte ve dikkat",
+      "pros": [
+        "Uzman ajan ekibini (rol, hedef, geçmiş hikâye) çok hızlı kurar; prototip süresi kısa.",
+        "Flows ile deterministik akış yazılabilir; Crews bir Flow adımı olarak çağrılabilir.",
+        "MIT lisanslı çekirdek; geniş topluluk ve örnek havuzu.",
+        "Kurumsal ihtiyaç için AMP: yönetilen dağıtım, izleme, yönetişim, kendi altyapınızda çalıştırma seçeneği."
+      ],
+      "cons": [
+        "Crews’ta akışı ajanlar belirler: “RED kanıtı olmadan kod yok”, “sayaç sıfırlanmaz” gibi kuralları garanti etmek zor.",
+        "Flows, Temporal ile aynı işi (durum, sıra, yönlendirme) yapmaya çalışır; birlikte kullanılırsa iki durum sahibi olur.",
+        "Rol yazımı (backstory, goal) davranışı prompt’a bağlar; sonuç model değişince kayar.",
+        "Kodlama işi Claude Code / OpenHands gibi çalıştırıcılarda zaten yapılıyor; CrewAI’ın ajan döngüsü burada ek değer üretmiyor.",
+        "Kurumsal yönetişim özellikleri ticari AMP tarafında."
+      ]
+    },
+    { "type": "heading", "text": "Hatta nereye oturabilir?" },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "**Uygun olabilir:** tek bir aktivite içinde çok perspektifli inceleme (ör. SOLID, güvenlik, performans rollerinin aynı diff’i tartışması). Çıktı tipli bir rapor olur, karar yine kapılarda verilir.",
+        "**Uygun değil:** görev yaşam döngüsü, bütçe, insan bekleyişi, kodlama döngüsü.",
+        "**Alternatif:** aynı çok perspektifli incelemeyi PydanticAI ile üç paralel aktivite olarak yazmak daha az soyutlama getirir."
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Hüküm",
+      "text": "Çekirdek olarak önerilmez. Ekip CrewAI’a zaten alışkınsa, tek aktivite içindeki çok rollü inceleme için sınırlı kullanılabilir. Yeni başlıyorsanız PydanticAI daha az soyutlamayla aynı işi görür."
+    }
+  ]
+}

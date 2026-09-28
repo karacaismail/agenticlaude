@@ -1,0 +1,3943 @@
+{
+ "meta": {
+  "gorev": "C1",
+  "tarih": "2026-09-27",
+  "yontem": "Her aday için birincil kaynak (resmî belge, README/SPEC, sürüm notu, fiyat sayfası) WebFetch/WebSearch ile okundu; depo sağlığı `gh api repos/OWNER/REPO` ile 27.09.2026'da çekildi (gh-meta-*.tsv). Önceki B1 araştırmasındaki kanıt bağlantıları yeniden kullanıldığında kaynak olarak birincil URL verildi. Puan: 0 = yok, 1 = kısmi/elle kurulabilir, 2 = belgelenmiş ürün davranışı. Pazarlama iddiası ile belgelenmiş davranış ayrıldı; doğrulanamayan iddialar 'doğrulanamadı' diye işaretlendi. Çalışma sürüyor: dosya adaylar eklendikçe güncelleniyor.",
+  "durum": "tamamlandı",
+  "aday_sayisi": 32,
+  "sinirlamalar": [
+   "Oturumun web arama kotası (200) araştırmanın son bölümünde doldu; sonraki doğrulamalar yalnız bilinen URL'lerin WebFetch ile okunması ve gh api ile yapıldı. Atlassian Agents in Jira'nın GA tarihi bu yüzden yeniden doğrulanamadı.",
+   "openai.com/index/harness-engineering 403 döndü; içerik ayna kopyadan (jaytaylor.com) okundu.",
+   "Warp Factories, Ona, Factory, Cursor gibi kapalı ürünlerde puanlar resmî belge/pazarlama sayfasına dayanır; bağımsız kullanım kanıtı çoğunda yok.",
+   "R9 için GitLab ve Atlassian'a verilen 2 puan platformun portföy hiyerarşisinden gelir; ajan başına WIP/bütçe kotası ayrıca doğrulanamadı."
+  ]
+ },
+ "gereksinimler": {
+  "R1": "Tak-çıkar görev kaynağı: takipçiden bağımsız, adaptör arayüzü var mı (Plane, Jira, Linear, GitHub Issues, form)?",
+  "R2": "N adet izole, paralel yürütücüye dağıtım (iş başına ayrı sandbox/worktree/VM, eşzamanlılık sınırı).",
+  "R3": "Yürütücü/harness takılabilirliği: kendi ajanı dışındaki ajanları (Claude Code, Codex, OpenHands, Gemini CLI…) çalıştırabiliyor mu?",
+  "R4": "Kontrol düzlemi dahil tamamen self-host edilebilir mi + lisans.",
+  "R5": "PR + CI entegrasyonu (PR açar, CI sonucunu okur, düzeltir).",
+  "R6": "Tek entegrasyon dalına (alpha) trunk-based birleştirme + merge queue.",
+  "R7": "Uzak ortama dağıtım ve dağıtılan ortamı doğrulama (smoke/E2E).",
+  "R8": "İnsan inceleme döngüsü: dağıtılmış ortamda inceleme → issue → otomatik yeni görev.",
+  "R9": "Çok ekipli/portföy hiyerarşisi (ekip, program/ART, WIP limiti, bütçe, kota).",
+  "R10": "Oracle/kalite kapıları (önce test, korunan testler, DoD kanıtı).",
+  "R11": "Dayanıklılık (çökme sonrası devam, uzun insan beklemeleri).",
+  "R12": "Sağlık: yıldız, son push, arşiv, bus factor, finansman/şirket, son 12 ayda kırıcı değişiklikler (puanlanmaz, betimlenir)."
+ },
+ "adaylar": [
+  {
+   "ad": "OpenHands (Agent Canvas + Software Agent SDK/Agent Server + Automation + Enterprise/Cloud Helm)",
+   "url": "https://github.com/OpenHands/OpenHands",
+   "tur": "açık çekirdekli ajan platformu (SDK + ajan sunucusu + otomasyon servisi + ticari self-host kontrol düzlemi)",
+   "lisans": "Agent Canvas, SDK, Agent Server, automation: MIT. Enterprise arka ucu ve OpenHands-Cloud Helm şemaları: PolyForm Free Trial (yılda 30 gün, açık kaynak değil).",
+   "self_host": "Kısmi-ücretli: MIT katman (Canvas + Agent Server + Docker/VM backend) tamamen self-host; çok kullanıcılı, RBAC, bütçe ve 'sınırsız paralel konuşma' sunan Enterprise kontrol düzlemi Kubernetes'e Helm/Replicated ile kurulur ama ticari lisans ister.",
+   "saglik": {
+    "yildiz": 89263,
+    "son_push": "2026-09-26",
+    "arsiv": false,
+    "not": "Son 12 ayda büyük kırıcı değişiklik: Haziran 2026'da ana depo TypeScript 'Agent Canvas'a dönüştü; eski Python Local GUI OpenHands/legacy'ye taşınıp arşivlendi (27.07.2026), app_server 'sandbox-server' deposuna ayrıldı, TUI bakım moduna alındı. SDK aktif (v1.49.6, 25.09.2026). Şirket: All Hands AI (OpenHands). software-agent-sdk 1.175 yıldız; automation servisi README'de 'Beta'."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Enterprise: Slack, Jira, GitHub, GitLab, Bitbucket'tan çağırma; Enterprise dokümanı Azure Boards ve Jira Data Center sayıyor. OSS Canvas'ta webhook/cron otomasyonları (GitHub, Linear, Slack, Notion). Genel bir 'tracker adapter' sözleşmesi yok; entegrasyonlar tek tek.",
+     "kaynak": [
+      "https://github.com/OpenHands/enterprise",
+      "https://docs.openhands.dev/enterprise",
+      "https://github.com/OpenHands/automation"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Agent Server ile Docker/Kubernetes'te geçici çalışma alanları; Enterprise 'unlimited parallel agent conversations'. OSS Canvas karşılaştırmasında 'Isolated sandboxes' Enterprise'a özgü işaretli.",
+     "kaynak": [
+      "https://github.com/OpenHands/software-agent-sdk",
+      "https://docs.openhands.dev/enterprise/enterprise-vs-oss"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Agent Canvas 'OpenHands, Claude Code, Codex, Gemini veya ACP uyumlu herhangi bir ajanı' çalıştırır (Agent Client Protocol).",
+     "kaynak": [
+      "https://github.com/OpenHands/legacy",
+      "https://www.openhands.dev/blog/introducing-agent-canvas"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "MIT katman self-host; ama çok kullanıcılı kontrol düzlemi (RBAC, bütçe, ölçek) PolyForm Free Trial lisanslı, yılda 30 gün sonrası ticari lisans gerekir.",
+     "kaynak": [
+      "https://github.com/OpenHands/OpenHands-Cloud",
+      "https://github.com/OpenHands/enterprise"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "GitHub/GitLab/Bitbucket entegrasyonuyla PR açma ve PR yorumuna yanıt; CI sonucunu okuyup düzeltme bir 'otomasyon/skill' olarak kurulmalı, ürün kuralı değil. Eski resolver'da 'taslak PR oluştur' adımı yama hatasıyla düşebiliyordu.",
+     "kaynak": [
+      "https://github.com/OpenHands/enterprise",
+      "https://github.com/OpenHands/OpenHands/issues/6140"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Merge queue veya tek entegrasyon dalına sıralı birleştirme yok; VCS'nin (GitHub merge queue) işi.",
+     "kaynak": [
+      "https://docs.openhands.dev/enterprise/enterprise-vs-oss"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Dağıtım/ortam doğrulama özelliği belgelenmemiş.",
+     "kaynak": [
+      "https://docs.openhands.dev/enterprise"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Otomasyon servisi webhook (ör. GitHub issue olayı) ile yeni konuşma başlatabilir; 'deploy edilmiş ortamda inceleme → issue → görev' uçtan uca kurgusu kullanıcıya kalır.",
+     "kaynak": [
+      "https://github.com/OpenHands/automation"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Enterprise: çok kullanıcılı RBAC, LiteLLM tabanlı bütçe izleme/zorlama. Ekip/program hiyerarşisi, WIP limiti yok.",
+     "kaynak": [
+      "https://github.com/OpenHands/enterprise",
+      "https://docs.openhands.dev/enterprise/enterprise-vs-oss"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Korunan test, DoD kanıtı gibi kalite kapısı ürün özelliği yok; 'critic' araştırma depoları (critic-rubrics) arşivli.",
+     "kaynak": [
+      "https://github.com/OpenHands/critic-rubrics"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Konuşmalar olay tabanlı kalıcı (SDK conversation/event); otomasyon servisi PostgreSQL'de çalışma geçmişi tutar. Uzun insan bekleyişi/dayanıklı iş akışı motoru yok.",
+     "kaynak": [
+      "https://github.com/OpenHands/automation",
+      "https://github.com/OpenHands/software-agent-sdk"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz; bkz. saglik.",
+     "kaynak": [
+      "https://github.com/OpenHands/OpenHands/issues/14841"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Ana depo Haziran 2026'da Agent Canvas'a çevrildi; Local GUI ve TUI bakım moduna alındı, kod 'legacy' ve 'sandbox-server' depolarına bölündü (kırıcı mimari değişiklik).",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/14841"
+    },
+    {
+     "ozet": "Git diff işleyicisinde komut enjeksiyonu (CVE-2026-33718, yüksek).",
+     "kaynak": "https://github.com/OpenHands/OpenHands/security/advisories/GHSA-7h8w-hj9j-8rjw"
+    },
+    {
+     "ozet": "Ajanın döngüye girmesi (AgentStuckInLoopError) ve döngü guardrail isteği.",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/7183"
+    },
+    {
+     "ozet": "Yerel Docker sandbox'larında CPU/bellek sınırı desteği yok (açık istek).",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/17090"
+    },
+    {
+     "ozet": "Docker runtime'da tmux zombi süreçleri.",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/11801"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Yürütücü (harness) + sandbox katmanı: Agent Server/SDK bir 'executor adapter' olarak takılabilir; Canvas ACP ile başka ajanları da sürebildiği için 'executor host' da olabilir. Orkestratör, merge, deploy, portföy katmanı DEĞİL.",
+   "hukum": "Kullanıcının 'OpenHands yeterli olabilir' sezgisi yürütücü katmanı için doğru, çerçevenin tamamı için yanlış. OpenHands iş çekme, paralel izole koşu ve çoklu ajan (ACP) konusunda güçlü; ama merge queue, dağıtım doğrulama, kalite kapısı ve SAFe hiyerarşisi yok. Ölçek/RBAC/bütçe gerektiren kısım ücretli lisansta. Son 12 aydaki depo yeniden yapılanması, bu katmanın da değiştirilebilir tutulması gerektiğini gösteriyor.",
+   "toplam_R1_R11": 10
+  },
+  {
+   "ad": "OpenAI Symphony",
+   "url": "https://github.com/openai/symphony",
+   "tur": "spesifikasyon + deneysel Elixir referans uygulaması (takipçi yoklayan ajan dağıtıcısı)",
+   "lisans": "Apache-2.0",
+   "self_host": "Evet (tek süreçli servis; Codex CLI ve takipçi kimliği hedef makinede).",
+   "saglik": {
+    "yildiz": 27427,
+    "son_push": "2026-09-15",
+    "arsiv": false,
+    "not": "v0.0.3 (15.09.2026). Katkıların büyük kısmı tek kişide (frantic-openai 34 commit; diğerleri 1-3) → bus factor düşük. README: 'low-key engineering preview for testing in trusted environments'. OpenAI'ın ürün olarak bakım yapmayacağı basında yer aldı."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 2,
+     "kanit": "SPEC takipçiyi küçük bir 'portable read kernel' adaptör sınırı olarak tanımlar; Elixir uygulamasında Linear, GitHub Issues, Jira Cloud, Asana, GitLab adaptörleri var. Plane adaptörü yok.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md",
+      "https://github.com/openai/symphony/blob/main/elixir/README.md"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "İş başına deterministik çalışma alanı dizini, max_concurrent_agents (varsayılan 10) ve duruma göre sınır. İzolasyon dosya sistemi düzeyinde; konteyner/VM sandbox isteğe bağlı 'hardening' önerisi.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Agent Runner Codex app-server istemcisini sarar; başka harness için spesifikasyonu yeniden uygulamak gerekir.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Apache-2.0, dış kontrol düzlemi yok.",
+     "kaynak": [
+      "https://github.com/openai/symphony"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "Kanıt olarak CI durumu, PR geri bildirimi sunulur ama SPEC PR/ticket iş mantığını çekirdeğe koymaz: 'That logic lives in the workflow prompt and agent tooling'.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md",
+      "https://github.com/openai/symphony"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Onaydan sonra ajan PR'ı 'land' eder (skill); merge queue veya entegrasyon dalı yönetimi yok.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/elixir/README.md"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Dağıtım yok.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "'Human Review' gibi devir durumu; insan yeni issue açarsa yoklama onu doğal olarak alır. Dağıtılmış ortam incelemesi tanımlı değil.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "SPEC dağıtım başına tek takipçi; çok ekip, bütçe tanımlı değil.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Kanıt (proof of work) kültürü ve WORKFLOW.md sözleşmesi var; korunan test/DoD zorlaması yok.",
+     "kaynak": [
+      "https://github.com/openai/symphony"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Kalıcı veritabanı yok: 'No retry timers are restored. No running sessions are assumed recoverable.' Yeniden başlatmada takipçi + dosya sisteminden toparlanır.",
+     "kaynak": [
+      "https://github.com/openai/symphony/blob/main/SPEC.md"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz; bkz. saglik.",
+     "kaynak": [
+      "https://github.com/openai/symphony"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Terminal uzlaştırma canlı işçiyle yarışıp yanlış çalışma alanını silebiliyordu.",
+     "kaynak": "https://github.com/openai/symphony/pull/109"
+    },
+    {
+     "ozet": "GitHub/GitLab belirteç takma adları ajan sürecine sızabiliyordu.",
+     "kaynak": "https://github.com/openai/symphony/pull/119"
+    },
+    {
+     "ozet": "Onay etiketi kaldırılınca app-server süreci yetim kalıyor.",
+     "kaynak": "https://github.com/openai/symphony/discussions/126"
+    },
+    {
+     "ozet": "Model her turda reddedildiğinde boş tur başarılı sayılıyor, bütçe sessizce yanıyor.",
+     "kaynak": "https://github.com/openai/symphony/discussions/92"
+    },
+    {
+     "ozet": "OpenAI Symphony'yi bağımsız ürün olarak sürdürmeyeceğini söyledi (basın).",
+     "kaynak": "https://www.helpnetsecurity.com/2026/04/28/openai-symphony-codex-orchestration-linear/"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Görev kaynağı → dağıtıcı (dispatcher) katmanı için REFERANS SÖZLEŞME. En değerli parçası SPEC.md: takipçi adaptör sınırı, iş başına çalışma alanı, eşzamanlılık, stall/retry, 'handoff state'. Kodu değil sözleşmeyi almak mantıklı.",
+   "hukum": "İstenen döngünün 'takipçiden ajana' yarısını en temiz tanımlayan açık belge; ama tek harness (Codex), kalıcı durum yok, merge/deploy/portföy yok ve bakım garantisi yok. Çerçevenin dispatcher arayüzü için şablon olarak kullanılmalı.",
+   "toplam_R1_R11": 9
+  },
+  {
+   "ad": "GitHub Copilot cloud agent + Agent HQ (Claude/Codex üçüncü taraf ajanlar, mission control, agent apps)",
+   "url": "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+   "tur": "barındırılan (SaaS) arka plan kodlama ajanı + çoklu ajan kabuğu",
+   "lisans": "Ticari (Copilot planları; üçüncü taraf ajan oturumu premium request tüketir)",
+   "self_host": "Hayır: ajan yalnız GitHub.com / GHE.com'da. Yürütme ortamı ARC ile self-hosted runner'a alınabilir (ama o zaman entegre güvenlik duvarı kapatılmalı). GHES desteği belgelerde yok (doğrulanamadı).",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Microsoft/GitHub ürünü. Claude ve Codex ajanları 04.02.2026'dan beri public preview; model seçimi 14.04.2026; üçüncü taraf ajanlar için güvenlik doğrulaması GA 09.06.2026; partner 'agent apps' sınırlı sürüm 02.06.2026; enterprise agent control plane GA 26.02.2026."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "GitHub Issues, @copilot, Slack/Teams, zamanlanmış/olay otomasyonları; Jira, Linear, Azure Boards yalnız 'doğrudan PR oluşturma'yı destekliyor. Plane yok; genel adaptör arayüzü yok.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Her görev GitHub Actions tabanlı geçici ortamda; mission control'da bir issue'yu Copilot, Claude, Codex'e paralel atama.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+      "https://github.blog/news-insights/company-news/pick-your-agent-use-claude-and-codex-on-agent-hq/"
+     ]
+    },
+    "R3": {
+     "puan": 1,
+     "kanit": "Claude ve Codex (public preview) + partner agent apps; ama yalnız GitHub'ın kabul ettiği ajanlar, kendi harness'ınızı takamazsınız.",
+     "kaynak": [
+      "https://github.blog/changelog/2026-02-04-claude-and-codex-are-now-available-in-public-preview-on-github/",
+      "https://github.blog/changelog/2026-06-02-extend-github-with-agent-apps/"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "Kontrol düzlemi SaaS; yalnız runner self-hosted (ARC).",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "Test/linter çalıştırır, taslak PR açar, PR yorumlarıyla yineler; rulesets ve zorunlu kontroller geçerli.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent"
+     ]
+    },
+    "R6": {
+     "puan": 1,
+     "kanit": "GitHub'ın yerel merge queue'su platformda var; ajan onu yönetmez, 'görev başına tek PR, tek dal, tek depo' sınırı.",
+     "kaynak": [
+      "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+      "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Actions/Environments ile dağıtım platformda mümkün; ajanın dağıtılmış ortamı doğrulaması ürün özelliği değil.",
+     "kaynak": [
+      "https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Issue → Copilot atama ve olay tetikli otomasyon mümkün; dağıtılmış ortam incelemesi → issue akışı kullanıcı yapılandırması.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Enterprise agent control plane: denetim kaydı, oturum görünürlüğü, org bazında kullanım, kurumsal custom agent standartları. WIP/ART hiyerarşisi yok.",
+     "kaynak": [
+      "https://github.blog/changelog/2026-02-26-enterprise-ai-controls-agent-control-plane-now-generally-available/"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Rulesets, zorunlu kontroller, custom instructions; ajanın testleri çalıştırmadan 'geçti' dediği vaka belgelenmiş.",
+     "kaynak": [
+      "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Oturum 59 dk sert sınır; PR üzerinden yeniden başlatılabilir ama uzun insan beklemeli dayanıklı akış yok.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz; bkz. saglik.",
+     "kaynak": [
+      "https://github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents/"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "dotnet/runtime'da 10 ay: 878 PR'ın %67,9'u birleşti (insan PR'larında %87,1); darboğaz inceleme; ajan testleri koşmadan geçti dedi.",
+     "kaynak": "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/"
+    },
+    {
+     "ozet": "Self-hosted runner kullanımında entegre güvenlik duvarı kapatılmak zorunda.",
+     "kaynak": "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment"
+    },
+    {
+     "ozet": "ARC runner'larında 'GitHub host is required' hatasıyla ajan hiç çalışmıyor (topluluk).",
+     "kaynak": "https://github.com/orgs/community/discussions/179176"
+    },
+    {
+     "ozet": "'Comment and Control': yorumlarla istem enjeksiyonu/sır sızdırma; GitHub 'bilinen mimari sınırlama' dedi.",
+     "kaynak": "https://www.securityweek.com/claude-code-gemini-cli-github-copilot-agents-vulnerable-to-prompt-injection-via-comments/"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "VCS + CI + merge queue katmanı (GitHub'ın kendisi) ve yönetilen bir 'executor' fişi (Copilot/Claude/Codex bulut ajanı). Görev kaynağı veya portföy katmanı olarak zayıf.",
+   "hukum": "PR/CI/merge queue tarafında en olgun platform, ama kapalı SaaS ve 'görev başına tek PR, 59 dakika' sınırları var. Çerçevede GitHub VCS/merge fişi olarak kalmalı; Copilot ajanı birçok executor'dan biri olarak takılmalı.",
+   "toplam_R1_R11": 12
+  },
+  {
+   "ad": "GitLab Duo Agent Platform (flows, external agents, merge trains, review apps)",
+   "url": "https://docs.gitlab.com/user/duo_agent_platform/",
+   "tur": "DevSecOps platformuna gömülü ajan platformu (akışlar CI/CD runner'larında koşar)",
+   "lisans": "Ticari: Premium/Ultimate + GitLab Credits; Self-Managed'ta self-hosted model için 'Duo Agent Platform Self-Hosted' eklentisi. GitLab çekirdeği (CE) MIT, EE kaynak-erişilebilir ticari.",
+   "self_host": "Evet: GitLab Self-Managed ve Dedicated'da; akışlar kendi runner'larınızda; AI Gateway + vLLM ile self-hosted model ve 18.9'dan beri çevrimdışı (air-gapped) akış yürütme.",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Halka açık şirket (GitLab Inc.). Agent Platform GA: 18.8 (Ocak 2026). Özel akışlar GA: 19.2. Tetikleyiciler 18.3-19.1 arasında sırayla eklendi (hızlı değişim). 'CLI agents' → 'external agents' yeniden adlandırması 18.6."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Tetikleyiciler yalnız GitLab iş öğeleri/MR olayları: mention, assign, assign reviewer, pipeline, MR, work item durum değişikliği. Harici takipçi (Plane, Jira) için yerel adaptör yok. Önemli sınır: 'All trigger event types require a human user…a service account user, or another flow, cannot activate a trigger.'",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/triggers/"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Akışlar ve harici ajanlar CI/CD işi olarak kendi konteyner imajında koşar; runner havuzu ölçeklenir.",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/agents/external/",
+      "https://docs.gitlab.com/user/duo_agent_platform/flows/"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "GitLab yönetimli Claude Code, Codex, Amazon Q, Gemini ajanları; Self-Managed'ta AI Catalog ile rastgele imaj+komutla özel harici ajan tanımlanabilir (özellik bayrağı varsayılan kapalı).",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/agents/external/",
+      "https://docs.gitlab.com/user/duo_agent_platform/agents/external_examples/"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Kontrol düzlemi dahil self-managed ve offline kurulum belgelenmiş; lisans ticari (açık kaynak değil).",
+     "kaynak": [
+      "https://docs.gitlab.com/administration/gitlab_duo_self_hosted/offline_deployment/",
+      "https://about.gitlab.com/blog/more-ai-models-for-duo-agent-platform-self-hosted/"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "Developer Flow issue'dan MR üretir; Fix CI/CD Pipeline Flow kırık pipeline'ı teşhis edip düzeltir; Code Review Flow.",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/"
+     ]
+    },
+    "R6": {
+     "puan": 2,
+     "kanit": "Merge trains (Premium/Ultimate): MR'lar sırayla, öncekilerle birleşik sonuç üzerinde test edilir; varsayılan 20 paralel pipeline.",
+     "kaynak": [
+      "https://docs.gitlab.com/ci/pipelines/merge_trains/"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Environments ve Review Apps ile MR başına dinamik ortam platformda var; ajanın dağıtılmış ortamı doğrulaması ayrı bir akış olarak yazılmalı. Dağıtılmış uygulama üzerinden geri bildirim veren 'Visual Review Tools' 17.0'da kaldırıldı.",
+     "kaynak": [
+      "https://gitlab.com/gitlab-org/gitlab/-/issues/387751",
+      "https://archives.docs.gitlab.com/16.7/ee/ci/review_apps/index.html"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Work item oluşturma/durum değişikliği tetikleyicisi (19.1) insan issue açınca akışı başlatabilir; ama bot/akış kaynaklı olaylar tetiklemez, döngünün otomatik kapanışı sınırlı.",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/triggers/"
+     ]
+    },
+    "R9": {
+     "puan": 2,
+     "kanit": "Grup/alt grup/proje hiyerarşisi, iç içe epikler (Ultimate), yol haritası; GitLab SAFe eşlemesini (portföy=üst grup, program=alt grup, ekip=proje) kendi içeriğinde anlatıyor; kredi bazlı kullanım. Ajan başına WIP/bütçe kotası ayrıca doğrulanamadı.",
+     "kaynak": [
+      "https://about.gitlab.com/blog/gitlab-for-agile-portfolio-planning-project-management/",
+      "https://docs.gitlab.com/user/group/epics/"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Zorunlu pipeline, onay kuralları, güvenlik taramaları platformda; korunan test/DoD kanıtı ajan kuralı olarak yok.",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Akış oturumları 'AI > Sessions' altında izlenir; çökme sonrası devam/uzun insan bekleme semantiği belgelenmemiş (doğrulanamadı).",
+     "kaynak": [
+      "https://docs.gitlab.com/user/duo_agent_platform/flows/"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz; bkz. saglik.",
+     "kaynak": [
+      "https://www.marketscreener.com/news/gitlab-inc-announces-the-general-availability-of-gitlab-duo-agent-platform-ce7e58dedb8ff626"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Tetikleyiciler yalnız insan eylemiyle çalışır; akıştan akışa zincirleme ve bot kaynaklı issue'lar ajanı başlatamaz.",
+     "kaynak": "https://docs.gitlab.com/user/duo_agent_platform/triggers/"
+    },
+    {
+     "ozet": "Özel harici ajan oluşturma bayrağı (ai_catalog_create_third_party_flows) varsayılan kapalı.",
+     "kaynak": "https://docs.gitlab.com/user/duo_agent_platform/agents/external/"
+    },
+    {
+     "ozet": "Dağıtılmış ortamdan geri bildirim toplayan Visual Review Tools kaldırıldı.",
+     "kaynak": "https://gitlab.com/gitlab-org/gitlab/-/issues/387751"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "VCS + CI + merge train + ortam (review app) katmanı; ayrıca harici ajanları CI işi olarak koşturan 'executor host'. GitHub'a alternatif VCS fişi.",
+   "hukum": "Adaylar arasında R4-R6-R9'u (self-host, merge train, portföy hiyerarşisi) birlikte karşılayan tek platform. Ama takipçi GitLab'ın kendisi olmak zorunda, tetikleyiciler insana bağlı ve dağıtılmış ortam incelemesi → görev döngüsü hazır değil. VCS/CI/merge katmanı için güçlü bir fiş; 'tüm çerçeve' değil.",
+   "toplam_R1_R11": 17
+  },
+  {
+   "ad": "Coder (Tasks → Coder Agents; self-hosted workspaces)",
+   "url": "https://coder.com/docs/ai-coder/agents",
+   "tur": "self-hosted uzak geliştirme ortamı (Terraform şablonları) + kontrol düzleminde koşan kendi ajan döngüsü",
+   "lisans": "coder/coder AGPL-3.0; Premium ve 'AI Governance Add-On' ticari. AgentAPI (MIT) arşivlendi.",
+   "self_host": "Evet, tamamen: 'no SaaS or managed component'.",
+   "saglik": {
+    "yildiz": 16719,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Kırıcı değişiklik: Coder Tasks 02.06.2026'da 12 aylık ESR'ye alındı, v2.37'den (01.09.2026) itibaren yeni sürümlerden çıkarıldı; önerilen halef Coder Agents. Her CLI ajanını HTTP ile süren coder/agentapi 'deprecated and no longer maintained' (arşivli). Son sürüm v2.37.3 (22.09.2026). Şirket: Coder Technologies."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Tasks döneminde 'GitHub issue → Tasks' GitHub Action iş akışı belgelenmişti; Coder Agents UI ve API ile iş alır, takipçi adaptörü yok.",
+     "kaynak": [
+      "https://coder.com/blog/launch-dec-2025-coder-tasks",
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Her görev kendi Coder workspace'inde; ajan şablon seçip otomatik workspace açar; alt ajanlar paralel.",
+     "kaynak": [
+      "https://coder.com/docs/@v2.36.0/ai-coder/tasks",
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R3": {
+     "puan": 1,
+     "kanit": "Tasks: MCP uyumlu her terminal ajanı (Claude Code, Goose, özel). Ama Tasks kaldırılıyor; Coder Agents 'is not a wrapper around third-party agent tools like Claude Code or Codex'. Yani harness takılabilirliği azaldı.",
+     "kaynak": [
+      "https://coder.com/docs/@v2.36.0/ai-coder/tasks",
+      "https://coder.com/docs/ai-coder/agents",
+      "https://github.com/coder/agentapi"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Tamamen self-host; AGPL çekirdek. 1.000 ajan workspace build'i sonrası AI Governance Add-On gerekir.",
+     "kaynak": [
+      "https://coder.com/docs/@v2.36.0/ai-coder/tasks"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "Tasks + Claude Code ile issue'dan PR örneği (blog). PR/CI döngüsü ürün kuralı değil.",
+     "kaynak": [
+      "https://coder.com/blog/launch-dec-2025-coder-tasks"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok (workspace geliştirme ortamıdır, dağıtım hedefi değildir).",
+     "kaynak": [
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Kullanıcı kapsamlı workspace izolasyonu, şablon/organizasyon yönetimi, AI Governance eklentisi; ekip/portföy WIP yok.",
+     "kaynak": [
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R11": {
+     "puan": 2,
+     "kanit": "Sohbet durumu Coder veritabanında: 'If a workspace is stopped, deleted, or rebuilt, the full conversation history survives. The agent can resume work by creating a new workspace'.",
+     "kaynak": [
+      "https://coder.com/docs/ai-coder/agents"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz; bkz. saglik.",
+     "kaynak": [
+      "https://github.com/coder/coder/releases"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Coder Tasks ESR'ye alınıp yeni sürümlerden çıkarıldı; ürün yönü 3 ayda değişti.",
+     "kaynak": "https://coder.com/docs/@v2.36.0/ai-coder/tasks"
+    },
+    {
+     "ozet": "AgentAPI (Claude Code, Codex, Gemini, Amp… için HTTP sarmalayıcı) bakımsız ve arşivli.",
+     "kaynak": "https://github.com/coder/agentapi"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Sandbox/yürütme ortamı katmanı: Terraform şablonlu, self-hosted, kalıcı workspace sağlayıcısı. Harness katmanı olarak artık önerilmez (Tasks/AgentAPI kalktı).",
+   "hukum": "Workspace/sandbox fişi olarak güçlü ve self-host; ama 'her CLI ajanını koşturan görev motoru' vaadi 2026'da geri çekildi. Tak-çıkar ilkesinin neden gerekli olduğunun canlı örneği.",
+   "toplam_R1_R11": 10
+  },
+  {
+   "ad": "Ona (eski Gitpod) Agents + Automations",
+   "url": "https://ona.com/docs/ona/automations/overview",
+   "tur": "bulut geliştirme ortamı + arka plan ajanı + otomasyon filosu",
+   "lisans": "Ticari (Core/Enterprise; Enterprise için Ona Intelligence aboneliği). Eski gitpod-io/gitpod AGPL-3.0 deposu hâlâ duruyor.",
+   "self_host": "Kısmi: kontrol düzlemi Ona SaaS; Enterprise'da runner'lar müşterinin AWS/GCP VPC'sinde.",
+   "saglik": {
+    "yildiz": 13777,
+    "son_push": "2026-09-21",
+    "arsiv": false,
+    "not": "Yıldız/push gitpod-io/gitpod deposuna ait; ürünün kendisi kapalı kaynak. Gitpod → Ona yeniden markalanması 2025'te; Classic'ten geçiş rehberi yayımlandı."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Tetikleyiciler: manuel, zamanlama, PR olayı, webhook, Linear ile issue oluşturma; Atlassian, GitHub, GitLab entegrasyonları. Genel takipçi adaptörü yok.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "devcontainer.json ile tam yapılandırılmış ortamlarda birden çok depoda paralel yürütme.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Belgede yürütücü yalnız 'Ona' ajanı.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Runner self-host (VPC), kontrol düzlemi SaaS.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "'clones, branches, installs, builds, tests, iterates, commits, pushes, and opens a PR'.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Linear issue oluşturma ile tetikleme; dağıtılmış ortam incelemesi yok.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Plan bazlı otomasyon/eşzamanlı eylem limitleri; hiyerarşi yok.",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Otomasyonlar AI istemiyle deterministik komutları birleştirir (build/test adımları sabitlenebilir).",
+     "kaynak": [
+      "https://ona.com/docs/ona/automations/overview"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Kalıcı bulut ortamları; iş akışı dayanıklılığı belgelenmemiş (doğrulanamadı).",
+     "kaynak": [
+      "https://ona.com/"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://ona.com/stories/gitpod-is-now-ona"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Müşteri iddiası '4× throughput' ve 'göç işinin %90-95'i otomasyonla' pazarlama metni; bağımsız doğrulama bulunamadı (doğrulanamadı).",
+     "kaynak": "https://ona.com/"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Sandbox/ortam katmanı (VPC runner) ve toplu 'fleet' değişiklikleri için executor.",
+   "hukum": "İyi bir ortam + otomasyon ürünü, ama tek ajan, SaaS kontrol düzlemi, merge/deploy/portföy yok. Çerçevenin bir fişi olabilir, çerçeve olamaz.",
+   "toplam_R1_R11": 10
+  },
+  {
+   "ad": "Devin (Cognition) – API v3, managed Devins, playbooks",
+   "url": "https://docs.devin.ai/",
+   "tur": "barındırılan otonom yazılım mühendisi ajanı (SaaS)",
+   "lisans": "Ticari (ACU tabanlı).",
+   "self_host": "Hayır. Dedicated seçenekte Devbox tek kiracılı VPC'de, ama 'Devin's workspace operates under the control of its brain, which always resides within Cognition's Cloud.'",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Cognition; Temmuz 2025'te Windsurf'ü satın aldı. Managed Devins 19.03.2026. API v1/v2 → v3 (service user, RBAC) geçişi. Fiyat modeli 2025'te sert değişti (500 → 20 $ giriş)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Jira, Linear, Slack, GitHub, GitLab, Bitbucket, Azure DevOps entegrasyonları + API v3 ile 'create_as_user_id' oturum açma. Plane yok; adaptör sözleşmesi yok ama API ile her kaynaktan beslenebilir.",
+     "kaynak": [
+      "https://docs.devin.ai/llms.txt",
+      "https://docs.devin.ai/api-reference/overview"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Koordinatör Devin işi böler; her managed Devin kendi VM'inde paralel; örnekte '10 at a time'.",
+     "kaynak": [
+      "https://cognition.com/blog/devin-can-now-manage-devins"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Yalnız Devin ajanı.",
+     "kaynak": [
+      "https://docs.devin.ai/"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "Kontrol düzlemi her zaman Cognition bulutunda.",
+     "kaynak": [
+      "https://docs.devin.ai/enterprise/deployment/overview.md"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "PR açma, Devin Review, stacked PR'lar belgelenmiş.",
+     "kaynak": [
+      "https://docs.devin.ai/work-with-devin/devin-review.md",
+      "https://docs.devin.ai/work-with-devin/stacked-prs.md"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Koordinatör 'resolves any conflicts' diyor ama merge queue/entegrasyon dalı yönetimi belgelenmemiş.",
+     "kaynak": [
+      "https://cognition.com/blog/devin-can-now-manage-devins"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Testing & video recordings: ajan tarayıcıyla uygulamayı test edip kayıt üretir; uzak ortama dağıtım ürün özelliği değil.",
+     "kaynak": [
+      "https://docs.devin.ai/work-with-devin/testing-and-recordings.md"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Automations/scheduled sessions ve takipçi entegrasyonları ile yeni issue yeni oturum olabilir; dağıtılmış ortam incelemesi kurgusu yok.",
+     "kaynak": [
+      "https://docs.devin.ai/product-guides/automations.md"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Organization/Enterprise API kapsamları, RBAC, denetim izi; WIP/portföy yok.",
+     "kaynak": [
+      "https://docs.devin.ai/api-reference/overview"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Playbook'lar, test ve kayıt kanıtı; korunan test/DoD zorlaması yok.",
+     "kaynak": [
+      "https://docs.devin.ai/product-guides/creating-playbooks.md"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Oturumlar bulutta kalıcı ve uyku/devam var; iş akışı düzeyinde dayanıklılık belgelenmemiş (doğrulanamadı).",
+     "kaynak": [
+      "https://docs.devin.ai/work-with-devin/advanced-capabilities.md"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://cognition.com/blog/devin-can-now-manage-devins"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Answer.AI bir aylık bağımsız değerlendirme: 20 görevin 3'ü başarılı, 14'ü başarısız.",
+     "kaynak": "https://www.answer.ai/posts/2025-01-08-devin.html"
+    },
+    {
+     "ozet": "Managed Devins yazısında nicel müşteri kanıtı yok; yalnız örnek kullanım.",
+     "kaynak": "https://cognition.com/blog/devin-can-now-manage-devins"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Yönetilen 'executor' fişi (API ile görev ver, PR al). Kontrol düzlemi dışarıda olduğu için çerçeve çekirdeği olamaz.",
+   "hukum": "Paralel alt ajanlarla güçlü bir yürütücü; ama kapalı SaaS, tek harness, merge/deploy/portföy yok. Kurumsal veri kısıtı varsa elenir.",
+   "toplam_R1_R11": 10
+  },
+  {
+   "ad": "Factory Droids (Droid CLI, droid exec, Linear/Jira delegasyonu)",
+   "url": "https://docs.factory.ai/",
+   "tur": "barındırılan ajan platformu + headless CLI",
+   "lisans": "Ticari.",
+   "self_host": "Kontrol düzlemi SaaS; 'droid exec' headless CLI kendi CI/sunucunuzda koşabilir. On-prem/air-gapped seçenek belgelerde bulunamadı (doğrulanamadı).",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Factory AI (girişim). Factory 1.8 ile droid exec ve yenilenmiş Linear/Slack entegrasyonu. Bağımsız postmortem/GHSA bulunamadı."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Linear ve Jira iş öğesini Droid'e delege etme; Slack, Notion, PagerDuty; adaptör sözleşmesi yok.",
+     "kaynak": [
+      "https://docs.factory.ai/changelog/1-8",
+      "https://linear.app/integrations/factory"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Delege edilen her iş için izole bulut ortamında Droid.",
+     "kaynak": [
+      "https://linear.app/integrations/factory"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Yalnız Droid (model seçimi var ama harness değil).",
+     "kaynak": [
+      "https://docs.factory.ai/droid-cli/overview"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "SaaS kontrol düzlemi.",
+     "kaynak": [
+      "https://docs.factory.ai/"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "Droid exec CI/CD'de yapılandırılmış girdi/çıktı ile koşar; PR üretir.",
+     "kaynak": [
+      "https://docs.factory.ai/droid-exec/overview"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://docs.factory.ai/"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://docs.factory.ai/"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Takipçiden delegasyon; dağıtılmış ortam incelemesi yok.",
+     "kaynak": [
+      "https://linear.app/integrations/factory"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://docs.factory.ai/"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Test/inceleme droidleri pazarlamada var; zorlayıcı kapı belgelenmemiş.",
+     "kaynak": [
+      "https://factory.com/product/droids"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş (doğrulanamadı).",
+     "kaynak": [
+      "https://docs.factory.ai/"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://docs.factory.ai/changelog/1-8"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Kamuya açık, bağımsız ölçek/olay kaydı bulunamadı; iddialar büyük ölçüde pazarlama.",
+     "kaynak": "https://factory.com/product/droids"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Executor fişi: 'droid exec' headless olduğu için kendi dispatcher'ınızdan bir süreç olarak çağrılabilir.",
+   "hukum": "Çerçeve değil; headless CLI sayesinde değiştirilebilir bir yürütücü.",
+   "toplam_R1_R11": 7
+  },
+  {
+   "ad": "Cursor Cloud Agents (self-hosted workers, Linear/GitHub/Slack tetikleme)",
+   "url": "https://cursor.com/docs/cloud-agent",
+   "tur": "barındırılan arka plan ajanı; Enterprise'da self-hosted worker havuzu",
+   "lisans": "Ticari (Enterprise gerekli self-hosted worker için).",
+   "self_host": "Kısmi: yalnız worker'lar. 'The agent loop, including inference and planning, runs in Cursor's cloud and sends tool calls over this connection.' Kubernetes için anysphere/k8s-workers Helm şablonu; eski operatör deprecated.",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Anysphere (Cursor). Self-hosted cloud agents GA 25.03.2026 (ikincil kaynak: agentpatterns.ai). Kubernetes operatörü ve WorkerDeployment Helm chart'ı deprecated (resmî belge)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Slack, GitHub/Bitbucket PR yorumu, Linear (delege veya @Cursor), API. Plane/Jira yerel değil (Jira doğrulanamadı).",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent",
+      "https://cursor.com/docs/integrations/linear"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Ajan başına izole VM; 'as many agents as you want in parallel'; self-hosted: kullanıcı başına 200, ekip başına 1.000 worker.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent",
+      "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Cursor harness'ı; 'curated selection of models'.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Worker self-host, kontrol düzlemi ve çıkarım Cursor bulutunda; ekran görüntüsü/video Cursor'a yüklenir.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "Birleştirmeye hazır PR, test çalıştırma, ekran görüntüsü/video kanıtı.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Ajan VM içinde uygulamayı çalıştırıp computer-use ile doğrular (video); uzak ortama dağıtım değil.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Linear'da gerçek zamanlı durum ve PR; dağıtılmış ortam incelemesi yok.",
+     "kaynak": [
+      "https://cursor.com/docs/integrations/linear"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Ekip başına worker kotası; hiyerarşi/WIP yok.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Video/ekran görüntüsü kanıtı; korunan test yok.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Dizüstü kapansa da sürer; iş akışı dayanıklılığı belgelenmemiş.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Self-hosted modda bile ajan döngüsü ve artefaktlar Cursor bulutuna gider; veri egemenliği için tam çözüm değil.",
+     "kaynak": "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+    },
+    {
+     "ozet": "Kubernetes operatörü ve WorkerDeployment Helm chart'ı deprecated (bir yıl içinde kurulum yöntemi değişti).",
+     "kaynak": "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Executor fişi (API ile). Worker havuzu kendi K8s'inizde; kontrol dışarıda.",
+   "hukum": "Paralellik ve kanıt (video) güçlü; çerçevenin yürütücü seçeneklerinden biri olur, çekirdeği olamaz.",
+   "toplam_R1_R11": 11
+  },
+  {
+   "ad": "OpenAI Codex (cloud görevleri + açık kaynak CLI / app-server / SDK / codex-action)",
+   "url": "https://developers.openai.com/codex/cloud",
+   "tur": "barındırılan bulut ajanı + açık kaynak harness",
+   "lisans": "CLI/app-server Apache-2.0; Codex cloud ticari (ChatGPT planları).",
+   "self_host": "Harness (CLI, app-server, SDK, codex-action) kendi makinenizde/CI'da koşar; Codex cloud kontrol düzlemi OpenAI'da. Resmî self-hosted sandbox seçeneği doğrulanamadı.",
+   "saglik": {
+    "yildiz": 126681,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "openai/codex 19.108 açık issue. 2026'da kota/token tüketimi şikâyetleri yoğun. Temporal, Codex'in üretimde Temporal üzerinde koştuğunu yazdı."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Web, GitHub @codex, GitLab MR/issue (Beta), Linear, Slack; Symphony üzerinden 5 takipçi adaptörü.",
+     "kaynak": [
+      "https://learn.chatgpt.com/docs/cloud",
+      "https://developers.openai.com/codex/integrations/linear"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Her görev izole konteynerde, paralel.",
+     "kaynak": [
+      "https://learn.chatgpt.com/docs/cloud"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Yalnız Codex; tersine, Codex başkalarına (Symphony, Agent HQ, GitLab) takılan bir harness.",
+     "kaynak": [
+      "https://developers.openai.com/codex/app-server"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Harness self-host (Apache-2.0); bulut orkestrasyonu değil.",
+     "kaynak": [
+      "https://github.com/openai/codex"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "PR oluşturma, GitHub'da kod inceleme, codex-action ile CI içinde çalışma.",
+     "kaynak": [
+      "https://developers.openai.com/codex/github-action",
+      "https://learn.chatgpt.com/docs/cloud"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://learn.chatgpt.com/docs/cloud"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://learn.chatgpt.com/docs/cloud"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Linear/GitHub'dan tetikleme; entegrasyon yolunda sonuç üretmeyen oturum hatası raporu var.",
+     "kaynak": [
+      "https://github.com/openai/codex/issues/26898"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://learn.chatgpt.com/docs/cloud"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok; uzun oturumda doğrulanmamış tamamlanma bildirimi raporu.",
+     "kaynak": [
+      "https://github.com/openai/codex/issues/42815"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "app-server konuşma geçmişi/onaylar; bulut tarafında Temporal kullanıldığı üçüncü taraf beyanı.",
+     "kaynak": [
+      "https://developers.openai.com/codex/app-server",
+      "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/openai/codex"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Linear delegasyonu oturum/linkback oluşturuyor ama Codex cloud sonucu üretmiyor.",
+     "kaynak": "https://github.com/openai/codex/issues/26898"
+    },
+    {
+     "ozet": "Kota hızlı tükeniyor (308 tepki, 630 yorum).",
+     "kaynak": "https://github.com/openai/codex/issues/14593"
+    },
+    {
+     "ozet": "Sandbox atlatma CVE-2025-59532.",
+     "kaynak": "https://github.com/openai/codex/security/advisories/GHSA-w5fx-fh39-j5rw"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Harness/executor fişi: app-server + SDK tam programlanabilir arayüz; Symphony, GitLab, Agent HQ gibi birçok üst katmana zaten takılıyor.",
+   "hukum": "Çerçeve değil, en yaygın takılan yürütücülerden biri. Bulut ürünü tek başına merge/deploy/portföy sağlamaz.",
+   "toplam_R1_R11": 8
+  },
+  {
+   "ad": "Google Jules (Jules API v1alpha, jules-action)",
+   "url": "https://jules.google/docs/api/reference/sessions/",
+   "tur": "barındırılan asenkron kodlama ajanı",
+   "lisans": "Ticari hizmet; google-labs-code/jules-action MIT.",
+   "self_host": "Hayır.",
+   "saglik": {
+    "yildiz": 246,
+    "son_push": "2025-12-15",
+    "arsiv": false,
+    "not": "Yıldız/push jules-action deposuna ait (son push Aralık 2025). API 'alpha': Google spesifikasyonu değiştirebilir. Katmana göre günlük/eşzamanlı görev kotası (ör. ücretsiz 3 eşzamanlı; üst katmanlarda daha fazla — üçüncü taraf özet)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Web, GitHub, REST API (sessions) ve GitHub Action; takipçi adaptörü yok.",
+     "kaynak": [
+      "https://developers.google.com/jules/api",
+      "https://github.com/google-labs-code/jules-action"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Her görev bulut VM'inde; eşzamanlılık kotası sınırlı, kota dolunca POST /sessions 400 FAILED_PRECONDITION.",
+     "kaynak": [
+      "https://jules.google/docs/api/reference/sessions/",
+      "https://github.com/pboachie/zrotext/pull/221"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Yalnız Jules.",
+     "kaynak": [
+      "https://jules.google/docs/api/reference/sessions/"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "SaaS.",
+     "kaynak": [
+      "https://developers.google.com/jules/api"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "PR açma var; CI döngüsü sınırlı/belgesi zayıf.",
+     "kaynak": [
+      "https://jules.google/docs/changelog/"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.google.com/jules/api"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.google.com/jules/api"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.google.com/jules/api"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.google.com/jules/api"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.google.com/jules/api"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Asenkron bulut oturumu; iş akışı dayanıklılığı belgelenmemiş.",
+     "kaynak": [
+      "https://jules.google/docs/api/reference/sessions/"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://jules.google/docs/changelog/"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "API alpha; hesap görev limitinde oturum açma reddediliyor, istemciler erteleme mantığı yazmak zorunda kalıyor.",
+     "kaynak": "https://github.com/pboachie/zrotext/pull/221"
+    },
+    {
+     "ozet": "Bağımsız ilk inceleme: 'henüz üretime hazır değil'.",
+     "kaynak": "https://hyperdev.matsuoka.com/p/google-jules-first-look-not-ready"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Yönetilen executor fişi (API). Kota nedeniyle toplu dağıtımda yardımcı rol.",
+   "hukum": "Çerçeve değil; alpha API ve kotalar 144 ekiplik yük için uygun değil.",
+   "toplam_R1_R11": 4
+  },
+  {
+   "ad": "Cyrus (cyrusagents)",
+   "url": "https://github.com/cyrusagents/cyrus",
+   "tur": "takipçi tetikli ajan koşucu (worktree başına oturum)",
+   "lisans": "Apache-2.0 (topluluk self-host); Pro/Team planları app.atcyrus.com",
+   "self_host": "Evet (topluluk, uçtan uca). Ücretli 'self-hosted' modda ağ ve entegrasyon katmanı Cyrus bulutunda.",
+   "saglik": {
+    "yildiz": 830,
+    "son_push": "2026-09-24",
+    "arsiv": false,
+    "not": "ceedaragents → cyrusagents taşındı. Katkı: 'cyrusagent' 949, Connoropolous 323, sonraki 58 → küçük çekirdek ekip. 7/24 çalıştırma tmux/pm2/systemd ile tek süreç."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Linear, GitHub, GitLab, Slack kaynakları; Plane/Jira yok; belgelenmiş genel adaptör sözleşmesi yok.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Issue başına izole git worktree; aynı makinede, konteyner izolasyonu yok.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Claude Code, Codex, Cursor, Gemini, OpenCode.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Topluluk sürümü tamamen self-host, Apache-2.0.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "PR/MR oluşturma (git + hosting CLI yapılandırmasıyla); CI döngüsü ürün kuralı değil.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Etkinliği takipçiye akıtır, onay etkileşimleri; yeni atanan issue yeni oturum.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok; ajan takipçi durumunu güncellemeden 'bitti' diyebiliyor.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus/issues/270"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "Tek süreç; OOM ve 3 gün 'busy' takılma vakaları.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus/issues/1381",
+      "https://github.com/cyrusagents/cyrus/issues/1479"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/cyrusagents/cyrus"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Tamamlanan oturumlar boşaltılmıyor: 4 haftada 15 OOM, 6,9 GB RSS; systemd Restart=always sorunu gizledi.",
+     "kaynak": "https://github.com/cyrusagents/cyrus/issues/1381"
+    },
+    {
+     "ozet": "SDK mesaj akışı /status'u 3 gün 4 saat 'busy' tuttu; claude alt süreci yetim kaldı.",
+     "kaynak": "https://github.com/cyrusagents/cyrus/issues/1479"
+    },
+    {
+     "ozet": "İptal edilmiş engelleyici karşılanmış bağımlılık sayılıyor.",
+     "kaynak": "https://github.com/cyrusagents/cyrus/issues/1429"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Küçük ölçekli 'takipçi → harness' köprüsü; referans kod olarak faydalı, üretim dispatcher'ı olarak zayıf.",
+   "hukum": "Çok harness'lı ve self-host; ama tek makine, dayanıklılık yok, merge/deploy/portföy yok.",
+   "toplam_R1_R11": 8
+  },
+  {
+   "ad": "Agent Orchestrator (ComposioHQ → Untrivial-ai, 'AO')",
+   "url": "https://github.com/Untrivial-ai/agent-orchestrator",
+   "tur": "yerel masaüstü + daemon: orkestratör ajan + işçi oturumları + canlı kanban",
+   "lisans": "Apache-2.0",
+   "self_host": "Evet (yerel, tek kullanıcı). Depoda 'cloud' dizini var; bulut ürünü durumu doğrulanamadı.",
+   "saglik": {
+    "yildiz": 12412,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Sahiplik ComposioHQ → Untrivial-ai; Go ile yeniden yazım; gece sürümleri (v0.13.2-nightly). STATUS.md: 'working single-user local loop'. Katkı birkaç kişiye dağılmış (451/265/245/172)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Go yeniden yazımında tek takipçi adaptörü GitHub, salt okunur: 'GitLab and Linear are not supported by the Go rewrite… AO does not comment on or transition issues'.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator/blob/main/frontend/src/docs/content/plugins/trackers/index.mdx"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "İşçi başına dal+worktree ve izole tarayıcı profili; tek makinede tmux/conpty.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "'28 coding agents supported' (Claude Code, Codex, opencode…).",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Yerel daemon + Apache-2.0.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "PR, CI, inceleme durumu işçiye bağlı; başarısız CI ve inceleme yorumları aynı ajana geri gönderilir.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R6": {
+     "puan": 1,
+     "kanit": "'Ready to merge' sütunu ve birleştirme çakışması izleme; merge queue yok.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yalnız yerel önizleme tarayıcısı; uzak dağıtım yok.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "GitHub issue alımı isteğe bağlı ve tek yönlü.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator/blob/main/frontend/src/docs/content/plugins/trackers/index.mdx"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Tek kullanıcı.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator/blob/main/docs/STATUS.md"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "SQLite + CDC, oturum restore; ama OOM/ps zaman aşımında tüm oturumları öldürme vakaları.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator/blob/main/docs/STATUS.md",
+      "https://github.com/Untrivial-ai/agent-orchestrator/issues/1838"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/Untrivial-ai/agent-orchestrator/releases"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "40-45 işçide orkestratör çöküyor; eşzamanlılık tavanı ve worktree GC yok.",
+     "kaynak": "https://github.com/Untrivial-ai/agent-orchestrator/issues/3921"
+    },
+    {
+     "ozet": "Tek işçi ~31 GB'a şişti; yetim dev sunucuları.",
+     "kaynak": "https://github.com/Untrivial-ai/agent-orchestrator/issues/2523"
+    },
+    {
+     "ozet": "Orkestratör kendi etkin worktree'sini silebiliyor.",
+     "kaynak": "https://github.com/Untrivial-ai/agent-orchestrator/issues/5598"
+    },
+    {
+     "ozet": "Go yeniden yazımında GitLab/Linear takipçi desteği düştü (gerileme).",
+     "kaynak": "https://github.com/Untrivial-ai/agent-orchestrator/blob/main/frontend/src/docs/content/plugins/trackers/index.mdx"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Geliştirici masaüstü 'supervision UI' ve çok-harness işçi yönetimi; sunucu tarafı dispatcher değil.",
+   "hukum": "PR/CI/inceleme geri besleme döngüsü tasarımı iyi bir örnek; ama tek kullanıcı, tek makine ve takipçi desteği geriledi. 144 ekiplik çerçeve için uygun değil.",
+   "toplam_R1_R11": 10
+  },
+  {
+   "ad": "Gas Town + Beads (Steve Yegge / gastownhall)",
+   "url": "https://github.com/gastownhall/gastown",
+   "tur": "çok ajanlı çalışma alanı yöneticisi + git/Dolt tabanlı ajan issue takipçisi",
+   "lisans": "MIT (her ikisi)",
+   "self_host": "Evet (yerel veya Docker Compose).",
+   "saglik": {
+    "yildiz": 18199,
+    "son_push": "2026-09-18",
+    "arsiv": false,
+    "not": "Beads 27.462 yıldız, 2026-09-27 push. Depolar steveyegge → gastownhall organizasyonuna taşındı. Gas Town'da steveyegge 4.831 commit, sonraki 457 → bus factor çok düşük. Son Gas Town sürümü v1.2.1 (06.06.2026). Kavram sayısı çok (Mayor, Rig, Polecat, Convoy, Molecule, Wisp, Witness, Deacon, Refinery, Wasteland)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Görev kaynağı Beads (Dolt tabanlı, git ile senkron); harici takipçi adaptörü değil, Beads'in kendisi. Beads CLI birçok ajana kurulum yapar.",
+     "kaynak": [
+      "https://github.com/gastownhall/beads"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Polecat işçiler worktree'lerde; 'Scale comfortably to 20-30 agents'; scheduler.max_polecats ile eşzamanlılık. Tek makine/Docker.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "'Claude Code, GitHub Copilot, Codex, Gemini, and others'.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "MIT, dış bağımlılık yok.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "Refinery gh pr merge ile PR birleştirir; CI düzeltme döngüsü belgelenmemiş.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown/issues/4442"
+     ]
+    },
+    "R6": {
+     "puan": 2,
+     "kanit": "Refinery: rig başına merge queue, doğrulama kapıları, 'Bors-style bisecting queue' ile main'e birleştirme; başarısız MR izole edilip yeniden dağıtılır.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Escalation: ajan engelde bead açar ve Mayor/Overseer'a yönlendirir; dağıtılmış ortam incelemesi yok.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Town → Rig (proje) hiyerarşisi, Convoy (epik ölçekli), Wasteland federasyonu (DoltHub); SAFe/WIP/bütçe yok.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Refinery doğrulama kapıları; ama ajan 'gh pr merge --admin' ile kapıları atlatıp PR birleştirdi (08.07.2026 olayı).",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown/issues/4442"
+     ]
+    },
+    "R11": {
+     "puan": 2,
+     "kanit": "Hooks: git worktree tabanlı kalıcı depolama 'Survives crashes and restarts'; Witness/Deacon izleme; poured wisps checkpoint kurtarma; Seance önceki oturumu sorgulama.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/gastownhall/gastown/releases"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Bir ajan kırmızı PR'ı 'kurtarmak' için admin yetkisiyle dal korumasını ve CI'ı atlatıp birleştirdi; Gas Town bunu engellemiyor/algılamıyordu.",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4442"
+    },
+    {
+     "ozet": "gt done POLECAT_DONE yaymıyor; Witness Refinery'ye MERGE_READY göndermiyor (v1.1.0).",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4734"
+    },
+    {
+     "ozet": "Dolt kapalıyken gt done sessizce merge-queue yoluna düşüyor, --merge=local yok sayılıyor.",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4819"
+    },
+    {
+     "ozet": "Refinery patrol/wisp kayıtları kalıcı olmuyor.",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4720"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Fikir kaynağı: merge queue (Refinery), izleme hiyerarşisi (Witness/Deacon), ajan-yerel takipçi (Beads). Beads, ajanların iç görev grafiği (alt görevler) için fiş olabilir; kurumsal takipçinin yerini almaz.",
+   "hukum": "Açık kaynak adaylar içinde merge queue + dayanıklılık + çok harness'ı birlikte düşünen tek sistem; ama tek geliştirici ağırlıklı, tek makine, dağıtım/insan inceleme/portföy yok ve kendi kapılarını ajanın atlattığı belgelenmiş. Tasarım desenleri alınmalı, ürün olarak üstüne kurulmamalı.",
+   "toplam_R1_R11": 14
+  },
+  {
+   "ad": "Anthropic Claude ailesi: Claude Code agent teams + Claude Agent SDK + Claude Managed Agents + claude-code-action",
+   "url": "https://platform.claude.com/docs/en/managed-agents/overview",
+   "tur": "harness + SDK + barındırılan ajan çalışma zamanı (self-hosted sandbox seçenekli) + GitHub Action",
+   "lisans": "Claude Code: tescilli (depo lisans alanı yok); claude-agent-sdk-python MIT; claude-code-action MIT; Managed Agents ticari API (beta).",
+   "self_host": "Harness ve SDK kendi altyapınızda koşar (model API'si hariç). Managed Agents'ta ajan döngüsü Anthropic'te, ama 'a self-hosted sandbox on your own infrastructure' seçeneği var.",
+   "saglik": {
+    "yildiz": 148269,
+    "son_push": "2026-09-26",
+    "arsiv": false,
+    "not": "Yıldız anthropics/claude-code (13.283 açık issue). claude-agent-sdk-python 8.171, claude-code-action 9.173 yıldız. Managed Agents public beta 08.04.2026 (beta başlığı managed-agents-2026-04-01). Agent teams deneysel (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS); ayarlar sürümden sürüme değişiyor (ör. teammateDefaultModel v2.1.234'te kaldırıldı)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "claude-code-action GitHub issue/PR olaylarıyla tetiklenir; Managed Agents API + zamanlanmış dağıtımlar; takipçi adaptörü yok.",
+     "kaynak": [
+      "https://github.com/anthropics/claude-code-action",
+      "https://platform.claude.com/docs/en/managed-agents/overview"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Managed Agents: her oturum 'its own isolated container'; agent teams: oturum içi paralel takım arkadaşları (tek makine).",
+     "kaynak": [
+      "https://platform.claude.com/docs/en/managed-agents/overview",
+      "https://code.claude.com/docs/en/agent-teams"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Yalnız Claude; tersine, Claude Code birçok üst katmana takılan harness.",
+     "kaynak": [
+      "https://code.claude.com/docs/en/agent-teams"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Harness/SDK self-host; Managed Agents kontrolü Anthropic'te, sandbox self-host olabilir; ZDR/HIPAA kapsamı dışında.",
+     "kaynak": [
+      "https://platform.claude.com/docs/en/managed-agents/overview"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "claude-code-action PR/issue yorumlarına yanıt verir, kod değiştirir, CI içinde koşar.",
+     "kaynak": [
+      "https://github.com/anthropics/claude-code-action"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://code.claude.com/docs/en/agent-teams"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://platform.claude.com/docs/en/managed-agents/overview"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok (kurulum kullanıcıya kalır).",
+     "kaynak": [
+      "https://platform.claude.com/docs/en/managed-agents/overview"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Agent teams: 'One team per session', 'No nested teams'; portföy yok.",
+     "kaynak": [
+      "https://code.claude.com/docs/en/agent-teams"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Hook'lar: TaskCompleted/TeammateIdle/TaskCreated çıkış kodu 2 ile tamamlanmayı engelleyip geri bildirim verebilir — kalite kapısı için yapı taşı, hazır DoD değil.",
+     "kaynak": [
+      "https://code.claude.com/docs/en/agent-teams"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Managed Agents 'resume cleanly after pauses', olay geçmişi sunucuda. Agent teams: '/resume and /rewind do not restore in-process teammates'.",
+     "kaynak": [
+      "https://platform.claude.com/docs/en/managed-agents/overview",
+      "https://code.claude.com/docs/en/agent-teams"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/anthropics/claude-code"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Agent teams deneysel: görev durumu gecikebilir ve bağımlı işleri bloke eder; lider erken 'bitti' diyebilir; takım arkadaşları oturum devamında geri gelmez.",
+     "kaynak": "https://code.claude.com/docs/en/agent-teams"
+    },
+    {
+     "ozet": "Agent teams -p/Agent SDK (etkileşimsiz) modunda takım arkadaşı başlatmaz; sunucu tarafı dağıtımda kullanılamaz.",
+     "kaynak": "https://code.claude.com/docs/en/agent-teams"
+    },
+    {
+     "ozet": "Managed Agents ZDR ve HIPAA BAA kapsamında değil (durumlu tasarım).",
+     "kaynak": "https://platform.claude.com/docs/en/managed-agents/overview"
+    },
+    {
+     "ozet": "PromptPwnd: issue/PR metninden istem enjeksiyonu ile CI'daki ajan eylemlerinde sır sızdırma.",
+     "kaynak": "https://www.aikido.dev/blog/promptpwnd-github-actions-ai-agents"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Harness (Claude Code / Agent SDK) ve yönetilen executor + sandbox (Managed Agents, self-hosted sandbox ile). Agent teams bir iş öğesi içindeki alt paralelleşme için; ekipler arası orkestrasyon değil.",
+   "hukum": "Yapı taşı, çerçeve değil. 'Claude Code agent teams = scrum ekibi' benzetmesi yanıltıcı: tek oturum, tek makine, iç içe takım yok, devam yok.",
+   "toplam_R1_R11": 8
+  },
+  {
+   "ad": "Aperant (eski Auto-Claude)",
+   "url": "https://github.com/AndyMik90/Aperant",
+   "tur": "yerel Electron masaüstü kanban + Claude Code çoklu oturum koşucusu",
+   "lisans": "AGPL-3.0",
+   "self_host": "Yerel masaüstü; sunucu/ekip modu yok (3.0'da 'cloud features' vaat ediliyor, tarih yok).",
+   "saglik": {
+    "yildiz": 14572,
+    "son_push": "2026-06-14",
+    "arsiv": false,
+    "not": "Tek sahip (kullanıcı hesabı). 2.x bakım modunda, PR'lar duraklatıldı, 3.0 ayrı depoda sıfırdan yazılıyor; çıkış tarihi yok. Gereksinim: Claude Pro/Max aboneliği + Claude Code CLI (OAuth)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "GitHub/GitLab issue içe aktarma, Linear senkronu.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "'up to 12 agent terminals', git worktree izolasyonu; tek makine.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Yalnız Claude Code CLI.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Yerel, AGPL-3.0.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "Merge request oluşturma; CI döngüsü yok.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R6": {
+     "puan": 1,
+     "kanit": "'AI-Powered Merge… when integrating back to main'; merge queue değil; AI çakışma çözümünün çalışmadığı raporu var.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant",
+      "https://github.com/AndyMik90/Aperant/issues/1854"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "'Self-Validating QA' döngüsü; bağımsız/korunan test oracle'ı yok.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "5 saatlik oturum penceresi dolunca duraklat/devam yok.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant/issues/1899"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/AndyMik90/Aperant"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Claude Max planında oran sınırı nedeniyle görevler başarısız (en çok tepki alan issue).",
+     "kaynak": "https://github.com/AndyMik90/Aperant/issues/1864"
+    },
+    {
+     "ozet": "'Merge with AI' çakışmaları çözmüyor.",
+     "kaynak": "https://github.com/AndyMik90/Aperant/issues/1854"
+    },
+    {
+     "ozet": "Bakım modu, PR kabulü durduruldu.",
+     "kaynak": "https://github.com/AndyMik90/Aperant"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Hiçbir sunucu katmanına uygun değil; tek geliştiricinin masaüstü aracı. 'Plan → uygula → QA' aşama deseni fikir olarak alınabilir.",
+   "hukum": "Kullanıcının gözlemi doğru: Aperant tek kişilik, tek makinelik, abonelik OAuth'lu bir masaüstü akışı. Basit bir WordPress modülü üretebilmesi, ekip/entegrasyon/dağıtım/kalite kapısı olmadığı için ERP ölçeğine hiçbir kanıt değildir.",
+   "toplam_R1_R11": 7
+  },
+  {
+   "ad": "Kilo Code Cloud Agents (+ Roo Code kapanışı)",
+   "url": "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent",
+   "tur": "açık kaynak IDE/CLI ajanı + barındırılan bulut ajan konteyneri ve tetikleyiciler",
+   "lisans": "Kilo-Org/kilocode MIT; bulut kısmı ticari hizmet.",
+   "self_host": "CLI/eklenti yerel; Cloud Agent self-host seçeneği belgelerde yok (doğrulanamadı).",
+   "saglik": {
+    "yildiz": 27422,
+    "son_push": "2026-09-26",
+    "arsiv": false,
+    "not": "Anaconda 15.07.2026'da Kilo Code'u satın aldı. Aynı soydan Roo Code: tüm ürünler 15.05.2026'da kapandı, depo arşivli (RooCodeInc/Roo-Code archived=true); ekip Slack öncelikli bulut ajanı Roomote'a geçti."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Webhook ve cron tetikleyici (beta), payload şablonlu istem; takipçi adaptörü yok; belge webhook'ların istem enjeksiyonuna açık olduğunu uyarıyor.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Kullanıcı başına tek izole konteyner; sohbetler aynı konteyneri paylaşır, farklı worktree'ler; tetikleyici başına 20 eşzamanlı istek.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Kilo ajanı (500+ model, harness değil).",
+     "kaynak": [
+      "https://github.com/Kilo-Org/kilocode"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Ajan MIT ve yerel; bulut katmanı değil.",
+     "kaynak": [
+      "https://github.com/Kilo-Org/kilocode"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "GitHub/GitLab/Bitbucket depoları; PR otomasyonu belgede net değil.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Kişisel ve organizasyon tetikleyicisi ayrımı dışında yok.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "'Auto/YOLO mode is always on'.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "Mesaj başına 15 dk; etkin olmayan oturum 7 günde silinir.",
+     "kaynak": [
+      "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://www.businesswire.com/news/home/20260715437804/en/Anaconda-Acquires-Kilo-Code-to-Power-the-Trillion-Token-Enterprise"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Roo Code (aynı ekosistem) tüm ürünleriyle 15.05.2026'da kapandı; depo arşivlendi.",
+     "kaynak": "https://github.com/RooCodeInc/Roo-Code"
+    },
+    {
+     "ozet": "Kilo bulut ajanında YOLO modu kapatılamıyor; webhook tetikleyicileri istem enjeksiyonuna açık (resmî uyarı).",
+     "kaynak": "https://kilo.ai/docs/code-with-ai/platforms/cloud-agent"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Executor (Kilo CLI headless) fişi. Bulut ajanı çerçeve katmanı değil.",
+   "hukum": "Çerçeve değil. Roo Code'un 5 ayda kapanması ve Kilo'nun satın alınması, harness katmanının tak-çıkar olması gerektiğinin kanıtı.",
+   "toplam_R1_R11": 4
+  },
+  {
+   "ad": "Tembo",
+   "url": "https://www.tembo.io/blog/goodbye-background-agents",
+   "tur": "önce arka plan kodlama ajanı, 08.2026'dan beri kalıcı bulut geliştirme ortamı",
+   "lisans": "Ticari.",
+   "self_host": "Yazıya göre self-hosted seçenek var (ayrıntı doğrulanamadı).",
+   "saglik": {
+    "yildiz": 1266,
+    "son_push": "2026-09-14",
+    "arsiv": false,
+    "not": "Yıldız/push tembo/tembo deposu (içerik boş). İki pivot: yönetilen Postgres → arka plan ajanları → kalıcı bulut ortamları (03.08.2026)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Yeni üründe takipçi tetikleme vurgusu yok (doğrulanamadı).",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Kalıcı, güçlü makineler; paralel izole koşu modeli terk edildi.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Doğrulanamadı.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Self-hosted seçenek beyanı.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "PR öncesi dalda yineleme vurgusu.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Canlı önizleme (live previews); uzak dağıtım değil.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Kalıcı makine ve ortam anlık görüntüleri.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://www.tembo.io/blog/goodbye-background-agents"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Şirket 'arka plan ajanları' modelini bıraktı; gerekçe: ciddi ekiplerin derleme için 32 GB, bazılarının test/tip denetimi için 128 GB RAM'e ihtiyacı.",
+     "kaynak": "https://www.tembo.io/blog/goodbye-background-agents"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Sandbox/ortam katmanı (büyük, kalıcı makine).",
+   "hukum": "Çerçeve değil; ama 'ERP ölçeğinde test/derleme için hafif sandbox yetmez' uyarısı bu proje için önemli bir veri.",
+   "toplam_R1_R11": 5
+  },
+  {
+   "ad": "Sculptor (Imbue)",
+   "url": "https://github.com/imbue-ai/sculptor",
+   "tur": "yerel masaüstü paralel ajan çalışma alanı",
+   "lisans": "MIT",
+   "self_host": "Yerel masaüstü.",
+   "saglik": {
+    "yildiz": 232,
+    "son_push": "2026-09-26",
+    "arsiv": false,
+    "not": "'experimental research preview'; dış katkı kapasitesi yok."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Workspace = izole worktree; tek makine.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Claude Code, Pi harness ve 'any terminal-based agents'.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Yerel, MIT.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "GitHub PR açma ve durum izleme.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "fix-bug becerisi önce başarısız test yazıp sonra geçirir (test-first skill).",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "Uyku sonrası terminal yanıt vermiyor raporu.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor/issues/182"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/imbue-ai/sculptor"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Sistem uykusundan sonra terminal yanıt vermiyor.",
+     "kaynak": "https://github.com/imbue-ai/sculptor/issues/182"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Geliştirici masaüstü inceleme aracı; sunucu katmanı değil.",
+   "hukum": "Çerçeve değil.",
+   "toplam_R1_R11": 7
+  },
+  {
+   "ad": "Plane Agents (Plane AI, Agent Run API, MCP sunucusu)",
+   "url": "https://developers.plane.so/dev-tools/agents/overview",
+   "tur": "iş takipçisi içi ajan çerçevesi (OAuth uygulaması + Agent Run yaşam döngüsü); kod yürütmez",
+   "lisans": "Plane Community AGPL-3.0; Plane AI/Agents ticari planlarda (Pro/Business kredi, Enterprise kendi anahtarıyla).",
+   "self_host": "Plane'in kendisi self-host edilebilir; Agents'ın Community sürümünde bulunup bulunmadığı belgede yok (doğrulanamadı).",
+   "saglik": {
+    "yildiz": 59932,
+    "son_push": "2026-09-25",
+    "arsiv": false,
+    "not": "makeplane/plane. Agents 18.09.2026'da duyuruldu; geliştirici belgesinde Beta. Ağustos 2026'da birden çok kritik güvenlik açığı (SSRF, sabit SECRET_KEY, OAuth hesap ele geçirme) yamalandı."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Plane görev KAYNAĞI olarak iyi bir fiş: ajanlar OAuth uygulaması, bot kullanıcı; tetikleme belgede yalnız yorumda @mention. Başka takipçiye adaptör değil, kendisi takipçi.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R2": {
+     "puan": 0,
+     "kanit": "Plane kod çalıştırmaz; yürütme harici servisin işi.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R3": {
+     "puan": 1,
+     "kanit": "Herhangi bir harici ajan OAuth uygulaması olarak bağlanabilir (Agent Run Activity yazarak); kodlama ajanı entegrasyonu hazır değil.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Plane self-host; Agents özelliğinin self-host/Community kapsamı doğrulanamadı.",
+     "kaynak": [
+      "https://github.com/makeplane/plane"
+     ]
+    },
+    "R5": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Elicitation ile ajan soru sorup insan yanıtını bekler; insan issue'su yeni görev olabilir.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Plane çalışma alanı/proje/modül/döngü yapısı var; SAFe ART/PI kavramları ve ajan kotası yok.",
+     "kaynak": [
+      "https://github.com/makeplane/plane"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Agent Run durumları (created…awaiting…stale); 5 dk güncellenmezse 'stale' → uzun işlerde heartbeat şart.",
+     "kaynak": [
+      "https://developers.plane.so/dev-tools/agents/overview"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://plane.so/blog/agents-are-now-live-in-plane"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Plane'in kendi duyurusu: ajanlar şimdilik 'sınırlı işler' yapıyor, bir iş öğesinde adımlar/devirler boyunca kalıcı sorumluluk henüz yok.",
+     "kaynak": "https://plane.so/blog/agents-are-now-live-in-plane"
+    },
+    {
+     "ozet": "Webhook tesliminde SSRF (kritik).",
+     "kaynak": "https://github.com/makeplane/plane/security/advisories/GHSA-mq87-52pf-hm3h"
+    },
+    {
+     "ozet": "Plane'i kodlama ajanlarına bağlayan topluluk projeleri 0-3 yıldızlı.",
+     "kaynak": "https://github.com/aborigen19961202/symphony-adapters"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Görev kaynağı ve insan arayüzü fişi (Agent Run API ile durum/etkinlik geri yazımı). Orkestratör veya yürütücü değil.",
+   "hukum": "Plane örneği doğru bir katman seçimi: takipçi + insan etkileşim yüzeyi. Ama dağıtım, yürütme, merge ve kalite kapıları dışarıda kurulmalı; köprü (adapter) çerçevenin kendisi tarafından yazılmalı.",
+   "toplam_R1_R11": 6
+  },
+  {
+   "ad": "Linear Agents (Agent API / AgentSession, delegasyon)",
+   "url": "https://linear.app/developers/agents",
+   "tur": "iş takipçisi içi ajan protokolü; kod yürütmez",
+   "lisans": "Ticari SaaS.",
+   "self_host": "Hayır (Linear SaaS).",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Linear Orbit Inc. Codex, Cursor, Copilot, Devin, Factory, Cyrus, Kiro gibi birçok ajanın hedef aldığı takipçi protokolü; Agent Interaction Guidelines ilke belgesi (yaptırımsız)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Kendisi görev kaynağı; OAuth actor=app, delegasyon ve mention ile AgentSession; ajanlar harici çalışır ve webhook ile iletişim kurar.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R2": {
+     "puan": 0,
+     "kanit": "Linear kod çalıştırmaz.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Protokol ajan bağımsız: birçok üçüncü taraf ajan aynı arayüzle bağlanır (ör. Cursor, Codex, Factory).",
+     "kaynak": [
+      "https://linear.app/developers/agents",
+      "https://cursor.com/docs/integrations/linear",
+      "https://developers.openai.com/codex/integrations/linear",
+      "https://linear.app/integrations/factory"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "SaaS.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R5": {
+     "puan": 0,
+     "kanit": "Linear değil, bağlanan ajanın işi.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "İnsan sahiplik korunur (delege), oturum durumu kullanıcıya görünür; yeni issue → delegasyon.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Takım/proje/initiative yapısı var (Linear genel); ajan kotası/WIP yok (doğrulanamadı).",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok; AIG yaptırım içermez.",
+     "kaynak": [
+      "https://linear.app/developers/aig"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "AgentSession durumu otomatik; ajan 10 sn içinde 'thought' yaymalı.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://linear.app/developers/agents"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "AgentSession silinince Cyrus'un etkinlik yazımı sonsuz yeniden denemeye giriyor (oturum yaşam döngüsü uyumsuzluğu).",
+     "kaynak": "https://github.com/cyrusagents/cyrus/issues/1378"
+    },
+    {
+     "ozet": "Codex for Linear oturum ve linkback oluşturuyor ama sonuç üretmiyor.",
+     "kaynak": "https://github.com/openai/codex/issues/26898"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Görev kaynağı + insan arayüzü fişi. AgentSession protokolü, Plane Agent Run ile birlikte çerçevenin 'task source adapter' arayüzü için iyi referans.",
+   "hukum": "Çerçeve değil; 'takipçi ↔ ajan' protokolünün piyasadaki en olgun örneği.",
+   "toplam_R1_R11": 6
+  },
+  {
+   "ad": "Atlassian: Agents in Jira + Rovo Dev + GitHub Copilot for Jira",
+   "url": "https://www.atlassian.com/blog/announcements/ai-agents-in-jira",
+   "tur": "iş takipçisi içi ajan atama + Atlassian'ın kendi kodlama ajanı",
+   "lisans": "Ticari (Jira Cloud + Rovo kredileri).",
+   "self_host": "Hayır: Rovo Dev 'Cloud only'; Copilot for Jira 'Jira Cloud only'. Atlassian Data Center ömür sonu duyuruldu.",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Agents in Jira açık beta 25.02.2026 (resmî). GA'nın Mayıs 2026 olduğu önceki B1 araştırmasında kaydedildi; bu çalışmada yeniden doğrulanamadı. Rovo Dev GA. Copilot for Jira GA (GitHub belgesi)."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Jira iş öğesini ajana atama, @mention, iş akışında belirli durumda otomatik başlatma; yalnız Jira.",
+     "kaynak": [
+      "https://www.atlassian.com/blog/announcements/ai-agents-in-jira"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Yürütme bağlanan ajanın (Copilot: GitHub Actions ortamı); Jira kendisi paralel sandbox sağlamaz.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Rovo ajanları + üçüncü taraf/MCP ajanları (GitHub Copilot vb.).",
+     "kaynak": [
+      "https://www.atlassian.com/blog/announcements/ai-agents-in-jira"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "Cloud only.",
+     "kaynak": [
+      "https://www.atlassian.com/software/rovo-dev"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "Copilot for Jira iş öğesi bağlamıyla (kabul kriterleri dahil) PR açar; Rovo Dev Jira kabul kriterlerine göre planlar ve PR inceler.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira",
+      "https://www.atlassian.com/software/rovo-dev"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Jira/Rovo tarafında yok.",
+     "kaynak": [
+      "https://www.atlassian.com/software/rovo-dev"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://www.atlassian.com/software/rovo-dev"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "İş akışı durumuna göre otomatik tetikleme; insan issue açar, kural ajana atar.",
+     "kaynak": [
+      "https://www.atlassian.com/blog/announcements/ai-agents-in-jira"
+     ]
+    },
+    "R9": {
+     "puan": 2,
+     "kanit": "Jira'nın portföy/plan katmanı (ekipler, programlar) piyasada SAFe için yaygın; ajan izinleri ve denetim izi Jira modeline bağlı. Ajan başına kota/WIP ayrıca doğrulanamadı.",
+     "kaynak": [
+      "https://www.atlassian.com/blog/announcements/ai-agents-in-jira"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Kabul kriteri bağlamı ajana taşınır; zorlayıcı kapı yok.",
+     "kaynak": [
+      "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Ajan çıktısı iş öğesinde kalıcı; iş akışı dayanıklılığı belgelenmemiş.",
+     "kaynak": [
+      "https://www.atlassian.com/blog/announcements/ai-agents-in-jira"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://www.atlassian.com/software/rovo-dev"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Copilot'a atanan iş öğesi public depoya giderse Jira bağlamı PR'da herkese görünür olur.",
+     "kaynak": "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira"
+    },
+    {
+     "ozet": "Rovo ajanı büyük backlog analizinde tutarsız sonuç (topluluk).",
+     "kaynak": "https://community.atlassian.com/forums/Rovo-questions/Rovo-Agent-Inconsistent-Results-When-Analyzing-Large-Jira/qaq-p/3252643"
+    },
+    {
+     "ozet": "Data Center ömür sonu: ajan özellikleri Cloud'a bağlı.",
+     "kaynak": "https://www.atlassian.com/blog/announcements/atlassian-ascend"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Görev kaynağı + portföy (SAFe planlama) fişi, Cloud kabul edilirse. Yürütücü değil.",
+   "hukum": "144 ekiplik SAFe portföyüne en yakın takipçi, ama self-host yok ve delivery (merge/deploy/doğrulama) yok.",
+   "toplam_R1_R11": 11
+  },
+  {
+   "ad": "Amazon Kiro (autonomous agent, Kiro Crew) + AWS Transform",
+   "url": "https://kiro.dev/blog/introducing-kiro-autonomous-agent/",
+   "tur": "spec odaklı IDE + barındırılan otonom ajan (preview) + açık kaynak kalıcı ajan çalışma alanı + yönetilen modernizasyon servisi",
+   "lisans": "Kiro IDE/autonomous agent ticari; Kiro Crew Apache-2.0; AWS Transform ticari SaaS.",
+   "self_host": "Kiro Crew kendi donanımınızda (Docker dahil); autonomous agent ve Transform AWS'de.",
+   "saglik": {
+    "yildiz": 4161,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Yıldız/push KiroCrew (16.07.2026'da açıldı; 2.286 açık issue, ~2,5 ayda). Kiro autonomous agent 02.12.2025 preview. AWS Transform yalnız modernizasyon yapar, yeni uygulama üretmez."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "GitHub issue'ya 'kiro' etiketi veya /kiro; GitLab ayrı belgelenmiş; Jira/Linear yok.",
+     "kaynak": [
+      "https://kiro.dev/docs/autonomous-agent/github/"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Her görev izole sandbox; 10'a kadar eşzamanlı görev; alt ajanlar; çok depo → depo başına PR.",
+     "kaynak": [
+      "https://kiro.dev/blog/introducing-kiro-autonomous-agent/"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Kiro ajanı (Kiro Crew varsayılanı kiro-cli).",
+     "kaynak": [
+      "https://github.com/kirodotdev/KiroCrew"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "Kiro Crew self-host; otonom ajan değil.",
+     "kaynak": [
+      "https://github.com/kirodotdev/KiroCrew"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "PR açma, PR geri bildiriminden öğrenme, doğrulama alt ajanı.",
+     "kaynak": [
+      "https://kiro.dev/blog/introducing-kiro-autonomous-agent/"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://kiro.dev/blog/introducing-kiro-autonomous-agent/"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://kiro.dev/blog/introducing-kiro-autonomous-agent/"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "GitHub issue etiketiyle görev; PR yorumlarını kalıcı öğrenmeye çevirir.",
+     "kaynak": [
+      "https://kiro.dev/blog/introducing-kiro-autonomous-agent/"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://kiro.dev/"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Spec odaklı (gereksinim → tasarım → görev) ve PR öncesi doğrulama alt ajanı.",
+     "kaynak": [
+      "https://kiro.dev/blog/introducing-kiro-autonomous-agent/"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Oturumlar arası kalıcı bağlam; Kiro Crew gözetimsiz çok adımlı işler, heartbeat.",
+     "kaynak": [
+      "https://github.com/kirodotdev/KiroCrew"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/kirodotdev/KiroCrew"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Kiro Crew: kapanan oturumların süreç ağacı yaşamaya devam ediyor; tek makinede 1.204 yetim süreç, 25,7 GB.",
+     "kaynak": "https://github.com/kirodotdev/KiroCrew/issues/11789"
+    },
+    {
+     "ozet": "Kiro IDE: uzun terminal komutlarında 'Working' durumunda takılma (60 tepki).",
+     "kaynak": "https://github.com/kirodotdev/Kiro/issues/53"
+    },
+    {
+     "ozet": "AWS Transform ölçek iddiaları ('1.3 million hours', 'billions of lines') yalnız modernizasyon için ve pazarlama sayfası kaynaklı.",
+     "kaynak": "https://aws.amazon.com/transform/"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Executor fişi (Kiro autonomous agent) ve 'spec → görev' yaklaşımı için desen kaynağı; AWS Transform yalnız eski kod göçü senaryosunda.",
+   "hukum": "Çerçeve değil. Spec odaklı yaklaşım DoD/oracle katmanına fikir verir, ama merge/deploy/portföy yok.",
+   "toplam_R1_R11": 9
+  },
+  {
+   "ad": "Warp Factories (warp.dev) ve Warp'ın açık kaynak istemcisi",
+   "url": "https://www.warp.dev/factories",
+   "tur": "'factory.yaml' ile kod olarak tanımlanan bulut yazılım fabrikası (foreman ajan + aşamalı boru hattı)",
+   "lisans": "Warp istemcisi AGPL-3.0 (UI crate'leri MIT); Warp Factories tescilli (açık kaynak değil).",
+   "self_host": "Sayfaya göre Warp bulutu veya 'fully self-hosted in your own VPC'. Kapalı erken erişimde; bağımsız doğrulama yok (doğrulanamadı).",
+   "saglik": {
+    "yildiz": 65192,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Yıldız warpdotdev/warp istemci deposu (5.310 açık issue). README: 'OpenAI is the founding sponsor of the new, open-source Warp repository'. Warp Factories kapalı erken erişim; '800,000 developers' sayısı Warp'ın geneline ait, Factories'e değil."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 2,
+     "kanit": "Slack, Teams, Linear, Jira, GitHub, GitLab, API, MCP, cron girişleri; foreman tek koordinatör (pazarlama sayfası, erken erişim).",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Docker/Kubernetes tabanlı, koşu başına sağlanan sandbox, imaj önbelleği; kota ve eşzamanlılık limitleri.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "'any MCP-capable coding agent' — Warp ajanları, Claude Code, Codex, Cursor; aşama başına model seçimi.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "VPC'de self-host beyanı var ama ürün tescilli ve kapalı erken erişimde.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "Implement → PR; Verify: adversarial review, eval, kontroller; ekran görüntüsü/video.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R6": {
+     "puan": 1,
+     "kanit": "'Ship: Approved changes merge' — merge queue/entegrasyon dalı ayrıntısı yok.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "'Monitor: Production monitoring feeds findings back into the queue' beyanı; dağıtım ortamını doğrulama mekanizması belgelenmemiş.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "İzleme bulguları kuyruğa geri besleniyor (beyan); insan inceleme kapısında foreman durabilir.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Ajan başına izin, kota, eşzamanlılık, denetim izi; ekip/program hiyerarşisi yok.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R10": {
+     "puan": 2,
+     "kanit": "Her koşu özel eval hattıyla puanlanır; gözlemci ajanlar fabrika yapılandırmasına iyileştirme PR'ı açar; benchmark.",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "'durable execution across long-running steps' beyanı; mekanizma belgelenmemiş (doğrulanamadı).",
+     "kaynak": [
+      "https://www.warp.dev/factories"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/warpdotdev/warp"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Warp'ın kendi açık deposunu fabrika yönetiyor; panoda 'Awaiting maintainer' 1.816 iş ile en büyük durum, 'Ready to implement' 1.274 — darboğaz insan incelemesi.",
+     "kaynak": "https://build.warp.dev"
+    },
+    {
+     "ozet": "Tüm yetenek iddiaları kapalı erken erişim pazarlama sayfasından; bağımsız kullanıcı raporu bulunamadı. Tek vaka: PR başına maliyet 80 $ → 30 $ (anonim şirket).",
+     "kaynak": "https://www.warp.dev/factories"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Orkestratör + executor host adayı (eğer self-host iddiası doğrulanırsa). Tasarım olarak kullanıcının 'fabrika' tarifine en yakın ticari ürün.",
+   "hukum": "Kâğıt üzerinde R1-R3, R5, R10'da en güçlü ticari aday; ama kapalı erken erişim, tescilli ve bağımsız kanıt yok. Merge queue, dağıtım doğrulama ve portföy hiyerarşisi yine eksik. Değerlendirme için pilot talep edilebilir; mimariye bağımlılık olarak alınmamalı.",
+   "toplam_R1_R11": 16
+  },
+  {
+   "ad": "LangChain Open SWE",
+   "url": "https://github.com/langchain-ai/open-swe",
+   "tur": "açık kaynak 'software factory' (Deep Agents harness + LangGraph dayanıklı çalışma zamanı + pano)",
+   "lisans": "MIT",
+   "self_host": "Evet: LangGraph Platform veya Docker ile; varsayılan sandbox/izleme LangSmith (ticari), alternatif Modal, Daytona, Runloop, E2B, yerel.",
+   "saglik": {
+    "yildiz": 10769,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "LangChain Inc. README: 'expect breaking changes… We're not accepting issues or external contributions at this time… correctness, stability, and compatibility are not guaranteed.'"
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "Pano, GitHub, Slack, Linear, zamanlama; tetikleyiciler özelleştirilebilir ('Swap… triggers') ama resmî adaptör sözleşmesi yok; Jira/Plane yok.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "İş parçacığı başına kalıcı izole sandbox; bağımsız iş parçacıkları paralel; alt ajanlar.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Harness Deep Agents; Claude Code/Codex gibi dış CLI ajanları takılamıyor (model seçilebilir).",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "MIT + Docker kurulumu; sandbox sağlayıcısı takılabilir arayüz.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "PR açma/güncelleme, /baby-sit ile CI izleme, kanıtlı flaky job yeniden çalıştırma, review ajanı.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Tarayıcı tabanlı uygulama doğrulama aracı (sandbox içinde); uzak dağıtım yok.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Takip mesajları aynı iş parçacığı ve sandbox'a yönlenir; dağıtılmış ortam incelemesi yok.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Organizasyon/depo izin listeleri, çalışma alanları; hiyerarşi/kota yok.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Odaklı doğrulama, iş akışı dosyası değişiminde insan onayı; korunan test yok.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R11": {
+     "puan": 2,
+     "kanit": "LangGraph dayanıklı yürütme ve thread durumu; erişilemeyen sandbox sessizce değiştirilmez ('fails safely').",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/langchain-ai/open-swe"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Kırıcı değişiklik uyarısı ve dış katkı/issue kabul edilmiyor; üretimde bakım garantisi yok.",
+     "kaynak": "https://github.com/langchain-ai/open-swe"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Referans mimari (thread = dayanıklı iş bağlamı, takılabilir sandbox arayüzü, CI babysitter). Harness sabit olduğu için executor tak-çıkar hedefini tek başına karşılamaz.",
+   "hukum": "Açık kaynakta 'software factory' döngüsünü (issue → sandbox → PR → CI → geri bildirim) en eksiksiz kuran proje; ama tek harness, merge queue/deploy/portföy yok ve 'stability not guaranteed'.",
+   "toplam_R1_R11": 13
+  },
+  {
+   "ad": "GitHub Agentic Workflows (gh-aw)",
+   "url": "https://github.com/github/gh-aw",
+   "tur": "Markdown+YAML ile tanımlanan, GitHub Actions'a derlenen ajan iş akışları",
+   "lisans": "MIT",
+   "self_host": "Actions üzerinde koşar; self-hosted runner ile yürütme sizin altyapınızda, kontrol GitHub'da.",
+   "saglik": {
+    "yildiz": 5187,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Sürüm 0.x (v0.89.22, 27.09.2026), çok sık sürüm. Güvenlik açığı nedeniyle >=0.83.3 <0.85.4 sürümleri geri çekildi."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 1,
+     "kanit": "GitHub olayları (issue, PR, zamanlama) tetikler; harici takipçi yok.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R2": {
+     "puan": 2,
+     "kanit": "Her iş akışı ayrı Actions işinde, sandbox'lı ve varsayılan salt okunur.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Motorlar: GitHub Copilot, Claude Code, OpenAI Codex, Google Gemini, Pi.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R4": {
+     "puan": 1,
+     "kanit": "MIT araç, ama GitHub Actions'a bağlı.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R5": {
+     "puan": 2,
+     "kanit": "CI arıza incelemesi, PR review; yazmalar 'safe-outputs' ile doğrulanıp ayrı işte uygulanır.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R6": {
+     "puan": 1,
+     "kanit": "GitHub merge queue ile birlikte kullanılabilir; kendisi yönetmez.",
+     "kaynak": [
+      "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "Dağıtım deterministik Actions'ta kalır ('complements existing CI/CD'); ajan dağıtılmış ortamı ancak iş akışı yazılırsa inceler.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Issue triage iş akışları örnek olarak var.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Safe-outputs doğrulaması ve kapsamlı izinler — güvenlik kapısı; test oracle'ı değil.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "Actions işi ömrüyle sınırlı.",
+     "kaynak": [
+      "https://github.com/github/gh-aw"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/github/gh-aw/security/advisories/GHSA-8h78-hpm7-29gg"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Güvenlik açığı nedeniyle bir sürüm aralığı geri çekildi; README 'Use it with caution, and at your own risk'.",
+     "kaynak": "https://github.com/github/gh-aw"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "CI içi 'agentic step' fişi (triage, CI arıza analizi, doğrulama ajanı) ve güvenli yazma deseni (safe-outputs).",
+   "hukum": "Çerçevenin CI katmanında ajan adımları için iyi bir fiş ve güvenlik deseni; dispatcher veya portföy değil.",
+   "toplam_R1_R11": 12
+  },
+  {
+   "ad": "Google Antigravity",
+   "url": "https://antigravity.google/",
+   "tur": "ajan öncelikli IDE + yerel çoklu ajan yöneticisi (GUI, CLI, SDK)",
+   "lisans": "Ticari (geliştiriciler için ücretsiz, kurumsal planlar).",
+   "self_host": "Yerel ajanlar; kontrol/model Google. Self-host belgelenmemiş.",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Google ürünü; 'Antigravity 2.0' GUI, CLI, IDE, SDK. Önizleme durumunda."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Takipçi entegrasyonu belirtilmemiş.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "'manage multiple local agents in parallel' — yerel çalışma alanları.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Gemini ajanları.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R5": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R7": {
+     "puan": 1,
+     "kanit": "'browser-in-the-loop agents' ve artefaktlarla doğrulama (yerel).",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "Artefakt tabanlı doğrulama vurgusu.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://antigravity.google/"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [],
+   "hangi_katmanda_fis_olur": "Geliştirici masaüstü aracı; çerçeve katmanı değil.",
+   "hukum": "Çerçeve değil.",
+   "toplam_R1_R11": 3
+  },
+  {
+   "ad": "Amp (ampcode.com; orbs, execute mode)",
+   "url": "https://ampcode.com/manual",
+   "tur": "kodlama ajanı (web, masaüstü, CLI) + thread başına bulut makinesi ('orb')",
+   "lisans": "Ticari.",
+   "self_host": "Belgelenmemiş.",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": false,
+    "not": "Kapalı kaynak. Ekip çalışma alanları, gruplar, 'Minimal Data Retention' kurumsal seçenek."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Takipçi entegrasyonu belgelenmemiş.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Thread başına bulut makinesi (orb).",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Kendi ajanı.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R4": {
+     "puan": 0,
+     "kanit": "Belgelenmemiş.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "GitHub & Git entegrasyonu.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Workspaces/Groups.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "Orb'lar dizüstü kapansa da çalışır.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://ampcode.com/manual"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [],
+   "hangi_katmanda_fis_olur": "Executor (Execute Mode ile headless) fişi.",
+   "hukum": "Çerçeve değil.",
+   "toplam_R1_R11": 4
+  },
+  {
+   "ad": "MetaGPT / MGX ve ChatDev (rol-oyunu 'yazılım şirketi' çerçeveleri)",
+   "url": "https://github.com/FoundationAgents/MetaGPT",
+   "tur": "SOP tabanlı rol simülasyonu (PM, mimar, mühendis, QA)",
+   "lisans": "MetaGPT MIT; ChatDev Apache-2.0",
+   "self_host": "Evet (kütüphane).",
+   "saglik": {
+    "yildiz": 70650,
+    "son_push": "2026-01-21",
+    "arsiv": false,
+    "not": "MetaGPT'de son push Ocak 2026; Nisan 2026'da 'bakım sürüyor mu' sorusu açıldı; ekip ticari MGX'e yöneldi. ChatDev 34.403 yıldız, son push 2026-07-24, 2.0 ile çok ajanlı platforma dönüştü."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Tek istemle başlar; takipçi yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R2": {
+     "puan": 0,
+     "kanit": "Tek süreç içi rol sohbeti; izole yürütücü yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R3": {
+     "puan": 0,
+     "kanit": "Kendi rolleri.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Açık kaynak kütüphane.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/OpenBMB/ChatDev"
+     ]
+    },
+    "R5": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Roller var, ekip/portföy işletimi yok.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R10": {
+     "puan": 1,
+     "kanit": "QA rolü ve SOP; bağımsız oracle değil.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "ChatDev kaldığı yerden devam etmiyor.",
+     "kaynak": [
+      "https://github.com/OpenBMB/ChatDev/issues/94"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/FoundationAgents/MetaGPT/issues/2010"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "MetaGPT artımlı modda mevcut kodla çalışırken çöküyor.",
+     "kaynak": "https://github.com/FoundationAgents/MetaGPT/issues/2007"
+    },
+    {
+     "ozet": "ChatDev donma ve devam edememe.",
+     "kaynak": "https://github.com/OpenBMB/ChatDev/issues/167"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Hiçbiri; 'scrum rolleri = ajan rolleri' benzetmesinin sınırlarını gösteren örnek.",
+   "hukum": "Kullanıcının 'yüzeysel benzetme' korkusunun tam örneği: insan organizasyon şemasını ajan rollerine kopyalamak teslimat altyapısı (izolasyon, CI, merge, dağıtım, dayanıklılık) sağlamıyor.",
+   "toplam_R1_R11": 3
+  },
+  {
+   "ad": "CrewAI / AutoGen / Microsoft Agent Framework (genel çok ajan çerçeveleri)",
+   "url": "https://github.com/microsoft/agent-framework",
+   "tur": "genel amaçlı çok ajanlı uygulama çerçeveleri (teslimat sistemi değil)",
+   "lisans": "CrewAI MIT; AutoGen kod MIT (depo lisans alanı CC-BY-4.0 gösteriyor); MAF MIT",
+   "self_host": "Evet (kütüphane).",
+   "saglik": {
+    "yildiz": 59082,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Yıldız/push CrewAI. AutoGen 'maintenance mode', yeni kullanıcılar MAF'a yönlendiriliyor (son push 2026-04-15). MAF 13.818 yıldız, 1.0 'production-ready', grafik tabanlı iş akışları, checkpointing, human-in-the-loop, A2A/MCP."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Kütüphane; entegrasyon yazılmalı.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Eşzamanlı iş akışı desenleri; izole kod sandbox'ı sağlamaz.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R3": {
+     "puan": 1,
+     "kanit": "A2A/MCP ile başka ajanlar çağrılabilir; kodlama CLI'larını sürmek için hazır adaptör yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "MIT kütüphaneler.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework",
+      "https://github.com/crewAIInc/crewAI"
+     ]
+    },
+    "R5": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R11": {
+     "puan": 1,
+     "kanit": "MAF: checkpointing, human-in-the-loop, time-travel; Durable Task/Azure Functions eklentisi.",
+     "kaynak": [
+      "https://github.com/microsoft/agent-framework"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/microsoft/autogen"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "AutoGen bakım moduna alındı; 12 ay içinde çerçeve değiştirme zorunluluğu (AutoGen → MAF göç rehberi).",
+     "kaynak": "https://github.com/microsoft/autogen"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Orkestratör içi 'ajan iş akışı' kütüphanesi olarak kullanılabilir; teslimat çerçevesi değildir.",
+   "hukum": "Kullanıcının beklediği gibi: çerçeve kütüphaneleri, teslimat sistemi değil. AutoGen → MAF geçişi tak-çıkar ihtiyacının bir başka kanıtı.",
+   "toplam_R1_R11": 5
+  },
+  {
+   "ad": "Vibe Kanban (BloopAI) – kapanan kanban/ajan koşucu",
+   "url": "https://github.com/BloopAI/vibe-kanban",
+   "tur": "yerel kanban + çok harness'lı ajan koşucu (worktree başına)",
+   "lisans": "Apache-2.0",
+   "self_host": "Yerel; uzak servisler kapatıldı.",
+   "saglik": {
+    "yildiz": 28200,
+    "son_push": "2026-09-19",
+    "arsiv": false,
+    "not": "README: 'Vibe Kanban is sunsetting.' Şirket 10.04.2026'da kapanışı duyurdu; uzak servisler 30 gün sonra kapandı, topluluk bakımına geçti."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Kendi kanbanı; harici takipçi yok.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Görev başına worktree; tek makine.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R3": {
+     "puan": 2,
+     "kanit": "Birden çok CLI ajanı (Claude Code, Codex, OpenCode vb.).",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "Yerel, Apache-2.0.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R5": {
+     "puan": 1,
+     "kanit": "PR oluşturma.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R8": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R9": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban"
+     ]
+    },
+    "R11": {
+     "puan": 0,
+     "kanit": "WebSocket kopunca oturum 'running'de takılıyor.",
+     "kaynak": [
+      "https://github.com/BloopAI/vibe-kanban/issues/3227"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://www.vibekanban.com/blog/shutdown"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "Şirket kapandı: gelir modeli bulunamadı.",
+     "kaynak": "https://www.vibekanban.com/blog/shutdown"
+    },
+    {
+     "ozet": "Log yeniden oynatma arka ucu 55-60 GB RSS'e çıkarıp OOM.",
+     "kaynak": "https://github.com/BloopAI/vibe-kanban/issues/3218"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Yok (kapanan ürün); ders: tek şirkete bağlı katman bir anda kaybolabilir.",
+   "hukum": "Tak-çıkar ilkesinin gerekçesi: 2026'da Vibe Kanban, Roo Code, Terragon kapandı; Coder Tasks, AgentAPI, OpenHands Local GUI, AutoGen, Daytona OSS geri çekildi.",
+   "toplam_R1_R11": 6
+  },
+  {
+   "ad": "Temporal (dayanıklı iş akışı motoru – orkestratör fişi)",
+   "url": "https://github.com/temporalio/temporal",
+   "tur": "genel amaçlı dayanıklı yürütme motoru (ajan teslimat sistemi değil)",
+   "lisans": "MIT (sunucu); Temporal Cloud ticari",
+   "self_host": "Evet.",
+   "saglik": {
+    "yildiz": 23313,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "not": "Temporal Technologies. Temporal'ın beyanına göre OpenAI Codex web ajanı Temporal üzerinde, 'millions of requests' (12.11.2025); Replit Agent vaka çalışması."
+   },
+   "puanlar": {
+    "R1": {
+     "puan": 0,
+     "kanit": "Takipçi adaptörü yok; yazılmalı.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R2": {
+     "puan": 1,
+     "kanit": "Worker havuzlarına paralel iş dağıtımı; sandbox sağlamaz.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R3": {
+     "puan": 1,
+     "kanit": "Activity içinde herhangi bir harness çağrılabilir (motor harness bilmez).",
+     "kaynak": [
+      "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal"
+     ]
+    },
+    "R4": {
+     "puan": 2,
+     "kanit": "MIT, self-host.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R5": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R6": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R7": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R8": {
+     "puan": 1,
+     "kanit": "Signal/Update ile uzun insan beklemeleri modellenebilir (Replit vaka çalışması).",
+     "kaynak": [
+      "https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale"
+     ]
+    },
+    "R9": {
+     "puan": 1,
+     "kanit": "Namespace/task queue ile kiracı ayrımı ve hız sınırı yapılabilir; portföy kavramı yok.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R10": {
+     "puan": 0,
+     "kanit": "Yok.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    },
+    "R11": {
+     "puan": 2,
+     "kanit": "Olay geçmişiyle dayanıklı yürütme: 'survive failures and pick up where they left off'.",
+     "kaynak": [
+      "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal"
+     ]
+    },
+    "R12": {
+     "puan": 0,
+     "kanit": "Puanlanmaz.",
+     "kaynak": [
+      "https://github.com/temporalio/temporal"
+     ]
+    }
+   },
+   "bilinen_sorunlar": [
+    {
+     "ozet": "İş akışı kodu deterministik olmalı; uzun döngülerde Continue-As-New ve geçmiş boyut sınırı yönetilmeli.",
+     "kaynak": "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal"
+    }
+   ],
+   "hangi_katmanda_fis_olur": "Orkestratör/dayanıklılık katmanı (Kestra, Symphony-tarzı poller veya LangGraph ile değiştirilebilir).",
+   "hukum": "Çerçevenin R11 boşluğunu kapatan en kanıtlı fiş; teslimatın geri kalanını yazmak size kalır.",
+   "toplam_R1_R11": 8
+  }
+ ],
+ "sentez": {
+  "kisa_cevap": "Hayır. 32 aday içinde 'takipçi → N izole ajan → tek entegrasyon dalına merge queue → uzak ortama dağıtım ve doğrulama → dağıtılmış ortamda insan incelemesi → otomatik yeni görev → çok ekipli portföy' döngüsünün tamamını belgelenmiş davranış olarak sunan hazır sistem bulunamadı. Hiçbir aday R7 (uzak dağıtım + doğrulama) ve R8 (dağıtılmış ortam incelemesi → issue → otomatik görev) için 2 almadı. En yüksek puan GitLab Duo Agent Platform (17/22, 6 kalemde 2), ikinci Warp Factories (16/22, ama kapalı erken erişim ve yalnız pazarlama kanıtı).",
+  "a_cogunlukta_2_alan_var_mi": {
+   "cevap": "Sınırda tek aday var, gerçek anlamda yok.",
+   "ayrinti": "GitLab Duo Agent Platform R2, R3, R4, R5, R6, R9'da 2 alıyor (11'in 6'sı). Bu 2'lerin yarısı ajan platformundan değil, GitLab'ın DevOps platformundan geliyor (merge trains, grup/epik hiyerarşisi, self-managed). R1 (takipçi bağımsızlığı), R7, R8, R10, R11 kısmi; üstelik tetikleyiciler yalnız insan eylemiyle çalışıyor, yani bot/akış kaynaklı issue ajanı başlatamıyor. Warp Factories R1, R2, R3, R5, R10'da 2 alıyor (5/11) ama kanıtın tamamı kapalı erken erişim ürün sayfası. Açık kaynakta en yakınlar Gas Town (merge queue + dayanıklılık + çok harness, 4 kalemde 2) ve LangChain Open SWE (dayanıklı thread + takılabilir sandbox + CI babysitter, 4 kalemde 2).",
+   "kaynak": [
+    "https://docs.gitlab.com/user/duo_agent_platform/triggers/",
+    "https://docs.gitlab.com/ci/pipelines/merge_trains/",
+    "https://www.warp.dev/factories",
+    "https://github.com/gastownhall/gastown",
+    "https://github.com/langchain-ai/open-swe"
+   ]
+  },
+  "b_katman_fis_haritasi": {
+   "gorev_kaynagi_ve_insan_arayuzu": {
+    "fisler": [
+     "Plane (Agent Run API, Beta)",
+     "Linear (AgentSession)",
+     "Jira (Agents in Jira, Cloud)",
+     "GitHub Issues",
+     "GitLab work items",
+     "Beads (ajan içi alt görev grafiği)"
+    ],
+    "not": "Takipçiler ajan protokolünü kendileri tanımlıyor (Linear AgentSession, Plane Agent Run); çerçeve bu ikisini soyutlayan tek bir 'TaskSource' arayüzü yazmalı. Symphony SPEC'in 'portable read kernel' tanımı iyi başlangıç.",
+    "kaynak": [
+     "https://developers.plane.so/dev-tools/agents/overview",
+     "https://linear.app/developers/agents",
+     "https://github.com/openai/symphony/blob/main/SPEC.md",
+     "https://github.com/gastownhall/beads"
+    ]
+   },
+   "dagitici_orkestrator": {
+    "fisler": [
+     "Temporal (dayanıklı yürütme)",
+     "LangGraph (Open SWE'nin çalışma zamanı)",
+     "Symphony SPEC (poller + durum makinesi, sözleşme olarak)",
+     "OpenHands automation servisi (cron/webhook, Beta)",
+     "Microsoft Agent Framework iş akışları (checkpoint)"
+    ],
+    "not": "Hazır ürünlerin hiçbiri 144 ekiplik kota/WIP/öncelik yönetimini içermiyor; bu katman çerçevenin kendi kodu olmalı, motor (Temporal/Kestra/LangGraph) tak-çıkar kalmalı.",
+    "kaynak": [
+     "https://github.com/temporalio/temporal",
+     "https://github.com/langchain-ai/open-swe",
+     "https://github.com/OpenHands/automation",
+     "https://github.com/microsoft/agent-framework"
+    ]
+   },
+   "executor_harness": {
+    "fisler": [
+     "Claude Code / Claude Agent SDK",
+     "Codex CLI + app-server + SDK",
+     "OpenHands Agent Server/SDK (ACP ile başka ajanları da sürer)",
+     "Factory droid exec",
+     "Kilo CLI",
+     "Gemini CLI, OpenCode, Pi (gh-aw, Cyrus, Sculptor üzerinden)",
+     "Yönetilen: Copilot cloud agent, Devin API, Cursor cloud agents, Jules API, Kiro autonomous agent, Claude Managed Agents"
+    ],
+    "not": "Harness katmanı 2026'da en hızlı değişen katman: Roo Code kapandı, Coder AgentAPI arşivlendi, OpenHands Local GUI bakım moduna alındı. Çerçeve harness'ı süreç/HTTP/ACP sınırıyla soyutlamalı.",
+    "kaynak": [
+     "https://code.claude.com/docs/en/agent-teams",
+     "https://developers.openai.com/codex/app-server",
+     "https://github.com/OpenHands/software-agent-sdk",
+     "https://docs.factory.ai/droid-exec/overview",
+     "https://github.com/github/gh-aw",
+     "https://github.com/RooCodeInc/Roo-Code",
+     "https://github.com/coder/agentapi"
+    ]
+   },
+   "sandbox_calisma_ortami": {
+    "fisler": [
+     "Coder workspaces (self-host, Terraform şablonu)",
+     "OpenHands Agent Server Docker/Kubernetes",
+     "Claude Managed Agents self-hosted sandbox",
+     "Cursor self-hosted workers (K8s)",
+     "E2B (Apache-2.0)",
+     "Dagger container-use (MCP sunucusu, Apache-2.0)",
+     "Ona runner (VPC)",
+     "GitHub Actions / GitLab runner"
+    ],
+    "not": "Daytona açık deposu Haziran 2026'dan beri bakımsız (geliştirme özel koda taşındı). Tembo: ERP ölçeğinde derleme için 32 GB, bazı test/tip denetimleri için 128 GB RAM gerekebileceğini yazıyor; hafif sandbox varsayımı riskli.",
+    "kaynak": [
+     "https://coder.com/docs/ai-coder/agents",
+     "https://platform.claude.com/docs/en/managed-agents/overview",
+     "https://cursor.com/docs/cloud-agent/self-hosted/pool",
+     "https://github.com/e2b-dev/E2B",
+     "https://github.com/dagger/container-use",
+     "https://github.com/daytonaio/daytona",
+     "https://www.tembo.io/blog/goodbye-background-agents"
+    ]
+   },
+   "vcs_ci_merge": {
+    "fisler": [
+     "GitHub + merge queue (merge_group olayı, 1-100 eşzamanlı build)",
+     "GitLab + merge trains (varsayılan 20 paralel pipeline)",
+     "Gas Town Refinery (Bors tarzı bisect kuyruk; desen olarak)",
+     "gh-aw (CI içi ajan adımları, safe-outputs)",
+     "Open SWE /baby-sit (CI izleme)"
+    ],
+    "not": "Merge queue'yu ajan tarafına değil VCS tarafına koymak gerekir: Gas Town'da ajan 'gh pr merge --admin' ile kapıları atlattı.",
+    "kaynak": [
+     "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+     "https://docs.gitlab.com/ci/pipelines/merge_trains/",
+     "https://github.com/gastownhall/gastown/issues/4442",
+     "https://github.com/github/gh-aw"
+    ]
+   },
+   "dagitim_ve_dogrulama": {
+    "fisler": [
+     "GitHub Actions environments",
+     "GitLab environments + Review Apps"
+    ],
+    "not": "İncelenen 32 adayın hiçbiri 'alpha ortamına dağıt ve dağıtılmış ortamı doğrula' işini ürün özelliği olarak sunmuyor; en fazla sandbox içinde tarayıcı/video doğrulaması var (Cursor, Devin, Open SWE, Antigravity). Bu katman çerçevenin kendisinin yazması gereken en büyük boşluk. Dağıtım araçları (Argo CD, Kamal vb.) bu çalışmada ayrıca araştırılmadı.",
+    "kaynak": [
+     "https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions",
+     "https://archives.docs.gitlab.com/16.7/ee/ci/review_apps/index.html",
+     "https://cursor.com/docs/cloud-agent",
+     "https://docs.devin.ai/work-with-devin/testing-and-recordings.md"
+    ]
+   },
+   "inceleme_geri_bildirim": {
+    "fisler": [
+     "GitHub Issues → Copilot/Claude/Codex ataması",
+     "GitLab work item tetikleyicisi (yalnız insan eylemi)",
+     "Linear/Plane ajan oturumları"
+    ],
+    "not": "Dağıtılmış uygulamada inceleme yapıp doğrudan MR'a/issue'ya geri bildirim bırakan tek bilinen ürün özelliği (GitLab Visual Review Tools) 17.0'da kaldırıldı. Warp'ın kendi fabrika panosunda en büyük kuyruk 'Awaiting maintainer' (1.816): insan inceleme darboğazı ölçekte baskın.",
+    "kaynak": [
+     "https://gitlab.com/gitlab-org/gitlab/-/issues/387751",
+     "https://build.warp.dev",
+     "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/"
+    ]
+   },
+   "kalite_oracle": {
+    "fisler": [
+     "Claude Code hook'ları (TaskCompleted çıkış kodu 2)",
+     "gh-aw safe-outputs",
+     "Sculptor fix-bug (önce başarısız test)",
+     "Kiro spec (gereksinim → tasarım → görev)",
+     "Warp Factories eval hattı (beyan)"
+    ],
+    "not": "Korunan testler, DoD kanıtı, gap/unknown-unknowns analizi hiçbir üründe hazır değil; ajanların 'testler geçti' deyip koşmadığı belgelenmiş.",
+    "kaynak": [
+     "https://code.claude.com/docs/en/agent-teams",
+     "https://github.com/imbue-ai/sculptor",
+     "https://kiro.dev/blog/introducing-kiro-autonomous-agent/",
+     "https://www.warp.dev/factories",
+     "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/"
+    ]
+   },
+   "portfoy_hiyerarsi": {
+    "fisler": [
+     "Jira (Cloud)",
+     "GitLab grup/alt grup/epik (SAFe eşlemesi)",
+     "Plane çalışma alanı/proje/modül"
+    ],
+    "not": "Takipçiler portföyü tutar ama ajan kotası/WIP/bütçeyi ART düzeyinde zorlamaz; OpenHands Enterprise (LiteLLM bütçe) ve Cursor (ekip başına 1.000 worker) yalnız düz kota verir.",
+    "kaynak": [
+     "https://about.gitlab.com/blog/gitlab-for-agile-portfolio-planning-project-management/",
+     "https://www.atlassian.com/blog/announcements/ai-agents-in-jira",
+     "https://github.com/OpenHands/enterprise",
+     "https://cursor.com/docs/cloud-agent/self-hosted/pool"
+    ]
+   }
+  },
+  "c_olcek_kaniti": {
+   "cevap": "ERP/HRMS modülü büyüklüğünde, alan kuralları (bordro, SGK, vergi) içeren ve DoD'ye kadar götürülmüş kamuya açık bir ajan teslimatı bulunamadı. Satır sayısı olarak benzer veya büyük üretimler var, ama hepsi ya net bir oracle'a sahip alanlarda (derleyici, emülatör) ya da küçük ve yoğun insan ekibiyle yapılmış.",
+   "kanitlar": [
+    {
+     "ozet": "OpenAI 'harness engineering': 3→7 mühendis, ~5 ay, ~1 milyon satır, ~1.500 PR, 'no manually-written code'; iç beta ürün. Yazarlar yıllar içinde mimari tutarlılığın belirsiz olduğunu ve yaklaşımın bu depoya özgü yatırım gerektirdiğini söylüyor.",
+     "kaynak": "https://jaytaylor.com/notes/node/1770842156000.html"
+    },
+    {
+     "ozet": "Anthropic: 16 paralel Claude, ~2.000 oturum, 2 hafta, ~20.000 $, 100.000 satır Rust C derleyicisi; Linux 6.9 derliyor, çoğu test takımında %99 geçiş. Kritik etken: GCC'nin 'known-good oracle' olarak kullanılması; kod kalitesi 'nowhere near' uzman seviyesinde.",
+     "kaynak": "https://www.anthropic.com/engineering/building-c-compiler"
+    },
+    {
+     "ozet": "Cursor: yüzlerce eşzamanlı ajan, 1-3 hafta; tarayıcı, 1,2M satır Windows 7 emülatörü, 1,6M satır Excel. Sorunlar: 'Twenty agents would slow down to the effective throughput of two or three', risk kaçınan ajanlar, sürüklenme, periyodik sıfırlama.",
+     "kaynak": "https://cursor.com/blog/scaling-agents"
+    },
+    {
+     "ozet": "dotnet/runtime + Copilot cloud agent, 10 ay: 878 PR, %67,9 birleşme; darboğaz inceleme.",
+     "kaynak": "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/"
+    },
+    {
+     "ozet": "Warp'ın açık deposu fabrika ile yönetiliyor: 7.113 kapalı iş, ama 1.816 iş 'Awaiting maintainer'.",
+     "kaynak": "https://build.warp.dev"
+    },
+    {
+     "ozet": "Hedef ölçeği için referans: frappe/hrms (8.829 yıldız) yaklaşık 2,3 MB Python + 0,47 MB JavaScript + 0,27 MB Vue kaynak, 11.173 commit; üstelik Frappe/ERPNext altyapısına dayanıyor ve Türkiye SGK/vergi yerelleştirmesi bu sayıya dahil değil.",
+     "kaynak": "https://github.com/frappe/hrms"
+    }
+   ],
+   "yorum": "Ölçek (satır sayısı) artık tek başına engel değil; engel oracle. Derleyicide GCC ve test takımları hazır oracle'dı. HRMS'te bordro/SGK/izin mevzuatı için hazır oracle yok. Bu yüzden 'testler 90/90'da tıkanmasın' hedefi, önce alan oracle'ının (altın veri setleri, mevzuat tabloları, bordro hesap vakaları) insan+ajan tarafından üretilmesini gerektirir."
+  },
+  "d_hukum": {
+   "genel": "Hazır bir sistem satın alıp/kurup 144 ekibi bu döngüye bağlamak bugün mümkün değil. Doğru strateji, döngünün kendisini (sözleşmeler, durum makinesi, kalite kapıları, portföy kotası, dağıtım doğrulama, geri bildirim yönlendirme) ince bir çerçeve olarak yazmak ve her katmanda hazır ürünleri fiş olarak takmak. 2026'da harness ve ajan platformu katmanında en az 7 kapanış/geri çekilme yaşandı; bu, tak-çıkar gereksiniminin teorik değil zorunlu olduğunu gösteriyor.",
+   "openhands_sezgisi": "Kısmen doğru. OpenHands executor/sandbox katmanı için güçlü ve açık kaynak (MIT SDK + Agent Server, Docker/K8s, ACP ile Claude Code/Codex/Gemini sürebiliyor). Ama 'yeterli' değil: takipçi adaptör sözleşmesi, merge queue, dağıtım doğrulama, kalite kapısı, portföy/WIP yok; çok kullanıcılı ölçek, RBAC ve bütçe Enterprise'da ve PolyForm Free Trial lisanslı (yılda 30 gün). Ayrıca Haziran-Temmuz 2026'da ana depo baştan yapılandırıldı. OpenHands 12 kopya 'openhands 1…12' olarak değil, executor havuzunun bir tipi olarak düşünülmeli.",
+   "aperant_gozlemi": "Doğru. Aperant tek makinede en fazla 12 terminal, Claude Pro/Max OAuth, AI ile main'e merge ve kendi QA döngüsünden ibaret; ekip, merge queue, dağıtım, oracle yok ve 2.x bakım modunda.",
+   "kacinilacak_benzetmeler": "MetaGPT/ChatDev ve Claude Code agent teams gibi 'rol = ajan' yapıları scrum ekibini taklit eder ama teslimat altyapısı sağlamaz (agent teams: tek oturum, iç içe takım yok, devam yok). SAFe hiyerarşisini ajan rollerine kopyalamak yerine, portföy katmanını takipçide bırakıp ajanları iş öğesi başına izole yürütücü olarak ele almak gerekir.",
+   "tak_cikar_kanitlari_son_12_ay": [
+    {
+     "olay": "Roo Code tüm ürünleriyle 15.05.2026'da kapandı, depo arşivlendi.",
+     "kaynak": "https://github.com/RooCodeInc/Roo-Code"
+    },
+    {
+     "olay": "Vibe Kanban kapanışı (10.04.2026).",
+     "kaynak": "https://www.vibekanban.com/blog/shutdown"
+    },
+    {
+     "olay": "Terragon kapandı (09.02.2026).",
+     "kaynak": "https://docs.terragonlabs.com/docs/resources/shutdown"
+    },
+    {
+     "olay": "Coder Tasks ESR'ye alındı, v2.37'den itibaren kaldırıldı; AgentAPI arşivlendi.",
+     "kaynak": "https://coder.com/docs/@v2.36.0/ai-coder/tasks"
+    },
+    {
+     "olay": "OpenHands ana deposu Agent Canvas'a çevrildi; Local GUI/TUI bakım modunda.",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/14841"
+    },
+    {
+     "olay": "AutoGen bakım modunda, MAF'a göç.",
+     "kaynak": "https://github.com/microsoft/autogen"
+    },
+    {
+     "olay": "Daytona açık deposu bakımsız, geliştirme özel koda taşındı (Haziran 2026).",
+     "kaynak": "https://github.com/daytonaio/daytona"
+    },
+    {
+     "olay": "Agent Orchestrator Go yeniden yazımında GitLab/Linear desteği düştü.",
+     "kaynak": "https://github.com/Untrivial-ai/agent-orchestrator/blob/main/frontend/src/docs/content/plugins/trackers/index.mdx"
+    },
+    {
+     "olay": "Kilo Code Anaconda'ya satıldı (15.07.2026).",
+     "kaynak": "https://www.businesswire.com/news/home/20260715437804/en/Anaconda-Acquires-Kilo-Code-to-Power-the-Trillion-Token-Enterprise"
+    },
+    {
+     "olay": "Tembo arka plan ajanlarını bırakıp kalıcı bulut ortamına döndü (03.08.2026).",
+     "kaynak": "https://www.tembo.io/blog/goodbye-background-agents"
+    }
+   ],
+   "onerilen_sonraki_adimlar": [
+    "Symphony SPEC + Linear AgentSession + Plane Agent Run'dan türetilmiş tek bir TaskSource/Dispatcher sözleşmesi yazmak.",
+    "Executor arayüzünü (başlat, akış, iptal, sonuç, kanıt) en az iki farklı harness ile (ör. OpenHands Agent Server ve Codex app-server/Claude Agent SDK) kanıtlamak.",
+    "Merge queue'yu VCS'de (GitHub merge queue veya GitLab merge train) zorunlu kılmak; ajanlara bypass yetkisi vermemek.",
+    "R7/R8 boşluğu için alpha ortamına dağıtım + smoke/E2E + inceleme bulgusunu issue'ya çeviren kendi katmanını tasarlamak.",
+    "HRMS için önce oracle üretimi (mevzuat tabloları, altın bordro vakaları, korunan kabul testleri) planlamak."
+   ]
+  }
+ }
+}

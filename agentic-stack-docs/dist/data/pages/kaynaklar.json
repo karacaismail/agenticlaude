@@ -1,0 +1,237 @@
+{
+  "title": "Kaynaklar ve yöntem",
+  "summary": "Bu referansın dayandığı panolar, web kaynakları ve sınırları.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Uygulama",
+      "title": "Kaynaklar ve yöntem",
+      "lede": "Panolar birincil kaynak. Araç durumları 23 Eylül 2026’da web kaynaklarından doğrulandı. Hiçbir araç kurulup ölçülmedi."
+    },
+    {
+      "type": "heading",
+      "text": "Yöntem"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "54 PDF’in metni PyMuPDF ve pypdf ile çıkarıldı. Figma dışa aktarımlarında font alt kümesi nedeniyle bazı harfler kayıp; okunamayan bölümler render görüntülerinden kontrol edildi.",
+        "İki büyük dosya (oracle-problem-v1 / v2, 78 ve 103 MB) yalnızca yüzeysel tarandı; oracle konusu diğer üç Oracle PDF’inden okundu.",
+        "Flowise’ın arşiv durumu GitHub API yanıtıyla doğrulandı (archived: true, son push 13.08.2026).",
+        "“Pano” etiketli ve web’de ayrıca doğrulanmayan araç açıklamaları panodaki ifadeyle verildi ve kartta belirtildi.",
+        "Orijinal proje dosyalarına dokunulmadı; SHA-256 karşılaştırmasıyla doğrulandı."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Panolar"
+    },
+    {
+      "type": "table",
+      "columns": [
+        {
+          "key": "file",
+          "label": "Dosya",
+          "kind": "code"
+        },
+        {
+          "key": "use",
+          "label": "Bu referansta kullanıldığı yer"
+        }
+      ],
+      "rows": [
+        {
+          "file": "TDD/tdd-mcp.pdf",
+          "use": "STARK başlangıç politikası: Temporal rolü, bütçeler, durum kodları"
+        },
+        {
+          "file": "TDD/tdd ismail 2.pdf",
+          "use": "STARK TDD çalışma akışı (A–I bölümleri)"
+        },
+        {
+          "file": "agentic-main-processes.pdf",
+          "use": "12.000 görev, deterministik kapılar, risk seviyelendirmesi, Max ×12"
+        },
+        {
+          "file": "agent_providers/15agetns-provider.pdf",
+          "use": "Kişisel ajan, framework ve platform tabloları"
+        },
+        {
+          "file": "agent_providers/2agent-provider.pdf",
+          "use": "Ajan → sağlayıcı haritası (LangGraph çekirdek önerisi)"
+        },
+        {
+          "file": "agent_providers/14agent-provider.pdf",
+          "use": "Model ve rol atamaları, sayaçlar, TDD sözleşmesi"
+        },
+        {
+          "file": "agents/full_Agentic.pdf",
+          "use": "Ana akış: /startask, plan, fix döngüsü, risk sınıfı"
+        },
+        {
+          "file": "Oracle-Problem/*",
+          "use": "Oracle problemi; bağımsız QA ve mutation testing gerekçesi"
+        }
+      ]
+    },
+    {
+      "type": "figures",
+      "items": [
+        {
+          "src": "evidence/pdf-30.png",
+          "caption": "agentic-main-processes.pdf: deterministik kapılar, Fix Agent 6 döngü, risk seviyelendirmesi, Max ×12"
+        },
+        {
+          "src": "evidence/pdf-07.png",
+          "caption": "TDD/tdd ismail 2.pdf: STARK TDD çalışma akışı"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Web kaynakları"
+    },
+    {
+      "type": "sources",
+      "items": [
+        {
+          "label": "Flowise: AgentflowV2",
+          "url": "https://docs.flowiseai.com/using-flowise/agentflowv2"
+        },
+        {
+          "label": "Dify: Agent node",
+          "url": "https://docs.dify.ai/en/cloud/use-dify/nodes/agent"
+        },
+        {
+          "label": "FlowiseAI/Flowise (arşiv)",
+          "url": "https://github.com/FlowiseAI/Flowise"
+        },
+        {
+          "label": "Temporal: OpenAI Agents SDK entegrasyonu",
+          "url": "https://temporal.io/blog/announcing-openai-agents-sdk-integration"
+        },
+        {
+          "label": "Temporal Docs: OpenAI Agents SDK",
+          "url": "https://docs.temporal.io/develop/python/integrations/openai-agents"
+        },
+        {
+          "label": "Pydantic AI: Durable execution",
+          "url": "https://pydantic.dev/docs/ai/integrations/durable_execution/overview/"
+        },
+        {
+          "label": "NousResearch/hermes-agent",
+          "url": "https://github.com/nousresearch/hermes-agent"
+        },
+        {
+          "label": "Hermes Agent dokümantasyonu",
+          "url": "https://hermes-agent.nousresearch.com/docs/"
+        },
+        {
+          "label": "letta-ai/letta",
+          "url": "https://github.com/letta-ai/letta"
+        },
+        {
+          "label": "Letta: Our next phase",
+          "url": "https://www.letta.com/blog/our-next-phase/"
+        },
+        {
+          "label": "goose: AAIF’e taşınma",
+          "url": "https://goose-docs.ai/blog/2026/04/07/goose-moves-to-aaif/"
+        },
+        {
+          "label": "goose (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Goose_(AI_agent)"
+        },
+        {
+          "label": "GooseAI (goose.ai)",
+          "url": "https://goose.ai/"
+        },
+        {
+          "label": "OpenHands Software Agent SDK",
+          "url": "https://github.com/OpenHands/software-agent-sdk"
+        },
+        {
+          "label": "OpenHands SDK makalesi (arXiv 2511.03690)",
+          "url": "https://arxiv.org/abs/2511.03690"
+        },
+        {
+          "label": "OpenClaw (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/OpenClaw"
+        },
+        {
+          "label": "OpenClaw güvenlik krizi (Reco)",
+          "url": "https://www.reco.ai/blog/openclaw-the-ai-agent-security-crisis-unfolding-right-now"
+        },
+        {
+          "label": "n8n: Human-in-the-loop for AI tool calls",
+          "url": "https://docs.n8n.io/advanced-ai/human-in-the-loop-tools/"
+        },
+        {
+          "label": "Langflow 1.7",
+          "url": "https://www.langflow.org/blog/langflow-1-7"
+        },
+        {
+          "label": "AutoGen durumu (Atlan)",
+          "url": "https://atlan.com/know/ai-agent/what-is-autogen/"
+        },
+        {
+          "label": "Gemini CLI → Antigravity CLI (Google)",
+          "url": "https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/"
+        },
+        {
+          "label": "Plane MCP Server",
+          "url": "https://github.com/makeplane/plane-mcp-server"
+        },
+        {
+          "label": "Durable execution karşılaştırması (Diagrid)",
+          "url": "https://www.diagrid.io/infrastructure/10-best-temporal-alternatives-2026"
+        },
+        {
+          "label": "n8n alternatifleri (Composio)",
+          "url": "https://composio.dev/content/top-n8n-alternatives"
+        },
+        {
+          "label": "Hermes Agent (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Hermes_Agent"
+        },
+        {
+          "label": "Hermes Kanban dokümanı",
+          "url": "https://hermes-agent.nousresearch.com/docs/user-guide/features/kanban"
+        },
+        {
+          "label": "Jev (TypeSafe AI)",
+          "url": "https://jevtypesafeai.com/"
+        },
+        {
+          "label": "Block Buzz (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Block_Buzz"
+        },
+        {
+          "label": "Moltbook (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Moltbook"
+        },
+        {
+          "label": "CrewAI dokümantasyonu",
+          "url": "https://docs.crewai.com/"
+        },
+        {
+          "label": "LangChain & LangGraph 1.0",
+          "url": "https://www.langchain.com/blog/langchain-langgraph-1dot0"
+        },
+        {
+          "label": "Dapr Agents 1.0 GA (CNCF)",
+          "url": "https://www.cncf.io/announcements/2026/03/23/general-availability-of-dapr-agents-delivers-production-reliability-for-enterprise-ai/"
+        },
+        {
+          "label": "Açık kaynak ajan orkestratörleri (Augment)",
+          "url": "https://www.augmentcode.com/tools/open-source-agent-orchestrators"
+        },
+        {
+          "label": "Spec odaklı geliştirme araçları (MarkTechPost)",
+          "url": "https://www.marktechpost.com/2026/05/08/9-best-ai-tools-for-spec-driven-development-in-2026-kiro-bmad-gsd-and-more-compare/"
+        }
+      ]
+    }
+  ]
+}

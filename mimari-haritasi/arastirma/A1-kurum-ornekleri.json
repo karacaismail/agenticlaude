@@ -1,0 +1,779 @@
+{
+  "meta": {
+    "gorev": "A1 - Kurumların ajan tabanlı kodlama sistemlerini gerçekte nasıl kurduğu",
+    "olusturma_tarihi": "2026-09-27",
+    "dogrulama_notlari": [
+      "openai.com (harness engineering) 403 verdi; içerik ayna kopyadan (jaytaylor.com) doğrulandı.",
+      "coinbase.com blogları 403 verdi; Mux rakamları coinbase.com alan adındaki arama özetinden alındı. 'Forge = merge PR'ların %5'i' ve '150 saat -> 15 saat' iddiaları doğrulanamadı.",
+      "Uber Minion ayrıntıları ücretli içerikte; doğrulanamadı. Uber kullanım yüzdeleri ikincil kaynaktan (Pragmatic Engineer).",
+      "LinkedIn kod review rakamları InfoQ üzerinden (ikincil); orijinal LinkedIn yazısı okunmadı.",
+      "Temporal'ın OpenAI Codex iddiası satıcı (Temporal) beyanı; OpenAI tarafından bağımsız doğrulanamadı.",
+      "OpenAI Codex GA yazısındaki 'haftada %70 daha fazla PR' ifadesi yalnızca arama özetinde görüldü; sayfa 403 verdiği için doğrulanamadı ve rapora alınmadı.",
+      "Factory'nin koordinatör + rol droid'leri mimarisi yalnızca ikincil kaynaklarda; doğrulanamadı."
+    ]
+  },
+  "ornekler": [
+    {
+      "kurum": "Stripe",
+      "sistem": "Minions (tek seferde uçtan uca kodlama ajanları)",
+      "tarih": "Part 1: 2026-02-09; Part 2: 2026-02-19",
+      "tetikleyici": "Slack mesajı; CLI ve web arayüzleri; iç uygulamalar (iç dokümantasyon platformu, feature flag platformu, iç ticket arayüzü).",
+      "orkestrasyon": "Hibrit 'blueprint' modeli: deterministik düğümler (örnek: 'Run configured linters', 'Push changes') ile ajan düğümleri ('Implement task', 'Fix CI failures') iç içe. Ajan, Block'un goose ajanının bir forku. Yazıda: 'a blueprint is like a collection of agent skills interwoven with deterministic code'.",
+      "sandbox": "İnsan mühendislerin kullandığı devbox'ların aynısı; önceden ısıtılmış havuz, ~10 saniyede hazır; üretim kaynaklarından ve internetten izole; gerçek kullanıcı verisine, üretim servislerine ve keyfi ağ çıkışına erişim yok. Bu izolasyon sayesinde insan izin kontrolü olmadan çalışıyor ('cattle, not pets').",
+      "baglam_kurallar": "Cursor/Claude Code gibi insan araçlarının okuduğu kural dosyalarının aynısı (Cursor formatı, alt dizin/dosya desenine göre kapsamlı). Merkezi MCP sunucusu Toolshed: Part 1'de '400'den fazla', Part 2'de 'yaklaşık 500' araç; minion'a bunların 'kasıtlı olarak küçük bir alt kümesi' veriliyor. Ek bağlam: iç dokümanlar, ticket detayları, build durumu, Sourcegraph kod arama.",
+      "dogrulama": "Üç katman: (1) 5 saniyenin altında çalışan yerel lint (sezgisel seçim), (2) 3 milyonu aşkın test arasından seçici CI çalıştırma ve otomatik autofix, (3) en fazla iki CI turu; ikinci push ve CI'dan sonra branch insan operatöre geri gönderiliyor.",
+      "insan_noktalari": "Görevi başlatan mühendis (operatör); PR başka bir Stripe mühendisi tarafından review ediliyor; operatör ek talimat verebilir veya manuel devralabilir; 2 CI turundan sonra zorunlu insan devri.",
+      "rol_yaklasimi": "Görev başına tek ajan + deterministik adımlar. Çoklu ajan rol oyunu yok.",
+      "olculen_sonuclar": "Part 1: haftada 1.000'den fazla merge edilen PR tamamen minion üretimi. Part 2: haftada 1.300'den fazla (insan review'lu, insan tarafından yazılmış kod içermeyen) PR.",
+      "dersler": [
+        "'If it's good for humans, it's good for LLMs, too': insan geliştirici verimliliğine yapılan yatırım ajanlara da geri dönüyor.",
+        "Geri bildirimi sola kaydır (shift feedback left): CI'dan önce hızlı yerel lint.",
+        "LLM'leri 'kapalı kutulara' (contained boxes) koymak güvenilirliği katlayarak artırıyor.",
+        "Araç setini küçük ve küratörlü tut; ~500 aracın tamamı ajana verilmiyor.",
+        "CI tur sayısını sınırla (2), sonra insana devret."
+      ],
+      "kaynaklar": [
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2"
+      ]
+    },
+    {
+      "kurum": "Spotify",
+      "sistem": "Honk / Fleet Management üzerinde arka plan kodlama ajanı",
+      "tarih": "Part 1: 2025-11-06; Part 2: 2025-11-24; Part 3: 2025-12-09; Part 4: 2026-04-22",
+      "tetikleyici": "Fleetshift konfigürasyonunda doğal dil prompt; Slack ve GitHub Enterprise (MCP ile) üzerinden etkileşimli bir ajan görevi toplayıp kodlama ajanına devrediyor.",
+      "orkestrasyon": "Fleet Management (fleetshift), binlerce repoya kaynak dönüşüm kampanyalarını yöneten deterministik çerçeve; ajan bu çerçevede dar bir 'kod değişikliği üret' adımı. Push, Slack etkileşimi ve prompt yazımı ajanın dışında yapılıyor.",
+      "sandbox": "Konteyner; 'limited permissions, few binaries, and virtually no access to surrounding systems'.",
+      "baglam_kurallar": "Prompt ilkeleri: ajana göre prompt yaz (Claude Code son durumu tarif eden promptları tercih ediyor), önkoşulları belirt (ne zaman işlem yapmamalı), somut kod örnekleri ver, son durumu mümkünse testlerle tanımla, bir seferde tek değişiklik yap. Araçlar: verify aracı, sınırlı git, allowlist'li bash; kod arama ve doküman araçları bilerek verilmemiş.",
+      "dogrulama": "Bileşene özel deterministik verifier'lar (örnek: pom.xml görülünce Maven verifier) MCP aracı olarak soyutlanmış; hata çıktısı regex ile kısaltılıyor, başarıda çok kısa mesaj. Tüm verifier'lar PR açılmadan önce çalışıyor, başarısızlık PR'ı engelliyor. LLM-as-judge diff'i orijinal prompta karşı değerlendiriyor: 'out of thousands of agent sessions, the judge vetoes about a quarter of them... the agent is able to course correct half the time'.",
+      "insan_noktalari": "PR review ve merge insanda. Kampanya takibi fleetshift arayüzünde.",
+      "rol_yaklasimi": "Part 1'deki ifade: 'multi-agent architecture for planning, generating, and reviewing pull requests' (bilgi toplayan etkileşimli ajan + kodlama ajanı + LLM hakem). Bunlar işlevsel aşamalar; şirket rolü simülasyonu değil. Yazma işi tek kodlama ajanında.",
+      "olculen_sonuclar": "1.500'den fazla merge edilmiş ajan PR'ı; bu göçlerde elle yazmaya göre %60-90 toplam zaman tasarrufu; 'Since mid-2024, around half of Spotify's pull requests have been automated by this system' (Fleet Management geneli; ajan öncesi deterministik dönüşümler dahil). Claude Code ~50 göçte kullanıldı ve arka plan ajan PR'larının çoğunu üretti. Part 4: 240 otomatik göç PR'ı, ~1.800 downstream pipeline, tahmini 10 mühendis-haftası tasarruf.",
+      "dersler": [
+        "Goose ve Aider ölçekte güvenilir biçimde merge edilebilir PR üretemedi; ev yapımı döngü (10 tur, 3 retry) çok dosyalı değişikliklerde turları tüketiyor, bağlam dolunca kayboluyordu.",
+        "En ciddi hata: CI'ı geçen ama işlevsel olarak yanlış PR; otomasyona güveni aşındırıyor.",
+        "Hakemin veto nedeni çoğunlukla ajanın prompt kapsamının dışına çıkması.",
+        "Birim testi olmayan repolarda doğrulama döngüsü kurulamıyor; Part 4'te Scio göçleri bu nedenle bırakıldı.",
+        "Çerçeve standardizasyonu ve tablo hâlinde ince taneli bağlam, ajan başarısı için kritik."
+      ],
+      "kaynaklar": [
+        "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1",
+        "https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2",
+        "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
+        "https://engineering.atspotify.com/2026/4/background-coding-agents-dataset-migrations-honk-part-4"
+      ]
+    },
+    {
+      "kurum": "Ramp",
+      "sistem": "Inspect (iç arka plan kodlama ajanı)",
+      "tarih": "Ramp yazısında tarih yok; InfoQ haberi 2026-01-23",
+      "tetikleyici": "Slack (repo otomatik sınıflandırma), web (masaüstü/mobil), React değişiklikleri için Chrome eklentisi, PR yorumları, ses arayüzü.",
+      "orkestrasyon": "OpenCode ajan çekirdeği (sunucu öncelikli, tipli SDK, plugin sistemi); oturum durumu Cloudflare Durable Objects (oturum başına SQLite) ve Cloudflare Agents SDK ile WebSocket akışı; takip promptları kuyruğa alınıp mevcut çalışma bitince işleniyor; ajan paralel araştırma veya birden çok PR için çocuk oturum açabiliyor.",
+      "sandbox": "Modal üzerinde VM ve dosya sistemi snapshot'ları; imaj her 30 dakikada yeniden oluşturuluyor (repo en fazla 30 dk eski); warm pool; kullanıcı yazarken sandbox ön-ısıtılıyor; senkron bitene kadar dosya okuma serbest, düzenleme engelli.",
+      "baglam_kurallar": "Sentry, Datadog, LaunchDarkly, Braintrust, GitHub, Slack ve Buildkite entegrasyonları; bir Ramp mühendisinin sahip olduğu araç ve becerilerin aynısı.",
+      "dogrulama": "Test çalıştırma, telemetri inceleme, frontend için Chromium ile görsel doğrulama (önce/sonra ekran görüntüsü), canlı önizleme.",
+      "insan_noktalari": "Önemli dönüm noktalarında Slack bildirimi; sandbox içinde barındırılan VS Code ile manuel düzenleme; multiplayer oturum (birden fazla kişi, prompt başına yazar atfı); PR'lar uygulama kimliğiyle değil kullanıcının GitHub kimliğiyle açılıyor (onay atlatmayı önlemek için).",
+      "rol_yaklasimi": "Oturum başına tek ajan; gerekirse çocuk oturumlar. Rol oyunu yok.",
+      "olculen_sonuclar": "'~30% of all pull requests merged to our frontend and backend repos are written by Inspect'; bu seviyeye 'only took a couple months'; kullanım zorunlu tutulmadan.",
+      "dersler": [
+        "'When background agents are fast, they're strictly better than local.'",
+        "Benimsemeyi zorunlu kılma; viral döngüler kur.",
+        "Kurulum işini çalışma zamanından build aşamasına taşı; sandbox'ı kullanıcı yazarken ısıt.",
+        "En önemli metrik merge edilen PR sayısı."
+      ],
+      "kaynaklar": [
+        "https://builders.ramp.com/post/why-we-built-our-background-agent",
+        "https://www.infoq.com/news/2026/01/ramp-coding-agent-platform/"
+      ]
+    },
+    {
+      "kurum": "Shopify",
+      "sistem": "Roast (yapılandırılmış AI iş akışı çerçevesi, açık kaynak)",
+      "tarih": "2025-06-18",
+      "tetikleyici": "CLI ile workflow.yml çalıştırma (yazıda başka tetikleyici belirtilmemiş).",
+      "orkestrasyon": "Konvansiyon odaklı iş akışı: YAML iş akışı + markdown prompt dosyaları; adım türleri: prompt dizinleri, $() ile shell komutları, satır içi promptlar, özel Ruby sınıfları, iç içe diziyle paralel adımlar. Deterministik kod ile AI adımları bilinçli olarak sıralı.",
+      "sandbox": "Yazıda belirtilmemiş.",
+      "baglam_kurallar": "Her adımın kendi promptu; adımlar arası konuşma geçmişi birikiyor (izlenebilirlik).",
+      "dogrulama": "Kullanım örnekleri: test dosyalarını notlama (test grading), Sorbet tip ekleme ('Boba'); doğrulama adımları iş akışında tanımlanıyor.",
+      "insan_noktalari": "Yazıda ayrıca tanımlanmamış.",
+      "rol_yaklasimi": "Tek ajanlı ayrık adımlar + deterministik adımlar; çoklu ajan işbirliği yok.",
+      "olculen_sonuclar": "Yazıda sayısal metrik verilmemiş.",
+      "dersler": [
+        "'Non-determinism is the enemy of reliability.'",
+        "Ajanlar, karmaşık promptlar ayrık adımlara bölününce çok daha iyi çalışıyor.",
+        "AI'ın milyonlarca satır kod içinde serbestçe dolaşmasına izin verme."
+      ],
+      "kaynaklar": [
+        "https://shopify.engineering/introducing-roast",
+        "https://github.com/Shopify/roast"
+      ]
+    },
+    {
+      "kurum": "OpenAI",
+      "sistem": "Harness engineering (Codex ile elle yazılmış 0 satır kodla iç ürün)",
+      "tarih": "2026-02-11 (Ryan Lopopolo)",
+      "tetikleyici": "Mühendislerin Codex'e verdiği görevler; ayrıca tekrarlayan arka plan Codex görevleri.",
+      "orkestrasyon": "Codex ajan döngüsü; review çoğunlukla ajan-ajan ('Ralph Wiggum Loop' referansı); düzenli arka plan Codex görevleri sapmaları tarayıp kalite notlarını güncelliyor ve hedefli refactoring PR'ları açıyor ('garbage collection' gibi).",
+      "sandbox": "Her git worktree için başlatılabilir uygulama örneği; worktree başına geçici gözlemlenebilirlik yığını.",
+      "baglam_kurallar": "Tek büyük AGENTS.md denemesi başarısız ('Context is a scarce resource', 'Too much guidance becomes non-guidance', 'It rots instantly', 'It's hard to verify'). Çözüm: ~100 satırlık AGENTS.md 'içindekiler' olarak; bilgi tabanı yapılandırılmış docs/ dizini ve 'system of record'.",
+      "dogrulama": "Özel linter'lar ve yapısal testler; her iş alanı sabit katmanlara bölünmüş, bağımlılık yönleri mekanik olarak zorlanmış. Chrome DevTools Protocol ajan çalışma zamanına bağlı; ajan logları LogQL, metrikleri PromQL ile sorgulayabiliyor.",
+      "insan_noktalari": "'Humans may review pull requests, but aren't required to'; insanlar ortamı, kısıtları ve geri bildirim döngülerini tasarlıyor. Minimal engelleyici merge kapıları; flake'ler takip çalıştırmalarıyla ele alınıyor.",
+      "rol_yaklasimi": "Görev başına tek kodlama ajanı + ajan reviewer + arka plan temizlik görevleri. Rol oyunu yok.",
+      "olculen_sonuclar": "Yaklaşık 5 ayda (ilk commit Ağustos 2025 sonu) ~1 milyon satır kod; ~1.500 PR açılıp merge edildi; 3 mühendisle başladı, 7'ye çıktı; mühendis başına günde ortalama 3,5 PR; elle yazmanın yaklaşık 1/10 süresi; tek Codex koşusu tek görevde 6 saati aşabiliyor.",
+      "dersler": [
+        "Elle kod yazmak, harness'ta eksik bir yetenek olduğunun işareti sayıldı.",
+        "Mimari kurallar dokümanla değil mekanik olarak (lint/yapısal test) zorlanmalı.",
+        "Her cuma (haftanın %20'si) 'AI slop' temizliği ölçeklenmedi; 'golden principles' + sürekli arka plan temizliği getirildi.",
+        "'Corrections are cheap, and waiting is expensive': bu felsefe yüksek throughput'lu, az engelli bir ortamda geçerli.",
+        "Açık soru: tamamen ajan üretimi bir sistemde mimari tutarlılığın yıllar içinde nasıl evrileceği."
+      ],
+      "kaynaklar": [
+        "https://openai.com/index/harness-engineering/ (doğrudan erişim 403 verdi; içerik ayna kopyadan doğrulandı: https://jaytaylor.com/notes/node/1770842156000.html)"
+      ]
+    },
+    {
+      "kurum": "OpenAI",
+      "sistem": "Symphony (issue tracker'dan otonom uygulama koşuları; açık spec + Elixir referans uygulama)",
+      "tarih": "Repo 2026-02-26'da oluşturuldu; SPEC 'Draft v1'",
+      "tetikleyici": "Issue tracker polling (referansta Linear, 5 sn aralık); aktif durumlar örnekte Todo, In Progress, Merging, Rework; isteğe bağlı required_labels filtresi; öncelik, oluşturma tarihi ve kimliğe göre sıralama.",
+      "orkestrasyon": "Tek otoriteli orkestratör durum makinesi (Unclaimed, Claimed, Running, RetryQueued, Released); her tick'te önce reconciliation, sonra dispatch; global ve duruma göre eşzamanlılık limiti (örnekte max_concurrent_agents: 10, max_turns: 20); hata sonrası backoff = min(10000*2^(deneme-1), üst sınır; varsayılan 300000 ms); stall timeout ile takılan ajanı sonlandırıp yeniden kuyruğa alma. Zamanlayıcı durumu bilinçli olarak bellekte; kalıcı DB yok, yeniden başlatmada tracker ve dosya sistemi üzerinden toparlanıyor (retry zamanlayıcıları kayboluyor).",
+      "sandbox": "Issue başına deterministik workspace dizini; ajan cwd'si zorunlu olarak bu dizin; Codex sandbox politikası (örnekte workspace-write). Spec güçlü sandbox'ı zorunlu kılmıyor; OS/konteyner/VM izolasyonu, ağ kısıtları ve araç daraltma öneriliyor. Tracker kimlik bilgileri ajan çocuk sürecine geçmiyor.",
+      "baglam_kurallar": "Repoda sürümlenen WORKFLOW.md (YAML front matter + prompt şablonu); issue alanları şablona enjekte ediliyor; tek 'workpad' yorumu ilerleme ve devir notları için; ticket'taki Validation/Test Plan bölümleri pazarlıksız kabul kriteri.",
+      "dogrulama": "Ajan 'proof of work' sunuyor: CI durumu, PR review geri bildirimi, karmaşıklık analizi, walkthrough videoları. Uygulama öncesi somut reprodüksiyon sinyali; Human Review'a geçmeden önce PR yorum taraması.",
+      "insan_noktalari": "Backlog'dan Todo'ya taşıma insanda; başarılı koşu 'Human Review' durumunda biter; insan onayı -> 'Merging' -> 'land' becerisi; değişiklik istenirse 'Rework'. Operatör ticket durumunu değiştirerek çalışan ajanı durdurabilir.",
+      "rol_yaklasimi": "Issue başına tek kodlama ajanı; roller yerine ticket durumları.",
+      "olculen_sonuclar": "Yayımlanmış ölçüm yok; README: 'low-key engineering preview for testing in trusted environments'.",
+      "dersler": [
+        "'Symphony works best in codebases that have adopted harness engineering.'",
+        "İş akışı politikası kodla birlikte repoda sürümlenmeli (WORKFLOW.md).",
+        "İzin verici bir kurulum veri sızıntısına, yıkıcı değişikliklere veya makinenin ele geçirilmesine yol açabilir; harness sertleştirme çekirdek güvenlik modelinin parçası olmalı."
+      ],
+      "kaynaklar": [
+        "https://github.com/openai/symphony",
+        "https://github.com/openai/symphony/blob/main/SPEC.md",
+        "https://github.com/openai/symphony/blob/main/elixir/WORKFLOW.md"
+      ]
+    },
+    {
+      "kurum": "GitHub",
+      "sistem": "Copilot coding agent (güncel adı: Copilot cloud agent)",
+      "tarih": "2025-05-19 (duyuru); güncel dokümantasyon 2026",
+      "tetikleyici": "Issue'yu Copilot'a atama; agents paneli; PR'da @copilot yorumu; otomasyon/zamanlama; Teams ve Slack; Azure Boards, Jira, Linear.",
+      "orkestrasyon": "GitHub Actions üzerinde ajan; değişiklikleri draft PR'a commit olarak itiyor; session log'ları.",
+      "sandbox": "GitHub Actions ile efemeral geliştirme ortamı; internet erişimi güvenilir listeyle sınırlı; ajan yalnızca kendi oluşturduğu branch'lere push edebilir. Limitler: tek repo, tek branch, tam olarak bir PR; en fazla 59 dakika çalışma.",
+      "baglam_kurallar": "Repo/organizasyon özel talimatları, MCP sunucuları, hooks, özel ajanlar; GitHub kod araması ile RAG.",
+      "dogrulama": "Ortamda test ve linter çalıştırma.",
+      "insan_noktalari": "Ajanın PR'ları CI/CD çalışmadan önce insan onayı gerektirir; ajanı çalıştıran geliştirici PR'ı onaylayamaz (görev ayrılığı).",
+      "rol_yaklasimi": "Tek ajan.",
+      "olculen_sonuclar": "GitHub resmî merge oranı yayımlamadı. Bağımsız çalışmalar: 33 bin ajan PR'ında Copilot merge oranı %43,04 (arXiv 2601.15195); AIDev'de Copilot PR'larının yarısı 12,8 dk'da, %75'i 18,5 dk altında tamamlanıyor (arXiv 2507.15003). GitHub (2026-05-07): Copilot code review 60 milyonu aşkın review yaptı; GitHub'daki her beş review'dan birinden fazlası bir ajan içeriyor.",
+      "dersler": [
+        "'Excels at low-to-medium complexity tasks in well-tested codebases.'",
+        "GitHub'ın ajan PR review rehberi: önce CI değişikliklerine bak (CI'ı zayıflatma), yeni yardımcı fonksiyon tekrarlarını ara, önceki davranışı doğrulayan test kanıtı iste; ajan PR'larında 'CI gaming', yeniden kullanım körlüğü, 'hallucinated correctness' kalıpları."
+      ],
+      "kaynaklar": [
+        "https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/",
+        "https://docs.github.com/copilot/concepts/agents/coding-agent/about-coding-agent",
+        "https://github.blog/ai-and-ml/generative-ai/agent-pull-requests-are-everywhere-heres-how-to-review-them/"
+      ]
+    },
+    {
+      "kurum": "Google",
+      "sistem": "Jules (asenkron kodlama ajanı)",
+      "tarih": "2025-05-20",
+      "tetikleyici": "Kullanıcının görev ataması (GitHub entegrasyonu).",
+      "orkestrasyon": "Plan -> onay -> uygulama -> diff -> PR.",
+      "sandbox": "Repo güvenli bir Google Cloud VM'ine klonlanıyor; VM içinde eşzamanlı görevler.",
+      "baglam_kurallar": "Tüm proje bağlamı VM'de; özel kodla eğitim yapılmadığı beyan ediliyor.",
+      "dogrulama": "Yazıda ayrıntılı doğrulama döngüsü tarif edilmemiş.",
+      "insan_noktalari": "Ajan değişiklikten önce plan ve gerekçeyi gösteriyor; kullanıcı planı önce, sırasında ve sonra değiştirebiliyor; diff incelemesi; PR.",
+      "rol_yaklasimi": "Tek ajan.",
+      "olculen_sonuclar": "Yazıda sayısal sonuç yok.",
+      "dersler": [
+        "Plan onayı erken insan noktası olarak konumlandırılmış."
+      ],
+      "kaynaklar": [
+        "https://blog.google/innovation-and-ai/models-and-research/google-labs/jules/"
+      ]
+    },
+    {
+      "kurum": "Google (iç)",
+      "sistem": "LLM destekli iç kod göçleri",
+      "tarih": "2025-01-12 (arXiv 2501.06972)",
+      "tetikleyici": "Merkezî göç programları (örnek: Google Ads, Joda Time -> java.time).",
+      "orkestrasyon": "Keşif (göç edilecek yerleri bulma) + LLM ile değişiklik üretimi + doğrulama pipeline'ı; değişiklikler parçalanıp ilgili kod sahiplerine review'a gönderiliyor.",
+      "sandbox": "Belirtilmemiş.",
+      "baglam_kurallar": "Belirtilmemiş.",
+      "dogrulama": "Build/test ve sonradan eklenen LLM tabanlı doğrulama (review yükünü azaltmak için).",
+      "insan_noktalari": "Kod sahiplerinin review'u; review hızı temel darboğaz.",
+      "rol_yaklasimi": "Deterministik pipeline içinde LLM adımları.",
+      "olculen_sonuclar": "Landed CL'lerdeki kod değişikliklerinin %80'i tamamen AI tarafından yazıldı; toplam göç süresi mühendis beyanına göre tahminen %50 azaldı; bir göçte AI üretimi kodun ~%87'si değiştirilmeden commit edildi.",
+      "dersler": [
+        "Başarı ölçütü: uçtan uca işte en az %50 zaman tasarrufu (yalnızca kod yeniden yazımı değil).",
+        "Review hızı darboğaz oldu; reviewer'ları boğmamak için haftalık üretilen değişiklik sayısı bilinçli olarak sınırlandı."
+      ],
+      "kaynaklar": [
+        "https://arxiv.org/abs/2501.06972"
+      ]
+    },
+    {
+      "kurum": "Cognition",
+      "sistem": "Devin (ve 'Managed Devins')",
+      "tarih": "Performans değerlendirmesi 2025-11-14; çoklu ajan yazısı 2026-04-22",
+      "tetikleyici": "Slack/Teams thread'inde etiketleme, web uygulaması, CLI, API; Linear/Jira ticket'ları görev türü olarak.",
+      "orkestrasyon": "Ajan döngüsü; Mart 2026'dan itibaren koordinatör Devin işi kapsamlayıp her parçayı kendi izole VM'inde çalışan yönetilen bir Devin'e atıyor ve sonuçları derliyor ('map-reduce-and-manage').",
+      "sandbox": "Görev başına izole VM.",
+      "baglam_kurallar": "Kod tabanı bağlamı için Deepwiki alt ajanı (Cognition 2026 yazısı).",
+      "dogrulama": "Ayrı review ajanı: PR başına ortalama 2 bug, bunların yaklaşık %58'i ciddi (mantık hatası, eksik kenar durumu, güvenlik açığı).",
+      "insan_noktalari": "Görev tanımı ve PR review; görev ortası gereksinim değişikliği zayıf nokta.",
+      "rol_yaklasimi": "Yazma tek iplikli; ek ajanlar 'eylem değil zekâ' katkısı sağlıyor (reviewer, danışılan büyük model, manager-child). Rol oyunu yok.",
+      "olculen_sonuclar": "PR merge oranı 18 ayda %34 -> %67; problem çözme 4x hızlı, kaynak kullanımı 2x verimli. Müşteri örnekleri: güvenlik açığı başına insan 30 dk, Devin 1,5 dk; ETL dosyası başına Devin 3-4 saat, insan 30-40 saat; Java sürüm göçü 14x hızlı; test kapsamı tipik olarak %50-60'tan %80-90'a.",
+      "dersler": [
+        "En iyi alan: 'clear, upfront requirements and verifiable outcomes that would take a junior engineer 4-8 hrs'.",
+        "Belirsiz projeyi kıdemli mühendis gibi uçtan uca yürütemiyor; görev ortası gereksinim değişikliğinde zorlanıyor.",
+        "2026 güncellemesi: 'multi-agent systems work best today when writes stay single-threaded and the additional agents contribute intelligence rather than actions'; yapısız swarm'lar 'mostly a distraction'."
+      ],
+      "kaynaklar": [
+        "https://cognition.com/blog/devin-annual-performance-review-2025",
+        "https://cognition.com/blog/multi-agents-working"
+      ]
+    },
+    {
+      "kurum": "Cognition",
+      "sistem": "Don't Build Multi-Agents (tasarım ilkeleri yazısı)",
+      "tarih": "2025-06-12 (Walden Yan)",
+      "tetikleyici": "Uygulanamaz (ilke yazısı).",
+      "orkestrasyon": "Öneri: 'a single-threaded linear agent'; çok uzun görevlerde geçmişi özetleyen ayrı bir sıkıştırma modeli.",
+      "sandbox": "Uygulanamaz.",
+      "baglam_kurallar": "İlke 1: 'Share context, and share full agent traces, not just individual messages'. İlke 2: 'Actions carry implicit decisions, and conflicting decisions carry bad results'.",
+      "dogrulama": "Uygulanamaz.",
+      "insan_noktalari": "Uygulanamaz.",
+      "rol_yaklasimi": "Paralel yazan alt ajanlara karşı. Flappy Bird örneği: alt ajanlardan biri Super Mario tarzı arka plan, diğeri oyun varlığına benzemeyen bir kuş üretiyor; birleştirici ajan bunları uzlaştıramıyor. Claude Code alt ajanları genelde yalnızca soru cevaplıyor, kod yazmıyor ve paralel iş yapmıyor.",
+      "olculen_sonuclar": "Sayısal ölçüm yok.",
+      "dersler": [
+        "Karar veren ve uygulayan modeli ayırmak (eski 'edit apply' modelleri) hatalıydı; bugün tek modelde birleştiriliyor.",
+        "2025 itibarıyla çoklu ajan işbirliği 'only results in fragile systems'; 2026'da yalnızca tek yazıcılı dar bir sınıf çalışıyor."
+      ],
+      "kaynaklar": [
+        "https://cognition.com/blog/dont-build-multi-agents"
+      ]
+    },
+    {
+      "kurum": "Factory.ai",
+      "sistem": "Droids",
+      "tarih": "Code Droid teknik raporu 2024-06-18; GA 2025-05-28",
+      "tetikleyici": "GitHub/GitLab, Jira, Slack, PagerDuty entegrasyonları; MCP; yerel ve uzak çalışma.",
+      "orkestrasyon": "Code Droid raporu: görevi alt görevlere ayırma, farklı alt görevler için farklı LLM'ler, öz eleştiri; tek ajan sistemi içinde çoklu model.",
+      "sandbox": "'strictly defined, sandboxed environment that isolates its operational scope' (Code Droid raporu).",
+      "baglam_kurallar": "HyperCode/ByteRank: kod tabanının çok çözünürlüklü (graf + gizli uzay benzerliği) temsili; organizasyon ve kullanıcı seviyesinde hafıza.",
+      "dogrulama": "Linter, statik analiz, debugger erişimi.",
+      "insan_noktalari": "Etkileşimli pair-programming veya 'fire-and-forget' uzun görev.",
+      "rol_yaklasimi": "Üründe göreve özel Droid'ler (uçtan uca kodlama, on-call olay çözme, kod tabanı araştırması, Linear yönetimi, ürün spec'i, PR review). Bir koordinatör ajanın bunları rol takımı olarak yönettiği iddiası yalnızca ikincil kaynaklarda var; birincil kaynakta doğrulanamadı.",
+      "olculen_sonuclar": "Code Droid: SWE-bench Full %19,27; SWE-bench Lite %31,67 (pass@1), %37,67 (pass@2), %42,67 (pass@6); patch başına ortalama 5-20 dk (uç durumda 136 dk); patch başına 13 milyona kadar token (ortalama 2 milyonun altında).",
+      "dersler": [
+        "Başarısızlıkların ~%8'inde hedef dosya analize hiç dahil edilmemiş, bir %8'inde ilk 5'e alınmamış: lokalizasyon (doğru dosyayı bulma) ana darboğaz."
+      ],
+      "kaynaklar": [
+        "https://factory.com/news/code-droid-technical-report",
+        "https://factory.com/news/factory-is-ga"
+      ]
+    },
+    {
+      "kurum": "Uber",
+      "sistem": "Minion (arka plan ajan platformu), uReview, Autocover, Shepherd",
+      "tarih": "uReview 2025-08-12; Pragmatic Engineer yazısı 2026-03-10",
+      "tetikleyici": "Minion ayrıntıları (tetikleyici, altyapı) birincil kaynakta doğrulanamadı (Pragmatic Engineer yazısının ilgili kısmı ücretli).",
+      "orkestrasyon": "uReview: 4 aşamalı pipeline; ön işleme, 3 bağımsız asistanla (standart, best-practices, AppSec) yorum üretimi, güven puanlama/benzerlik birleştirme/kategori bastırma ile filtreleme, geri bildirim toplama.",
+      "sandbox": "Doğrulanamadı.",
+      "baglam_kurallar": "uReview: Uber'e özel kodlama konvansiyonları ayrı asistanda; uygun olmayan dosyalar (config, üretilmiş kod) filtreleniyor.",
+      "dogrulama": "uReview geliştirici 'Useful/Not Useful' geri bildirimi (Kafka -> Hive).",
+      "insan_noktalari": "Kod review'u insanda; uReview yorum öneriyor.",
+      "rol_yaklasimi": "Review'da uzmanlaşmış bağımsız asistanlar + deterministik filtreleme (yazıcı ajan değil).",
+      "olculen_sonuclar": "uReview: haftalık ~65.000 diff'in %90'ından fazlası; yorumların %75'i faydalı; yorumların %65'inden fazlası ele alındı; haftada ~1.500 saat tasarruf; medyan 4 dk. Pragmatic Engineer'ın aktardığı Uber sunumu (ikincil): geliştiricilerin %84'ü ajan kodlama araçları kullanıyor, %92'si aylık ajan kullanıyor, PR'ların %11'i ajanlarca açılıyor, Autocover ayda 5.000+ birim test üretiyor, AI maliyetleri 2024'ten beri 6x.",
+      "dersler": [
+        "Precision > volume: düşük kaliteli öneriler güveni hızla yitiriyor; false positive'ler mühendislerin aracı görmezden gelmesine yol açıyor.",
+        "'Prompt design helped, but system architecture, and post-processing were even more critical.'",
+        "Stil/okunabilirlik yorumları sürekli düşük puan aldı.",
+        "Pragmatic Engineer (ikincil): tepeden zorunluluklar, mühendislerin kazanımlarını birbirleriyle paylaşmasından daha az etkili."
+      ],
+      "kaynaklar": [
+        "https://www.uber.com/us/en/blog/ureview/",
+        "https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development (ikincil kaynak)"
+      ]
+    },
+    {
+      "kurum": "Coinbase",
+      "sistem": "Forge (eski adları Claudebot/Cloudbot) ve Mux",
+      "tarih": "Linear vaka çalışması (Ocak 2026 deneyi); Mux yazısı 2026 (Nisan 2026 verisi)",
+      "tetikleyici": "Slack, GitHub veya Linear. Bir kanalda bug bildirildiğinde bir iş akışı mesajı Linear issue'ya çeviriyor (etiketli, boyutlandırılmış, atanmış); Forge fix taslağı yazıp PR açıyor ve review için Slack'e geri gönderiyor.",
+      "orkestrasyon": "Forge, Linear Agent SDK üzerine kurulu. Mux: bir mühendisin birden fazla ajanı paralel yönetmesini sağlayan iç çoklu ajan orkestrasyon katmanı (her ajan ayrı görev: API, entegrasyon testi, bug fix, refactor).",
+      "sandbox": "Birincil kaynakta doğrulanamadı.",
+      "baglam_kurallar": "Linear, 'ajanların işe başlamadan önce yön bulduğu yer' ve tek doğruluk kaynağı olarak konumlanmış.",
+      "dogrulama": "Birincil kaynakta ayrıntılı doğrulama döngüsü doğrulanamadı.",
+      "insan_noktalari": "Slack'te PR review; mühendis gece açılan PR'ları sabah inceliyor.",
+      "rol_yaklasimi": "Görev başına tek ajan; paralellik görevler arasında (Mux), görev içinde rol oyunu değil.",
+      "olculen_sonuclar": "Linear vaka çalışması: ilk Speedrun'da tek oturumda 80 PR; bir oturumda 15 dakikada 500+ PR; GitHub'ı 'four or five times' düşürdüler; 'autonomous operation time' temel metrik. Mux (coinbase.com yazısı; sayfa doğrudan okunamadı, rakamlar aynı alan adındaki arama özetinden): Nisan 2026'da bir ayda 600+ kullanıcı (335 aktif, 197 power user), 461 repoda 5.068 merge PR, power user'lar baz çizgiye göre 3,5x PR merge ediyor. 'Merge edilen PR'ların %5'i Forge' ve 'PR döngü süresi 150 saatten 15 saate' iddiaları yalnızca ikincil kaynakta; doğrulanamadı.",
+      "dersler": [
+        "Ajanlar tek bir doğruluk kaynağına ihtiyaç duyuyor (Linear).",
+        "Üretim hızlanınca darboğaz review, CI ve build altyapısına kayıyor (GitHub kesintileri).",
+        "Mux kullanıcıları zaten yüksek verimli/AI'a hevesli kişilere kayıyor olabilir; 3,5x nedensellik kanıtı değil (ikincil analiz uyarısı)."
+      ],
+      "kaynaklar": [
+        "https://linear.app/customers/coinbase",
+        "https://www.coinbase.com/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it (403; arama özeti üzerinden)",
+        "https://www.langchain.com/blog/open-swe-an-open-source-framework-for-internal-coding-agents"
+      ]
+    },
+    {
+      "kurum": "Airbnb",
+      "sistem": "LLM ile büyük ölçekli test göçü (Enzyme -> React Testing Library)",
+      "tarih": "2025 (InfoQ haberi 2025-03)",
+      "tetikleyici": "Merkezî göç projesi (dosya başına).",
+      "orkestrasyon": "Dosya başına deterministik durum makinesi pipeline'ı: Enzyme refactor -> Jest düzeltme -> lint düzeltme -> TypeScript (tsc); dosya bir sonraki duruma ancak önceki durumun doğrulaması geçince ilerliyor. Ajan değil.",
+      "sandbox": "Belirtilmemiş.",
+      "baglam_kurallar": "Promptlar 40.000-100.000 token; 50'ye kadar ilgili dosya, few-shot örnekler, bileşen kaynağı, takıma özel test kalıpları.",
+      "dogrulama": "Her adımda doğrulama; başarısızlıkta hata çıktısı + dosyanın son hâli ile dinamik prompt; uzun kuyruktaki dosyalarda 50-100 retry. 'Sample, tune, sweep' döngüsü.",
+      "insan_noktalari": "Kalan %3 manuel tamamlandı; prompt ayarlama döngüsü insanda.",
+      "rol_yaklasimi": "Deterministik pipeline + LLM adımları.",
+      "olculen_sonuclar": "~3.500 test dosyası; elle tahmin 1,5 yıl, gerçekleşen 6 hafta; hedef dosyaların %75'i 4 saatte; 4 günlük iyileştirmeyle %97; kalan %3 bir haftada manuel.",
+      "dersler": [
+        "Mükemmel prompt yerine kaba kuvvet retry daha etkili oldu.",
+        "Bağlamı genişletmek (ilgili dosyalar, örnekler) başarıyı belirgin artırdı."
+      ],
+      "kaynaklar": [
+        "https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/"
+      ]
+    },
+    {
+      "kurum": "LinkedIn",
+      "sistem": "CAPT (Contextual Agent Playbooks and Tools) ve çoklu ajan kod review platformu",
+      "tarih": "CAPT 2026-01-27; kod review (InfoQ haberi) 2026-08-22",
+      "tetikleyici": "Etkileşimli kodlama oturumları; arka plan ajanları için yeniden kullanım 'gelecek fırsat' olarak belirtilmiş.",
+      "orkestrasyon": "MCP üzerine kurulu; playbook'lar Jinja2 şablonlarıyla çok adımlı süreçleri yeniden kullanılabilir araç olarak kodluyor; yüzlerce araç meta araçlarla (get_tools_for_tags, get_tool_info, exec_tool) sunuluyor; merkezî + yerel (takım/servis) iki katmanlı playbook.",
+      "sandbox": "Belirtilmemiş.",
+      "baglam_kurallar": "Kod arama, veri platformları, gözlemlenebilirlik, CI/CD ve işbirliği araçlarına entegrasyon.",
+      "dogrulama": "Kod review platformu: farklı modeller/akıl yürütmelerle birden fazla bağımsız AI reviewer; birden çok ajanın aynı sorunu bulması güçlü kanıt sayılıyor; tekil bulgular ayrıca doğrulanıyor; kozmetik öneriler filtreleniyor; her öneri merge edilen kodla karşılaştırılarak otomatik değerlendiriliyor.",
+      "insan_noktalari": "Mühendisler önerileri kabul/ret ediyor.",
+      "rol_yaklasimi": "Review'da çoklu bağımsız reviewer (yazıcı değil); CAPT'ta tek ajan + playbook.",
+      "olculen_sonuclar": "CAPT: 1.000'den fazla mühendis kullanıyor; 500'den fazla playbook; birçok alanda triaj ~%70 azaldı; yaygın veri analizi iş akışları ~3x hızlı. Kod review (InfoQ, ikincil): 1.727 PR'da 5.230 yorum örneklendi, %90,1'i yüksek güvenle değerlendirilebildi, %63,9'u kabul edildi.",
+      "dersler": [
+        "'Context is more valuable than raw intelligence.'",
+        "Açık standartlar (MCP) ve bileşenleştirilebilirlik çarpan etkisi yapıyor.",
+        "Playbook yazımını uzmanlara dağıtmak (desantralizasyon) ölçek sağlıyor."
+      ],
+      "kaynaklar": [
+        "https://www.linkedin.com/blog/engineering/ai/contextual-agent-playbooks-and-tools-how-linkedin-gave-ai-coding-agents-organizational-context",
+        "https://www.infoq.com/news/2026/08/linkedin-ai-code-review/ (ikincil; LinkedIn'in orijinal yazısı okunmadı)"
+      ]
+    },
+    {
+      "kurum": "Atlassian",
+      "sistem": "HULA (Human-in-the-loop LLM agents) ve Rovo Dev in Jira",
+      "tarih": "HULA arXiv 2024-11-19, blog 2025-04-23 (ICSE SEIP 2025); Rovo Dev blog 2026-03-29",
+      "tetikleyici": "Jira iş öğesi seçimi / 'Generate code with Rovo Dev' paneli.",
+      "orkestrasyon": "HULA 4 aşama: bağlam belirleme -> kodlama planı üretimi (insan inceler) -> kod üretimi (derleyici/linter geri bildirimiyle; insan inceler) -> Bitbucket PR. Rovo Dev: uzak sandbox'ta çalışma, uygulama içi ve Slack bildirimi, Bitbucket'ta diff incelemesi.",
+      "sandbox": "Rovo Dev: uzak sandbox.",
+      "baglam_kurallar": "Jira iş öğesi + mühendisin ek bağlamı.",
+      "dogrulama": "Derleyici ve linter geri bildirimi; insan review.",
+      "insan_noktalari": "Plan onayı ve kod onayı (her aşamada reddet/değiştir/yeniden üret); PR review.",
+      "rol_yaklasimi": "HULA: AI planlayıcı + AI kodlayıcı + insan ajan (işlevsel aşamalar).",
+      "olculen_sonuclar": "HULA: 2 ayda 663 iş öğesi; iş öğelerinin %79'u için plan üretildi, planların %82'si onaylandı; onaylı planların %87'si için kod üretildi, %25'i PR aşamasına ulaştı; HULA PR'larının %59'u merge edildi; SWE-bench'te %31 birim testi geçti; 109 mühendislik ankette yalnızca %33 kodun iş öğesini çözdüğünü kabul etti. Rovo Dev (tek mühendis deneyimi): 2 haftada 120+ merge PR.",
+      "dersler": [
+        "Basit/net görevlerde plan ve kod başlatmada zaman kazandırıyor; kod kalitesi bazı durumlarda endişe.",
+        "Rovo Dev'de alt görev planlaması 'sometimes a bit of a hit and miss'; karmaşık refactor'lar tek seferde değil yinelemeli rehberlikle."
+      ],
+      "kaynaklar": [
+        "https://arxiv.org/abs/2411.12924",
+        "https://www.atlassian.com/blog/how-we-build/hula-blog-autodev-paper-human-in-the-loop-software-development-agents",
+        "https://www.atlassian.com/blog/development/120-prs-two-weeks-rovo-dev-in-jira"
+      ]
+    },
+    {
+      "kurum": "Meta",
+      "sistem": "TestGen-LLM ve ACH (mutasyon güdümlü test üretimi): oracle problemine endüstriyel yanıt",
+      "tarih": "TestGen-LLM 2024-02-14; ACH 2025-01-22",
+      "tetikleyici": "Test-a-thon'lar; sınıf/platform bazlı çalıştırma.",
+      "orkestrasyon": "LLM üretimi + deterministik filtre zinciri (build ediyor mu, güvenilir geçiyor mu, kapsamı artırıyor mu). ACH: önce belirli bir endişeye özel yakalanmamış mutant (simüle hata) üret, sonra onu öldüren testi üret; LLM tabanlı eşdeğer mutant tespit ajanı.",
+      "sandbox": "Belirtilmemiş.",
+      "baglam_kurallar": "Mevcut insan yazımı testler ve hedef sınıf.",
+      "dogrulama": "Ölçülebilir iyileşme garantisi veren filtreler ('assured' LLM tabanlı yazılım mühendisliği); mutant öldürme, testin değerinin kanıtı.",
+      "insan_noktalari": "Mühendis kabul/ret.",
+      "rol_yaklasimi": "Deterministik pipeline + LLM adımları.",
+      "olculen_sonuclar": "TestGen-LLM (Instagram Reels/Stories): testlerin %75'i build etti, %57'si güvenilir geçti, %25'i kapsamı artırdı; uygulandığı sınıfların %11,5'ini iyileştirdi; önerilerin %73'ü üretim için kabul edildi. ACH: 10.795 Android Kotlin sınıfı, 9.095 mutant, 571 test; mühendisler testlerin %73'ünü kabul etti; eşdeğer mutant tespiti precision 0,79 / recall 0,47 (ön işlemeyle 0,95 / 0,96).",
+      "dersler": [
+        "LLM çıktısını ölçülebilir iyileşmeyi kanıtlayan filtrelerden geçirmek halüsinasyon sorununu büyük ölçüde ortadan kaldırıyor.",
+        "Mutasyonla hedeflenen testler, 'test geçti' yerine 'test gerçek bir hatayı yakalıyor' kanıtı sağlıyor."
+      ],
+      "kaynaklar": [
+        "https://arxiv.org/abs/2402.09171",
+        "https://arxiv.org/abs/2501.12862"
+      ]
+    },
+    {
+      "kurum": "Anthropic",
+      "sistem": "Building effective agents (ilke yazısı)",
+      "tarih": "2024-12-19",
+      "tetikleyici": "Uygulanamaz.",
+      "orkestrasyon": "Workflow: 'LLMs and tools are orchestrated through predefined code paths'; Agent: 'LLMs dynamically direct their own processes and tool usage'. Desenler: prompt chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer. Öneri: en basitten başla, karmaşıklığı yalnızca gerektiğinde artır.",
+      "sandbox": "Uygulanamaz.",
+      "baglam_kurallar": "Ajan-bilgisayar arayüzü (ACI): araç dokümantasyonu ve testine yatırım; SWE-bench çalışmasında 'spent more time optimizing our tools than the overall prompt'.",
+      "dogrulama": "Kodlama ajanında otomatik testler; 'human review remains crucial' (sistem gereksinimlerine uyum için).",
+      "insan_noktalari": "İnsan review.",
+      "rol_yaklasimi": "Önce workflow/tek ajan; framework soyutlamalarının prompt ve cevapları gizleyip hata ayıklamayı zorlaştırdığı uyarısı.",
+      "olculen_sonuclar": "Sayısal sonuç yok.",
+      "dersler": [
+        "Basitlik, şeffaflık (açık planlama adımları) ve iyi tasarlanmış araçlar."
+      ],
+      "kaynaklar": [
+        "https://www.anthropic.com/engineering/building-effective-agents"
+      ]
+    },
+    {
+      "kurum": "Anthropic",
+      "sistem": "Effective harnesses for long-running agents",
+      "tarih": "2025-11-26 (Justin Young)",
+      "tetikleyici": "Uzun görev (örnek: 200'den fazla özellikli bir web uygulaması).",
+      "orkestrasyon": "İki parçalı harness: ilk çalışmada 'initializer agent' ortamı kuruyor (init.sh, claude-progress.txt, ilk git commit, özellik listesi); sonraki her oturumda 'coding agent' artımlı ilerleme yapıp yapılandırılmış güncelleme bırakıyor.",
+      "sandbox": "Belirtilmemiş.",
+      "baglam_kurallar": "Özellik listesi JSON (her özellikte 'passes' alanı): 'the model is less likely to inappropriately change or overwrite JSON files compared to Markdown files'; oturum başında git log ve ilerleme dosyasını oku, en öncelikli bitmemiş özelliği seç.",
+      "dogrulama": "Puppeteer MCP ile tarayıcı otomasyonu; 'do all testing as a human user would' (uçtan uca). Talimat: 'It is unacceptable to remove or edit tests'.",
+      "insan_noktalari": "Belirtilmemiş (otonom çalışma).",
+      "rol_yaklasimi": "Aynı model iki farklı rol promptuyla (initializer/coding) ardışık; özel test/QA ajanının daha iyi olup olmayacağı açık soru olarak bırakılmış.",
+      "olculen_sonuclar": "Sayısal sonuç yok.",
+      "dersler": [
+        "Gözlenen hatalar: uygulamayı tek seferde bitirmeye çalışma, ilerlemeyi görüp işi erken 'bitti' ilan etme, yarım özellikleri kırık bırakma, test etmeden 'tamamlandı' işaretleme.",
+        "Sınır: Puppeteer MCP tarayıcıya özgü alert modallarını göremiyor."
+      ],
+      "kaynaklar": [
+        "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents"
+      ]
+    },
+    {
+      "kurum": "Anthropic",
+      "sistem": "Multi-agent research system (Claude Research)",
+      "tarih": "2025-06-13",
+      "tetikleyici": "Kullanıcı araştırma sorgusu.",
+      "orkestrasyon": "Orchestrator-worker: lider ajan (Claude Opus 4) paralel alt ajanları (Claude Sonnet 4) yönetiyor.",
+      "sandbox": "Uygulanamaz.",
+      "baglam_kurallar": "Delegasyonda ayrıntılı görev tanımları; sorgu karmaşıklığına göre efor ölçekleme.",
+      "dogrulama": "Küçük test setleriyle (~20 sorgu) başlama; rubrikli LLM-as-judge; insan testi kenar durumlarını yakalıyor.",
+      "insan_noktalari": "Değerlendirme/test.",
+      "rol_yaklasimi": "Çoklu ajan; ancak paralelleştirilebilir araştırma için. Kodlama için uygun olmadığı açıkça belirtilmiş.",
+      "olculen_sonuclar": "Dahili araştırma değerlendirmesinde tek ajanlı Opus 4'ten %90,2 daha iyi; ajanlar sohbete göre ~4x, çoklu ajan sistemleri ~15x token kullanıyor; performans varyansının %95'ini üç faktör, %80'ini tek başına token kullanımı açıklıyor.",
+      "dersler": [
+        "'Most coding tasks involve fewer truly parallelizable tasks than research'; tüm ajanların aynı bağlamı paylaşması gereken veya çok bağımlılıklı alanlar çoklu ajana uygun değil.",
+        "'Agents are stateful and errors compound': hata anında kaldığı yerden devam, rainbow deployment ile çalışan ajanları bozmadan güncelleme; senkron yürütme darboğaz."
+      ],
+      "kaynaklar": [
+        "https://www.anthropic.com/engineering/multi-agent-research-system"
+      ]
+    }
+  ],
+  "akademik_kanit": [
+    {
+      "bulgu": "MAST: 7 popüler çoklu ajan (MAS) çerçevesinden 1.600'den fazla iz; 14 hata modu, 3 kategori (sistem tasarımı/spesifikasyon, ajanlar arası uyumsuzluk, görev doğrulama); kappa = 0,88. Yedi açık kaynak MAS'ta %41 ile %86,7 arasında başarısızlık oranı; MAS kazanımları tek ajanlı çerçevelere veya best-of-N örneklemeye göre çoğu zaman minimal. Sık hata modları: adım tekrarı (%15,7), görevin bittiğini fark edememe (%12,4), görev tanımına uymama (%11,8).",
+      "kaynak": "https://arxiv.org/abs/2503.13657",
+      "tarih": "2025-03-17"
+    },
+    {
+      "bulgu": "MAST müdahaleleri ChatDev'de: rol spesifikasyonlarını düzeltmek (CEO'nun son sözü) +%9,4, üst düzey hedef doğrulama adımı eklemek ProgramDev'de +%15,6 görev başarısı. Doğrulayıcı olması yetmiyor: ChatDev'in ürettiği satranç programı derleme gibi yüzeysel kontrolleri geçip oyun kurallarına göre doğrulanmadığı için çalışma zamanında hatalı. MetaGPT, ChatDev'e göre FC1 ve FC2'de %60-68 daha az hata yapıyor ama 1,56x daha fazla doğrulama (FC3) hatası üretiyor.",
+      "kaynak": "https://arxiv.org/abs/2503.13657",
+      "tarih": "2025-03-17"
+    },
+    {
+      "bulgu": "MetaGPT (SOP'lerle rol tabanlı 'montaj hattı') HumanEval'de %85,9, MBPP'de %87,7 Pass@1 raporluyor; bunlar fonksiyon düzeyinde izole kıyaslar ve gerçek repo/PR başarımını ölçmüyor. ChatDev makalesi özetinde gerçek dünya kod tabanı başarımı raporlamıyor.",
+      "kaynak": "https://arxiv.org/abs/2308.00352 ; https://arxiv.org/abs/2307.07924",
+      "tarih": "2023-08-01 ; 2023-07-16"
+    },
+    {
+      "bulgu": "Towards a Science of Scaling Agent Systems: 6 benchmark, 5 mimari (tek ajan + 4 çoklu ajan), 3 LLM ailesi, 260 konfigürasyon. Tek ajana göre göreli değişim, ayrıştırılabilir finansal akıl yürütmede +%80,8 ile sıralı planlamada -%70,0 arasında; tek ajan taban çizgisi belli bir seviyeyi aşınca koordinasyonun getirisi azalıyor; araç yoğun görevler çoklu ajan ek yükü doğuruyor; merkezî doğrulaması olmayan mimariler hatayı daha çok yayıyor.",
+      "kaynak": "https://arxiv.org/abs/2512.08296",
+      "tarih": "2025-12-09"
+    },
+    {
+      "bulgu": "Single-agent or Multi-agent? Why Not Both: LLM yetenekleri arttıkça MAS'ın tek ajana üstünlüğü azalıyor; MAS ile tek ajan arasında istek kademelendirme (cascade) +%1,1-12 doğruluk ve %20'ye kadar maliyet düşüşü sağlıyor.",
+      "kaynak": "https://arxiv.org/abs/2505.18286",
+      "tarih": "2025-05-23"
+    },
+    {
+      "bulgu": "Güçlü promptlu tek ajan LLM, akıl yürütme görevlerinde en iyi çoklu ajan tartışma yaklaşımıyla neredeyse aynı performansa ulaşıyor; çoklu ajan tartışması yalnızca promptta örnek (demonstration) yokken daha iyi.",
+      "kaynak": "https://arxiv.org/abs/2402.18272",
+      "tarih": "2024-02-28"
+    },
+    {
+      "bulgu": "Agentless: ajan döngüsü olmadan 3 fazlı basit pipeline (lokalizasyon, onarım, patch doğrulama) SWE-bench Lite'ta %32,00 (96 düzeltme) ve 0,70 $ maliyetle o dönemki tüm açık kaynak yazılım ajanlarından yüksek. Ayrıca SWE-bench Lite'ta birebir çözüm içeren veya yetersiz/yanıltıcı issue tanımlı problemler bulundu.",
+      "kaynak": "https://arxiv.org/abs/2407.01489",
+      "tarih": "2024-07-01"
+    },
+    {
+      "bulgu": "mini-swe-agent: ~100 satırlık ajan sınıfıyla (yalnızca bash) SWE-bench Verified'da %74'ün üzerinde; SWE-bench ekibinin kendi README beyanı. Basit tek ajan döngüsünün güçlü modellerle rekabetçi olduğunu gösteriyor.",
+      "kaynak": "https://github.com/SWE-agent/mini-swe-agent",
+      "tarih": "2026-09 erişimi (README)"
+    },
+    {
+      "bulgu": "SWE-Bench Pro: 41 repodan 1.865 uzun ufuklu problem (saatler-günler sürebilen, çok dosyalı). SWE-Agent ile public sette en iyi %43,6 (Claude Sonnet 4.5); ticari (özel startup repoları) sette en iyi %17,8 (Claude Opus 4.1). Yalnızca problem tanımı verildiğinde (gereksinim ve arayüz olmadan) GPT-5 (high) %25,9'dan %8,40'a, Opus 4.1 %22,7'den %8,20'ye düşüyor. Hata modu analizinde Opus 4.1 başarısızlıklarının %35,9'u yanlış çözüm, %24,2'si sözdizimi hatası; diğer modellerde araç kullanımı, bağlam taşması, döngüde takılma, sonsuz dosya okuma.",
+      "kaynak": "https://arxiv.org/abs/2509.16941",
+      "tarih": "2025-09-21"
+    },
+    {
+      "bulgu": "SWE-Bench Pro Verified: SWE-Bench Pro'da altın çözüm sızıntısı üzerinden ödül hilesi (reward hacking) ve görev kalitesi sorunları bulundu; düzeltilmiş sette bazı modeller önceki değerlendirmeden belirgin şekilde daha kötü.",
+      "kaynak": "https://arxiv.org/abs/2609.08149",
+      "tarih": "2026-09-08"
+    },
+    {
+      "bulgu": "AIDev: 5 ajanın (Codex, Devin, Copilot, Cursor, Claude Code) 61.000 repoda 456.000'den fazla PR'ı. Ajan PR'ları insanlarınkinden daha az kabul ediliyor, özellikle feature, bug fix ve performans görevlerinde; ajan PR'ları yapısal olarak daha basit. Copilot PR'larının yarısı 12,8 dk'da, %75'i 18,5 dk altında tamamlanıyor; kuyruk 60 dk'ya uzanıyor.",
+      "kaynak": "https://arxiv.org/abs/2507.15003",
+      "tarih": "2025-07-20"
+    },
+    {
+      "bulgu": "Where Do AI Coding Agents Fail: 33 bin ajan PR'ı; toplam %71,48 merge. Codex %82,59, Cursor %65,22, Claude Code %59,04, Devin %53,76, Copilot %43,04. Doküman, CI ve build görevleri en yüksek; performans ve bug fix en düşük merge başarısı. Merge edilmeyen PR'lar daha büyük, daha çok dosyaya dokunuyor ve çoğu zaman CI'ı geçmiyor. Ret nedenleri: reviewer ilgisizliği, mükerrer PR, istenmeyen özellik, ajan uyumsuzluğu.",
+      "kaynak": "https://arxiv.org/abs/2601.15195",
+      "tarih": "2026-01-21"
+    },
+    {
+      "bulgu": "Why Are Agentic PRs Merged or Rejected: insan tarafından review edilmiş 9.799 PR; reddedilen PR'ların yalnızca %35,7'si açık ajan hatası, %31,2'si iş akışı kısıtları, %33,1'inde gerekçe görünmüyor. Merge edilenlerin %15,4'ü reviewer geri bildirimi veya doğrudan commit gerektirdi. Yalnızca merge/ret etiketleri ajan yeteneğini ölçmüyor.",
+      "kaynak": "https://arxiv.org/abs/2605.22534",
+      "tarih": "2026-05-21"
+    },
+    {
+      "bulgu": "Simpson paradoksu: havuzlanmış veride insan Co-Authored-By'lı ajan PR'ları daha az merge oluyor (%53,8'e karşı %79,8) ama ajan, repo ve commit sayısına göre katmanlanınca etki kayboluyor. Ajanlar arası havuzlanmış istatistikler yanıltıcı.",
+      "kaynak": "https://arxiv.org/abs/2606.22711",
+      "tarih": "2026-06-21"
+    },
+    {
+      "bulgu": "Ajanların CI/CD dosyalarına dokunduğu 8.031 PR: CI/CD değişikliği ajan değişikliklerinin %3,25'i; bu PR'lar biraz daha az merge oluyor (%67,77'ye karşı %71,80); build başarı oranı benzer (%75,59'a karşı %74,87).",
+      "kaynak": "https://arxiv.org/abs/2601.17413",
+      "tarih": "2026-01-24"
+    },
+    {
+      "bulgu": "More Code, Less Reuse: LLM ajanları kod yeniden kullanım fırsatlarını sık kaçırıyor ve insanlara göre daha fazla tekrar (redundancy) üretiyor; reviewer'lar AI PR'larına daha nötr/olumlu tepki veriyor. Sonuç: yüzeysel makullük teknik borcun sessizce birikmesini gizliyor.",
+      "kaynak": "https://arxiv.org/abs/2601.21276",
+      "tarih": "2026-01-29"
+    },
+    {
+      "bulgu": "Evaluating AGENTS.md: bağlam dosyaları (LLM üretimi veya geliştirici yazımı) görev başarısını genel olarak artırmıyor, çıkarım maliyetini ortalama %20'den fazla artırıyor. Dosyadaki talimatlar iyi izleniyor ama repo genel bakışları işe yaramıyor; bağlam dosyaları standart dışı pratikleri belirtmek için faydalı.",
+      "kaynak": "https://arxiv.org/abs/2602.11988",
+      "tarih": "2026-02-12"
+    },
+    {
+      "bulgu": "Do Context Files Help Coding Agents: Claude Code ve Codex, 3 repoda 17 görev, 288 koşu. Bağlam stratejisi doğruluğu ölçülebilir biçimde değiştirmiyor (<=10-15 puan sınırında); hatalar eksik repo bilgisinden değil uygulama becerisinden (özellik tasarımı, desen seçimi, bağlantı) kaynaklanıyor.",
+      "kaynak": "https://arxiv.org/abs/2607.27250",
+      "tarih": "2026-07-28"
+    },
+    {
+      "bulgu": "An Empirical Study on Failures in Automated Issue Solving: SWE-Bench Verified'da 150 başarısız örnek; 3 faz, 9 kategori, 25 alt kategorilik taksonomi. Pipeline ve ajan mimarilerinin hata parmak izleri farklı; ajan hatalarının çoğu hatalı akıl yürütme ve bilişsel kilitlenmeden. Denetleyici 'Expert' ajan + 'Executor' ajan çerçevesi, önde gelen tek ajanın çözemediği sorunların %22,2'sini çözdü (yazıcı tek, ek ajan denetleyici).",
+      "kaynak": "https://arxiv.org/abs/2509.13941",
+      "tarih": "2025-09-17"
+    },
+    {
+      "bulgu": "METR RCT: 16 deneyimli açık kaynak geliştirici, olgun projelerde 246 görev. AI izinli görevler %19 daha uzun sürdü; geliştiriciler önceden %24 hızlanma bekliyordu, sonrasında %20 hızlandıklarını düşündüler (Şubat-Haziran 2025 araçları).",
+      "kaynak": "https://arxiv.org/abs/2507.09089",
+      "tarih": "2025-07-12"
+    },
+    {
+      "bulgu": "METR algoritmik ve bütüncül değerlendirme: Claude 3.7 Sonnet (Inspect ReAct) iki repodan 18 issue'da bakımcı testlerine göre %38 (±19) başarılı; manuel incelenen 15 PR'ın hiçbiri olduğu gibi merge edilebilir değil. Mergeable hâle getirmek ortalama 42 dk (testleri geçenlerde 26 dk). Sorunlar: test kapsamı, dokümantasyon, lint/format/tip, kod kalitesi.",
+      "kaynak": "https://metr.org/blog/2025-08-12-research-update-towards-reconciling-slowdown-with-time-horizons/",
+      "tarih": "2025-08-12"
+    },
+    {
+      "bulgu": "METR: 3 SWE-bench Verified reposundan 4 aktif bakımcı 296 AI PR'ını inceledi; bakımcı merge oranı otomatik SWE-bench skorundan ortalama ~24 puan düşük; altın (insan) patch'lerin yalnızca %68'i merge edildi; normalize edilince test geçen PR'ların kabaca yarısı merge edilmezdi. Uyarı: ajanlara geri bildirimle iterasyon şansı verilmedi.",
+      "kaynak": "https://metr.org/notes/2026-03-10-many-swe-bench-passing-prs-would-not-be-merged-into-main/",
+      "tarih": "2026-03-10"
+    },
+    {
+      "bulgu": "Google iç göçler: landed CL'lerde kod değişikliklerinin %80'i tamamen AI; toplam süre tahminen %50 azaldı; review hızı darboğaz olduğu için haftalık değişiklik sayısı bilinçli sınırlandı.",
+      "kaynak": "https://arxiv.org/abs/2501.06972",
+      "tarih": "2025-01-12"
+    },
+    {
+      "bulgu": "Meta TestGen-LLM: üretilen testlerin %75'i build etti, %57'si güvenilir geçti, %25'i kapsamı artırdı; önerilerin %73'ü kabul edildi. Meta ACH (mutasyon güdümlü): 9.095 mutant, 571 test, mühendis kabulü %73. Oracle problemine pratik yanıt: testin değerini 'geçti' ile değil ölçülebilir iyileşme/mutant öldürme ile kanıtla.",
+      "kaynak": "https://arxiv.org/abs/2402.09171 ; https://arxiv.org/abs/2501.12862",
+      "tarih": "2024-02-14 ; 2025-01-22"
+    },
+    {
+      "bulgu": "Atlassian HULA (üretimde, Jira): 663 iş öğesinin yalnızca %25'i PR aşamasına ulaştı, bu PR'ların %59'u merge edildi; ankete katılan 109 mühendisin %33'ü kodun iş öğesini çözdüğünü kabul etti. İnsan aşamalı onay (plan/kod) hunisi, uçtan uca otonomiden çok daha düşük bir teslim oranı gösteriyor.",
+      "kaynak": "https://arxiv.org/abs/2411.12924",
+      "tarih": "2024-11-19"
+    },
+    {
+      "bulgu": "Anthropic çoklu ajan araştırma sistemi: araştırma değerlendirmesinde tek ajana göre %90,2 daha iyi ama ~15x token; ekip kodlamanın araştırmaya göre daha az gerçek paralelleştirilebilir iş içerdiğini açıkça yazıyor.",
+      "kaynak": "https://www.anthropic.com/engineering/multi-agent-research-system",
+      "tarih": "2025-06-13"
+    }
+  ],
+  "orkestrasyon_bulgulari": [
+    {
+      "konu": "Temporal resmî ajan modeli",
+      "bulgu": "Workflow deterministik orkestrasyon katmanı; LLM çağrıları, araç çağrıları ve API istekleri Activity. 'While Temporal requires that your Workflow code is deterministic, your AI Agent can absolutely make decisions based on non-deterministic LLM outcomes'; bir sonraki araç çalışma zamanında LLM tarafından seçilebilir (statik DAG zorunlu değil).",
+      "kaynak": "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal"
+    },
+    {
+      "konu": "Temporal AI Cookbook desenleri",
+      "bulgu": "Resmî tarifler: Claude ve OpenAI ile temel agentic loop, araç çağıran ajan, OpenAI Agents SDK ile dayanıklı ajan, Vercel AI SDK, Strands Agents SDK + MCP, dayanıklı MCP sunucusu, Signals ile human-in-the-loop, Google ADK ile çoklu ajan orkestrasyonu, deterministik kurallarla post-LLM guardrail, claim check deseni, HTTP yanıtından retry politikası, yapılandırılmış çıktı, deep research.",
+      "kaynak": "https://docs.temporal.io/ai-cookbook"
+    },
+    {
+      "konu": "OpenAI Agents SDK entegrasyonu",
+      "bulgu": "2025-07-30'da public preview, 2026-03-23'te GA. Her ajan çağrısı bir Temporal Activity olarak workflow içinde çalışıyor; rate limit ve ağ hatalarında otomatik retry; süreç çöktüğünde kaldığı yerden kurtarma; yatay ölçekleme; OpenAI tracing entegrasyonu.",
+      "kaynak": "https://temporal.io/blog/announcing-openai-agents-sdk-integration"
+    },
+    {
+      "konu": "Üretimde ajan + Temporal",
+      "bulgu": "Temporal'a göre OpenAI'ın Codex web ajanı ve Replit Agent 3 Temporal üzerinde (satıcı beyanı; OpenAI kaynağından bağımsız doğrulanamadı). Replit vaka çalışması: her ajan oturumu benzersiz ID'li kendi workflow'u (oturum başına tek aktif ajan), hata eğilimli işler Activity, kullanıcı onayı için Workflow Update; öncesinde bellek tükenmesi, model sağlayıcı kesintisi ve araç hatalarında kullanıcı 'her şeyi kaybediyordu'.",
+      "kaynak": "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal ; https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale"
+    },
+    {
+      "konu": "İnsan sinyali (Signal / Update / Query)",
+      "bulgu": "Signal: asenkron yazma, gönderen yanıt bekleyemez. Update: senkron, izlenen yazma; validator ile ön doğrulama, sonuç veya hata döner. Query: salt okunur, geçmişe olay yazmaz. Human-in-the-loop tarifi: Signal handler + workflow.wait_condition(timeout) ile dayanıklı bekleme; zaman aşımında workflow timeout sonucuyla tamamlanıyor; beklerken 'the agent consumes no compute resources' (saatler, günler veya süresiz).",
+      "kaynak": "https://docs.temporal.io/encyclopedia/workflow-message-passing ; https://docs.temporal.io/ai-cookbook/human-in-the-loop-python"
+    },
+    {
+      "konu": "Uzun bekleme ve yeniden deneme",
+      "bulgu": "Dayanıklı zamanlayıcılar ve wait_condition ile uzun bekleme işçi kaynağı tüketmiyor; Activity retry politikaları (HTTP yanıt başlığından retry bilgisini alan tarif dahil) LLM rate limit ve geçici hataları kod yazmadan ele alıyor. Symphony gibi hafif orkestratörler ise backoff'u kendileri uyguluyor: min(10000*2^(n-1), 300000 ms) ve bellekteki retry zamanlayıcıları süreç yeniden başlatılınca kayboluyor.",
+      "kaynak": "https://docs.temporal.io/ai-cookbook ; https://github.com/openai/symphony/blob/main/SPEC.md"
+    },
+    {
+      "konu": "Olay geçmişi ve yük boyutu sınırları",
+      "bulgu": "Event History en fazla 51.200 olay veya 50 MB; 10.240 olay veya 10 MB'da uyarı. Tek istek başına en fazla 2 MB payload; tek Event History işlemi 4 MB; gRPC mesajı 4 MB. Yürütme başına en fazla 10.000 Signal; 10 eşzamanlı (in-flight) Update ve geçmişte toplam 2.000 Update; 2.000 tamamlanmamış Activity/Signal/Child Workflow; önerilen eşzamanlı işlem sayısı 500 veya daha az.",
+      "kaynak": "https://docs.temporal.io/cloud/limits ; https://docs.temporal.io/workflow-execution/limits"
+    },
+    {
+      "konu": "Continue-As-New",
+      "bulgu": "Durumu argüman olarak taşıyıp aynı Workflow ID ve yeni Run ID ile yeni Event History başlatır; tekrar tekrar uygulanabilir ('your Workflow can run forever'). Temporal geçmiş büyüdüğünde 'Continue-As-New Suggested' ile uyarır; eski kod sürümüyle başlayıp yeni sürümde devam etme (versioning) sorunlarını da azaltır. Uzun ajan oturumlarında her N turda veya öneri geldiğinde uygulanmalı (ajan konuşma geçmişi workflow durumuna değil dış depoya yazılmalı).",
+      "kaynak": "https://docs.temporal.io/workflow-execution/continue-as-new"
+    },
+    {
+      "konu": "Büyük yükler: External Storage / claim check",
+      "bulgu": "External Storage (Public Preview; Go, Java, Python, TypeScript) eşik (varsayılan 256 KiB) üstündeki payload'ları S3 gibi bir depoya yükleyip Event History'ye küçük referans yazıyor; hazır S3 driver. Uyarılar: aynı task denemesinde başarısız Store/Retrieve çağrısı SDK tarafından yeniden denenmiyor; yükleme sonrası hata olursa sahipsiz (orphan) payload kalabiliyor; bölgeler arası çoğaltmada okuma gecikebilir. Cookbook'ta manuel claim check tarifi de var.",
+      "kaynak": "https://docs.temporal.io/external-storage ; https://docs.temporal.io/ai-cookbook/claim-check-pattern-python"
+    },
+    {
+      "konu": "Kestra ile fark",
+      "bulgu": "Kestra kendini 'declarative orchestration platform ... in YAML, without writing SDK code or managing workflow state by hand' olarak konumluyor; iş mantığı mevcut script'lerde; mühendis olmayanlar akışları okuyup tetikleyebiliyor. Temporal'ı saga/telafi işlemleri ve deterministik replay gerektiren uzun süreli durumlu kod iş akışları için öneriyor. İnsan onayı: Pause görevi + onResume girdileri, UI veya /api/v1/executions/{id}/resume ile devam.",
+      "kaynak": "https://kestra.io/vs/temporal ; https://kestra.io/docs/how-to-guides/pause-resume"
+    },
+    {
+      "konu": "Airflow ile fark",
+      "bulgu": "Airflow DAG tabanlı zamanlanmış/veri tetiklemeli iş akışları için. 3.1'den itibaren HITL operatörleri (HITLOperator, ApprovalOperator, HITLBranchOperator, HITLEntryOperator) deferrable olarak insan girdisini worker slotu tutmadan bekliyor; 3.3'te scheduler yönetimli 'awaiting_input' durumu. Çıkarım (kaynakta yazmıyor): LLM'in bir sonraki adımı çalışma zamanında seçtiği ajan döngüsü, statik DAG modeline doğal oturmuyor; Airflow/Kestra dış kabuk (kampanya/zamanlama), Temporal ise görev içi dayanıklı ajan yürütmesi için daha uygun.",
+      "kaynak": "https://airflow.apache.org/docs/apache-airflow/stable/tutorial/hitl.html ; https://www.astronomer.io/docs/learn/airflow-human-in-the-loop"
+    },
+    {
+      "konu": "Tracker'ı durum kaynağı yapan hafif orkestratör (Temporal'sız alternatif)",
+      "bulgu": "Symphony kalıcı DB kullanmıyor; tracker durumu + dosya sistemindeki workspace'ler tek doğruluk kaynağı; her tick'te reconciliation; restart'ta retry zamanlayıcıları ve canlı oturumlar kaybolur, uygun issue'lar yeniden dispatch edilir. Spec kendini 'general-purpose workflow engine' olarak görmüyor.",
+      "kaynak": "https://github.com/openai/symphony/blob/main/SPEC.md"
+    },
+    {
+      "konu": "Oturum durumu için alternatif dayanıklı altyapılar",
+      "bulgu": "Ramp Inspect oturum durumunu Cloudflare Durable Objects'te (oturum başına SQLite) tutuyor, takip promptlarını kuyruğa alıyor. Anthropic çoklu ajan sistemi hata anında kaldığı yerden devam ve rainbow deployment kullanıyor ('agents are stateful and errors compound').",
+      "kaynak": "https://builders.ramp.com/post/why-we-built-our-background-agent ; https://www.anthropic.com/engineering/multi-agent-research-system"
+    },
+    {
+      "konu": "Deterministik iş akışı + ajan düğümü (blueprint) deseni",
+      "bulgu": "Stripe blueprint'leri, Shopify Roast adımları ve Airbnb'nin dosya başına durum makinesi, orkestrasyonun deterministik kodda kalıp LLM'in yalnızca sınırlı düğümlerde çalıştığı aynı deseni uyguluyor; Temporal'ın 'deterministik Workflow + deterministik olmayan Activity' ayrımıyla birebir örtüşüyor.",
+      "kaynak": "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2 ; https://shopify.engineering/introducing-roast ; https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/"
+    }
+  ],
+  "ortak_oruntuler": [
+    {
+      "oruntu": "Tek yazıcı ajan + deterministik iskelet (blueprint / durum makinesi / pipeline)",
+      "kimler_kullaniyor": "Stripe (blueprint), Shopify (Roast), Airbnb (dosya başına durum makinesi), Spotify (fleetshift), Google iç göçler, Meta TestGen-LLM/ACH, OpenAI Symphony (issue başına tek ajan), Cognition (tek iplikli yazma)",
+      "neden": "Belirsizliği sınırlıyor ('Non-determinism is the enemy of reliability'); git, lint, push gibi adımlar LLM'e bırakılmıyor; Agentless ve mini-swe-agent basit yapıların rekabetçi olduğunu gösteriyor. Kaynak: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2 ; https://shopify.engineering/introducing-roast ; https://arxiv.org/abs/2407.01489"
+    },
+    {
+      "oruntu": "Görev başına izole, önceden ısıtılmış, tek kullanımlık sandbox (devbox/VM/konteyner)",
+      "kimler_kullaniyor": "Stripe (~10 sn devbox, internet/prod yok), Ramp (Modal VM, 30 dk'da bir imaj, warm pool), GitHub Copilot (Actions, firewall), Jules (GCP VM), Devin (izole VM), Spotify (kısıtlı konteyner), Symphony (issue başına workspace)",
+      "neden": "İnsan onayı olmadan otonom çalışmayı güvenli kılıyor, paralelliği ve hızı sağlıyor; Ramp: 'When background agents are fast, they're strictly better than local.' Kaynak: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents ; https://builders.ramp.com/post/why-we-built-our-background-agent"
+    },
+    {
+      "oruntu": "Sola kaydırılmış deterministik doğrulama + sınırlı CI turu + insana devir",
+      "kimler_kullaniyor": "Stripe (<5 sn lint, en fazla 2 CI turu), Spotify (MCP arkasında kısa çıktılı verifier'lar, başarısızsa PR yok), Airbnb (adım başına doğrulama + retry limiti), OpenAI (özel linter + yapısal test), Anthropic (e2e tarayıcı testi)",
+      "neden": "Ajanın kendi işini kanıtlaması; sonsuz döngü ve maliyet kontrolü; CI'ın geçmediği PR'lar merge edilmiyor (arXiv 2601.15195). Kaynak: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2 ; https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3"
+    },
+    {
+      "oruntu": "Mevcut tracker/Slack'ten tetikleme ve ticket durumlarıyla el değiştirme",
+      "kimler_kullaniyor": "OpenAI Symphony (Todo -> In Progress -> Human Review -> Merging / Rework), GitHub Copilot (issue ataması), Coinbase Forge (Slack -> Linear issue -> PR -> Slack), Atlassian Rovo Dev/HULA (Jira), Stripe ve Ramp (Slack), Factory (Linear/Jira)",
+      "neden": "İş zaten orada tanımlı; durum makinesi insan ve ajan arasında açık devir noktaları veriyor; operatör durumu değiştirerek ajanı durdurabiliyor. Kaynak: https://github.com/openai/symphony/blob/main/SPEC.md ; https://linear.app/customers/coinbase"
+    },
+    {
+      "oruntu": "İnsanlarla aynı araç ve kurallar; kısa kural dosyası + repo içi dokümanlar; küratörlü küçük araç seti",
+      "kimler_kullaniyor": "Stripe (Cursor kuralları, ~500 araçtan küçük alt küme), OpenAI (~100 satırlık AGENTS.md + docs/), Spotify (bilerek kısıtlı araçlar), LinkedIn (CAPT playbook + meta araçlar), Symphony (repoda WORKFLOW.md)",
+      "neden": "'If it's good for humans, it's good for LLMs'; bağlam kıt kaynak; araştırmalar büyük/genel bağlam dosyalarının başarıyı artırmadığını ve maliyeti %20+ artırdığını gösteriyor. Kaynak: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents ; https://arxiv.org/abs/2602.11988"
+    },
+    {
+      "oruntu": "Zorunlu insan PR review kapısı ve görev ayrılığı",
+      "kimler_kullaniyor": "Stripe (başka mühendis review eder), GitHub Copilot (isteyen onaylayamaz; CI/CD insan onayıyla), Spotify, Symphony (Human Review), Google iç göçler (kod sahibi review'u), Ramp (PR kullanıcı kimliğiyle)",
+      "neden": "Test geçen PR'ların yaklaşık yarısı bakımcılarca merge edilmiyor (METR); review en büyük darboğaz, bu yüzden üretim hızı review kapasitesine göre ayarlanıyor (Google). Kaynak: https://docs.github.com/copilot/concepts/agents/coding-agent/about-coding-agent ; https://metr.org/notes/2026-03-10-many-swe-bench-passing-prs-would-not-be-merged-into-main/"
+    },
+    {
+      "oruntu": "Bağımsız reviewer/hakem ajan: yazmaz, yalnızca 'zekâ' katkısı verir",
+      "kimler_kullaniyor": "Spotify (LLM-as-judge oturumların ~1/4'ünü veto ediyor), Cognition (review ajanı PR başına ~2 bug), Uber uReview, LinkedIn (çoklu reviewer yakınsaması), OpenAI (ajan-ajan review)",
+      "neden": "Çoklu ajanın bugün işe yarayan tek güvenli biçimi: yazma tek iplikte kalırken ek ajanlar denetim sağlıyor; merkezî doğrulamasız mimariler hatayı yayıyor. Kaynak: https://cognition.com/blog/multi-agents-working ; https://arxiv.org/abs/2512.08296"
+    },
+    {
+      "oruntu": "Uzun işler için harici durum/checkpoint: ilerleme dosyası, yapılandırılmış özellik listesi, workpad, dayanıklı yürütme",
+      "kimler_kullaniyor": "Anthropic (claude-progress.txt, JSON özellik listesi, git), Symphony (tek workpad yorumu, workspace korunur), Replit/Codex (Temporal), Ramp (Durable Objects)",
+      "neden": "Her yeni oturum hafızasız başlıyor; hatalar birikiyor; kaldığı yerden devam gerekiyor. Kaynak: https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents ; https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale"
+    },
+    {
+      "oruntu": "Doğrulanabilir, iyi tanımlı iş sınıflarıyla başlamak (göç, bakım, test, dokümantasyon)",
+      "kimler_kullaniyor": "Spotify (göçler), Airbnb (test göçü), Google (göçler), Devin (junior'ın 4-8 saatlik net işi), GitHub Copilot ('low-to-medium complexity tasks in well-tested codebases')",
+      "neden": "Merge oranları doküman/CI/build işlerinde en yüksek, performans ve bug fix'te en düşük (arXiv 2601.15195); belirsiz tanımda SWE-Bench Pro başarısı üçte birine iniyor. Kaynak: https://cognition.com/blog/devin-annual-performance-review-2025 ; https://arxiv.org/abs/2509.16941"
+    },
+    {
+      "oruntu": "Merge edilen PR ve otonom çalışma süresi gibi çıktı metrikleri; gönüllü, viral benimseme",
+      "kimler_kullaniyor": "Ramp (merge edilen PR ana metrik, zorunlu değil), Coinbase ('autonomous operation time'), Stripe (haftalık merge edilen minion PR'ları), Uber (zorunlulukların daha az etkili olduğu gözlemi, ikincil)",
+      "neden": "Açılan PR sayısı yanıltıcı; merge/ret etiketleri bile bağlam olmadan yanıltıcı olabilir (arXiv 2605.22534). Kaynak: https://builders.ramp.com/post/why-we-built-our-background-agent ; https://linear.app/customers/coinbase"
+    }
+  ],
+  "kacinilacaklar": [
+    {
+      "desen": "Şirket/rol simülasyonu yapan çoklu ajan (CEO/CTO/QA sohbeti) ve paralel kod yazan ajan sürüleri",
+      "neden": "Yedi MAS'ta %41-86,7 başarısızlık, kazanımlar tek ajan veya best-of-N'e göre minimal; ajanlar arası örtük karar çatışmaları (Flappy Bird örneği); sıralı görevlerde -%70'e kadar kayıp; kodlama araştırmaya göre daha az paralelleştirilebilir.",
+      "kaynak": "https://arxiv.org/abs/2503.13657 ; https://cognition.com/blog/dont-build-multi-agents ; https://arxiv.org/abs/2512.08296 ; https://www.anthropic.com/engineering/multi-agent-research-system"
+    },
+    {
+      "desen": "'Testler geçti = iş bitti' kabulü (oracle problemi)",
+      "neden": "Test geçen SWE-bench PR'larının kabaca yarısı bakımcılarca merge edilmiyor; testi geçen PR'lar bile ortalama 26 dk düzeltme istiyor; Spotify'a göre en ciddi hata CI'ı geçen ama işlevsel olarak yanlış PR; ChatDev'in yüzeysel doğrulayıcısı çalışma zamanı hatalarını kaçırıyor.",
+      "kaynak": "https://metr.org/notes/2026-03-10-many-swe-bench-passing-prs-would-not-be-merged-into-main/ ; https://metr.org/blog/2025-08-12-research-update-towards-reconciling-slowdown-with-time-horizons/ ; https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3"
+    },
+    {
+      "desen": "Ajana testleri/CI'ı düzenleme serbestliği ve sınırsız CI/retry döngüsü",
+      "neden": "Ajan PR'larında 'CI gaming' (test silme, lint atlatma) gözleniyor; Anthropic harness'ı testlerin silinmesini/düzenlenmesini açıkça yasaklıyor; Stripe en fazla 2 CI turundan sonra insana devrediyor.",
+      "kaynak": "https://github.blog/ai-and-ml/generative-ai/agent-pull-requests-are-everywhere-heres-how-to-review-them/ ; https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents ; https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2"
+    },
+    {
+      "desen": "Dev, ansiklopedik AGENTS.md ve ajana tüm araçları açmak",
+      "neden": "'Too much guidance becomes non-guidance', 'It rots instantly'; bağlam dosyaları başarıyı artırmadan maliyeti %20+ artırıyor; Stripe ~500 aracın yalnızca küçük bir alt kümesini veriyor, Spotify kod arama ve doküman araçlarını bilerek kapatıyor.",
+      "kaynak": "https://openai.com/index/harness-engineering/ ; https://arxiv.org/abs/2602.11988 ; https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2"
+    },
+    {
+      "desen": "Belirsiz veya eksik tanımlı ticket'la otonom başlatma",
+      "neden": "SWE-Bench Pro'da gereksinim ve arayüz olmadan GPT-5 %25,9'dan %8,40'a düşüyor; Devin belirsiz işlerde ve görev ortası değişiklikte zorlanıyor; Spotify'a göre aşırı genel promptlar ajandan 'telepatik' tahmin bekliyor; HULA'da iş öğelerinin yalnızca %25'i PR'a ulaştı.",
+      "kaynak": "https://arxiv.org/abs/2509.16941 ; https://cognition.com/blog/devin-annual-performance-review-2025 ; https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2"
+    },
+    {
+      "desen": "Review ve CI kapasitesini aşan PR üretimi",
+      "neden": "Google göçlerinde review hızı darboğaz oldu ve haftalık değişiklik bilinçli sınırlandı; Coinbase speedrun'ları GitHub'ı 4-5 kez düşürdü; ajan kodu yeniden kullanımı kaçırıp teknik borcu sessizce biriktiriyor.",
+      "kaynak": "https://arxiv.org/abs/2501.06972 ; https://linear.app/customers/coinbase ; https://arxiv.org/abs/2601.21276"
+    },
+    {
+      "desen": "Tüm LLM konuşma geçmişini/araç çıktısını Temporal workflow payload'ı ve event history'si olarak taşımak",
+      "neden": "2 MB payload, 4 MB işlem ve 51.200 olay/50 MB geçmiş sınırları; büyük veriyi claim check/External Storage ile dışarı al, uzun oturumlarda Continue-As-New uygula.",
+      "kaynak": "https://docs.temporal.io/cloud/limits ; https://docs.temporal.io/external-storage ; https://docs.temporal.io/workflow-execution/continue-as-new"
+    },
+    {
+      "desen": "İzin verici sandbox, ajana ham kimlik bilgisi, internet ve üretim erişimi",
+      "neden": "Symphony spec'i izin verici kurulumun veri sızıntısı, yıkıcı değişiklik veya makinenin ele geçirilmesine yol açabileceğini yazıyor ve tracker kimlik bilgisini ajan sürecine geçirmiyor; Stripe devbox'larında üretim verisi ve keyfi ağ çıkışı yok; Copilot'ta internet güvenilir listeyle sınırlı.",
+      "kaynak": "https://github.com/openai/symphony/blob/main/SPEC.md ; https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2 ; https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/"
+    },
+    {
+      "desen": "Karar veren ve uygulayan modeli ayırmak / ajanlara yalnızca mesaj (tam iz olmadan) aktarmak",
+      "neden": "Cognition'ın 'edit apply' deneyimi hatalı sonuç verdi; ilke: tam ajan izini paylaş, örtük kararlar çatışmasın.",
+      "kaynak": "https://cognition.com/blog/dont-build-multi-agents"
+    },
+    {
+      "desen": "Tepeden zorunlu benimseme ve açılan PR sayısını başarı metriği yapmak",
+      "neden": "Ramp benimsemeyi zorunlu kılmadan viral döngüyle ~%30'a ulaştı; Uber sunumunda zorunlulukların daha az etkili olduğu aktarıldı (ikincil); açılan PR sayısı merge veya faydayı ölçmüyor.",
+      "kaynak": "https://builders.ramp.com/post/why-we-built-our-background-agent ; https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development ; https://arxiv.org/abs/2605.22534"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "title": "AutoGen",
+  "summary": "AutoGen’in durumu, halefi Microsoft Agent Framework ve bu hat için hüküm.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "AutoGen",
+      "lede": "Microsoft Research’ün çoklu ajan konuşma framework’ü. Çoklu ajan fikrini yaygınlaştıran projelerden biri; ancak Ekim 2025’ten beri bakım modunda. Değerlendirmenin asıl konusu artık halefi Microsoft Agent Framework.",
+      "meta": [
+        { "label": "Hüküm", "value": "Kullanma" },
+        { "label": "Durum", "value": "Bakım modu" },
+        { "label": "Halef", "value": "Agent Framework 1.0" }
+      ]
+    },
+    { "type": "heading", "text": "Durum" },
+    {
+      "type": "timeline",
+      "items": [
+        { "label": "2023", "when": "", "title": "AutoGen", "items": ["Konuşan ajanlar (AssistantAgent, UserProxyAgent), grup sohbeti", "Araştırma ve prototiplerde hızla yayıldı"] },
+        { "label": "2024–25", "when": "", "title": "Yeniden yazım ve çatal", "items": ["0.4 ile aktör tabanlı çekirdek ve AgentChat katmanı", "Topluluk çatalı AG2 ayrıldı"] },
+        { "label": "Eki 2025", "when": "", "title": "Bakım modu", "items": ["Yeni özellik yok; yalnızca hata ve güvenlik düzeltmesi", "README yeni kullanıcıları Microsoft Agent Framework’e yönlendiriyor"] },
+        { "label": "Nis 2026", "when": "", "title": "Agent Framework 1.0", "items": ["Python ve .NET için GA; kararlı API ve uzun süreli destek", "AutoGen fikirleri + Semantic Kernel’in kurumsal temeli"] }
+      ]
+    },
+    {
+      "type": "procon",
+      "proTitle": "AutoGen’in bıraktığı iyi fikirler",
+      "conTitle": "Bu hat için sorunlar",
+      "pros": [
+        "Ajanlar arası mesajlaşma ve rol ayrımı fikrini somutlaştırdı.",
+        "Kod çalıştıran ajan + insan vekili deseni, bugünkü çalıştırıcıların atası sayılabilir.",
+        "Magentic-One gibi referans çoklu ajan mimarileri."
+      ],
+      "cons": [
+        "Bakım modunda: yeni projede teknik borç olarak başlar.",
+        "Konuşma güdümlü akış: sıra ve sonlanma ajan mesajlarına bağlı. Deterministik kapılı TDD hattıyla çelişir.",
+        "Proje üçe bölündü (AutoGen, AG2, Agent Framework); kaynak ve örnekler dağınık.",
+        "Temporal ile birlikte kullanılırsa akışın sahibi belirsizleşir."
+      ]
+    },
+    { "type": "heading", "text": "Microsoft Agent Framework ne zaman mantıklı?" },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "Ekip .NET ağırlıklıysa veya Azure AI Foundry kullanıyorsa.",
+        "Graf tabanlı iş akışı, checkpoint ve insan onayı gibi özellikler var; ama Temporal’ın yanında bunlar yine ikinci durum sahibi olur. Ajan katmanı olarak kullanın.",
+        "Durable yürütme için Dapr Workflow ile birlikte çalışabildiği gösteriliyor; Kubernetes + .NET ekibi için Temporal’a alternatif bir yol."
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Hüküm",
+      "text": "AutoGen’i yeni projede kullanmayın. Microsoft ekosistemindeyseniz ajan katmanı için Agent Framework, değilseniz PydanticAI. Her iki durumda da görev durumunun sahibi Temporal."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Yol haritası",
+  "summary": "Dört fazlı uygulama planı ve ilk sprintte yapılacaklar.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Uygulama",
+      "title": "Yol haritası",
+      "lede": "Önce iskelet, sonra sözleşme, sonra ölçüm. Ölçmeden ölçeklemek, yanlış sınırları 12.000 göreve kopyalamak demek."
+    },
+    {
+      "type": "timeline",
+      "items": [
+        { "label": "Faz 0", "when": "2 hafta", "title": "İskelet", "items": ["policy.yaml’ı yazın; bütçe sayılarını tekleştirin", "Plane webhook → Temporal (dev server) → tek görev tipi", "Claude Code headless, izole worktree içinde", "GitHub Actions deterministik kapıları"] },
+        { "label": "Faz 1", "when": "3–4 hafta", "title": "TDD sözleşmesi", "items": ["RED kanıtı kapısı ve test kilidi (ajan test dosyasını değiştiremez)", "Farklı sağlayıcıyla bağımsız QA (Codex)", "Risk sınıfı ve insan onayı (Signal / Update)", "Langfuse ile görev başına maliyet"] },
+        { "label": "Faz 2", "when": "20–30 görev", "title": "Kalibrasyon", "items": ["Başarı oranı, kaçan hata, süre, maliyet, flaky oranını ölçün", "Sınırları ölçüme göre ayarlayın (panonun kendi önerisi)", "İlişki haritası ve küme başına child workflow", "Mutation testing’i değişen modüllerde açın", "Temporal self-host / Cloud / DBOS kararını verin"] },
+        { "label": "Faz 3", "when": "Sürekli", "title": "Ölçek ve öğrenme", "items": ["12.000 görevlik backlog’u toplu normalizasyona alın", "Hermes skill önerileri → PR → eval → merge", "Trajectory arşivi; ileride model ince ayarı için veri", "OpenHands + açık modelle maliyet karşılaştırması"] }
+      ]
+    },
+    { "type": "heading", "text": "İlk sprint kontrol listesi" },
+    {
+      "type": "list",
+      "style": "todo",
+      "items": [
+        "Deneme bütçesinin tek değerini PO ve team lead ile belirleyin",
+        "Ana akışa RED kapısını ekleyin",
+        "LangGraph’ın rolünü “aktivite içi, isteğe bağlı” olarak ADR’ye yazın",
+        "Yayın hattının sahibini (GitHub Actions veya Jenkins) netleştirin",
+        "Plane’de durum kodlarını (RUNNING, WAITING_FOR_PO, …) özel durum olarak açın",
+        "Pilot için 20–30 küçük, bağımsız görev seçin"
+      ]
+    }
+  ]
+}

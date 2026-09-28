@@ -1,0 +1,3 @@
+Bu klasördeki dosyalar Codex çalışma dizininden (otomasyon coding 2) yalnız okunarak kopyalandı; kaynak dosyalara dokunulmadı.
+codex-15-01-kacirilan-bulgular.json <- otomasyon coding 2/agentic-sistem/data/15_derin_inceleme/01_kacirilan_bulgular.json (kopyalama: 2026-09-27)
+codex-12-02-platform-matrisi.json <- otomasyon coding 2/agentic-sistem/data/12_fabrika_cercevesi/02_platform_matrisi.json (kopyalama: 2026-09-27)

@@ -1,0 +1,1127 @@
+{
+ "ariza_kipleri": [
+  {
+   "id": "AK-01",
+   "sinif": "oracle",
+   "baslik": "RED kanıtı, test komutunun herhangi bir sıfır dışı çıkışını kabul ediyor",
+   "senaryo": "1) Test yazarı import hatası, sözdizimi hatası veya eksik bağımlılık içeren bir test yazar. 2) Ya da kapı konteyneri altyapı nedeniyle (ağ yok, imaj yok, çıkış 125/126/127) hiç test koşturamaz. 3) red-kaniti kapısı yalnız 'çıkış kodu != 0' diye bakar ve geçer. 4) RED SHA'sı sabitlenir, uygulayıcı sözde başarısız testi geçirmeye uğraşır; bazen yalnız import'u düzelterek 'GREEN' olur. Davranışı sınayan hiçbir test yoktur ama kanıt paketi 'RED kanıtı alındı' der.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "RED kapısı logunda 'ModuleNotFoundError', 'SyntaxError', 'command not found' veya docker hata metni; GREEN'de yalnız import/yol düzeltmesi olan küçük fark; insan testinde 'özellik yok' reddi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:248-249",
+    "fabrika/akis/gorev_akisi.py:538-543",
+    "fabrika/istemler.py:65"
+   ],
+   "duzeltme": "sandbox.py kapilari_calistir: test komutunu makine okunur raporla çalıştır (JUnit XML / TAP; projeler.yaml'a 'test_raporu' yolu). RED'de şunları zorunlu kıl: (a) test çerçevesi raporu üretti, (b) test yazarının çıktısındaki KT kimlikli testler raporda VAR ve 'failure/assertion' ile kaldı ('error'/toplama hatası değil), (c) önceden var olan testler geçti. 125-127 ve 137 çıkışlarını altyapı hatası say, RED sayma. test_entegrasyon.py'ye 'import hatalı test RED sayılmaz' vakası ekle.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-02",
+   "sinif": "oracle",
+   "baslik": "RED aşamasında test yazarı uygulama kodunu ve mevcut testleri değiştirebiliyor",
+   "senaryo": "1) RED kapısı korunan_referans boş çağrılır; yalnız korunan_yollar denetlenir. 2) Test yazarı testin başarısız olması için uygulama dosyasını bozar ya da mevcut, geçen testleri siler/zayıflatır. 3) ara_kayit 'git add -A' ile her şeyi RED commit'ine alır; silinen testler artık 'korunan' durumdadır ve uygulayıcı geri getiremez. 4) Kapsam sessizce daralır.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "RED commit'inde test_yollari dışında değişen dosya veya silinen test; test sayısının RED'de düşmesi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:538",
+    "fabrika/faaliyetler/sandbox.py:221-226",
+    "fabrika/faaliyetler/depo.py:93-96"
+   ],
+   "duzeltme": "kapilari_calistir'a 'beklenen=kalmali' için ek kural: değişen dosyalar yalnız test_yollari altında ve yalnız EKLEME (git diff --diff-filter=AM; mevcut test dosyasında satır silme yok). İhlalde RED reddedilir ve nedeni test yazarına döner. Test sayısını raporla (AK-01) ve RED öncesi/sonrası karşılaştır.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-03",
+   "sinif": "oracle",
+   "baslik": "Uygulayıcı test yapılandırmasını değiştirerek korunan testleri etkisizleştirebilir",
+   "senaryo": "1) Korunan testler tests/ ve e2e/ altında; package.json 'test' betiği, jest/vitest/pytest yapılandırması, test yardımcıları ve mock dizinleri korunmuyor. 2) Uygulayıcı test betiğini daraltır, bir dosyayı dışlar ya da yardımcıyı her zaman geçen hale getirir. 3) Yerel kapı ve CI aynı depo betiklerini kullandığı için ikisi de yeşil. 4) Yalnız LLM gözden geçirici fark edebilir; kaçırırsa otomatik birleşir.",
+   "olasilik": 3,
+   "etki": 5,
+   "tespit": "Fark içinde package.json 'scripts', *.config.*, conftest.py, __mocks__ değişikliği; GREEN'de koşan test sayısının RED'dekinden az olması.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "config/projeler.yaml:28-35",
+    "fabrika/faaliyetler/sandbox.py:224-226",
+    "sablonlar/hedef-repo/.github/workflows/ci.yml:25-29",
+    "fabrika/istemler.py:100-101"
+   ],
+   "duzeltme": "projeler.yaml korunan_yollar'a test yapılandırma dosyalarını ekle (package.json'ın scripts bölümü için özet karşılaştırması, jest/vitest/playwright config, conftest.py, pytest.ini). GREEN kapısında test raporundan KT kimlikli testlerin koştuğunu ve geçtiğini doğrula; toplam koşan test sayısı RED'dekinden az olamaz. CI'da aynı sayım adımı.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-04",
+   "sinif": "oracle",
+   "baslik": "Zayıf test: tek örnekli, sabit değerle geçilebilen testler; mutasyon ölçümü yok",
+   "senaryo": "1) Test yazarı her ölçüt için tek mutlu yol örneği yazar. 2) Uygulayıcı genel mantık yerine örneğe özel kod yazar. 3) Kapılar ve CI yeşil; gözden geçirici 'sabit kodlanmış beklenen değer'i her zaman görmez. 4) Hata alpha'da insan testinde ya da sonra üretimde çıkar.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "İnsan testi reddinde 'başka girdide çalışmıyor' türü nedenler; Kaizen'de insan_red oranı; değişen satırlarda mutasyon skorunun düşük olması.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/istemler.py:62-75",
+    "fabrika/istemler.py:100-101",
+    "fabrika/akis/gorev_akisi.py:556-558"
+   ],
+   "duzeltme": "Orta/yüksek riskte yeni kapı 'mutasyon': yalnız değişen dosyalarda Stryker/mutmut, eşik (ör. %60) politika.yaml'da. Formda her kabul ölçütü için en az iki somut örnek (girdi→çıktı) iste (form.py hazir_mi). Test yazarı istemine özellik tabanlı test önerisi. Mutasyon skoru olay kaydına.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-05",
+   "sinif": "oracle",
+   "baslik": "Testi ve kodu aynı model ailesi yazıyor; ortak yanlış yorum bağımsız bir oracle'a çarpmadan birleşiyor",
+   "senaryo": "1) Belirsiz bir ölçütü planlayıcı (sonnet) bir biçimde yorumlar. 2) Test yazarı (sonnet) aynı yorumu teste döker. 3) Uygulayıcı (sonnet) teste uyar. 4) Gözden geçirici (aynı sağlayıcı) planı referans alır. 5) Orta risk için plan onayı yok; ilk bağımsız oracle, birleştirmeden SONRA alpha'daki insandır.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "İnsan testinde 'yanlış anlaşılmış gereksinim' reddi; aynı ölçütün farklı görevlerde farklı yorumlanması.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "config/politika.yaml:55-60",
+    "config/politika.yaml:64-65",
+    "fabrika/akis/gorev_akisi.py:451-460"
+   ],
+   "duzeltme": "Orta riskte hafif insan onayı: planın 'kabul_testleri' (KT→ölçüt→senaryo) listesini Plane yorumu olarak yaz ve ürün sahibinin onayını bekle (yalnız KT listesi; 5 dk'lık iş). Test yazarı için farklı model/sağlayıcı seçeneği politika.yaml'a. Olaydan türetilmiş eval setiyle yorum tutarlılığı ölç.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-06",
+   "sinif": "oracle",
+   "baslik": "Kabul ölçütü eksik veya yanlışsa hazırlık denetimi bunu yakalamıyor",
+   "senaryo": "1) Form tek satırlık belirsiz bir ölçütle (ör. 'rapor düzgün çalışsın') geçer; DoR yalnız varlık ve amaç uzunluğu (20 karakter) denetler. 2) Planlayıcı 'uygulanabilir' alanını boş bırakırsa varsayılan true. 3) Belirsizlik varsayımla kapanır, insan testi reddeder, tur tekrarlanır; 2 redden sonra SAFe eskalasyonu.",
+   "olasilik": 5,
+   "etki": 3,
+   "tespit": "Kaizen'de 'insan testi tekrar reddi' ve 'belirsiz gereksinim' sınıfları; ölçüt başına kelime sayısı düşük formlar.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/form.py:73-89",
+    "fabrika/akis/gorev_akisi.py:447-450",
+    "fabrika/giris/app.py:150-154"
+   ],
+   "duzeltme": "form.hazir_mi: her ölçütte Given/When/Then anahtar sözcükleri ve en az bir somut değer; yeni özellikte en az bir olumsuz durum zorunlu. gorev_akisi.py:447: 'uygulanabilir' yoksa false say; 'sorular' boş değilse ürün sahibine sor. Web formuna ölçüt örnekleri.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-07",
+   "sinif": "oracle",
+   "baslik": "Gözden geçiricinin 'onay'ı ölçüt eşleşmesiyle deterministik olarak doğrulanmıyor",
+   "senaryo": "1) Gözden geçirici karar='onay' yazar ama kabul_olcutu_eslesmesi'nde bir ölçüt karsilandi=false ya da hiç listelenmemiş. 2) İş akışı yalnız karar alanına bakar, PR'ı açar ve birleştirir. 3) PR gövdesinde ❌ işareti görünür ama kimse bakmaz.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "PR gövdesinde ❌ satırı olan birleşmiş PR'lar; eşleşme listesindeki ölçüt sayısı < formdaki ölçüt sayısı.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:573-574",
+    "fabrika/akis/gorev_akisi.py:708-716"
+   ],
+   "duzeltme": "_inceleme: onayı kabul etmeden önce formdaki her ölçüt için eşleşme kaydı var mı, hepsi karsilandi=true mi ve 'kanit' alanındaki test adı test raporunda geçen testler arasında mı kontrol et; değilse bulgu olarak uygulayıcıya dön. test_akis.py'ye vaka.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-08",
+   "sinif": "oracle",
+   "baslik": "İnsan test paketi formdan değil planlayıcı çıktısından türetiliyor",
+   "senaryo": "1) Planlayıcı 'insan_testi.olumsuz' alanını dar yazar. 2) _insan_test_paketi form alanlarını yalnız plan boşsa kullanır. 3) Testçi formdaki olumsuz durumları görmez; kritik bir yetki hatası sınanmadan Done olur.",
+   "olasilik": 3,
+   "etki": 3,
+   "tespit": "Human Test yorumundaki madde sayısının formdakinden az olması.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:718-729"
+   ],
+   "duzeltme": "Paketi form maddelerinin birebir listesi + planın ek önerileri olarak kur; her maddeyi onay kutusu yap; formdaki kabul ölçütlerini de pakete ekle.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-09",
+   "sinif": "insan",
+   "baslik": "İnsan testçinin yüzeysel onayı kanıtsız kabul ediliyor",
+   "senaryo": "1) Testçi kuyruğu büyür (AK-52). 2) Testçi alpha'da mutlu yolu dener, Done yapar. 3) Done yalnız durum değişikliğidir; sinyalde açıklama bile taşınmaz. 4) Kaizen ilk geçiş kabulünü başarı saydığı için hızlı onay ödüllenir. 5) Olumsuz durum ve veri kontrolü atlanır; hata beta/üretimde bulunur.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Human Test'te kalma süresi çok kısa (ör. < 5 dk) Done'lar; sonradan açılan ve göreve bağlanan hata sayısı (kaçan hata).",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:513-515",
+    "fabrika/giris/app.py:49",
+    "fabrika/kaizen.py:74-78"
+   ],
+   "duzeltme": "Done'u, testçinin şablonlu sonuç yorumu (her yolculuk ve olumsuz durum için ✓/✗ ve not) yoksa kabul etme: hazırlık faaliyeti gibi bir 'test_sonucu_oku' faaliyeti yorumu ayrıştırsın; eksikse testçiye geri sor. Rastgele %10 görevde ikinci testçi. Kaizen'e 'kaçan hata' ve 'Human Test süresi' metrikleri.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-10",
+   "sinif": "durum",
+   "baslik": "Kod insan testinden önce main'e birleşiyor; reddedilen veya zaman aşımına uğrayan işin kodu alpha main'de kalıyor",
+   "senaryo": "1) Görev CI'dan geçer, main'e birleşir, alpha'ya çıkar. 2) Testçi Rejected yapar ya da 14 gün bakmaz. 3) İş akışı 'reddedildi' veya 'zaman-asimi' ile biter; geri alma yok. 4) Aylar içinde main, kabul edilmemiş ve reddedilmiş değişikliklerle dolar. 5) İnsan main'i beta/üretime taşıdığında reddedilmiş kod da gider.",
+   "olasilik": 5,
+   "etki": 5,
+   "tespit": "Rejected veya zaman-asimi sonuçlu görevlerin PR'larının 'merged' olması; main'de geri alınmamış reddedilen commit sayısı.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:485-487",
+    "fabrika/akis/gorev_akisi.py:510-512",
+    "fabrika/akis/gorev_akisi.py:521",
+    "docs/OLGUNLUK.md:15"
+   ],
+   "duzeltme": "Rejected ve zaman aşımında otomatik 'revert' PR'ı aç (github.py'ye revert_pr faaliyeti; aynı CI kapısından geçer) ve Plane'e bağlantısını yaz. Alternatif: görev başına özellik bayrağı (bayrak adı = iş anahtarı, alpha'da açık, beta/üretim promosyonunda yalnız kabul edilenler açık). Üretim promosyonu için 'kabul edilen görevler' listesi olay kaydından üretilsin.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-11",
+   "sinif": "kaynak",
+   "baslik": "Error beklemesi boyunca çalışma alanı (node_modules dahil) 30 güne kadar diskte kalıyor",
+   "senaryo": "1) Görev eskale olur. 2) _eskale, except bloğunun içinde insanı 30 güne kadar bekler; çalışma alanı temizliği finally'de, beklemeden SONRA. 3) Orta boy bir Node projesinde çalışma alanı 0,5–1,5 GB. 4) 12 ekipte onlarca Error görevi → onlarca GB; disk, Postgres ve Temporal ile aynı.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "/var/lib/fabrika/is altında yaşı > 1 gün olan 'depo' dizinleri; du artışının Error sayısıyla korelasyonu.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:378-398",
+    "config/politika.yaml:18"
+   ],
+   "duzeltme": "_eskale çağrılmadan önce: çalışma dalını ara commit olarak it (depo.degisiklikleri_gonder benzeri 'wip' dalı) ve çalışma alanını sil; insan devam ederse yeni tur zaten taze klonla başlar. En azından node_modules ve derleme çıktılarını eskalasyonda sil.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-12",
+   "sinif": "kaynak",
+   "baslik": "Ajan ve kapı logları boyut sınırı ve saklama süresi olmadan birikiyor",
+   "senaryo": "1) Her ajan ve kapı çağrısının tam stdout/stderr'i ayrı dosyaya yazılır. 2) Temizlik yalnız 'depo' dizinini siler; 'loglar' kanıt diye kalır. 3) Uzun e2e/Playwright çıktıları ve tekrarlanan turlarla görev başına yüzlerce MB. 4) Pilotta tek görevin rapor dosyaları 306 MiB tutmuştu.",
+   "olasilik": 5,
+   "etki": 3,
+   "tespit": "du -sh /var/lib/fabrika/is/*/loglar; disk doluluk eğrisi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:134-139",
+    "fabrika/faaliyetler/sandbox.py:167",
+    "fabrika/faaliyetler/sandbox.py:244",
+    "fabrika/faaliyetler/depo.py:165-170"
+   ],
+   "duzeltme": "_log_yaz: dosya başına üst sınır (ör. ilk 1 MB + son 4 MB) ve gzip. Temporal Schedule ile günlük temizlik: 30 günden eski koşu dizinlerini sil (olay kaydında log yolu varsa 'silindi' işaretle). KVKK saklama süresiyle aynı (AK-55).",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-13",
+   "sinif": "kaynak",
+   "baslik": "Sandbox'ta disk kotası yok; tek görev host diskini doldurup Postgres ve Temporal'ı düşürebilir",
+   "senaryo": "1) Ajan veya bir test büyük dosya üretir (derleme çıktısı, döngüdeki log, önbellek). 2) /work ana makinedeki /var/lib/fabrika'ya bağlı; konteyner katmanı /var/lib/docker'da; ikisi için de sınır yok. 3) Postgres hacmi aynı diskte. 4) Disk dolunca Postgres yazamaz, Temporal durur, bütün ekipler durur.",
+   "olasilik": 3,
+   "etki": 5,
+   "tespit": "df eşik uyarısı; Postgres 'No space left on device'; Temporal persistence hataları.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:100-105",
+    "compose.yaml:27-28",
+    "compose.yaml:89-91"
+   ],
+   "duzeltme": "Kurulumda ayrı bölümler/LV: /var/lib/postgresql (veya pgveri hacmi), /var/lib/docker, /var/lib/fabrika. xfs + pquota ile docker '--storage-opt size=20G' ve çalışma alanı başına proje kotası; '--tmpfs /tmp:size=2g'. %80 disk uyarısı (AK-57). Kapı başlatmadan önce boş alan denetimi; yetersizse yuva bekle.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-14",
+   "sinif": "kaynak",
+   "baslik": "Docker servis logları döndürülmüyor, imaj ve derleme önbelleği temizlenmiyor",
+   "senaryo": "1) compose servislerinde logging ayarı yok; json-file sınırsız büyür (işçi her faaliyeti logluyor). 2) Sandbox ve proje imajları yeniden üretildikçe asılı imajlar ve BuildKit önbelleği birikir. 3) Aylar içinde /var/lib/docker onlarca GB.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "docker system df; /var/lib/docker/containers/*/ *-json.log boyutları.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "compose.yaml:19-91",
+    "sandbox/Dockerfile:1-29"
+   ],
+   "duzeltme": "/etc/docker/daemon.json: log-driver json-file, max-size 50m, max-file 5 (veya compose'a x-logging). Haftalık 'docker image prune' ve 'docker builder prune --keep-storage' (etiketli sandbox imajları hariç) Temporal Schedule veya systemd timer ile.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-15",
+   "sinif": "kaynak",
+   "baslik": "Her kapı çağrısında npm ci baştan ve önbelleksiz; eşzamanlı kurulumlar kayıt ve süre sınırına takılıyor",
+   "senaryo": "1) kapilari_calistir her çağrıda önce 'kurulum' (npm ci) koşar; npm ci node_modules'ü silip yeniden kurar. 2) Konteyner --rm ve HOME imajın içinde: npm önbelleği her seferinde boş. 3) RED + 5 GREEN turu + inceleme turları + entegrasyon → görev başına 10+ tam kurulum. 4) 12 eşzamanlı görevde kayıt 429'u, yavaş kurulum; kapı 20 dk sınırını aşar, zaman aşımı 'altyapı' eskalasyonuna döner. 5) Playwright gereken projede her seferinde tarayıcı indirme.",
+   "olasilik": 5,
+   "etki": 3,
+   "tespit": "Kapı loglarında kurulum süresinin toplam kapı süresine oranı; npm 'ETIMEDOUT/429'; kapi zaman aşımı olayları.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:230-253",
+    "config/projeler.yaml:29",
+    "fabrika/faaliyetler/sandbox.py:100-105"
+   ],
+   "duzeltme": "(1) Paylaşılan paket önbelleği: yerel kayıt vekili (Verdaccio/devpi) — aynı zamanda çıkış izin listesinin tek paket hedefi (AK-36). (2) Kurulumu lockfile özeti değiştiğinde çalıştır: çalışma alanında '.fabrika/kurulum.ozet' işaretçisi. (3) Proje imajına tarayıcıları göm. (4) Kurulumu 'npm ci --prefer-offline' ve betiksiz (--ignore-scripts) seçenekle dene; gerekirse proje bazında aç.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-16",
+   "sinif": "kaynak",
+   "baslik": "Makine yuvası bellekle değil adetle sayılıyor; profil artışı host belleğini aşıyor",
+   "senaryo": "1) FABRIKA_HOST_SLOT=12; profil 0 = 6 GB (72 GB, sığar). 2) Birkaç görev OOM alıp 12 GB ve 16 GB profile çıkar; semafor yine 12 sayar. 3) 12 × 12 GB = 144 GB > 128 GB; çekirdek OOM katili Postgres, Temporal veya işçiyi öldürebilir. 4) Tüm iş akışları ve Plane (aynı makinedeyse) etkilenir.",
+   "olasilik": 3,
+   "etki": 5,
+   "tespit": "dmesg 'Out of memory: Killed process' altyapı süreçleri için; Postgres yeniden başlama; kaynak-artisi olay sayısı.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:25",
+    "fabrika/faaliyetler/sandbox.py:58-66",
+    "config/politika.yaml:30-33",
+    "compose.yaml:84",
+    "docs/KAPASITE.md:30-32"
+   ],
+   "duzeltme": "_HOST_SLOT'u GB cinsinden bellek bütçesine çevir (ör. 96 GB; profil belleği kadar düş). Altyapı servislerine compose'da mem_reservation ve Postgres/Temporal için oom_score_adj=-900; sandbox konteynerlerine --oom-score-adj=500.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-17",
+   "sinif": "takilma",
+   "baslik": "Makine yuvası beklemesi faaliyet zaman aşımını tüketiyor; yoğunlukta ajanlar yarıda kesilip baştan koşuyor",
+   "senaryo": "1) 12 ekip × eşzamanlılık 2 = 24 görev, 12 yuva. 2) ajan_calistir faaliyeti başlar, yuvayı 15 dk bekler; start_to_close 50 dk bu beklemeyi de kapsar. 3) 40 dk süren ajan 35. dakikada kesilir, konteyner silinir, deneme baştan (yarım değişiklikler çalışma alanında kalır). 4) Kapılarda 6 konteyner 120 dk içinde bitmezse 3 denemeden sonra 'Adım zaman sınırını aştı' platform eskalasyonu.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "Faaliyet 'StartToClose' zaman aşımı olayları; heartbeat ayrıntısında 'bekliyor: makine yuvası' süreleri.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:269-279",
+    "fabrika/akis/gorev_akisi.py:295-299",
+    "fabrika/faaliyetler/sandbox.py:58-66",
+    "fabrika/faaliyetler/sandbox.py:160-166",
+    "fabrika/isci.py:48-49"
+   ],
+   "duzeltme": "Eşzamanlılığı Temporal'da sınırla: makine kuyruğu işçisinin max_concurrent_activities toplamı yuva sayısını geçmesin (ağır faaliyetleri ayrı 'ekip@makine-agir' kuyruğuna al, kuyruk başına sınır). Ya da zaman sınırını yuva alındıktan sonra başlat: start_to_close'u geniş tut, faaliyet içinde asıl süre sınırını _calistir uygular (zaten var).",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-18",
+   "sinif": "takilma",
+   "baslik": "İşçi yeniden başlarsa sahipsiz sandbox konteynerleri yaşamaya devam ediyor; yeniden deneme aynı çalışma alanında eşzamanlı yazıyor",
+   "senaryo": "1) Güncelleme veya çökme ile işçi konteyneri yeniden başlar. 2) Çalışan 'docker run --rm' konteynerleri daemon'da yaşamaya devam eder; bellekteki semafor sıfırlanır. 3) Temporal heartbeat zaman aşımıyla faaliyeti yeniden dener; konteyner adı deneme numarası içerdiği için çakışma olmaz, ikinci ajan aynı /work'te başlar. 4) İki ajan aynı dosyaları yazar; yuva sayısı fiilen aşılır.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "docker ps'te aynı kosu_id için birden çok 'fab-' konteyneri; işçi açılış zamanından eski fab- konteynerleri.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:89-93",
+    "fabrika/faaliyetler/sandbox.py:159",
+    "fabrika/isci.py:53-70"
+   ],
+   "duzeltme": "_docker_argv'e '--label fabrika.kosu=<kosu_id> --label fabrika.makine=<makine>' ekle. isci.main başında bu makinenin etiketli konteynerlerini 'docker rm -f' ile kaldır. ajan_calistir ve kapilari_calistir başında aynı kosu_id'nin çalışan konteynerini öldür; çalışma alanına flock kilidi. Worker(graceful_shutdown_timeout=...) ile dağıtımda faaliyetlerin bitmesini bekle.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-19",
+   "sinif": "takilma",
+   "baslik": "İş akışı sürümlemesi yok: kod değişince uzun bekleyen iş akışları determinizm hatasıyla sonsuz workflow task yeniden denemesine giriyor",
+   "senaryo": "1) Kaizen haftalık iyileştirme yapar, gorev_akisi.py değişir (yeni faaliyet, sıra değişikliği). 2) İşçi yeniden başlar; Human Test'te 14 gün, Error'da 30 güne kadar bekleyen iş akışları yeni kodla yeniden oynatılır. 3) NondeterminismError → Python SDK workflow task'ı başarısız sayar ve sonsuza dek yeniden dener. 4) Plane'de iş 'Human Test' veya 'Error' görünür; insan Done yapar, sinyal gider ama iş akışı işlemez. Sessiz takılma.",
+   "olasilik": 5,
+   "etki": 5,
+   "tespit": "temporal_workflow_task_execution_failed metriği (şu an kapalı, AK-57); Temporal UI'da 'WorkflowTaskFailed' ve 'nondeterministic'; gözcüde 'sorguya yanıt vermiyor'.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/isci.py:38",
+    "fabrika/akis/gorev_akisi.py:102-103",
+    "config/politika.yaml:17-18",
+    "fabrika/kaizen.py:8-9"
+   ],
+   "duzeltme": "(1) Her davranış değişikliğinde workflow.patched('degisiklik-adi') kullan; kural README'ye ve PR şablonuna. (2) Worker Versioning (build id / deployment version) ile eski iş akışlarını eski sürüm işçisinde bitir; eski işçiyi boşalana kadar çalıştır. (3) CI'da temporalio.worker.Replayer ile üretimden alınmış örnek geçmişleri yeniden oynat. (4) Uzun beklemeleri tur sınırında continue_as_new ile kes.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-20",
+   "sinif": "takilma",
+   "baslik": "Ajan çıktısı şema doğrulamasız iş akışı koduna giriyor; tip uyuşmazlığı iş akışını sessizce kilitliyor",
+   "senaryo": "1) Model cikti-*.json'a nesne yerine liste yazar ya da alt_gorevler öğelerini dize olarak döndürür. 2) sandbox yalnız json.loads yapar. 3) İş akışında '.get' AttributeError verir; bu ApplicationError değildir, Python SDK workflow task'ı başarısız sayar ve sonsuza dek yeniden dener. 4) Eskalasyon yok, Plane 'In Progress', bütçe tüketilmez ama iş hiç ilerlemez.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Temporal UI'da WorkflowTaskFailed (AttributeError/TypeError); gözcüde yanıt vermeyen iş akışları.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:175-181",
+    "fabrika/akis/gorev_akisi.py:339-349",
+    "fabrika/akis/gorev_akisi.py:446-447",
+    "fabrika/akis/gorev_akisi.py:463-468",
+    "fabrika/akis/gorev_akisi.py:540"
+   ],
+   "duzeltme": "Rol başına pydantic çıktı modeli (modeller.py); ajan_calistir doğrulasın, geçersizse AjanSonucu(basarili=False, hata='şema: ...'). İş akışında dış veriye dokunan her yeri savunmacı yap; Worker(workflow_failure_exception_types=[Exception]) yerine run() içinde beklenmeyen istisnayı _Eskalasyon'a çeviren genel yakalama. test_akis.py'ye 'bozuk çıktı' vakası.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-21",
+   "sinif": "takilma",
+   "baslik": "Hata sınıflandırma desenleri fazla geniş: uygulama/test çıktısı sağlayıcı hatası sanılıyor",
+   "senaryo": "1) Ajan başarısız biter (çıktı dosyası yok). 2) Sınıflandırıcı ajanın son metnine ve stdout/stderr'e bakar. 3) Faturalama modülü olan projede 'billing' kelimesi TAVAN'a, test çıktısındaki 'Internal server error', '503 Service', 'ECONNRESET' GECICI'ye, 'permission_error' KIMLIK'e eşleşir. 4) TAVAN/KIMLIK: yanlış platform eskalasyonu. GECICI: 4 saate kadar sessiz, baştan yeniden deneme; bu denemelerin maliyeti hiç sayılmaz (istisna maliyet hesabından önce atılır).",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "SaglayiciGecici/Tavan olaylarının sağlayıcı durum sayfası ve API hata kayıtlarıyla eşleşmemesi; aynı görevde tekrarlayan 'GECICI' denemeleri.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:32-35",
+    "fabrika/faaliyetler/sandbox.py:44-55",
+    "fabrika/faaliyetler/sandbox.py:169-174",
+    "fabrika/akis/gorev_akisi.py:275-279",
+    "tests/test_saf.py:79-88"
+   ],
+   "duzeltme": "Sınıflandırmayı yalnız CLI'nin yapılandırılmış hata alanından yap (claude -p JSON'unda is_error + API hata tipi; ya da 'stream-json' içindeki api_error olayı), serbest metinden değil. 'billing' ve 'api_error' gibi genel desenleri kaldır. Sınıf ne olursa olsun kısmi maliyeti raporla. test_saf.py'ye negatif vakalar ('billing modülü testi kaldı' → '').",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-22",
+   "sinif": "takilma",
+   "baslik": "Sağlayıcı tavanı veya anahtar hatasında toplu Error; genel devre kesici yok",
+   "senaryo": "1) Aylık harcama tavanına ulaşılır ya da anahtar döner. 2) O anda çalışan 12–24 görevin her biri ayrı ayrı TAVAN/KIMLIK eskalasyonu yapar, Plane'de Error olur, platform kişisine atanır. 3) Tavan kalkınca insan her birini elle In Progress'e alır; her biri +12 $ ek bütçe ve insan_devam+1 alır. 4) 3 insan devamından sonra otomatik devam kapanır.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "Kısa aralıkta çok sayıda aynı nedenli eskalasyon olayı.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:242-249",
+    "fabrika/akis/gorev_akisi.py:279",
+    "fabrika/akis/gorev_akisi.py:386-390"
+   ],
+   "duzeltme": "Küresel 'duraklat' durumu: TAVAN/KIMLIK görülünce bir 'fabrika-kontrol' iş akışına sinyal; GorevAkisi ajan çağrısından önce bu durumu (faaliyetle veya sinyal ile) sorgular ve bekler, Error'a geçmez. Platforma tek bir bildirim. Bu tür beklemeler insan_devam ve ek bütçe saymaz.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-23",
+   "sinif": "takilma",
+   "baslik": "Webhook ve uzlaştırıcı aynı süreçte; giriş servisi kapalıyken ikisi birden duruyor",
+   "senaryo": "1) giriş konteyneri çöker veya yeniden başlar. 2) Plane webhook teslimleri başarısız olur ve yeniden denenmez. 3) Uzlaştırıcı da aynı süreçte döndüğü için çalışmaz. 4) Giriş geri gelince uzlaştırıcı toparlar; ama uzlaştırıcı hataları yalnız log.warning olduğu için uzun süre kısmi çalışıyor olabilir (ör. sürekli 429).",
+   "olasilik": 3,
+   "etki": 3,
+   "tespit": "giriş sağlık denetimi; 'uzlaştırıcı:' uyarı logları; In Progress olup iş akışı olmayan iş sayısı.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/giris/app.py:93-108",
+    "fabrika/giris/app.py:73-90",
+    "compose.yaml:63-73"
+   ],
+   "duzeltme": "Uzlaştırıcıyı Temporal Schedule ile tetiklenen bir iş akışına/faaliyete taşı (dayanıklı, görünür). Giriş için healthcheck ve dış izleme. 'In Progress ama çalışan iş akışı yok' sayısını metrik yap.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-24",
+   "sinif": "takilma",
+   "baslik": "Plane hız sınırı (60/dk) uzlaştırıcı ve faaliyetler arasında paylaşılıyor; 429'da insan bildirimleri sessizce kayboluyor",
+   "senaryo": "1) Uzlaştırıcı her 120 sn'de proje başına 5 çağrı yapar (durumlar + 4 durum listesi); 12 projede tek patlamada 60 çağrı. 2) Aynı anahtarla işçi hazırlık, durum, yorum, atama, etiket çağrıları yapar. 3) 429 → _KISA politikası 5 denemede (~75 sn) biter, Retry-After yok sayılır. 4) _yorum, _ata, _etiket hataları yutulur: 'İnsan testi hazır' paketi veya Error paketi yazılmaz, kimse atanmaz; iş akışı 14–30 gün sessizce bekler. 5) _plane_durum hatası 'Beklenmeyen sistem hatası (HizSiniri)' eskalasyonu üretir, o da Plane'e yazılamaz.",
+   "olasilik": 5,
+   "etki": 4,
+   "tespit": "Plane 429 sayısı (şu an ölçülmüyor); iş akışı 'insan-testi' aşamasında ama Plane'de yorum yok; 'Plane yorumu yazılamadı' logları.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/giris/app.py:73-90",
+    "fabrika/faaliyetler/plane.py:24-27",
+    "fabrika/akis/gorev_akisi.py:36-37",
+    "fabrika/akis/gorev_akisi.py:194-220",
+    "fabrika/akis/gorev_akisi.py:676-680"
+   ],
+   "duzeltme": "(1) Tüm Plane çağrılarını tek hız sınırlayıcıdan geçir: Plane faaliyetlerini ayrı 'plane' kuyruğuna al, işçide token kovası (ör. 45/dk), Retry-After'a uyan geri çekilme; uzlaştırıcıya ayrı küçük kota. (2) Durum listesini proje başına önbellekle. (3) İnsan paketi yorumu, durum ve atama için _SABIRLI politika; başarısızsa eskalasyon değil yeniden dene. (4) Uzlaştırıcı yalnız çalışan/bekleyen iş akışlarının işlerini ve updated_at'i son turdan yeni olanları sorgulasın. (5) Ayrı Plane kullanıcısı/anahtarı uzlaştırıcı için (sınır anahtar başınaysa).",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-25",
+   "sinif": "takilma",
+   "baslik": "Uzlaştırıcı, işin gerçek durumunu değil sorguladığı durum adını kullanıyor ve sayfalama yapmıyor",
+   "senaryo": "1) is_listele 'state' parametresiyle 100 kayıt ister, imleç izlemez. 2) isle'ye iş kaleminin kendi durumu değil, sorgulanan durum adı (ad) verilir. 3) Plane 1.4.2 bu filtreyi uygulamazsa (sözleşme testi yok) bütün işler 'In Progress' sanılır ve her biri için iş akışı başlar; uygularsa bile 100'ü aşan Done/Todo listelerinde yeni geçişler görülmez, kaçan webhook telafi edilmez.",
+   "olasilik": 3,
+   "etki": 5,
+   "tespit": "İlk kurulumda Backlog/Done işleri için başlayan GorevAkisi'ler; Done olduğu halde 14 gün sonra 'zaman-asimi' ile biten iş akışları.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/giris/app.py:77-88",
+    "fabrika/faaliyetler/plane.py:42-44"
+   ],
+   "duzeltme": "app.py:84-86: is_['state'] == idler[ad] değilse atla (istemci tarafı denetim). plane.py: imleçli sayfalama (next_cursor/next_page_results). Plane 1.4.2'ye karşı küçük bir sözleşme testi (gerçek Plane konteyneriyle S0'da): filtre, sayfalama, webhook yükü.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-26",
+   "sinif": "takilma",
+   "baslik": "Makineye bağlı kuyrukta işçi yoksa faaliyetler sonsuza dek bekliyor (schedule_to_start yok)",
+   "senaryo": "1) Çalışma alanı 'ekip-01@makine-1' kuyruğuna bağlanır. 2) Makine arızalanır ya da FABRIKA_MAKINE değeri değişir (varsayılan hostname). 3) Sonraki faaliyetler bu kuyrukta dinleyicisiz bekler; _makine çağrılarında schedule_to_close da yok. 4) İş akışı ne hata verir ne ilerler.",
+   "olasilik": 2,
+   "etki": 4,
+   "tespit": "Temporal'da 'ekip-*@*' kuyruklarında poller sayısı 0 ve backlog > 0; schedule_to_start gecikmesi metriği.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:309-312",
+    "fabrika/akis/gorev_akisi.py:269-279",
+    "fabrika/faaliyetler/depo.py:78-79",
+    "compose.yaml:85"
+   ],
+   "duzeltme": "Makine kuyruğu faaliyetlerine schedule_to_start_timeout (ör. 30 dk); bu zaman aşımında turu _Yeniden ile baştan kur (yeni çalışma alanı başka makinede). FABRIKA_MAKINE'yi zorunlu ve sabit yap (compose varsayılanı yerine .env zorunlu).",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-27",
+   "sinif": "takilma",
+   "baslik": "İş akışı geçmişi büyüyor: continue_as_new yok, uzun yoklama döngüleri ve tam istem yükleri geçmişte",
+   "senaryo": "1) Yüksek riskli işte insan birleştirmesi 10 dakikada bir, 14 güne kadar (2016 tekrar) yoklanır. 2) Her ajan çağrısının girdisi tam istemi (form, plan, test listesi, hata özetleri) taşır. 3) Birkaç tur, çözücü ve insan devamıyla geçmiş 10 bin olay uyarı eşiğine, büyük istemlerle MB'lara çıkar. 4) Her sorgu ve işçi yeniden başlaması tam yeniden oynatma yapar; uzlaştırıcı her 2 dk'da sorgu atar.",
+   "olasilik": 3,
+   "etki": 3,
+   "tespit": "Temporal 'history size/count exceeds warn limit' logları; sorgu gecikmesi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:616-623",
+    "fabrika/akis/gorev_akisi.py:269-273",
+    "fabrika/modeller.py:64-73",
+    "fabrika/giris/app.py:56"
+   ],
+   "duzeltme": "İnsan birleştirmesini GitHub 'pull_request closed' webhook'u → sinyal ile bekle (yoklama yok). İstemi çalışma alanına faaliyet içinde yaz, iş akışı yalnız istem parametrelerini taşısın. Tur sınırında continue_as_new (sayaçlar ve bütçe girdiyle taşınır).",
+   "oncelik": "S2"
+  },
+  {
+   "id": "AK-28",
+   "sinif": "paralellik",
+   "baslik": "Tek alpha main'e 12 ekip birleştiriyor: çakışma fırtınası veya birlikte kırılan main",
+   "senaryo": "1) Aynı projede birden çok ekip ya da ekip içi 2 eşzamanlı görev. 2a) main'de 'güncel dal zorunlu' açıksa her birleştirme diğer bütün PR'ları geçersiz kılar; her biri entegrasyon + tam kapı + 45 dk'ya kadar CI yeniden koşar: O(n²) CI ve Actions kuyruğu; 3 denemeden sonra SAFe eskalasyonu. 2b) Kapalıysa ayrı ayrı yeşil iki değişiklik birlikte main'i kırar (anlamsal çakışma), kimse sınamadan alpha'ya çıkar.",
+   "olasilik": 5,
+   "etki": 4,
+   "tespit": "entegrasyon sayacı ve 'Üç entegrasyon denemesi' eskalasyonları; main push CI kırmızı oranı; Actions kuyruk süresi.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:609-650",
+    "sablonlar/hedef-repo/.github/workflows/ci.yml:4-9",
+    "README.md:140"
+   ],
+   "duzeltme": "MVP'de GitHub merge queue (ci.yml'e 'merge_group' tetikleyicisi; pr_birlestir yerine kuyruğa ekleme ve sonucu bekleme). Alternatif: proje başına tek 'birlestirici' iş akışı (Temporal'da sıralı): güncel main üstünde yeniden temelle, yerel kapılar, CI, fast-forward. Aynı modüle eşzamanlı iki görevi başlatmama (S3'teki üstlenme kaydının basit hali: planın etkilenen_dosyalar kesişimi).",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-29",
+   "sinif": "paralellik",
+   "baslik": "Alpha dağıtımı ara SHA'ları atlıyor; fabrika tam SHA eşitliği beklediği için yanlış eskalasyon",
+   "senaryo": "1) Üç görev dakikalar içinde birleşir. 2) alpha.yml concurrency grubu bir koşan + bir bekleyen tutar; yeni gelen bekleyeni iptal eder. 3) Ortadaki görevin SHA'sı hiç dağıtılmaz; değişikliği daha yeni SHA ile yayındadır. 4) Fabrika /_surum'u kendi SHA'sı ile karşılaştırır, 20 dk sonra 'Birleştirilen commit alpha ortamında görünmedi' platform eskalasyonu. 5) 12 ekipte her gün tekrarlar, platform kişisi gürültüye alışır.",
+   "olasilik": 5,
+   "etki": 3,
+   "tespit": "'alpha' aşamasında eskalasyonların, /_surum'un daha yeni bir SHA gösterdiği anlara denk gelmesi; Actions'ta 'cancelled' alpha koşuları.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "sablonlar/hedef-repo/.github/workflows/alpha.yml:11-13",
+    "fabrika/akis/gorev_akisi.py:489-500"
+   ],
+   "duzeltme": "github.alpha_surumu yerine 'alpha_icerir(birlesim_sha)': /_surum SHA'sını al, GitHub compare API ile birlesim...gorulen 'ahead' veya 'identical' ise geçti. Bekleme süresini dağıtım kuyruğuna göre uzat.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-30",
+   "sinif": "paralellik",
+   "baslik": "main CI'ı sık birleştirmede iptal ediliyor ve alpha dağıtımı CI sonucunu beklemiyor",
+   "senaryo": "1) ci.yml push/main için 'ci-refs/heads/main' grubunda cancel-in-progress: true. 2) Her yeni birleştirme önceki main CI'ını iptal eder; yoğun günde main hiç tamamlanmış CI görmez. 3) alpha.yml push'ta bağımsız tetiklenir; kırık main doğrudan alpha'ya çıkar. 4) Kimse main'in kırıldığı anı bilmez.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "main commit'lerinde 'cancelled' CI oranı; alpha'da hata artışının birleştirme zamanlarıyla eşleşmesi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "sablonlar/hedef-repo/.github/workflows/ci.yml:10-12",
+    "sablonlar/hedef-repo/.github/workflows/alpha.yml:5-7"
+   ],
+   "duzeltme": "ci.yml: cancel-in-progress: ${{ github.event_name == 'pull_request' }}. alpha.yml'i 'workflow_run: ci (main, success)' ile tetikle ya da CI işini aynı iş akışında 'needs' ile bağla. Fabrika main CI kırmızıyken yeni birleştirme yapmasın (AK-31 dondurma).",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-31",
+   "sinif": "paralellik",
+   "baslik": "Tek alpha ortamı: kırık dağıtım bütün testçileri durduruyor, fabrika birleştirmeye devam ediyor",
+   "senaryo": "1) Bir göç hatası veya başlangıç çökmesi alpha'yı düşürür. 2) Fabrika yalnız /_surum SHA'sına bakar; sağlık ve duman testi yok. 3) Sonraki görevler birleşmeye devam eder; hepsi alpha doğrulamasında takılır ve platforma eskale olur. 4) Human Test'teki bütün görevler test edilemez; testçiler kimin kırdığını bilemez.",
+   "olasilik": 4,
+   "etki": 5,
+   "tespit": "/_saglik başarısız; aynı saatte çok sayıda 'alpha' eskalasyonu; testçi yorumlarında 'alpha açılmıyor'.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:489-500",
+    "sablonlar/hedef-repo/.github/workflows/alpha.yml:45-52",
+    "README.md:140"
+   ],
+   "duzeltme": "Alpha doğrulamasına /_saglik ve projeye özel kısa duman testi ekle. Proje başına 'birleştirme dondurma' bayrağı (Temporal'da proje kontrol iş akışı): alpha sağlıksız veya main CI kırmızıysa yeni birleştirmeler bekler; son birleştirme için otomatik revert PR ve platform bildirimi. S2: görev başına önizleme ortamı.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-32",
+   "sinif": "paralellik",
+   "baslik": "Veritabanı göçleri çakışıyor; git çakışması yok ama main ve alpha DB bozuluyor",
+   "senaryo": "1) İki görev aynı sırada göç dosyası ekler (farklı adlar, aynı sıra numarası ya da birbirini varsayan şema). 2) Her PR tek başına yeşil; git çakışma görmez. 3) main'de göç grafiği iki uçlu olur veya uygulama başlarken göç başarısız olur; alpha çöker (AK-31). 4) Uygulanmış yıkıcı göç alpha verisini geri alınamaz biçimde değiştirir.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "Göç aracının 'multiple heads' hatası; alpha başlangıç logları.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "sablonlar/hedef-repo/.claude/skills/veritabani-gocu/SKILL.md:6-13",
+    "sablonlar/hedef-repo/AGENTS.md:26",
+    "config/projeler.yaml:28-35"
+   ],
+   "duzeltme": "Deterministik 'goc' kapısı (projeler.yaml komutlar.goc): tek baş/leaf, göç + geri alma testi temiz DB'de. Göç dizinine dokunan görev riskini otomatik 'yuksek' yap (AK-40) ve birleştirmeyi proje başına göç kilidiyle sırala. Alpha DB için dağıtım öncesi anlık görüntü ve geri yükleme betiği.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-33",
+   "sinif": "paralellik",
+   "baslik": "Alpha'daki test verisi kirleniyor; testçiler birbirinin verisini bozuyor",
+   "senaryo": "1) Tek alpha DB'si, 12 ekibin testçileri. 2) Bir testçinin olumsuz durum denemesi ya da monkey testi ortak veriyi değiştirir. 3) Başka testçinin 'veri kontrolü' yanlış sonuç verir; haksız red veya haksız kabul. 4) Veri kontrolü için testçilere DB erişimi gerekir; erişim kontrolü tanımsız.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "Aynı saatte farklı görevler için çelişkili veri kontrolü yorumları; alpha DB'de sahipsiz kayıt artışı.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:726-727",
+    "sablonlar/hedef-repo/AGENTS.md:29-33"
+   ],
+   "duzeltme": "İnsan test paketinde görev başına veri ön eki/kiracı öner (ör. 'WEB-123-' ile başlayan test kullanıcıları); projeye tohum ve gece sıfırlama betiği; testçilere salt okunur DB görünümü veya /_veri uç noktası. S2 önizleme ortamı + geçici DB.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-34",
+   "sinif": "paralellik",
+   "baslik": "Entegrasyondan sonra korunan-test denetimi eski RED SHA'sına göre yapılıyor; diğer ekiplerin test değişiklikleri ihlal sayılıyor",
+   "senaryo": "1) Birleştirme reddedilir, ana_dali_birlestir main'i çalışma dalına birleştirir; main'den diğer ekiplerin tests/ değişiklikleri gelir. 2) Sonraki CI kırmızısı veya kapı hatası _yesil'i korunan=t.red_sha ile çağırır. 3) 'git diff red_sha' diğer ekiplerin test dosyalarını da listeler → korunan-dosyalar kapısı her turda kalır. 4) Aynı hata → çözücü → insana eskalasyon. Buna karşılık çakışma çözümü sonrası kapılar korunan referanssız çalışır: çözümü yapan ajan testleri zayıflatsa yakalanmaz.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Entegrasyon sonrası korunan-dosyalar kapısında bu görevin yazmadığı test yolları.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:634-647",
+    "fabrika/akis/gorev_akisi.py:556",
+    "fabrika/akis/gorev_akisi.py:604",
+    "fabrika/faaliyetler/sandbox.py:221-226"
+   ],
+   "duzeltme": "Korumayı 'RED'de yazılan dosyaların içerik özeti' olarak tut (t.testler dosya listesi + blob sha). Kapı: bu dosyalar değişmemiş olmalı + main'den gelen test dosyaları main'deki haliyle aynı olmalı. Entegrasyondan sonra korunan referansı birleştirme commit'ine taşı ve çakışma çözümünden sonra da korumayı uygula.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-35",
+   "sinif": "guvenlik",
+   "baslik": "GitHub jetonu çalışma alanının git yapılandırmasına yazılıyor ve sandbox'tan okunabiliyor",
+   "senaryo": "1) Çalışma alanı, jeton gömülü uzak adresle klonlanır; git bu adresi yerel yapılandırmaya kaydeder. 2) Çalışma alanı (içindeki .git dahil) ajan ve kapı konteynerlerine bağlanır; .git salt okunur ama okunabilir. 3) Kapılar bağımlılık kodu çalıştırır, ağ serbesttir (AK-36). 4) Jeton sızarsa, kapsamındaki bütün alpha depolarına yazma ve birleştirme yetkisi dışarıdadır. Belgelerdeki 'sandbox'a GitHub kimliği verilmez' güvencesi tutmuyor.",
+   "olasilik": 4,
+   "etki": 5,
+   "tespit": "Çalışma alanındaki git yapılandırmasında 'x-access-token' içeren uzak adres (denetim betiğiyle kolayca taranabilir); GitHub denetim günlüğünde beklenmeyen IP'lerden jeton kullanımı.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/depo.py:40-43",
+    "fabrika/faaliyetler/depo.py:62",
+    "fabrika/faaliyetler/depo.py:111",
+    "fabrika/faaliyetler/depo.py:130",
+    "fabrika/faaliyetler/sandbox.py:103",
+    "fabrika/faaliyetler/sandbox.py:109-111",
+    "fabrika/faaliyetler/sandbox.py:3-5",
+    "docs/MIMARI.md:126"
+   ],
+   "duzeltme": "Jetonu hiçbir zaman URL'ye ve diske yazma: klon/fetch/push'ta yalnız işçi süreci ortamında GIT_ASKPASS veya 'git -c http.extraHeader=Authorization: ...' kullan; uzak adres jetonsuz kalsın. Mevcut kurulumlar için jetonu döndür. GitHub App kurulum jetonu (1 saat, depo başına, contents+pull_requests yazma yalnız alpha depolarında). test_entegrasyon.py'ye 'çalışma alanında kimlik bilgisi yok' denetimi.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-36",
+   "sinif": "guvenlik",
+   "baslik": "Model API anahtarı sandbox ortamında ve ağ çıkışı serbest; bağımlılık veya istem enjeksiyonu anahtarı ve kodu dışarı taşıyabilir",
+   "senaryo": "1) Ajan konteyneri anahtarı ortam değişkeni olarak alır ve köprü ağda sınırsız çıkışa sahiptir. 2) Ajan istem gereği projenin kurulum ve test komutlarını kendi konteynerinde çalıştırır; bağımlılıkların kurulum betikleri de aynı ortamda koşar. 3) Kötü niyetli ya da ele geçirilmiş bir paket veya depo içeriği ortamdaki sırlara ulaşabilir. 4) Claude ayarlarındaki komut yasakları güvenlik sınırı değildir (başka yorumlayıcılar mevcut).",
+   "olasilik": 3,
+   "etki": 5,
+   "tespit": "Sağlayıcı konsolunda beklenmeyen kullanım; ağ çıkış akış kayıtlarında izin listesi dışı hedefler (şu an kayıt yok).",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:157",
+    "fabrika/faaliyetler/sandbox.py:114-115",
+    "config/politika.yaml:35-36",
+    "config/politika.yaml:44-48",
+    "sandbox/claude-ayarlari.json:3-12",
+    "compose.yaml:96-99",
+    "docs/OLGUNLUK.md:8"
+   ],
+   "duzeltme": "Gerçek depolarla ilk koşudan önce: (1) çıkış vekili — yalnız model API'si ve yerel paket vekili (AK-15) izinli; diğer her şey kapalı. (2) Anahtarı sandbox'a verme: vekil başlığı ekler; sandbox'a görev başına kısa ömürlü, harcama sınırlı bir kimlik veya hiç kimlik. (3) Sağlayıcı konsolunda fabrika için ayrı çalışma alanı ve harcama sınırı. (4) gVisor (calisma_zamani: runsc).",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-37",
+   "sinif": "guvenlik",
+   "baslik": "'fabrika-sandbox' ağı hiçbir servise bağlı değil; oluşmazsa ajanlar çalışmaz, RED kapısı yanlışlıkla geçebilir (doğrulanmalı)",
+   "senaryo": "1) compose.yaml ağı tanımlar ama hiçbir servis kullanmaz; Compose kullanılmayan ağları oluşturmayabilir. 2) Oluşmazsa her 'docker run --network fabrika-sandbox' başlatma hatası verir. 3) Ajan çağrıları 'ajan başarısız' sayılır (altyapı değil); kurulum komutu olmayan projelerde test kapısı sıfır dışı çıkışla biter ve RED 'geçer' (AK-01). 4) e2e 'ag: none' kullandığı için bu yapılandırma hiç sınanmıyor.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "Kapı/ajan loglarında 'network ... not found'; ilk kurulumda planlayıcının iki kez 'çıktı üretemedi'.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "compose.yaml:93-99",
+    "config/politika.yaml:35",
+    "e2e/config/politika.yaml:34",
+    "fabrika/faaliyetler/sandbox.py:103"
+   ],
+   "duzeltme": "İşçi açılışında 'docker network inspect' ile ağı doğrula, yoksa oluştur ya da başlatmayı durdur. Docker başlatma hatalarını (çıkış 125) altyapı sınıfına al. e2e'ye üretim ağ ayarıyla bir koşu ekle.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-38",
+   "sinif": "guvenlik",
+   "baslik": "İşçi root ve Docker soketine sahip; ajanın yazabildiği yolları bağlantı türünü denetlemeden işliyor",
+   "senaryo": "1) İşçi konteyneri root çalışır ve Docker soketini bağlar; bu, ana makinede root'a eşdeğerdir. 2) İşçi, ajanın değiştirdiği çalışma ağacında git ve dosya işlemleri yapar; '.fabrika' çıktı dizinini depo içinde oluşturur, izinlerini değiştirir, istem dosyası yazar, çıktıyı okur ve salt okunur rollere bağlama kaynağı olarak verir. 3) Bu yolun gerçekten bir dizin olduğu (sembolik bağlantı olmadığı) denetlenmez; bağlama kaynağını Docker daemon ana makinede çözer. 4) Salt okunur rol yalıtımı ve işçi bütünlüğü bu varsayıma dayanıyor; tek bir kusur ana makineyi etkiler.",
+   "olasilik": 2,
+   "etki": 5,
+   "tespit": "Çalışma alanlarında sembolik bağlantı olan '.fabrika' girdisi (denetim betiği); /var/lib/fabrika dışındaki dosyalarda beklenmeyen izin değişiklikleri.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "compose.yaml:86-91",
+    "Dockerfile:1-21",
+    "fabrika/faaliyetler/sandbox.py:149-155",
+    "fabrika/faaliyetler/sandbox.py:106-108",
+    "fabrika/faaliyetler/depo.py:71-72",
+    "README.md:139"
+   ],
+   "duzeltme": "(1) Çıktı ve istem dizinini depo DIŞINDA tut (kok/<kosu>/cikti) ve /work/.fabrika'ya ayrı bağla; işçi hiçbir zaman ajanın yazdığı yolu izlemesin (lstat ile tür denetimi, O_NOFOLLOW). (2) İşçiyi root olmayan kullanıcıyla çalıştır. (3) Docker erişimini, yalnız izinli imaj ve yalnız kok_dizin altındaki bağlamalara izin veren dar bir yürütücü servisine indir; ya da rootless Docker. (4) Git işlemlerini de ayrı, yetkisiz bir konteynerde yap.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-39",
+   "sinif": "guvenlik",
+   "baslik": "İstem enjeksiyonu: iş kalemi, yorumlar, depo içeriği ve bağımlılıklar ajana talimat olarak giriyor",
+   "senaryo": "1) Planlayıcı, test yazarı, uygulayıcı ve gözden geçirici istemlerine form ve son 5 insan yorumu doğrudan eklenir; ajan depo ve bağımlılık dosyalarını okur. 2) Proje üyesi olan herkes (ya da kimliksiz web formunu kullanan biri, Intake triyajından sonra) açıklamaya veya yoruma talimat koyabilir. 3) Gözden geçirici de aynı içerikten etkilenen bir dil modelidir. 4) Düşük ve orta risk otomatik birleşir; korunan yollar dışındaki her şey (uygulama kodu, bağımlılık listesi) değişebilir.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "Farkta görev kapsamıyla ilgisiz dosya/bağımlılık; açıklama/yorumlarda talimat kalıpları (basit tarayıcı).",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/plane.py:101-103",
+    "fabrika/istemler.py:22-29",
+    "fabrika/giris/app.py:157-198",
+    "config/politika.yaml:64-65",
+    "fabrika/istemler.py:97-115"
+   ],
+   "duzeltme": "(1) Görev formunu kimlik doğrulamalı ters vekil arkasına al (mvp-oncesi). (2) Ek bağlam olarak yalnız proje rollerindeki (ürün sahibi, testçi) kişilerin yorumlarını al. (3) İstemde güvenilmeyen içeriği sınırlayıcılarla etiketle ve 'veri, talimat değil' kuralı. (4) Otomatik birleştirmede yol kuralları: kimlik doğrulama, göç, bağımlılık dosyaları, altyapı yolları değişirse insan onayı (AK-40). (5) Bağımlılık eklenmesi ayrı kapı: lockfile farkı insan onayına.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-40",
+   "sinif": "guvenlik",
+   "baslik": "Risk sınıfı talep edenin beyanına dayanıyor; 'düşük' seçimi plan onayını ve insan birleştirmesini atlatıyor",
+   "senaryo": "1) Form risk alanı serbest seçim; varsayılan 'orta'. 2) Yetki veya ödeme koduna dokunan bir iş 'düşük' işaretlenir. 3) Plan onayı yok, otomatik birleştirme var, güvenlik incelemesi yok (düşükte guvenlik_incelemesi yok). 4) Riskli değişiklik insansız alpha'ya çıkar.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "Düşük riskli görevlerin farkında hassas yollar (auth, migrations, payment, infra).",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/giris/app.py:168",
+    "fabrika/form.py:79-80",
+    "fabrika/akis/gorev_akisi.py:428",
+    "fabrika/akis/gorev_akisi.py:613",
+    "config/politika.yaml:64-66"
+   ],
+   "duzeltme": "projeler.yaml'a 'hassas_yollar' listesi; birleştirmeden önce fark üzerinden hesaplanan risk = max(beyan, yol kuralı, fark boyutu, bağımlılık değişikliği). Yükselirse birleştirme insan yoluna geçer ve Plane'e not düşülür.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-41",
+   "sinif": "guvenlik",
+   "baslik": "CI ve dağıtım: pull_request_target yok (iyi), ama alpha ortam sırları ve dağıtım hedefi yeterince sınırlı değil",
+   "senaryo": "1) ci.yml yalnız pull_request ve push kullanıyor; eylemler SHA ile sabit. 2) Buna karşın gitleaks imajı değiştirilebilir etiketle çağrılıyor. 3) 'alpha' environment'ı için dal kısıtı tanımlanmazsa, depo yazma yetkisi olan bir kimlik (ör. sızmış jeton, AK-35) aynı depodaki başka bir daldan ortam sırlarına erişen iş akışı çalıştırabilir. 4) Alpha sunucusu fabrika ile aynı makinedeyse ajanın yazdığı uygulama kodu fabrika servislerinin yanında çalışır; dağıtım kullanıcısı Docker grubunda.",
+   "olasilik": 2,
+   "etki": 4,
+   "tespit": "GitHub denetim günlüğünde main dışı dallardan 'alpha' environment kullanımı.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "sablonlar/hedef-repo/.github/workflows/ci.yml:4-9",
+    "sablonlar/hedef-repo/.github/workflows/ci.yml:30-32",
+    "sablonlar/hedef-repo/.github/workflows/alpha.yml:15-19",
+    "sablonlar/hedef-repo/.github/workflows/alpha.yml:34-44"
+   ],
+   "duzeltme": "README kurulum adımlarına: 'alpha' environment → deployment branches: yalnız main; ALPHA_SSH_ANAHTARI yalnız environment sırrı; gitleaks imajını digest ile sabitle; alpha'yı fabrikadan ayrı makinede/VM'de çalıştır; dağıtım kullanıcısı için yalnız belirli compose komutuna izin veren kısıtlı SSH (command=).",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-42",
+   "sinif": "operasyon",
+   "baslik": "GitHub API ile squash birleştirmede committer GitHub olur; kişisel commit politikası (author ve committer = karacaismail) ihlal edilir",
+   "senaryo": "1) Fabrika commit'leri doğru kimlikle atılır ve dala itilir. 2) Birleştirme GitHub API 'merge' ucuyla squash yapılır; oluşan main commit'inin committer'ı GitHub'ın kendi kimliğidir. 3) Kullanıcının ayakta duran politikası yeni commit'lerde author ve committer'ın karacaismail olmasını istiyor; bu Mac'teki koruma sunucuyu ve GitHub'ı kapsamaz. 4) Aylar sonra geçmiş denetlendiğinde main'in tamamı politikaya aykırı çıkar.",
+   "olasilik": 4,
+   "etki": 2,
+   "tespit": "git log --format='%an|%cn' main: committer 'GitHub'.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/github.py:66-71",
+    "fabrika/akis/gorev_akisi.py:625-627",
+    "README.md:98",
+    "fabrika/faaliyetler/depo.py:33-37"
+   ],
+   "duzeltme": "Birleştirmeyi işçinin kendi fast-forward itmesiyle yap: güncel main üstünde tek commit (zaten degisiklikleri_gonder böyle üretiyor), CI yeşil olunca 'git push origin <sha>:main' (korumalı dalda yalnız bu kimliğe/App'e bypass, doğrusal geçmiş zorunlu). Ya da kullanıcıdan birleştirme commit'leri için açık politika istisnası iste. e2e'de committer denetimi zaten var (e2e/surucu.py:99-101); gerçek GitHub'a karşı bir sözleşme testi ekle.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-43",
+   "sinif": "durum",
+   "baslik": "İnsan işi Plane'de Rejected/Done/başka duruma çekerse çalışan iş akışı bunu görmezden geliyor",
+   "senaryo": "1) Ajanlar GREEN'de çalışırken ürün sahibi işi Rejected yapar. 2) isle, iş akışı bekleyen bir aşamada değilse 'red' sinyalini göndermez (yalnız Todo=iptal her zaman gider). 3) Ajanlar harcamaya devam eder, iş main'e birleşir, alpha'ya çıkar ve durum 'Human Test'e ezilir. 4) Birleştirme döngüsünde iptal denetimi yok; iptalde açık PR kapatılmaz, dal silinmez.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Plane'de Rejected/Done olup iş akışı hâlâ 'calisma' aşamalarında olan işler; durum geçmişinde insan→fabrika ezmesi.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/giris/app.py:61-70",
+    "fabrika/giris/plane_olay.py:17-18",
+    "fabrika/akis/gorev_akisi.py:158-160",
+    "fabrika/akis/gorev_akisi.py:503-506",
+    "fabrika/akis/gorev_akisi.py:625-627",
+    "fabrika/faaliyetler/github.py:35-99"
+   ],
+   "duzeltme": "isle: red ve kabul sinyallerini iş akışı çalıştığı sürece her zaman gönder; iş akışı _iptal_denetle'de 'red' ve beklenmeyen 'kabul'ü de işlesin (kabulde: 'insan elle bitirdi' kaydı). Birleştirmeden hemen önce Plane durumunu yeniden oku; In Progress değilse birleştirme. github.py'ye pr_kapat ve dal_sil; iptal/redde çağır. Fabrika durumu yazarken insanın yaptığı son değişiklikten yeni değilse ezme.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-44",
+   "sinif": "durum",
+   "baslik": "Aynı iş için yeni iş akışı sıfır bütçe ve sayaçla başlıyor; bütçe ve insan-devam sınırı aşılıyor",
+   "senaryo": "1) Bütçe, sayaçlar ve çözücü hakkı yalnız iş akışının belleğinde. 2) İş akışı biter (Error'da 30 gün zaman aşımı, iptal, operatörün Temporal'dan sonlandırması) ama Plane'de iş 'In Progress' kalır ya da insan Todo→In Progress yapar. 3) Uzlaştırıcı ALLOW_DUPLICATE ile 2 dk içinde aynı kimlikle yeni koşu başlatır; 12 $ bütçe ve 3 insan-devam sınırı sıfırdan. 4) Operatör kaçak bir işi Temporal'dan durduramaz: Plane durumu değişmedikçe yeniden başlar. 5) Aynı dal adına zorla itilir, eski açık PR'ın yalnız gövdesi güncellenir. 6) Zaman aşımında Plane'e bilgi yazılmaz.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Aynı plane_is_id için birden çok GorevAkisi koşusu (run_id); olay kaydında görev başına toplam maliyetin 12 $'ın katlarını aşması.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/giris/app.py:50-55",
+    "fabrika/akis/gorev_akisi.py:104-117",
+    "fabrika/akis/gorev_akisi.py:380-382",
+    "fabrika/akis/gorev_akisi.py:510-512",
+    "fabrika/akis/gorev_akisi.py:691-695",
+    "fabrika/faaliyetler/depo.py:46-49",
+    "fabrika/faaliyetler/github.py:39-42"
+   ],
+   "duzeltme": "Görev başına kalıcı defter: Postgres'te plane_is_id anahtarlı toplam harcama, insan_devam, koşu sayısı; iş akışı başında faaliyetle okunur, bütçe denetimi bu toplamla yapılır. Her sonlanışta (zaman aşımı dahil) Plane durumunu ve açıklayıcı yorumu yaz. isle yeni koşuyu yalnız insanın durum değişikliği son koşunun bitişinden yeniyse başlatsın; operatör için 'durdur' etiketi.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-45",
+   "sinif": "durum",
+   "baslik": "Fabrika, izlediği projelerdeki her In Progress işi sahipleniyor; insanın elle yürüttüğü iş Error'a çekiliyor",
+   "senaryo": "1) Aynı Plane projesinde insan geliştiriciler de çalışır; bir işi In Progress'e alırlar. 2) Webhook/uzlaştırıcı iş akışı başlatır; form yoksa 'hazır değil' eskalasyonu: iş Error olur, ürün sahibine atanır. 3) plane_ata atananları üzerine yazar; geliştiricinin sahipliği kaybolur. 4) Ekipler fabrikayı devre dışı bırakır ya da Plane'i ikiye böler.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "'hazirlik' eskalasyonlarının yüksek oranı; insanların Error'dan işi geri çekmesi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/giris/app.py:45-60",
+    "fabrika/faaliyetler/plane.py:136-146",
+    "config/projeler.yaml:12"
+   ],
+   "duzeltme": "Katılım işareti: yalnız 'fabrika' etiketli işler ya da ayrı bir 'Agent Ready' durumu tetiklesin (plane_olay.sinyal_turu + etiket denetimi; webhook yükünde etiket yoksa API'den oku). Atamayı üzerine yazmak yerine mevcut atananlara ekle.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-46",
+   "sinif": "durum",
+   "baslik": "Yüksek risk için plan onayı sessizce atlanıyor: 'onay' durumu yapılandırılmamış",
+   "senaryo": "1) politika.yaml yüksek risk için plan_onayi: true der. 2) Adım yalnız projeler.yaml'da 'onay' durumu tanımlıysa çalışır; örnek yapılandırmada ve README kurulum listesinde bu durum yok. 3) Yüksek riskli iş plan onayı olmadan RED/GREEN'e geçer. 4) test_akis.py'de yüksek risk senaryosu yok; açık kimse fark etmez.",
+   "olasilik": 5,
+   "etki": 3,
+   "tespit": "Yüksek riskli görevlerin olay kaydında 'plan-onayi' aşamasının hiç görülmemesi.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:451-460",
+    "config/projeler.yaml:10-16",
+    "config/politika.yaml:66",
+    "README.md:64-67"
+   ],
+   "duzeltme": "Açılışta yapılandırma doğrulaması: plan_onayi olan risk sınıfı varsa her projede 'onay' durumu zorunlu (ve Plane'de mevcut). Ya da durum yerine yorum+etiket tabanlı onay. test_akis.py'ye yüksek risk senaryosu.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-47",
+   "sinif": "durum",
+   "baslik": "Politika anlık görüntüsü kısmi: sandbox faaliyetleri her çağrıda canlı politikayı okuyor",
+   "senaryo": "1) İş akışı koşu başında politikayı kopyalar ('koşu boyunca değişmez'). 2) ajan_calistir ve kapilari_calistir ise her çağrıda politika.yaml'ı yeniden okur: komut şablonu, rol modeli, profil listesi, pid, ağ, süre. 3) Çalışan görev ortasında model veya komut değişir; olay kaydındaki politika sürümü gerçeği yansıtmaz. 4) projeler.yaml ise lru_cache ile işçi yeniden başlayana dek eski kalır; config imaja gömülü.",
+   "olasilik": 3,
+   "etki": 2,
+   "tespit": "Aynı koşuda farklı model adlarıyla olay kayıtları.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:144-148",
+    "fabrika/faaliyetler/sandbox.py:215-217",
+    "fabrika/faaliyetler/kayit.py:58-70",
+    "fabrika/ayarlar.py:54-71",
+    "Dockerfile:14"
+   ],
+   "duzeltme": "Faaliyetlere gereken politika parçalarını (komut, model, profil, süre, ağ) argüman olarak geçir; faaliyetler dosya okumasın. Config'i imaja gömmek yerine salt okunur hacimle bağla ve sürüm özetini olaylara yaz.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-48",
+   "sinif": "durum",
+   "baslik": "İnsan sinyali tazeliği metin olarak karşılaştırılan zaman damgalarına dayanıyor",
+   "senaryo": "1) _uygun, Plane'in updated_at değerini ve yedek olarak workflow.now() biçimli dizeyi metin olarak karşılaştırır. 2) Biçimler farklıysa ('Z' / '+00:00', mikro saniye yokluğu) ya da Plane ile Temporal saatleri kaymışsa geçerli bir insan yanıtı 'eski' sayılıp yok sayılır veya eski yanıt kabul edilir. 3) İnsan 'In Progress' yapmıştır ama iş Error'da beklemeye devam eder.",
+   "olasilik": 2,
+   "etki": 3,
+   "tespit": "Plane'de In Progress olan ama iş akışı 'hata-bekliyor' aşamasında kalan işler.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:129-130",
+    "fabrika/akis/gorev_akisi.py:187-192",
+    "fabrika/giris/app.py:49"
+   ],
+   "duzeltme": "Zaman damgalarını datetime'a ayrıştırıp UTC'de karşılaştır; plane_durum updated_at döndüremezse iş kalemini yeniden oku. Ayrıca 'devam' sinyalinde Plane'deki güncel durumu doğrulayan faaliyet.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-49",
+   "sinif": "maliyet",
+   "baslik": "Maliyet muhasebesi eksik: yarıda kalan, yeniden denenen ve Codex çağrıları sayılmıyor",
+   "senaryo": "1) Maliyet yalnız CLI'nin son JSON'undaki total_cost_usd'den okunur. 2) Zaman aşımı, sağlayıcı hatası veya OOM ile biten çağrıda istisna maliyetten önce atılır; harcanan token hiç sayılmaz (AK-21 ile 4 saatlik sessiz tekrarlar). 3) Codex çıktısında bu alan yok: maliyet 0. 4) Olay yazılamazsa ekip günlük harcaması eksik okunur. 5) Pilotta 93 çağrının kullanımı bilinmiyordu; aynı durum tekrarlanır.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Sağlayıcı faturası ile olay kaydı toplamının farkı (günlük mutabakat yok).",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/faaliyetler/sandbox.py:169-174",
+    "fabrika/akis/gorev_akisi.py:281-285",
+    "config/politika.yaml:49-53",
+    "fabrika/akis/gorev_akisi.py:183-185",
+    "fabrika/faaliyetler/kayit.py:46-55"
+   ],
+   "duzeltme": "Claude'u '--output-format stream-json' ile çalıştır, kullanım olaylarını akış içinde topla; zaman aşımında da kısmi kullanımı döndür (ApplicationError ayrıntısına maliyet koy, iş akışı toplasın). Bilinmeyen kullanım = UNKNOWN; görevin bütçesini kilitle. Sağlayıcı kullanım/maliyet raporuyla günlük mutabakat işi; fark %10'u aşarsa uyarı.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-50",
+   "sinif": "maliyet",
+   "baslik": "Tavanlar yumuşak ya da hiç uygulanmıyor; API katmanı tavanı ilk günlerde doluyor",
+   "senaryo": "1) ART wip_tavani (24) ve ART günlük bütçesi (400 $) kodda hiç kullanılmıyor. 2) Ekip günlük bütçesi yalnız tur başında denetleniyor; çalışan görev tavanı aşabilir; 48×30 dk beklemeden sonra denetim olmadan devam ediliyor. 3) Görev bütçesi çağrı BİTTİKTEN sonra denetleniyor; tek bir Opus çağrısı (40 tur) tavanı tek başına aşabilir. 4) 12 ekip × 40 $ ≈ 480 $/gün; README'nin andığı Start katmanı (500 $/ay) ilk gün biter → toplu TAVAN (AK-22).",
+   "olasilik": 5,
+   "etki": 4,
+   "tespit": "Günlük harcama grafiği; TAVAN eskalasyonları; görev başına maliyetin tavanı aşma oranı.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "config/ekipler.yaml:8-9",
+    "fabrika/faaliyetler/kayit.py:66-70",
+    "fabrika/akis/gorev_akisi.py:417-423",
+    "fabrika/akis/gorev_akisi.py:236-240",
+    "fabrika/akis/gorev_akisi.py:285-288",
+    "README.md:96",
+    "docs/KAPASITE.md:58-63"
+   ],
+   "duzeltme": "ART WIP'i Temporal'da uygula (ART başına sayaç iş akışı; GorevAkisi başta yuva ister). Bütçeyi çağrıdan ÖNCE denetle: kalan bütçe < rolün p90 maliyeti ise çağırma. Ajan çalıştırıcısına çağrı başına harcama/token sınırı ver (CLI destekliyorsa; yoksa --max-turns'ü role göre düşür). Sağlayıcı konsolunda fabrika çalışma alanına aylık limit ve %50/%80 uyarısı. Katman yükseltmesini S0'da yap.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-51",
+   "sinif": "maliyet",
+   "baslik": "Çözücü ve güçlü model maliyeti, oturumsuz çağrılar ve önbellek yokluğu görev maliyetini büyütüyor",
+   "senaryo": "1) Gözden geçirici ve çözücü her zaman en güçlü modelde, 40 tura kadar. 2) Her çağrı yeni oturum; depo keşfi ve bağlam her rolde yeniden kurulur. 3) İnceleme turları (3'e kadar) × çözücü (2) × insan devamı (her birinde +12 $) çarpılır. 4) Pilotta tek görev 456 çağrıya çıkmıştı; burada sınırlar var ama görev başına 2–8 $ tahmini doğrulanmadı.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "Rol başına maliyet dağılımı (olay kaydı 'model' alanı); görev başına p50/p90 maliyet.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "config/politika.yaml:54-60",
+    "fabrika/akis/gorev_akisi.py:566-581",
+    "fabrika/akis/gorev_akisi.py:386-389",
+    "docs/KAPASITE.md:58-63"
+   ],
+   "duzeltme": "İlk iki hafta rol başına maliyeti ölç; gözden geçiriciyi varsayılan orta modelde, yüksek riskte güçlü modelde çalıştır. Planlayıcının ürettiği 'etkilenen dosyalar ve depo haritası'nı çalışma alanına yaz, sonraki rollere bağlam olarak ver (yeniden keşfi azaltır). Yeniden denemelerde önceki denemenin özetini ver.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-52",
+   "sinif": "insan",
+   "baslik": "Testçi kuyruğu birikiyor; geri basınç yok; 14 günde iş sessizce zaman aşımına düşüyor",
+   "senaryo": "1) Fabrika 24 eşzamanlı görevle günde onlarca Human Test üretir; testçi kişi başı 6–10/gün. 2) Üretim hızını testçi kapasitesi sınırlamaz; kuyruk büyür. 3) 14 günde iş akışı 'zaman-asimi' ile biter, Plane'e bir şey yazmaz, kod main'de kalır (AK-10). 4) Testçiler en yeni işe bakar, eskiler sessizce düşer; alpha main kabul edilmemiş değişikliklerle dolar.",
+   "olasilik": 5,
+   "etki": 4,
+   "tespit": "Human Test'te bekleyen iş sayısı ve yaşı (gözcü); zaman-asimi sonuçları.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:502-512",
+    "config/politika.yaml:17",
+    "docs/KAPASITE.md:47-54",
+    "fabrika/gozcu.py:18"
+   ],
+   "duzeltme": "Ekip başına 'Human Test WIP' sınırı (politika.yaml): sınır doluysa yeni görevler hazırlıkta bekler (ekip bütçesi beklemesi gibi, görünür aşama adıyla). Zaman aşımında Plane'e yorum + etiket ve AK-10'daki revert. Gözcüyü günlük çalıştırıp ekip kanalına özet.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-53",
+   "sinif": "insan",
+   "baslik": "Hatırlatma gürültüsü ve mesai dışı yükseltme",
+   "senaryo": "1) Error'da 4. ve 24. saatte hatırlatma yorumu, 48. saatte RTE'ye atama ve etiket; iş saati, hafta sonu ve tatil takvimi yok. 2) Cuma akşamı düşen işler pazartesi RTE'ye toplu yükselir. 3) Toplu TAVAN olayında (AK-22) onlarca yorum ve atama. 4) İnsanlar bildirimleri susturur; gerçek eskalasyonlar da kaybolur.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "Kişi başına günlük bildirim sayısı; RTE'ye atanan iş sayısı; hatırlatmadan sonra yanıt süresi.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:652-669",
+    "config/politika.yaml:22-24"
+   ],
+   "duzeltme": "İş günü takvimli zamanlayıcı (hatırlatma saatlerini iş saatine göre hesapla); kişi başına günlük tek özet (gözcü, Temporal Schedule); aynı nedenli platform eskalasyonlarını tek bildirimde grupla; RTE yükseltmesini yalnız ekip dışı karar gerektiren sınıflara uygula.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-54",
+   "sinif": "insan",
+   "baslik": "Sorumlu kimlikleri boşsa atama sessizce atlanıyor; kimse bildirim almıyor",
+   "senaryo": "1) Örnek yapılandırmada bütün Plane kullanıcı kimlikleri boş; ekip-02…12'nin 'insan' alanı hiç yok. 2) _ata ve plane_ata boş listede hiçbir şey yapmadan döner; log bile yok. 3) Error ve Human Test işleri kimseye atanmaz; Plane bildirimi gitmez. 4) SAFe yükseltmesi de boş kimliğe gider. İş haftalarca bekler.",
+   "olasilik": 5,
+   "etki": 4,
+   "tespit": "Plane'de Error/Human Test durumunda atanansız işler.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "config/ekipler.yaml:11-12",
+    "config/ekipler.yaml:20-35",
+    "fabrika/akis/gorev_akisi.py:202-205",
+    "fabrika/akis/gorev_akisi.py:222-234",
+    "fabrika/faaliyetler/plane.py:136-141"
+   ],
+   "duzeltme": "İşçi ve giriş açılışında yapılandırma doğrulaması: her proje→ekip→insan kimlikleri dolu ve Plane'de proje üyesi (tek seferlik API denetimi); değilse açılış başarısız. Atama yapılamazsa olay + platform bildirimi, sessiz geçiş yok.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-55",
+   "sinif": "insan",
+   "baslik": "KVKK: form, yorum ve loglardaki kişisel veri yurt dışına aktarılıyor ve süresiz saklanıyor",
+   "senaryo": "1) Form ve son 5 insan yorumu model sağlayıcısına (yurt dışı) gönderilir; hata yeniden üretme adımlarında gerçek müşteri verisi olabilir. 2) İstemler Temporal geçmişinde, tam loglar diskte süresiz; olay kaydında saklama ve silme yok. 3) Hata metinleri (1500 karaktere kadar) Plane yorumlarına yazılır. 4) Olay kaydı plane_is_id ve ekip taşır; Plane atamalarıyla kişiye bağlanabilir; çalışan izleme hassasiyeti.",
+   "olasilik": 3,
+   "etki": 4,
+   "tespit": "Veri envanteri ve saklama politikası denetimi; loglarda e-posta/TCKN kalıbı taraması.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/plane.py:101-103",
+    "fabrika/istemler.py:22-29",
+    "fabrika/modeller.py:64-73",
+    "fabrika/faaliyetler/sandbox.py:134-139",
+    "fabrika/faaliyetler/kayit.py:18-25",
+    "fabrika/akis/gorev_akisi.py:97-99",
+    "fabrika/akis/gorev_akisi.py:684-690",
+    "docs/OLGUNLUK.md:18"
+   ],
+   "duzeltme": "Gerçek kişisel veri içerebilecek projeye açmadan önce hukuk incelemesi (yurt dışı aktarım dayanağı ve bildirim yükümlülükleri). Formda 'gerçek kişisel veri yok' onayı ve basit PII tarayıcı (e-posta, telefon, TCKN) → Error. Plane'e yazılan metinleri maskele. Saklama: olay 1 yıl, log 30–90 gün, Temporal 30 gün; silme işi. Olay kaydında kişi adı tutulmadığını test et; Temporal UI erişimini kayıt altına al.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-56",
+   "sinif": "operasyon",
+   "baslik": "Yedekleme yok; Temporal ve olay kaydı tek Postgres'te; auto-setup imajı üretim için değil",
+   "senaryo": "1) pgveri hacmi tek kopya; yedek, WAL arşivi ve geri yükleme tatbikatı yok. 2) auto-setup imajı her açılışta şema kurar/günceller; imaj yükseltmesi kontrolsüz şema değişikliği yapabilir. 3) Disk bozulması veya hatalı bir 'docker compose down -v' ile bütün çalışan iş akışları, bekleyen insan kararları ve Kaizen verisi kaybolur.",
+   "olasilik": 2,
+   "etki": 5,
+   "tespit": "Yedek işi yok; son başarılı geri yükleme tarihi bilinmiyor.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "compose.yaml:20-32",
+    "compose.yaml:34-51",
+    "compose.yaml:101-102"
+   ],
+   "duzeltme": "pgBackRest veya WAL-G ile sürekli WAL arşivi + günlük tam yedek (Hetzner Storage Box, şifreli); aylık geri yükleme tatbikatı runbook'u. temporalio/server + admin-tools ile açık şema göçü; Temporal ve fabrika veritabanları için ayrı kullanıcı (ayrı instance tercih).",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-57",
+   "sinif": "operasyon",
+   "baslik": "Gözlemlenebilirlik ve uyarı yok; olay süreleri hep sıfır",
+   "senaryo": "1) Prometheus metrikleri yalnız FABRIKA_METRIK_ADRES verilirse açılır; compose'da yok. 2) Uyarı kuralı yok; gözcü elle çalıştırılan komut. 3) Olay kaydında sure_sn her zaman 0 yazılır; KAPASITE belgesinin istediği rol başına süre ölçülemez. 4) Sessiz takılmalar (AK-19, AK-20, AK-26) haftalarca fark edilmez.",
+   "olasilik": 5,
+   "etki": 4,
+   "tespit": "(yok — sorun bu)",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "fabrika/isci.py:61-67",
+    "compose.yaml:75-91",
+    "fabrika/gozcu.py:67-74",
+    "fabrika/akis/gorev_akisi.py:178-185",
+    "docs/KAPASITE.md:73-82"
+   ],
+   "duzeltme": "compose'a Prometheus + Alertmanager (+ node_exporter, cAdvisor, postgres_exporter). Uyarılar: workflow_task_execution_failed > 0, schedule_to_start gecikmesi, açık iş akışı sayısı aşamaya göre, disk %80, Plane 429 sayısı, günlük harcama eşiği, 'In Progress ama iş akışı yok'. Gözcüyü Temporal Schedule ile günlük. _olay'a gerçek süreyi (faaliyet sonucundan) yaz; ajan tepe belleğini (cgroup memory.peak) topla.",
+   "oncelik": "mvp-oncesi"
+  },
+  {
+   "id": "AK-58",
+   "sinif": "operasyon",
+   "baslik": "Güncelleme ve sır rotasyonu işçiyi yeniden başlatıyor; süreli jeton bir gün bütün görevleri birden durduruyor",
+   "senaryo": "1) Sırlar ortam değişkeni; değişiklik işçi yeniden başlatması ister → AK-18 (sahipsiz konteyner) ve AK-19 (yeniden oynatma). 2) İnce yetkili PAT'in süresi dolunca bütün push/klon işlemleri aynı anda başarısız olur, her görev ayrı platform eskalasyonu yapar. 3) Eski jeton çalışma alanlarının git yapılandırmasında kalır (AK-35).",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "Aynı saatte çok sayıda git 401/403 hatası; jeton son kullanma tarihi takibi yok.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    ".env.ornek:9-10",
+    "compose.yaml:7-17",
+    "fabrika/faaliyetler/depo.py:62",
+    "fabrika/isci.py:53-70"
+   ],
+   "duzeltme": "GitHub App (kurulum jetonu faaliyet içinde her seferinde üretilir; rotasyon gerekmez). Sırları dosyadan (Docker secrets) oku, her faaliyette yeniden oku. Dağıtım runbook'u: yeni sürüm işçisi başlat (Worker Versioning), eskisini graceful_shutdown ile boşalt. Jeton son kullanma uyarısı.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-59",
+   "sinif": "operasyon",
+   "baslik": "Hetzner donanım arızası: tek makine, ECC'siz seçenek, belirsiz disk yedekliliği",
+   "senaryo": "1) AX102 ECC'siz sürüm önerilmiş; disk RAID'i tanımlanmamış. 2) Temporal, Postgres, çalışma alanları (ve belki Plane) aynı makinede. 3) Disk veya anakart arızasında tam kesinti; bellek hatası sessiz veri bozulmasına yol açabilir. 4) Geri dönüşte çalışma alanları yok; makine kuyruğu bağımlılığı (AK-26) iş akışlarını takar.",
+   "olasilik": 2,
+   "etki": 5,
+   "tespit": "smartd/mdadm uyarıları (kurulmadı); makine erişilemezliği.",
+   "mevcut_durum": "karsilanmiyor",
+   "kanit": [
+    "docs/KAPASITE.md:28",
+    "compose.yaml:1-3",
+    "fabrika/faaliyetler/depo.py:74-75"
+   ],
+   "duzeltme": "ECC'li model veya en az yazılım RAID1 + smartd/mdadm e-posta uyarısı. RTO/RPO hedefi ve ikinci makinede yedekten kurma runbook'u (AK-56). Çalışma alanı kaybında 'dal uzakta varsa oradan yeniden kur, yoksa turu baştan başlat' mantığı (_Yeniden).",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-60",
+   "sinif": "olcek",
+   "baslik": "12 → 50 ekip: tek süreç, tek hafif kuyruk, paylaşılan Postgres bağlantıları ve Plane kotası",
+   "senaryo": "1) 'hepsi' rolünde tek Python süreci bütün iş akışlarını ve faaliyetleri taşır; çökme hepsini durdurur. 2) HAFIF kuyruk tek işçide 20 eşzamanlı. 3) Her olay yazımı yeni bağlantı açar ve DDL çalıştırır; Temporal ile aynı Postgres ve varsayılan bağlantı sınırı. 4) Plane 60/dk anahtar başına sabit; uzlaştırıcı yükü proje sayısıyla doğrusal. 5) Sorgular (uzlaştırıcı, gözcü) büyük geçmişleri yeniden oynatır.",
+   "olasilik": 4,
+   "etki": 4,
+   "tespit": "Postgres 'too many connections'; HAFIF kuyruk schedule_to_start gecikmesi; Plane 429 artışı.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "compose.yaml:75-78",
+    "fabrika/isci.py:37-49",
+    "fabrika/faaliyetler/kayit.py:31-38",
+    "fabrika/faaliyetler/kayit.py:52-53",
+    "fabrika/giris/app.py:77-88"
+   ],
+   "duzeltme": "akış ve sandbox rollerini ayrı konteynerlerde çalıştır; HAFIF'i yatay çoğalt. Olay tablosu şemasını açılışta bir kez kur; bağlantı havuzu (psycopg_pool) ve pgbouncer; Temporal için ayrı Postgres. Plane çağrılarını tek hız sınırlayıcıdan geçir (AK-24). 50 ekipte ikinci sandbox makinesi ve Temporal için ayrı DB.",
+   "oncelik": "S2"
+  },
+  {
+   "id": "AK-61",
+   "sinif": "olcek",
+   "baslik": "GitHub API hız sınırları ve Actions eşzamanlılığı CI beklemesini zaman aşımına düşürüyor",
+   "senaryo": "1) Her görev CI'ı dakikada bir, insan birleştirmesini 10 dakikada bir yoklar. 2) Tek jeton, saatlik birincil sınır; 5 denemelik kısa yeniden deneme sınır sıfırlanmadan biter → 'Beklenmeyen sistem hatası (HizSiniri)' eskalasyonu. 3) Actions eşzamanlı iş sınırı plan bazında (ör. Free 20, Team 60); PR CI + main CI + alpha dağıtımı + entegrasyon yeniden koşuları kuyruk yaratır. 4) Kuyruk süresi ci_bekleme_dakika'ya (45) sayılır; 'CI zamanında sonuçlanmadı' platform eskalasyonu.",
+   "olasilik": 4,
+   "etki": 3,
+   "tespit": "x-ratelimit-remaining; Actions kuyrukta bekleme süresi; 'ci' aşamasında zaman aşımı eskalasyonları.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/akis/gorev_akisi.py:583-598",
+    "fabrika/akis/gorev_akisi.py:616-623",
+    "fabrika/faaliyetler/github.py:24-32",
+    "fabrika/akis/gorev_akisi.py:36-37"
+   ],
+   "duzeltme": "GitHub webhook'ları (check_suite/workflow_run/pull_request) → giriş → iş akışı sinyali; yoklamayı yedeğe indir. GitHub App (daha yüksek sınır). Hız sınırında x-ratelimit-reset'e kadar bekleyen yeniden deneme. Hetzner'de ayrı makinede self-hosted runner havuzu. CI 'queued' süresini zaman aşımından ayır.",
+   "oncelik": "S1"
+  },
+  {
+   "id": "AK-62",
+   "sinif": "olcek",
+   "baslik": "CI sonucu erken 'başarılı' sayılabilir; zorunlu kontrol listesi yok",
+   "senaryo": "1) ci_durumu commit'in o anki check-run'larının hepsi tamamlanmışsa başarılı der. 2) Depoya hızlı biten başka bir kontrol (bot/uygulama) eklenmişse, asıl CI işi oluşmadan 'başarılı' dönebilir. 3) Birleştirme dal korumasına takılırsa 405 döner ve bu 'çakışma' sanılıp entegrasyon döngüsü boşa koşar.",
+   "olasilik": 2,
+   "etki": 3,
+   "tespit": "Birleştirme denemesinde 405 'required status check' mesajı; entegrasyon sayacının çakışma olmadan artması.",
+   "mevcut_durum": "kismen",
+   "kanit": [
+    "fabrika/faaliyetler/github.py:49-63",
+    "fabrika/akis/gorev_akisi.py:625-634"
+   ],
+   "duzeltme": "projeler.yaml'a 'gerekli_kontroller' (ör. ['ci / kapilar']); karar yalnız bunlar tamamlandığında. 405/422 yanıt gövdesini ve PR'ın mergeable_state değerini ayrıştır: 'behind/dirty' → entegrasyon, 'blocked' → bekle, diğerleri → platform.",
+   "oncelik": "S1"
+  }
+ ],
+ "en_kritik_10": [
+  "AK-35",
+  "AK-19",
+  "AK-20",
+  "AK-10",
+  "AK-44",
+  "AK-24",
+  "AK-28",
+  "AK-03",
+  "AK-01",
+  "AK-36"
+ ],
+ "genel_degerlendirme": "Kod tabanı pilotun en büyük hatasını düzeltiyor: dayanıklılık artık Temporal'da, çekirdek küçük ve testli, bütçe ve döngü sınırları deterministik. 6 ay sonraki olası başarısızlık tek bir büyük hatadan değil, beş kümeden gelir. (1) Sessiz takılma geri döner: iş akışı sürümlemesi yok (AK-19), ajan çıktısı şema doğrulamasız iş akışına giriyor (AK-20), gözlemlenebilirlik kapalı (AK-57); Plane'de 'In Progress/Human Test' görünen ama ilerlemeyen işler pilottaki bayat durumun yeni biçimi olur. (2) Oracle hâlâ zayıf: RED kanıtı her sıfır dışı çıkışı kabul ediyor (AK-01), test yapılandırması korunmuyor (AK-03), onay deterministik doğrulanmıyor (AK-07), insan onayı kanıtsız (AK-09) ve birleştirme insan testinden önce olduğu için reddedilen kod main'de kalıyor (AK-10). (3) Paralellik tek main ve tek alpha'da yoğunlaşıyor: merge queue yok (AK-28), dağıtım ara SHA'ları atlıyor ve yanlış eskalasyon üretiyor (AK-29), main CI iptal ediliyor ve alpha CI'ı beklemiyor (AK-30), entegrasyon sonrası test koruması yanlış referansa bakıyor (AK-34). (4) Güvenlik sınırı belgelendiği kadar sıkı değil: GitHub jetonu çalışma alanının git yapılandırmasında ve sandbox'tan okunabilir (AK-35), model anahtarı serbest çıkışlı ağda (AK-36), işçi root + Docker soketiyle ajanın yazdığı yolları denetimsiz işliyor (AK-38). (5) Dış sınırlar: Plane 60/dk kotası uzlaştırıcıyla paylaşılıyor ve 429'da insan bildirimleri sessizce kayboluyor (AK-24); bütçe ve WIP tavanlarının bir kısmı uygulanmıyor (AK-50); iş akışı yeniden başladığında bütçe sıfırlanıyor (AK-44); sorumlu kimlikleri boş (AK-54). Önerilen sıra: S0'da mvp-öncesi 30 maddenin güvenlik, sessiz takılma ve oracle olanlarını kapatıp tek ekiple 10 düşük riskli görev; birleştirme kuyruğu, alpha sağlık/dondurma ve revert hazır olmadan 3'ten fazla ekibi aynı alpha main'e açmayın."
+}

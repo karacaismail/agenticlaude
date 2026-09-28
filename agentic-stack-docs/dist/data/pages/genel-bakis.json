@@ -1,0 +1,69 @@
+{
+  "title": "Genel bakış",
+  "summary": "Agentic-first geliştirme hattında hangi aşamada hangi orkestratörün kullanılacağına dair kısa yanıt.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Karar özeti",
+      "title": "Hangi aşamada hangi orkestratör?",
+      "lede": "Figma panolarındaki STARK TDD akışı, ajan sağlayıcı tabloları ve Plane görev çerçevesi temel alındı. Temporal ve Hermes önceliği bu süreç üzerinden, lehte ve aleyhte kanıtlarla değerlendirildi.",
+      "meta": [
+        { "label": "Kaynak", "value": "54 PDF pano" },
+        { "label": "Doğrulama", "value": "23.09.2026" },
+        { "label": "Kurulum / benchmark", "value": "Yapılmadı" }
+      ]
+    },
+    { "type": "heading", "text": "Tek cümlelik yanıt" },
+    {
+      "type": "callout",
+      "tone": "info",
+      "title": "Durumu tek bir sistem tutar",
+      "text": "Görevin yaşam döngüsünü (bütçe, sayaç, bekleme, devam) **Temporal** tutar. Kodu **ajan çalıştırıcıları** (Claude Code, Codex, OpenHands, isteğe bağlı Hermes) yazar. Kararları **deterministik motorlar** (CI kapıları, OpenFGA, topolojik sıralama) verir. **n8n** yalnızca bildirim ve SaaS yapıştırıcısıdır. Görsel LLM araçları (Dify, Langflow) kritik yolun dışında kalır."
+    },
+    { "type": "heading", "text": "Kararlar" },
+    {
+      "type": "cards",
+      "columns": 3,
+      "items": [
+        { "badge": { "text": "Onay", "tone": "success" }, "title": "Temporal omurga", "text": "Panolardaki kurallar (sayaç sıfırlanmaz, PO bekleyişi, 10/30 sn tekrar, SHA’ya bağlı kanıt) doğrudan durable execution ihtiyacı. Gerekçe “güçlü” olması değil, bu eşleşme.", "href": "#/temporal" },
+        { "badge": { "text": "Koşullu", "tone": "warning" }, "title": "Hermes framework değil", "text": "Hermes bir ajan çalıştırıcısı. Model ağırlığını eğitmiyor, skill dosyası yazıyor. Öğrenme döngüsü öneri → eval → onay modunda kullanılmalı.", "href": "#/hermes" },
+        { "badge": { "text": "Çelişki", "tone": "danger" }, "title": "LangGraph mı, Temporal mı?", "text": "Panolar iki farklı orkestrasyon çekirdeği öneriyor. İkisi birden durum sahibi olursa bölünmüş beyin oluşur. Çözüm: Temporal çekirdek, LangGraph yalnızca aktivite içinde ve isteğe bağlı.", "href": "#/ideal-kurgu/iki-cekirdek-celiskisi" },
+        { "badge": { "text": "Eleme", "tone": "danger" }, "title": "Flowise ve AutoGen dışarıda", "text": "Flowise deposu 13 Ağustos 2026’da arşivlendi. AutoGen Ekim 2025’ten beri bakım modunda; halefi Microsoft Agent Framework.", "href": "#/katalog" },
+        { "badge": { "text": "Not", "tone": "neutral" }, "title": "goose.ai ≠ goose", "text": "goose.ai adresi eski açık modelleri API ile sunan GooseAI hizmetidir. Ajan olarak kastedilen, Block’un geliştirip Agentic AI Foundation’a devrettiği açık kaynak **goose**.", "href": "#/katalog" },
+        { "badge": { "text": "Deterministik", "tone": "info" }, "title": "Her şey ajan olmamalı", "text": "Panodaki ajanlardan bazıları (bağımlılık önceliği, yetkilendirme, git senaryosu) aslında algoritma veya motor işi. LLM burada yorumlar, karar vermez.", "href": "#/ajan-haritasi" }
+      ]
+    },
+    { "type": "heading", "text": "Aşama → orkestratör" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "stage", "label": "Aşama", "kind": "code" },
+        { "key": "name", "label": "İş" },
+        { "key": "orch", "label": "Orkestrasyon" },
+        { "key": "worker", "label": "Çalışan" }
+      ],
+      "rows": [
+        { "stage": "A0", "name": "12.000 görevin normalizasyonu", "orch": "Temporal toplu iş akışı", "worker": "PydanticAI tipli ajan" },
+        { "stage": "A1", "name": "/startask komutu", "orch": "Plane webhook → Temporal", "worker": "—" },
+        { "stage": "A2", "name": "Araştırma, task spec, DoR", "orch": "Temporal (en fazla 2 döngü)", "worker": "OpenHands / Claude Code salt-okunur + Context7 MCP" },
+        { "stage": "A3", "name": "İlişki haritası, kümeleme", "orch": "Temporal child workflow", "worker": "Kod grafiği + networkx; LLM yorumu" },
+        { "stage": "A4", "name": "Plan ve plan incelemesi", "orch": "Temporal Signal/Update", "worker": "Farklı model ailesinden hakem + insan" },
+        { "stage": "B", "name": "TDD: RED → GREEN → REFACTOR", "orch": "Temporal aktivitesi (heartbeat)", "worker": "Claude Code / Codex / OpenHands" },
+        { "stage": "G", "name": "Deterministik kapılar", "orch": "GitHub Actions", "worker": "Yapay zekâ yok" },
+        { "stage": "C", "name": "Bağımsız QA", "orch": "Temporal (en fazla 2 tur)", "worker": "Farklı sağlayıcı + mutation testing" },
+        { "stage": "R", "name": "Risk sınıfı ve onay", "orch": "Temporal Signal/Update", "worker": "İnsan; bildirim n8n/Slack" },
+        { "stage": "E", "name": "Alpha → Beta → RC → Prod", "orch": "Mevcut CI/CD", "worker": "—" },
+        { "stage": "L", "name": "Öğrenme, yönerge iyileştirme", "orch": "Zamanlanmış Temporal iş akışı", "worker": "Hermes skill önerisi → eval → PR" }
+      ]
+    },
+    {
+      "type": "linkgrid",
+      "items": [
+        { "title": "İdeal kurgu", "text": "Panolardan çıkan mimari ve iki çekirdek çelişkisinin çözümü.", "href": "#/ideal-kurgu" },
+        { "title": "Pipeline aşamaları", "text": "Her aşama bir API uç noktası gibi: girdi, çıktı, hata kodları.", "href": "#/pipeline" },
+        { "title": "Araç kataloğu", "text": "Letta, goose, OpenHands, n8n ve 120’den fazla araç; filtrelenebilir.", "href": "#/katalog" },
+        { "title": "Pano bulguları", "text": "Otomasyondan önce kapatılması gereken 7 tutarsızlık.", "href": "#/bulgular" }
+      ]
+    }
+  ]
+}

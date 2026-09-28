@@ -1,0 +1,73 @@
+{
+  "title": "Bütçe, durum kodları, policy",
+  "summary": "Panolardaki deneme ve süre sınırları, durum kodları ve bunları tekleştiren policy.yaml önerisi.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Referans",
+      "title": "Bütçe, durum kodları, policy",
+      "lede": "Temporal bu kuralları koda dökecek. Bu yüzden sayıların tek bir kaynağı olmalı. Aşağıda panolarda geçen tüm sınırlar yan yana; ardından öneri."
+    },
+    { "type": "heading", "text": "Panolarda geçen sınırlar" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "rule", "label": "Kural" },
+        { "key": "value", "label": "Değer", "kind": "code" },
+        { "key": "source", "label": "Pano" }
+      ],
+      "rows": [
+        { "rule": "Fix ajanı döngüsü", "value": "6", "source": "agents/full_Agentic, 15agents-provider" },
+        { "rule": "Çözüm deneme döngüsü", "value": "12", "source": "agentic-main-processes (“Max ×12 defa çözüm dener”)" },
+        { "rule": "Deterministik kapı denemesi", "value": "4", "source": "14agent-provider (“Sayaçlar”)" },
+        { "rule": "Aynı davranış: ilk ajan + yedek ajan", "value": "3 + 2", "source": "STARK" },
+        { "rule": "Görev toplamı başarısız deneme", "value": "10", "source": "STARK" },
+        { "rule": "Aktif süre (insan bekleme hariç)", "value": "120 dk", "source": "STARK" },
+        { "rule": "Bağımsız QA düzeltme turu", "value": "2", "source": "STARK" },
+        { "rule": "Geçici altyapı hatası", "value": "1 + 2 · 10/30 sn", "source": "STARK" },
+        { "rule": "Eksik bilgi araştırma döngüsü", "value": "2", "source": "15agents-provider, 14agent-provider" },
+        { "rule": "Görev bölme denemesi", "value": "2", "source": "15agents-provider" }
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "warning",
+      "title": "Aynı kavram için dört farklı sayı",
+      "text": "Fix döngüsü panoya göre 6, 12, 4 veya “3 + 2 / 10” olarak geçiyor. Bunlar farklı sayaçlar olabilir (davranış başına, görev başına, kapı başına), ama panolar bunu ayırmıyor. STARK’ın kendi notu doğru yolu gösteriyor: sınırlar evrensel değildir; ilk 20–30 küçük görevden sonra başarı, kaçan hata, süre ve maliyetle ayarlanır."
+    },
+    { "type": "heading", "text": "Önerilen policy.yaml" },
+    {
+      "type": "code",
+      "lang": "yaml",
+      "title": "rules/policy.yaml",
+      "code": "version: 1.0.0            # run başında sabitlenir; açık run’lar eski sürümle biter\nscope:\n  per_behavior:\n    primary_agent_attempts: 3\n    fallback_agent_attempts: 2   # bağımsız teşhisten sonra, farklı sağlayıcı\n  per_task:\n    failed_attempts: 10          # kod üretme + düzeltme ortak sayılır\n    active_minutes: 120          # insan bekleyişi hariç\n    cost_ceiling_usd: 25         # pilotta ölçülüp ayarlanacak\n  qa:\n    fix_rounds: 2\n  research:\n    clarification_loops: 2\n    split_attempts: 2\n  infra:\n    retries: 2\n    backoff_seconds: [10, 30]\ncounters:\n  reset_on_new_model: false\n  reset_on_new_run: false\n  reset_on_subagent: false\nrisk:\n  forbidden: stop_and_revert\n  high: human_approval\n  medium: auto\n  low: auto\ngates:\n  flaky_counts_as_pass: false\n  skip_counts_as_pass: false\n  empty_suite_counts_as_pass: false"
+    },
+    { "type": "heading", "text": "Durum kodları" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "code", "label": "Durum", "kind": "code" },
+        { "key": "meaning", "label": "Anlam" },
+        { "key": "owner", "label": "Sonraki sahibi" }
+      ],
+      "rows": [
+        { "code": "RUNNING", "meaning": "İlk davranış seçildi, başlangıç test raporu saklandı", "owner": "Temporal" },
+        { "code": "WAITING_FOR_PO", "meaning": "Kabul kriteri veya ürün kuralı belirsiz", "owner": "Product Owner" },
+        { "code": "WAITING_FOR_QA", "meaning": "Test beklentisi belirsiz", "owner": "QA mühendisi" },
+        { "code": "BLOCKED_TEST", "meaning": "Test beklenen nedenle kırmızı değil veya bozuk", "owner": "QA" },
+        { "code": "BLOCKED_INFRA", "meaning": "Altyapı 1 + 2 denemede düzelmedi", "owner": "İşletim" },
+        { "code": "VERIFYING", "meaning": "Kod ve TDD kanıtları hazır, bağımsız doğrulamada", "owner": "QA ajanı" },
+        { "code": "ERROR", "meaning": "Bütçe bitti; otomatik iş durdu, kanıt paketi hazır", "owner": "QA teşhis, team lead karar" },
+        { "code": "READY_FOR_ALPHA", "meaning": "Testten geçmiş paket yayın akışına teslim edildi", "owner": "CI/CD" }
+      ]
+    },
+    { "type": "heading", "text": "Yetki ayrımı" },
+    {
+      "type": "procon",
+      "proTitle": "Kodlama ajanı yapabilir",
+      "conTitle": "Kodlama ajanı yapamaz",
+      "pros": ["Kodu düzeltmek", "Yeni test önermek (ayrı bütçeyle, QA onayıyla)", "Refactor turu (bir kez)", "Kanıt kaydı üretmek"],
+      "cons": ["Test silmek, skip etmek, eşik düşürmek", "Kabul kriterini gevşetmek", "Başarı kaydını değiştirmek", "Sayaçları sıfırlamak", "Yıkıcı git işlemi (force push, reset)"]
+    }
+  ]
+}

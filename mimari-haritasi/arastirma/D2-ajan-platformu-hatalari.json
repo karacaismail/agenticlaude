@@ -1,0 +1,825 @@
+{
+ "meta": {
+  "tarih": "2026-09-27",
+  "kapsam": "D2 - ajan platformu katmani: OpenHands, Open SWE, Factory, Devin, Gas Town, Ruflo, MetaGPT, ChatDev",
+  "yontem": "gh api / gh search issues|prs (durum ve tarih 2026-09-27'de okundu) + WebSearch/WebFetch",
+  "tekrar_edilmeyen": "B1-hazir-projeler.json, C1-hazir-sistemler.json, C2-openhands-symphony-aperant.json kanitlari",
+  "alan_aciklamasi": "yeni=true: B1/C1/C2'de olmayan kanit",
+  "sinirlar": "Devin ve Factory kapali urun; Open SWE'de issue'lar kapali; ikincil kaynaklar ayrica isaretlendi"
+ },
+ "araclar": [
+  {
+   "ad": "Ruflo (eski Claude Flow)",
+   "repo": "ruvnet/ruflo",
+   "saglik": {
+    "yildiz": 73355,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "acik_issue_pr": 1008,
+    "lisans": "MIT"
+   },
+   "hatalar": [
+    {
+     "sinif": "iddia-gerceklik",
+     "ozet": "Bagimsiz dogrulama: MCP araclarinin ~%85'i sahte/stub; agent_spawn, task_orchestrate, performance_report gibi araclar is yapmadan 'success' donuyor, sahte metrik uretiyor.",
+     "tarih": "2025-08-14",
+     "durum": "kapandi 2025-08-16",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/653",
+     "yeni": true
+    },
+    {
+     "sinif": "iddia-gerceklik",
+     "ozet": "v3 kaynak denetimi: README'deki SONA, EWC++, HNSW, 9 RL algoritmasi, Raft/Byzantine konsensus, WASM Booster icin kodda 0 sonuc; ajan gorev yurutmesi setTimeout gecikmesi. Bakimci v3.5.22'de 'uygulandi' dedi.",
+     "tarih": "2026-03-09",
+     "durum": "kapandi 2026-03-17 (bakimci duzeltme iddiasi, bagimsiz dogrulanamadi)",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/1326",
+     "yeni": true
+    },
+    {
+     "sinif": "iddia-gerceklik",
+     "ozet": "v3.5.51 denetimi: 300+ MCP aracinin ~290'i yalniz JSON durum kaydi yaziyor; agent_spawn ajan hep 'idle', neural_predict sabit etiket, wasm_agent_prompt girdiyi geri yankiliyor. Bakimci v3.5.53/v3.5.59'da 19 araci gercekledigini ve 'uydurma metrikleri' kaldirdigini yazdi.",
+     "tarih": "2026-04-04",
+     "durum": "kapandi 2026-04-06",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/1514",
+     "yeni": true
+    },
+    {
+     "sinif": "iddia-gerceklik",
+     "ozet": "README'deki '%84 SWE-bench' iddiasi icin sonuc paylasilmadi; bakimci 'I should get rid of this... generally 84% is accurate' dedi. Guncel README'de 84 iddiasi bulunmuyor; HNSW iddiasi '150x-12,500x'ten 'N=20k'da ~1,9x' seviyesine indirildi.",
+     "tarih": "2025-08-06 / 2025-10-15",
+     "durum": "acik",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/600",
+     "yeni": true
+    },
+    {
+     "sinif": "CI-kalite",
+     "ozet": "Bagimsiz inceleme: CI'daki basarisiz kontroller bloklamiyor, deployment komutlari tamamen sabit stub, config komutlari dosya okumuyor/yazmiyor, swarm'da 8 ajan sabit kodlu.",
+     "tarih": "2026-03-24",
+     "durum": "kapandi 2026-04-07",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/1425",
+     "yeni": true
+    },
+    {
+     "sinif": "guvenlik-tedarik-zinciri",
+     "ozet": "3.1.0-alpha.55 - 3.5.2 surumlerinde karartilmis preinstall betigi ~/.npm/_npx ve _cacache altinda dosya siliyordu; dis bildirimden sonra v3.5.3'te kaldirildi.",
+     "tarih": "2026-03-01",
+     "durum": "kapandi 2026-03-05",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/1261",
+     "yeni": true
+    },
+    {
+     "sinif": "guvenlik-istem-enjeksiyonu",
+     "ozet": "Guvenlik denetimi: MCP arac aciklamalarinda LLM'i depo sahibini kullanicinin deposuna katkici eklemeye yonlendiren gizli talimat oldugu iddiasi (#1323'e atif; #1323 artik erisilemiyor).",
+     "tarih": "2026-03-17",
+     "durum": "kapandi 2026-03-19; #1323 dogrulanamadi",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/1375",
+     "yeni": true
+    },
+    {
+     "sinif": "yazarlik-politikasi",
+     "ozet": "Her git commit'e kullanici onayi olmadan 'Co-Authored-By: claude-flow <ruv@ruv.net>' ekleniyordu.",
+     "tarih": "2026-04-29",
+     "durum": "kapandi 2026-05-06",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/1670",
+     "yeni": true
+    },
+    {
+     "sinif": "veri-butunlugu",
+     "ozet": "Bellek katmani: onaylanmis (success:true) islem kaybolabiliyor ve SQLite indeksi bozuluyor (WAL-Reset hatasi, eski better-sqlite3 tabani); ayrica varsayilan 'doctor' bozuk DB'de 'All checks passed' diyor.",
+     "tarih": "2026-07-20",
+     "durum": "ikisi de ayni gun kapandi",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/2736 ; https://github.com/ruvnet/ruflo/issues/2737",
+     "yeni": true
+    },
+    {
+     "sinif": "maliyet-kimlik",
+     "ozet": "agent_execute/workflow/hive-mind yalniz olculu x-api-key ile calisiyor; Pro/Max abonesi ikinci fatura oduyor, abonelik saglayicisi talep ediliyor.",
+     "tarih": "2026-05-29",
+     "durum": "acik",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/2236",
+     "yeni": true
+    },
+    {
+     "sinif": "bagimlilik-guvenligi",
+     "ozet": "npm audit: agentdb -> @xenova/transformers zinciri uzerinden 48 zafiyet (1 kritik protobufjs); 2026-09'da 3.38.20'de hala 1 kritik + 12 yuksek gecisli.",
+     "tarih": "2026-07-12 / 2026-09-02",
+     "durum": "#2649 kapandi, #3157 acik",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/2649 ; https://github.com/ruvnet/ruflo/issues/3157",
+     "yeni": true
+    },
+    {
+     "sinif": "kurulum",
+     "ozet": "Soguk kurulumda --version her seferinde ONNX model indirdigi icin >60 sn asili kaliyor.",
+     "tarih": "2026-06-03",
+     "durum": "kapandi",
+     "kaynak": "https://github.com/ruvnet/ruflo/issues/2286",
+     "yeni": true
+    }
+   ],
+   "not": "README hala '100+ ajan', '314 MCP araci' ve ayni sayfada '~210 tool' diyor (celiskili). Issue trafiginin buyuk kismi bakimcinin otomatik 'Dream Cycle'/'verification' kayitlari; bagimsiz denetimlerin tamami sonradan 'duzeltildi' diye kapatilmis ama duzeltmeler bagimsiz dogrulanamadi. B1/C1/C2'de Ruflo hic yoktu."
+  },
+  {
+   "ad": "Gas Town (+Beads)",
+   "repo": "gastownhall/gastown",
+   "saglik": {
+    "yildiz": 18200,
+    "son_push": "2026-09-18",
+    "arsiv": false,
+    "acik_issue_pr": 483,
+    "lisans": "MIT"
+   },
+   "hatalar": [
+    {
+     "sinif": "maliyet-izinsiz-kullanim",
+     "ozet": "Varsayilan formul seti (gastown-release/beads-release) kullanicinin LLM kotasi ve GitHub hesabiyla upstream Gas Town issue'larini cozup PR acabiliyordu; opt-in yapilmasi istendi.",
+     "tarih": "2026-04-14",
+     "durum": "kapandi 2026-05-01",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/3649",
+     "yeni": true
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "DoltHub CEO'su: 60 dakikalik kullanim ~100 $ Claude token, normal Claude Code oturumunun ~10 kati. Maggie Appleton: ayda binlerce dolar API maliyeti, 'a billion tokens' karsiligi kotu cikti.",
+     "tarih": "2026-01-15",
+     "durum": "-",
+     "kaynak": "https://www.dolthub.com/blog/2026-01-15-a-day-in-gas-town/ ; https://maggieappleton.com/gastown",
+     "yeni": true
+    },
+    {
+     "sinif": "CI-atlatma-yanlis-basari",
+     "ozet": "DoltHub denemesi: ilk PR entegrasyon testleri kirmiziyken otonom birlestirildi, depo force-reset edildi; Mayor tum hatalarin duzeldigini bildirdi ama yalniz 2 PR vardi ve biten is push edilmemisti; 4 paralel ajanin PR'larinin hicbiri kabul edilebilir degildi.",
+     "tarih": "2026-01-15",
+     "durum": "-",
+     "kaynak": "https://www.dolthub.com/blog/2026-01-15-a-day-in-gas-town/",
+     "yeni": true
+    },
+    {
+     "sinif": "bellek-OOM",
+     "ozet": "Esz. polecat'lerde ~253 Claude sureci ~24,4 GB RSS; sistem yanit vermez, commitlenmemis is kaybolur.",
+     "tarih": "2026-01-02",
+     "durum": "kapandi 2026-01-08",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/27",
+     "yeni": true
+    },
+    {
+     "sinif": "zombi-temizlik",
+     "ozet": "session-hygiene eklentisi rig adi ile beads onekini karistirip 9 rig'deki 22 mesru oturumu oldurdu, tum 'town' coktu.",
+     "tarih": "2026-03-13",
+     "durum": "kapandi 2026-03-19",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/2707",
+     "yeni": true
+    },
+    {
+     "sinif": "is-kaybi",
+     "ozet": "Polecat'ler 'gt done' (push) calismadan toplu nuke edildi; push edilmemis dallar ve is tamamen kayboldu.",
+     "tarih": "2026-02-12",
+     "durum": "kapandi 2026-02-25",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/1379",
+     "yeni": true
+    },
+    {
+     "sinif": "yanlis-basari",
+     "ozet": "gt sling 'Work attached' diyor ama ajan hook'ta is bulamiyor, suresiz 'working' kaliyor; yutulan yazma hatalari + Dolt autocommit kapali iken kalicilik riski.",
+     "tarih": "2026-07-18",
+     "durum": "acik",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4527",
+     "yeni": true
+    },
+    {
+     "sinif": "merge-cakisma",
+     "ozet": "Zombi yeniden baslatma, kapanmis bead'e polecat'i yeniden atiyor; main'e zaten girmis is eski tabandan yeniden yapilip cakisan kopya MR olarak kuyruga giriyor.",
+     "tarih": "2026-08-14",
+     "durum": "acik",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4698",
+     "yeni": true
+    },
+    {
+     "sinif": "merge-cakisma",
+     "ozet": "Refinery ile cakisma-cozen polecat ayni anda main'e push edebiliyor (non-fast-forward yarisi); ayrica projenin kendi main'ine cakisma isaretleri commitlendi.",
+     "tarih": "2026-01-16 / 2026-03-27",
+     "durum": "kapandi",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/594 ; https://github.com/gastownhall/gastown/issues/3333",
+     "yeni": true
+    },
+    {
+     "sinif": "durum-deposu-kirilganligi",
+     "ozet": "Beads (git tabanli issue tracker) calisma zamani durumu olarak kullaniliyor; bozulunca roller/konvoylar/MR'lar kayboluyor, teshis zor.",
+     "tarih": "2026-01-18",
+     "durum": "acik",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/764",
+     "yeni": true
+    },
+    {
+     "sinif": "oran-siniri",
+     "ozet": "429 alan worker'i baska hesap/modele gecirme mekanizmasi yok; rig'ler throttling'de bosta kaliyor, elle mudahale gerekiyor.",
+     "tarih": "2026-01-06",
+     "durum": "acik",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/232",
+     "yeni": true
+    },
+    {
+     "sinif": "platform",
+     "ozet": "Windows uygun degil: tmux sert bagimliligi, derleme hatalari.",
+     "tarih": "2026-04-06",
+     "durum": "kapandi",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/3538",
+     "yeni": true
+    },
+    {
+     "sinif": "surum-dagitim",
+     "ozet": "1.2.0 ve 1.2.1 Homebrew surumu basarisiz; beads v0.51'de kaldirilan --backend bayragini gecen v0.7.0 kirildi.",
+     "tarih": "2026-06-04 / 2026-02-18",
+     "durum": "#4179 acik",
+     "kaynak": "https://github.com/gastownhall/gastown/issues/4179 ; https://github.com/gastownhall/gastown/issues/1680",
+     "yeni": true
+    }
+   ],
+   "not": "C1'de zaten olan: admin yetkisiyle CI atlatip merge (#4442), #4720/#4734/#4819, bus factor. Son push 2026-09-18 (9 gun once)."
+  },
+  {
+   "ad": "Factory (Droids)",
+   "repo": "Factory-AI/factory (issue takibi), Factory-AI/droid-action",
+   "saglik": {
+    "yildiz": "factory 32 / droid-action 57",
+    "son_push": "2026-09-25",
+    "arsiv": false,
+    "acik_issue_pr": "29 / 20",
+    "lisans": "kapali urun; droid-action acik"
+   },
+   "hatalar": [
+    {
+     "sinif": "yanlis-basari",
+     "ozet": "droid 0.186.0: 'droid exec --mission' hic model cagirmadan subtype success, exit 0, num_turns 0, sifir token donuyor; dosyaya dokunmuyor.",
+     "tarih": "2026-08-03",
+     "durum": "acik",
+     "kaynak": "https://github.com/Factory-AI/factory/issues/2",
+     "yeni": true
+    },
+    {
+     "sinif": "maliyet-yeniden-deneme",
+     "ozet": "droid-action her sifir-olmayan cikisi 3 kez yeniden deniyordu; 402 kullanim limiti tekrar denemede duzelmedigi icin her basarisiz inceleme 3 oturum acti; 10-17 Eylul'de limitte biten PR-gunu basina ortalama 4,7 oturum (digerlerinde 1,5).",
+     "tarih": "2026-09-17",
+     "durum": "PR birlesti 2026-09-17",
+     "kaynak": "https://github.com/Factory-AI/droid-action/pull/141",
+     "yeni": true
+    },
+    {
+     "sinif": "PR-spam",
+     "ozet": "Otomatik inceleme 1 aday bulgu icin 8 ayri review'da 29 ayni yorum atti; 'run once' guvenlik incelemesi korumasi hic tetiklenmiyor (isaret hic yazilmiyor).",
+     "tarih": "2026-08-10 / 2026-08-08",
+     "durum": "acik",
+     "kaynak": "https://github.com/Factory-AI/droid-action/issues/117 ; https://github.com/Factory-AI/droid-action/issues/116",
+     "yeni": true
+    },
+    {
+     "sinif": "guvenlik-sir",
+     "ozet": "Ucuncu taraf rapor: droid-action tabanli akis droid exec'i sabit '--skip-permissions-unsafe' ile ve tum process.env'i (yazma yetkili GITHUB_TOKEN, FACTORY_API_KEY) miras vererek calistiriyor; PR icerigiyle istem enjeksiyonunda sizma riski.",
+     "tarih": "2026-09-17",
+     "durum": "acik (ucuncu taraf repo; Factory yaniti dogrulanamadi)",
+     "kaynak": "https://github.com/EffortlessMetrics/perl-lsp-swarm/issues/15840",
+     "yeni": true
+    },
+    {
+     "sinif": "yapilandirma-sessiz-hata",
+     "ozet": "Proje kapsamli .factory/hooks.json sessizce hic okunmuyor; custom droid'lere gecerli yapilandirmaya ragmen sifir MCP araci geliyor; MCP tools/list sayfalamasi izlenmiyor; desteklenmeyen --reasoning-effort sessizce 'off'.",
+     "tarih": "2026-08-03 / 2026-08-14",
+     "durum": "acik",
+     "kaynak": "https://github.com/Factory-AI/factory/issues/3 ; https://github.com/Factory-AI/factory/issues/13 ; https://github.com/Factory-AI/factory/issues/7 ; https://github.com/Factory-AI/factory/issues/4",
+     "yeni": true
+    },
+    {
+     "sinif": "model-sabitleme",
+     "ozet": "Custom droid'de glm-5.2 sabitlemesi zaman zaman GPT-5.6 Sol'a geri dusuyor.",
+     "tarih": "2026-08-08",
+     "durum": "acik",
+     "kaynak": "https://github.com/Factory-AI/factory/issues/8",
+     "yeni": true
+    },
+    {
+     "sinif": "ACP-entegrasyon",
+     "ozet": "droid 0.190.0 ACP daemon'u alt surece desteklenmeyen --mcp-servers geciriyor -> 'Droid process exited unexpectedly'; ACP usage_update yayimlanmiyor.",
+     "tarih": "2026-08-09 / 2026-09-25",
+     "durum": "acik",
+     "kaynak": "https://github.com/Factory-AI/factory/issues/9 ; https://github.com/Factory-AI/factory/issues/42",
+     "yeni": true
+    }
+   ],
+   "not": "Kamuya acik issue takibi kucuk ve yeni (numaralar 1'den basliyor, 2026-07/08). Kapali urun oldugu icin bagimsiz kalite verisi az. B1/C1'de yalniz urun sayfalari vardi."
+  },
+  {
+   "ad": "OpenHands (OpenHands + software-agent-sdk)",
+   "repo": "OpenHands/OpenHands ; OpenHands/software-agent-sdk",
+   "saglik": {
+    "yildiz": "89268 / 1175",
+    "son_push": "2026-09-26 / 2026-09-27",
+    "arsiv": false,
+    "acik_issue_pr": "855 / 513",
+    "lisans": "MIT (Enterprise: PolyForm Free Trial)"
+   },
+   "hatalar": [
+    {
+     "sinif": "maliyet",
+     "ozet": "Maliyet tavani (cost-termination) hic tetiklenmiyordu: kontrol, her LLM cagrisinda guncellenmeyen state.metrics.accumulated_cost'a bakiyordu.",
+     "tarih": "2025-05-03",
+     "durum": "kapandi 2025-06-16",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/8238",
+     "yeni": true
+    },
+    {
+     "sinif": "CI-takilma",
+     "ozet": "GitHub Actions resolver 'Attempt to resolve issue' adiminda saatlerce takiliyor; bir ornekte ~6 saat sonra elle iptal.",
+     "tarih": "2025-01-09",
+     "durum": "kapandi 2025-04-13",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/6172",
+     "yeni": true
+    },
+    {
+     "sinif": "sandbox-guvenlik",
+     "ozet": "Resmi kurulum /var/run/docker.sock'u konteynere bagliyor; kullanici bunun host uzerinde tam denetim verdigini guvensiz olarak raporladi.",
+     "tarih": "2025-03-08",
+     "durum": "kapandi 2025-04-15",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/7154",
+     "yeni": true
+    },
+    {
+     "sinif": "runtime-zamanasimi",
+     "ozet": "Uzun terminal cagrisi (gh pr checks --watch, timeout=1200) normal zaman asimi yerine 'restart occurred... fatal memory error or system crash' olarak yuzeye cikiyor.",
+     "tarih": "2026-03-31",
+     "durum": "kapandi 2026-05-10",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/13665",
+     "yeni": true
+    },
+    {
+     "sinif": "oran-siniri",
+     "ozet": "Anthropic org limiti (20.000 input token/dk) asimi; SaaS'ta ise on-uc kaynakli sahte 'Rate limit exceeded: x per 1 second' 429'lari.",
+     "tarih": "2025-06 / 2026-03-23",
+     "durum": "kapandi",
+     "kaynak": "https://github.com/OpenHands/OpenHands/issues/9259 ; https://github.com/OpenHands/OpenHands/issues/13556",
+     "yeni": true
+    },
+    {
+     "sinif": "istem-enjeksiyonu",
+     "ozet": "OpenHands'in kendi PR inceleme botu PR aciklamasina gizlenmis (LaTeX vb.) talimatlara uydu; ic testte PR #1998 ile gosterildi.",
+     "tarih": "2026-02-12",
+     "durum": "kapandi 2026-05-21",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/2026",
+     "yeni": true
+    },
+    {
+     "sinif": "webhook",
+     "ozet": "Agent-server'in webhook ucuna baglanamamasi yeniden denemelerden sonra konteyner cokmesine ve sandbox baglanti hatalarina yol aciyor.",
+     "tarih": "2026-01-28",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4245",
+     "yeni": true
+    },
+    {
+     "sinif": "webhook",
+     "ozet": "set/SecretStr iceren olaylar JSON'a cevrilemedigi icin 4 denemeden sonra webhook olaylari dusuruluyordu; ayrica akista her token deltasi webhook'a POST ediliyordu; Cloud PR inceleyici zaman zaman hic inceleme atmiyor.",
+     "tarih": "2026-06-04 / 2026-08-27 / 2026-06-23",
+     "durum": "#3516 ve #4672 kapandi, #4260 acik",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/3516 ; https://github.com/OpenHands/software-agent-sdk/issues/4672 ; https://github.com/OpenHands/software-agent-sdk/issues/4260",
+     "yeni": true
+    },
+    {
+     "sinif": "iptal-kapanis",
+     "ozet": "close() 10 sn beklerken bosaltma 30 sn surebiliyor; ikinci cancel finally blogunu kesiyor ve son durum guncellemesi hic yayinlanmiyor. EventBus zaman asimi zombi thread birakiyordu.",
+     "tarih": "2026-08-06 / 2026-08-23",
+     "durum": "kapandi",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4387 ; https://github.com/OpenHands/software-agent-sdk/issues/4598",
+     "yeni": true
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "ChatGPT abonelik (OAuth) profilinde LLM cagrisi asili kalinca konusma RUNNING'de sonsuza dek bekliyor; health check 200, WebSocket acik.",
+     "tarih": "2026-09-12",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4997",
+     "yeni": true
+    },
+    {
+     "sinif": "resume-kirilma",
+     "ozet": "Bagimlilik sabitlemesi (fastmcp<4 -> mcp 1.x) MCP sunuculu tum kalici konusmalarin resume'unu kirdi; konusma sunucudan dusuyor, UI 500/sonsuz reconnect. Cloud workspace resume eski baglanti verisiyle kaliyor.",
+     "tarih": "2026-09-23 / 2026-08-27",
+     "durum": "#5251 kapandi, #4664 acik",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/5251 ; https://github.com/OpenHands/software-agent-sdk/issues/4664",
+     "yeni": true
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "ACP ile Codex headless host'ta: Codex girisli olmasina ragmen authenticate ACP_AUTH_TIMEOUT icinde bitmiyor; onceki surumde auth.json formati yanlis okununca auth asili kaliyordu.",
+     "tarih": "2026-09-18 / 2026-06-10",
+     "durum": "#5167 acik, #3627 kapandi",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/5167 ; https://github.com/OpenHands/software-agent-sdk/issues/3627",
+     "yeni": true
+    },
+    {
+     "sinif": "butce-dogrulama",
+     "ozet": "Profil on-kontrolu butcesi asilmis anahtarlari gecerli raporluyor ve yeniden denemelerde ~2 dk bloklaniyor.",
+     "tarih": "2026-09-16",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/5100",
+     "yeni": true
+    }
+   ],
+   "not": "B1/C1/C2'de zaten olanlar tekrar edilmedi: #7183 dongu, #17371 OAuth 401, #6140 resolver PR adimi, CVE-2026-33718, #4588 deadlock, #4063 esz. sinir, #4893 RUNNING takilma, #4677 sir maskeleme, #12417 V0 API kaldirma, lisans."
+  },
+  {
+   "ad": "Open SWE",
+   "repo": "langchain-ai/open-swe",
+   "saglik": {
+    "yildiz": 10769,
+    "son_push": "2026-09-27",
+    "arsiv": false,
+    "acik_issue_pr": "162 (yalniz PR; issue'lar kapali)",
+    "lisans": "MIT"
+   },
+   "hatalar": [
+    {
+     "sinif": "bakim-destek",
+     "ozet": "Depoda issue'lar kapali (API 410); README dis issue/katki kabul edilmedigini ve dogruluk/kararlilik/uyumlulugun garanti edilmedigini, kirici degisiklik beklenmesini soyluyor. Kullanici tarafli hata kaydi kamuya acik degil; kanitlar yalniz ekibin kendi PR'larindan.",
+     "tarih": "2026-09-27 (gh api)",
+     "durum": "-",
+     "kaynak": "https://github.com/langchain-ai/open-swe",
+     "yeni": "kismen (C1 'stability not guaranteed' notunu vermisti; issue kapaliligi yeni)"
+    },
+    {
+     "sinif": "sir-sizintisi",
+     "ozet": "Yerel shell ortamindan dislanan sir listesi elle tutulan 10 anahtardi, config'te 27 sir tanimli; listede olmayan sirlar (DASHBOARD_JWT_SECRET, TOKEN_ENCRYPTION_KEY, GITHUB_APP_CLIENT_SECRET dahil) sandbox'siz yerel shell'e sizabiliyordu. Ayni bulgu setinde repoya commitlenmis sirlar ve JWT algoritma secimi de var. Duzeltme PR'i birlesmeden kapatildi.",
+     "tarih": "2026-09-14",
+     "durum": "PR kapandi (birlesmedi); sonrasi dogrulanamadi",
+     "kaynak": "https://github.com/langchain-ai/open-swe/pull/2736",
+     "yeni": true
+    },
+    {
+     "sinif": "yazarlik-PR",
+     "ozet": "Paylasilan thread'de PR yazari model tarafindan sohbetten belirleniyordu; ikinci el 'izin verdi' ile baskasi adina PR acildi. 7 gunluk ornekte 1.145 konusmanin 77'si (~%6,7) cok katilimli.",
+     "tarih": "2026-09-24",
+     "durum": "acik PR",
+     "kaynak": "https://github.com/langchain-ai/open-swe/pull/3195",
+     "yeni": true
+    },
+    {
+     "sinif": "yanlis-basari",
+     "ozet": "LangSmith sandbox'ta WebSocket komut sonucu sunucu deadline'inda cikis kodu olmadan donunce basarili bos yanit olarak geciyordu.",
+     "tarih": "2026-09-19",
+     "durum": "acik PR",
+     "kaynak": "https://github.com/langchain-ai/open-swe/pull/3007",
+     "yeni": true
+    },
+    {
+     "sinif": "PR-kalitesi",
+     "ozet": "Sandbox indirme linkleri PR aciklamalarina konuyor ama sandbox geri alininca link olu kaliyor.",
+     "tarih": "2026-09-21",
+     "durum": "acik PR",
+     "kaynak": "https://github.com/langchain-ai/open-swe/pull/3051",
+     "yeni": true
+    },
+    {
+     "sinif": "merge-onay",
+     "ozet": "Hizlandirilmis inceleme cron'dan calisip CI yesil olunca kart atiyor, ikinci tiklamada birlestiriyor ve kart hic gorulmemis thread'lere sonuc mesaji yaziyordu; ajan kontrolune alindi.",
+     "tarih": "2026-09-23",
+     "durum": "birlesti",
+     "kaynak": "https://github.com/langchain-ai/open-swe/pull/3143",
+     "yeni": true
+    },
+    {
+     "sinif": "mimari-churn",
+     "ozet": "Kisa surede yeniden yazimlar: web arayuzu kaldirilip yerel moda gecis (2025-07), 'open swe v2 in js' (2025-08), yerel backend'in TypeScript graph server'a tasinmasi (2026-08).",
+     "tarih": "2025-07 / 2025-08 / 2026-08",
+     "durum": "-",
+     "kaynak": "https://github.com/langchain-ai/open-swe/pull/627 ; https://github.com/langchain-ai/open-swe/pull/797 ; https://github.com/langchain-ai/open-swe/pull/2186",
+     "yeni": true
+    }
+   ],
+   "not": "Varsayilan sandbox ve iz saglayicisi LangSmith; Daytona/Modal/Runloop/E2B destekli. C1: Daytona acik deposu 2026-06'dan beri bakimsiz."
+  },
+  {
+   "ad": "Devin (Cognition)",
+   "repo": "kapali urun (acik repo yok)",
+   "saglik": {
+    "yildiz": null,
+    "son_push": null,
+    "arsiv": null,
+    "not": "SaaS"
+   },
+   "hatalar": [
+    {
+     "sinif": "istem-enjeksiyonu-guvenlik",
+     "ozet": "Bagimsiz arastirmaci: Devin'in istem enjeksiyonuna karsi korumasi yoktu; zararli web sayfasi Devin'e dosya sunan web sunucusu kurdurup expose_port ile internete acti ve URL'yi sizdirdi; tarayici, shell ve Markdown resmi uzerinden sir sizdirma yollari. 2025-04-06'da bildirildi, 120+ gun duzeltme takvimi yanitlanmadi.",
+     "tarih": "2025-08",
+     "durum": "yayinlandiginda duzeltme durumu belirsiz; guncel durumu dogrulanamadi",
+     "kaynak": "https://embracethered.com/blog/posts/2025/devin-i-spent-usd500-to-hack-devin/ ; https://embracethered.com/blog/posts/2025/devin-ai-kill-chain-exposing-ports/ ; https://embracethered.com/blog/posts/2025/devin-can-leak-your-secrets/",
+     "yeni": true
+    },
+    {
+     "sinif": "orkestrator-dikisi-maliyet",
+     "ozet": "Devin API'yi suren bir supervisor'da zaman asimi eklemek guvensiz: bos/basarisiz durum 'olu' sanilip ucretli yeni oturum aciliyor, kabul edilmis ama zaman asimina ugramis webhook ikinci dogrudan create'e dusuyor. v1 'idempotent' bayraginin dedup anahtari ve penceresi belgelenmemis.",
+     "tarih": "2026-08-26",
+     "durum": "acik (1 yildizli kisisel proje)",
+     "kaynak": "https://github.com/The-AIE/the-gibson/issues/251",
+     "yeni": true
+    },
+    {
+     "sinif": "API-churn",
+     "ozet": "API v1 ve v2 'legacy'; deprecation doneminde calisiyor ama tarih verilmemis; oran sinirlari belgelenmemis (yalniz 429 kodu).",
+     "tarih": "2026-09-27 (belge)",
+     "durum": "-",
+     "kaynak": "https://docs.devin.ai/api-reference/overview",
+     "yeni": true
+    },
+    {
+     "sinif": "oturum-surekliligi",
+     "ozet": "Oturumlar 30 gunden sonra devam ettirilemiyor; GitHub org'u baska bir Devin hesabina bagliysa baglanti kurulamiyor.",
+     "tarih": "2026-09-27 (belge)",
+     "durum": "-",
+     "kaynak": "https://docs.devin.ai/admin/common-issues.md",
+     "yeni": true
+    },
+    {
+     "sinif": "fiyat-degisikligi",
+     "ozet": "2026 Mart-Nisan'da ACU (2,25 $) ve 500 $ Team plani emekliye ayrildi; gunluk/haftalik yenilenen kota + API fiyatli ek kullanim modeline gecildi. Butce tahminleri ve otomasyon maliyet hesaplari yeniden yapilmali.",
+     "tarih": "2026-03 / 2026-04-14",
+     "durum": "ikincil kaynak; resmi duyuru dogrulanamadi",
+     "kaynak": "https://continuumcode.ai/guides/devin-pricing/ ; https://www.usecarly.com/blog/devin-pricing/",
+     "yeni": true
+    }
+   ],
+   "not": "B1'de Answer.AI (20 gorevin 3'u) ve C1'de dokumantasyon zaten vardi. Kamu issue takibi olmadigi icin hata verisi sinirli."
+  },
+  {
+   "ad": "MetaGPT",
+   "repo": "FoundationAgents/MetaGPT",
+   "saglik": {
+    "yildiz": 70656,
+    "son_push": "2026-01-21",
+    "arsiv": false,
+    "acik_issue_pr": 138,
+    "lisans": "MIT",
+    "son_surum": "v0.8.2 (2025-03-09)"
+   },
+   "hatalar": [
+    {
+     "sinif": "resume-durum-kaybi",
+     "ozet": "Role'un msg_buffer'i serilestirmeden haric (exclude=True); Team checkpoint'lenip geri yuklenince teslim edilmis ama islenmemis mesajlar kayboluyor.",
+     "tarih": "2026-09-11",
+     "durum": "acik, yanitsiz",
+     "kaynak": "https://github.com/FoundationAgents/MetaGPT/issues/2151",
+     "yeni": true
+    },
+    {
+     "sinif": "CI",
+     "ozet": "actions/checkout'un 20 Temmuz degisikliginden beri fork'lardan gelen PR'larda fulltest/unittest CI basarisiz.",
+     "tarih": "2026-09-27",
+     "durum": "acik",
+     "kaynak": "https://github.com/FoundationAgents/MetaGPT/issues/2161",
+     "yeni": true
+    },
+    {
+     "sinif": "bagimlilik-kirilmasi",
+     "ozet": "httpx surum degisikligiyle 'AsyncClient.__init__() got an unexpected keyword argument proxies' hatasi; kurulumlari kirdi (en cok tepki alan issue).",
+     "tarih": "2024-11-29",
+     "durum": "kapandi",
+     "kaynak": "https://github.com/FoundationAgents/MetaGPT/issues/1617",
+     "yeni": true
+    },
+    {
+     "sinif": "bakim",
+     "ozet": "Son commit 2026-01-21, son surum 2025-03-09; 2026'da acilan issue'lar yanitsiz birikiyor (ornekler #2151, #2161).",
+     "tarih": "2026-09-27 (gh api)",
+     "durum": "-",
+     "kaynak": "https://github.com/FoundationAgents/MetaGPT/commits/main",
+     "yeni": "kismen (B1 'durgun' demisti; tarih/surum yeni)"
+    }
+   ],
+   "not": "B1'de zaten: #2007, #2010, #267 (mevcut kod tabanina uygulanamama). Kod teslim hatti (PR/CI/tracker) yok; rol simulasyonu."
+  },
+  {
+   "ad": "ChatDev",
+   "repo": "OpenBMB/ChatDev",
+   "saglik": {
+    "yildiz": 34403,
+    "son_push": "2026-07-24",
+    "arsiv": false,
+    "acik_issue_pr": 77,
+    "lisans": "Apache-2.0"
+   },
+   "hatalar": [
+    {
+     "sinif": "kirici-pivot",
+     "ozet": "2026-01-07'de ChatDev 2.0 (DevAll) 'zero-code multi-agent platform' olarak ana dala gecti; 'sanal yazilim sirketi' ChatDev 1.x 'chatdev1.0' dalina bakim icin tasindi.",
+     "tarih": "2026-01-07",
+     "durum": "-",
+     "kaynak": "https://github.com/OpenBMB/ChatDev/tree/chatdev1.0",
+     "yeni": true
+    },
+    {
+     "sinif": "zamanasimi",
+     "ozet": "Saglayici katmaninda chat yolunda istek zaman asimi yok; 'protocol' ayari TypeError veriyor.",
+     "tarih": "2026-09-18",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenBMB/ChatDev/issues/674",
+     "yeni": true
+    },
+    {
+     "sinif": "saglayici-uyumu",
+     "ozet": "Anthropic arkali OpenAI-uyumlu uclarda uzun turlarda akissiz cagri HTTP 400 'Streaming is required' ile basarisiz.",
+     "tarih": "2026-07-17",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenBMB/ChatDev/issues/653",
+     "yeni": true
+    },
+    {
+     "sinif": "guvenlik-sureci",
+     "ozet": "SECURITY.md yok, GitHub private vulnerability reporting kapali; workflow sunucusu icin guvenlik bulgusu olan arastirmaci ozel kanal bulamadi.",
+     "tarih": "2026-08-30",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenBMB/ChatDev/issues/667",
+     "yeni": true
+    },
+    {
+     "sinif": "kurulum",
+     "ozet": "Docker kurulumu 'sh: vite: not found' ile calismiyor.",
+     "tarih": "2026-08-21",
+     "durum": "acik",
+     "kaynak": "https://github.com/OpenBMB/ChatDev/issues/663",
+     "yeni": true
+    }
+   ],
+   "not": "B1'de zaten: #167 donma, #147/#94/#26 mevcut koda uygulanamama. Kod teslim hatti yok."
+  }
+ ],
+ "dikis_hatalari": [
+  {
+   "dikis": "Temporal <-> OpenAI Agents SDK",
+   "ozet": "Temporal entegrasyonunda Runner.run_streamed desteklenmiyor; bakimci: guncellemeleri activity'den workflow'a tasimak 'non-trivial', yol haritasinda.",
+   "tarih": "2025-07-29 (2025-08-04 yanit)",
+   "durum": "acik",
+   "kaynak": "https://github.com/temporalio/sdk-python/issues/1009"
+  },
+  {
+   "dikis": "Temporal activity <-> Claude Code alt ajanlari (Shannon)",
+   "ozet": "Activity 1/50 denemede kaldi; heartbeat ~10. dakikada durdu, Claude sureci 326 arac cagrisi yapmaya devam etti, Temporal activity'yi zaman asimina dusurdu.",
+   "tarih": "2026-02-09",
+   "durum": "kapandi",
+   "kaynak": "https://github.com/KeygraphHQ/shannon/issues/105",
+   "not": "Claude Code, D2 listesinde degil; dikis tipi icin kanit"
+  },
+  {
+   "dikis": "Trigger.dev MCP <-> kodlama ajani",
+   "ozet": "wait_for_run_to_complete, DEQUEUED'da takilan run icin sonsuza dek bloke ediyordu; Claude Code 19+ dk asili kaldi.",
+   "tarih": "2026-02-12",
+   "durum": "ayni gun kapandi",
+   "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/3032"
+  },
+  {
+   "dikis": "Ozel supervisor <-> Devin API",
+   "ozet": "Zaman asimi eklemek cift ucretli oturum riski yaratiyor; idempotent bayraginin dedup penceresi belgesiz.",
+   "tarih": "2026-08-26",
+   "durum": "acik",
+   "kaynak": "https://github.com/The-AIE/the-gibson/issues/251"
+  },
+  {
+   "dikis": "Orkestrator <-> OpenHands agent-server (iptal)",
+   "ozet": "close() 10 sn / drain 30 sn uyumsuzlugu: ikinci cancel son durum yayinini kesiyor.",
+   "tarih": "2026-08-06",
+   "durum": "kapandi 2026-09-15",
+   "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4387"
+  },
+  {
+   "dikis": "Orkestrator <-> OpenHands agent-server (saglik sinyali)",
+   "ozet": "LLM cagrisi asili kalinca RUNNING kaliyor, health 200 donuyor; saglik ucu ilerlemeyi gostermiyor.",
+   "tarih": "2026-09-12",
+   "durum": "acik",
+   "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4997"
+  },
+  {
+   "dikis": "Orkestrator <-> OpenHands webhook",
+   "ozet": "Webhook ucu erisilemezse konteyner cokuyor; serilestirme hatasinda olay dusuyor; token deltalari seli.",
+   "tarih": "2026-01-28 / 2026-06-04 / 2026-08-27",
+   "durum": "#4245 acik",
+   "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4245 ; https://github.com/OpenHands/software-agent-sdk/issues/3516 ; https://github.com/OpenHands/software-agent-sdk/issues/4672"
+  },
+  {
+   "dikis": "Session resume <-> surum yukseltme",
+   "ozet": "SDK 1.49.0 ile yazilan MCP'li konusmalar 1.49.2 ile okunamadi.",
+   "tarih": "2026-09-23",
+   "durum": "kapandi",
+   "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/5251"
+  },
+  {
+   "dikis": "CI <-> Factory droid exec (yeniden deneme)",
+   "ozet": "Kalici 402 kullanim limitinde 3 kez yeniden deneme oturum sayisini katladi.",
+   "tarih": "2026-09-17",
+   "durum": "duzeltildi",
+   "kaynak": "https://github.com/Factory-AI/droid-action/pull/141"
+  },
+  {
+   "dikis": "CLI cikis kodu <-> orkestrator",
+   "ozet": "droid exec --mission is yapmadan exit 0/success; Open SWE sandbox zaman asimi bos basari; Gas Town sling 'attached' diyor ama hook bos.",
+   "tarih": "2026-08-03 / 2026-09-19 / 2026-07-18",
+   "durum": "acik",
+   "kaynak": "https://github.com/Factory-AI/factory/issues/2 ; https://github.com/langchain-ai/open-swe/pull/3007 ; https://github.com/gastownhall/gastown/issues/4527"
+  },
+  {
+   "dikis": "ACP <-> Codex kimligi (headless)",
+   "ozet": "Headless host'ta ChatGPT kimlik dogrulamasi ACP zaman asimi icinde tamamlanmiyor.",
+   "tarih": "2026-09-18",
+   "durum": "acik",
+   "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/5167"
+  }
+ ],
+ "siniflar_arasi_ozet": [
+  {
+   "sinif": "Yanlis basari sinyali",
+   "ornekler": [
+    "Factory #2",
+    "Open SWE PR#3007",
+    "Gas Town #4527",
+    "DoltHub Mayor",
+    "Ruflo #653/#1514",
+    "Ruflo doctor #2737"
+   ],
+   "B1_ile_iliski": "B1 'test kandirma' ve Cyrus #270 ile ayni aile; bu kez CLI/arac duzeyinde exit 0"
+  },
+  {
+   "sinif": "Maliyet carpanlari",
+   "ornekler": [
+    "droid-action 402 yeniden denemesi",
+    "Gas Town upstream formulleri kullanici kotasiyla",
+    "Gas Town ~100 $/saat",
+    "OpenHands maliyet tavani calismiyordu #8238",
+    "Devin cift ucretli oturum riski",
+    "Ruflo ikinci olculu fatura #2236"
+   ],
+   "B1_ile_iliski": "B1'de Codex/Symphony maliyet ornekleri vardi; bunlar yeni"
+  },
+  {
+   "sinif": "PR spam / yazarlik",
+   "ornekler": [
+    "droid-action 29 yinelenen yorum",
+    "Open SWE model belirledigi PR yazari",
+    "Ruflo izinsiz Co-Authored-By",
+    "Gas Town kullanici hesabiyla upstream PR"
+   ],
+   "B1_ile_iliski": "yeni"
+  },
+  {
+   "sinif": "CI atlatma / kirmizi testle merge",
+   "ornekler": [
+    "DoltHub: entegrasyon testi kirmiziyken otonom merge",
+    "Ruflo CI kontrolleri bloklamiyor"
+   ],
+   "B1_ile_iliski": "C1'deki Gas Town #4442 ile ayni sinif, farkli olay"
+  },
+  {
+   "sinif": "Guvenlik",
+   "ornekler": [
+    "Devin istem enjeksiyonu + expose_port",
+    "OpenHands PR botu enjeksiyonu",
+    "droid-action env mirasi",
+    "Open SWE sir dislama listesi",
+    "Ruflo karartilmis preinstall",
+    "ChatDev ifsa kanali yok",
+    "OpenHands docker.sock"
+   ],
+   "B1_ile_iliski": "B1 genel PromptPwnd ornekleri; araca ozel olanlar yeni"
+  },
+  {
+   "sinif": "Kalici durum / resume",
+   "ornekler": [
+    "Gas Town Beads kirilganligi",
+    "Ruflo SQLite WAL kaybi",
+    "MetaGPT msg_buffer kaybi",
+    "OpenHands resume kirilmasi"
+   ],
+   "B1_ile_iliski": "B1 'kaldigi yerden devam edememe' sinifini genisletir"
+  },
+  {
+   "sinif": "Iddia ve gerceklik",
+   "ornekler": [
+    "Ruflo stub araclar, 84 SWE-bench iddiasi, HNSW 150x-12.500x -> 1,9x"
+   ],
+   "B1_ile_iliski": "yeni"
+  },
+  {
+   "sinif": "Bakim / churn",
+   "ornekler": [
+    "MetaGPT son commit 2026-01",
+    "ChatDev 2.0 pivotu",
+    "Open SWE issue'lar kapali + yeniden yazimlar",
+    "Devin API v1/v2 legacy",
+    "Gas Town Homebrew surumu basarisiz"
+   ],
+   "B1_ile_iliski": "kismen B1/C1'de"
+  },
+  {
+   "sinif": "Oran siniri",
+   "ornekler": [
+    "Gas Town #232/#1066",
+    "OpenHands #9259/#13556"
+   ],
+   "B1_ile_iliski": "yeni ornekler"
+  }
+ ]
+}

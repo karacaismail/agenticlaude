@@ -1,0 +1,88 @@
+{
+  "title": "Temporal",
+  "summary": "Temporal’ın bu hat için tarafsız değerlendirmesi: lehte, aleyhte, alternatifler ve hüküm.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "Temporal",
+      "lede": "Soru “Temporal güçlü mü?” değil. Soru, panolardaki kuralların durable execution gerektirip gerektirmediği. Gerektiriyor; ama bedeli var.",
+      "meta": [
+        { "label": "Hüküm", "value": "Omurga olarak kullan" },
+        { "label": "Pilot", "value": "Temporal Cloud veya tek düğüm" },
+        { "label": "Self-host kararı", "value": "Faz 2 sonrası" }
+      ]
+    },
+    { "type": "heading", "text": "Pano kuralı → Temporal karşılığı" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "rule", "label": "Panodaki kural" },
+        { "key": "prim", "label": "Temporal karşılığı", "kind": "code" }
+      ],
+      "rows": [
+        { "rule": "Sayaç sıfırlanmaz; model, alt ajan veya yeni run bütçeyi yenilemez", "prim": "workflow state (replay ile korunur)" },
+        { "rule": "Yinelenen komut → mevcut run bağlantısı", "prim": "Workflow ID tekilliği" },
+        { "rule": "İlk çağrı + 2 tekrar; 10 / 30 sn bekle", "prim": "Activity RetryPolicy" },
+        { "rule": "WAITING_FOR_PO: karar kaydedilince aynı çalışma devam", "prim": "Signal / Update + wait_condition" },
+        { "rule": "120 dk aktif süre (insan bekleme hariç)", "prim": "Activity start_to_close + iş akışında süre sayacı" },
+        { "rule": "AC sürümü + kaynak SHA + run_id sabitlenir", "prim": "Workflow input + memo / search attributes" },
+        { "rule": "Bağımsız kümeler paralel başlar", "prim": "Child workflow" },
+        { "rule": "Kesilen adıma geri dön; sonuç ve bütçe kayda geçer", "prim": "Event history" }
+      ]
+    },
+    {
+      "type": "procon",
+      "proTitle": "Lehte",
+      "conTitle": "Aleyhte ve dikkat",
+      "pros": [
+        "Panodaki bütçe, bekleme ve devam kurallarıyla birebir eşleşme.",
+        "Mükerrer komut koruması kod yazmadan gelir.",
+        "Olay geçmişi denetim izi olarak kullanılır; kanıt paketiyle birleşir.",
+        "Olgun: Cadence kökenli; OpenAI Agents SDK entegrasyonu Mart 2026’da GA, PydanticAI entegrasyonu resmi.",
+        "Go, Java, TypeScript, Python, .NET SDK’ları; kontrol düzlemi dili serbest."
+      ],
+      "cons": [
+        "Determinizm kuralı: iş akışı kodu LLM, dosya veya ağ çağrısı yapamaz; hepsi aktiviteye gider.",
+        "Kural değişince açık run’lar için patching / worker versioning gerekir.",
+        "Olay geçmişi ve payload sınırları var: uzun döngülerde Continue-As-New; diff ve loglar dış depoda, Temporal’da yalnızca referans.",
+        "30–120 dk süren kodlama aktivitesi heartbeat ve iptal yayılımı ister; iptalde container da öldürülmeli.",
+        "Self-host: veritabanı, görünürlük deposu ve birden çok servis. Cloud: işlem başına ücret.",
+        "LLM’i deterministik yapmaz: bir kodlama denemesini tekrar denemek aynı sonucu vermez."
+      ]
+    },
+    { "type": "heading", "text": "Alternatiflerle karşılaştırma" },
+    {
+      "type": "compare",
+      "columns": ["Temporal", "DBOS", "Restate", "LangGraph checkpointer"],
+      "rows": [
+        { "label": "Durumun yeri", "values": [{ "score": 3, "text": "Temporal kümesi" }, { "score": 3, "text": "Kendi Postgres’iniz" }, { "score": 3, "text": "Restate sunucusu" }, { "score": 2, "text": "Postgres (graf başına)" }] },
+        { "label": "İşletim yükü (yüksek puan = hafif)", "values": [{ "score": 1, "text": "Ağır / Cloud" }, { "score": 3, "text": "Kütüphane" }, { "score": 2, "text": "Tek binary" }, { "score": 3, "text": "Kütüphane" }] },
+        { "label": "Günlerce insan bekleyişi", "values": [{ "score": 3, "text": "Dayanıklı zamanlayıcı" }, { "score": 3, "text": "Var" }, { "score": 3, "text": "Var" }, { "score": 2, "text": "interrupt; zamanlayıcı yok" }] },
+        { "label": "Çalışan filosu, kuyruk", "values": [{ "score": 3, "text": "Task queue" }, { "score": 2, "text": "Kuyruk var" }, { "score": 2, "text": "Var" }, { "score": 1, "text": "Yok" }] },
+        { "label": "Olgunluk ve ekosistem", "values": [{ "score": 3, "text": "En olgun" }, { "score": 2, "text": "Genç" }, { "score": 2, "text": "Genç" }, { "score": 2, "text": "Yaygın, ama farklı amaç" }] },
+        { "label": "PydanticAI entegrasyonu", "values": [{ "score": 3, "text": "Resmi" }, { "score": 3, "text": "Resmi" }, { "score": 3, "text": "Resmi" }, { "score": 1, "text": "—" }] }
+      ],
+      "note": "Puanlar bu hattın ihtiyaçlarına göre görelidir."
+    },
+    {
+      "type": "callout",
+      "tone": "note",
+      "title": "Ne zaman Temporal gerekmez?",
+      "text": "Pilotta 4 kişi ve kişi başına 1 aktif iş, en fazla 4 eşzamanlı run demek. Tek başına bu hacim için DBOS aynı temel garantileri daha az işletim yüküyle verir. Temporal’ı haklı kılan, 12.000 görevlik backlog ile günlerce süren insan bekleyişlerinin birlikte olması. Ekip Temporal’ın öğrenme eğrisini üstlenmek istemezse DBOS meşru bir seçimdir; PydanticAI ikisini de desteklediği için geçiş maliyeti düşüktür."
+    },
+    { "type": "heading", "text": "İskelet" },
+    {
+      "type": "code",
+      "lang": "python",
+      "title": "workflows/task_run.py (kısaltılmış)",
+      "code": "@workflow.defn\nclass TaskRun:\n    def __init__(self) -> None:\n        self.failures = 0          # görev toplamı; hiçbir model veya alt ajan sıfırlayamaz\n        self.po_decision: str | None = None\n\n    @workflow.signal\n    def po_answered(self, decision: str) -> None:\n        self.po_decision = decision\n\n    @workflow.run\n    async def run(self, task: TaskInput) -> str:\n        policy = task.policy                     # sürümlü policy.yaml, run başında sabit\n        spec = await workflow.execute_activity(\n            research, task,\n            start_to_close_timeout=timedelta(minutes=30),\n            retry_policy=INFRA_RETRY,             # 1 + 2 tekrar, 10 / 30 sn\n        )\n        if spec.ambiguous:\n            await workflow.execute_activity(plane_set_status, \"WAITING_FOR_PO\", ...)\n            await workflow.wait_condition(lambda: self.po_decision is not None)\n\n        for behavior in spec.behaviors:\n            red = await workflow.execute_activity(write_failing_test, behavior, ...)\n            if not red.failed_for_expected_reason:\n                return await self.stop(\"BLOCKED_TEST\", red)\n            while True:\n                if self.failures >= policy.per_task.failed_attempts:\n                    return await self.stop(\"ERROR\", behavior)\n                result = await workflow.execute_activity(\n                    coding_agent, behavior,\n                    heartbeat_timeout=timedelta(minutes=2),\n                    start_to_close_timeout=timedelta(minutes=policy.per_task.active_minutes),\n                )\n                gates = await workflow.execute_activity(run_ci_gates, result.sha, ...)  # yapay zekâ yok\n                if gates.green:\n                    break\n                self.failures += 1\n        return \"READY_FOR_ALPHA\""
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Hüküm",
+      "text": "Temporal doğru omurga. Pilotta Temporal Cloud veya Postgres’li tek düğüm kullanın; self-host kararını Faz 2 ölçümlerinden sonra verin. Kontrol düzlemi için Python öneriliyor, çünkü Temporal’ın ajan entegrasyonları (OpenAI Agents SDK, PydanticAI) orada en olgun."
+    }
+  ]
+}

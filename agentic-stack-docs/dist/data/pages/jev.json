@@ -1,0 +1,77 @@
+{
+  "title": "Jev (TypeSafe AI)",
+  "summary": "Tipli karar modeli Jev’in bu hattaki yeri: hangi ajanların yerine geçebilir, nasıl ölçülmeli.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "Jev (TypeSafe AI)",
+      "lede": "Jev bir orkestratör veya ajan framework’ü değil. Metin üretmek yerine tipli kararlar döndüren barındırılan bir model API’si. Bu hattaki yeri, panodaki sınıflandırıcı ajanlar.",
+      "meta": [
+        { "label": "Hüküm", "value": "Aday; ölçerek" },
+        { "label": "Katman", "value": "L3 karar modeli" },
+        { "label": "Dağıtım", "value": "Barındırılan API" }
+      ]
+    },
+    { "type": "heading", "text": "Ne sağlıyor?" },
+    {
+      "type": "kv",
+      "items": [
+        { "k": "choice", "v": "Girdiyi en fazla 255 etiketten birine atar." },
+        { "k": "score", "v": "Girdiyi 2–10 seviyeli bir ölçeğe yerleştirir." },
+        { "k": "evet / hayır", "v": "Kalibre edilmiş olasılıkla ikili karar." },
+        { "k": "Hız ve maliyet", "v": "Üreticiye göre 70–500 ms ve LLM’den 40–200 kat hızlı; fiyat girdi token’ı üzerinden, çıktı ücretsiz." }
+      ]
+    },
+    { "type": "heading", "text": "Panodaki hangi ajanlara uyar?" },
+    {
+      "type": "table",
+      "columns": [
+        { "key": "agent", "label": "Ajan", "kind": "code" },
+        { "key": "prim", "label": "Jev ilkeli" },
+        { "key": "fit", "label": "Uyum", "kind": "badge" },
+        { "key": "note", "label": "Not" }
+      ],
+      "rows": [
+        { "agent": "frontend-backend-router", "prim": "choice: FE / BE / Full-stack / DB / Infra", "fit": { "text": "İyi", "tone": "success" }, "note": "Panoda zaten enum çıktılı sınıflandırıcı." },
+        { "agent": "maturity-level", "prim": "choice: PoC / MVP / PMF / Enterprise", "fit": { "text": "İyi", "tone": "success" }, "note": "Tek seferlik sınıflandırma." },
+        { "agent": "A0 triyaj (12.000 görev)", "prim": "choice + evet / hayır", "fit": { "text": "İyi", "tone": "success" }, "note": "Hacim büyük, karar basit; hız ve maliyet burada anlam kazanır." },
+        { "agent": "definition-of-ready", "prim": "evet / hayır (alan başına)", "fit": { "text": "Kısmi", "tone": "warning" }, "note": "Eksik alanın ne olduğunu açıklamak için yine metin gerekir." },
+        { "agent": "Risk sınıfı", "prim": "score / choice", "fit": { "text": "Ön eleme", "tone": "warning" }, "note": "Yalnızca ön sınıflama. Yasaklı ve yüksek risk kararı insanda kalır." },
+        { "agent": "solid / edge-case / gap-analysis", "prim": "—", "fit": { "text": "Uygun değil", "tone": "danger" }, "note": "Açıklamalı bulgu listesi gerekir; bu, metin üretimi." }
+      ]
+    },
+    {
+      "type": "procon",
+      "proTitle": "Lehte",
+      "conTitle": "Aleyhte ve dikkat",
+      "pros": [
+        "Çıktı her zaman tanımlı etiket kümesinde; ayrıştırma hatası yok.",
+        "Yüksek hacimli basit kararlarda hız ve maliyet avantajı.",
+        "Olasılık döndürmesi, eşik altında insana veya daha güçlü modele yönlendirmeyi kolaylaştırır."
+      ],
+      "cons": [
+        "“Sıfır halüsinasyon” çıktının etiket kümesinde kalması demek; kararın doğru olduğu anlamına gelmez.",
+        "Kapalı, barındırılan servis: görev metinleri ve kod parçaları dışarı çıkar.",
+        "Kalibrasyon ve doğruluk iddiaları üreticiye ait; sizin etiketlerinizde ölçülmedi.",
+        "Tek bir sağlayıcıya bağımlılık; aynı işi PydanticAI + küçük bir model veya DSPy ile optimize edilmiş bir sınıflandırıcı da yapabilir."
+      ]
+    },
+    { "type": "heading", "text": "Nasıl denenmeli?" },
+    {
+      "type": "steps",
+      "items": [
+        { "title": "Etiketli örnek kümesi", "text": "Her sınıflandırıcı ajan için 100–200 gerçek görev, doğru etiketleriyle." },
+        { "title": "Üç yol karşılaştırması", "text": "Jev, PydanticAI + mevcut model, PydanticAI + küçük/ucuz model. Doğruluk, gecikme ve maliyet ölçülür." },
+        { "title": "Eşik kuralı", "text": "Güven eşiğin altındaysa karar daha güçlü modele veya insana gider; bu dal Temporal iş akışında." },
+        { "title": "Veri politikası", "text": "Barındırılan servise hangi alanların gidebileceği yazılı olarak belirlenir." }
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Hüküm",
+      "text": "Sınıflandırıcı ajanlar için değerli bir aday; özellikle A0’daki yüksek hacimli triyajda. Veri politikası uygunsa Faz 2’de etiketli örnek kümesiyle PydanticAI yoluna karşı ölçün; ölçmeden hatta almayın."
+    }
+  ]
+}

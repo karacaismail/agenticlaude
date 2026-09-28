@@ -1,0 +1,197 @@
+{
+  "title": "Hermes Agent",
+  "summary": "Hermes’in bu hat için tarafsız değerlendirmesi: “kendini eğitiyor” iddiası, kategori, riskler ve önerilen konum.",
+  "blocks": [
+    {
+      "type": "hero",
+      "eyebrow": "Değerlendirme",
+      "title": "Hermes Agent",
+      "lede": "Nous Research’ün Şubat 2026’da yayımladığı açık kaynak ajan. Öğrenme döngüsü gerçek ve değerli; v0.12.0’daki Kanban ile küçük bir ajan ekibini de yönetebiliyor. Ama “framework” değil, “kendini eğitmek” de tam doğru bir tanım değil.",
+      "meta": [
+        {
+          "label": "Hüküm",
+          "value": "Sınırlı rol"
+        },
+        {
+          "label": "Katman",
+          "value": "L2 çalıştırıcı"
+        },
+        {
+          "label": "Lisans",
+          "value": "MIT"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "“Kendini eğitiyor” ne demek?"
+    },
+    {
+      "type": "table",
+      "columns": [
+        {
+          "key": "claim",
+          "label": "Varsayım"
+        },
+        {
+          "key": "reality",
+          "label": "Gerçekte"
+        }
+      ],
+      "rows": [
+        {
+          "claim": "Model ağırlıkları çalışırken güncellenir",
+          "reality": "Hayır. Ağırlık değişmez."
+        },
+        {
+          "claim": "Deneyimden öğrenir",
+          "reality": "Evet: karmaşık bir işten sonra skill (prosedür dosyası) yazar, kullandıkça iyileştirir; ~/.hermes/skills/ altında."
+        },
+        {
+          "claim": "Geçmişi hatırlar",
+          "reality": "Evet: ajanın düzenlediği hafıza + oturumlar arası tam metin arama ve LLM özeti."
+        },
+        {
+          "claim": "Kendi modelini eğitir",
+          "reality": "Doğrudan değil. Ajan izlerini (trajectory) toplu üretip sıkıştırabiliyor; bu veriyle ayrı bir eğitim yapılabilir."
+        },
+        {
+          "claim": "Fikir yeni mi?",
+          "reality": "Hayır. Kökü 2023 tarihli Reflexion yöntemi: ajan geçmiş hatalarından sözel geri bildirimle öğrenir, ağırlık değişmez."
+        }
+      ]
+    },
+    {
+      "type": "procon",
+      "proTitle": "Lehte",
+      "conTitle": "Aleyhte ve riskler",
+      "pros": [
+        "Gerçek bir öğrenme döngüsü: tekrar eden işleri skill’e çeviriyor.",
+        "MIT lisanslı ve modelden bağımsız; panodaki açık ağırlıklı modellerle çalışabilir.",
+        "7 terminal arka ucu (yerel, Docker, SSH, Singularity, Modal, Daytona, Vercel Sandbox), paralel subagent, yerleşik cron.",
+        "Trajectory üretimi ileride kendi araç-kullanım modelinizi ince ayarlamanın gerçekçi yolu."
+      ],
+      "cons": [
+        "Kategori: kütüphane değil, çalıştırıcı. Panonuz da onu “uzun süre sizinle çalışan, öğrenen kişisel ajan” diye sınıflandırıyor.",
+        "Skill’ler sessizce değişirse aynı görev ve aynı AC bir hafta sonra farklı davranış üretir; panodaki “ayrı örnek kümesinde karşılaştır” kuralıyla çelişir.",
+        "Yanlış dersi öğrenebilir: testi geçirmenin kestirmesini skill olarak kaydetmek gibi.",
+        "Web araştırmasından gelen içerik skill’e sızarsa zehirlenme riski. OpenClaw’ın skill pazarındaki tedarik zinciri sorunu bu riskin gerçek bir örneği.",
+        "Gateway, DM eşleştirme ve kişisel hafıza bir kullanıcıya göre tasarlanmış; 4 kişilik ekip hattı için ek kurgu gerekir."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Letta ile karşılaştırma"
+    },
+    {
+      "type": "prose",
+      "text": "Letta da “öğrenen” ajan iddiasında ama farklı bir yoldan: öğrenme bağlam ve hafıza blokları üzerinden, Şubat 2026’dan beri **git tabanlı sürümlü** hafızayla (Context Repositories). Denetlenebilirlik açısından git geçmişi olan bir hafıza, dizindeki skill dosyalarından daha kolay incelenir. Hermes’i seçerseniz skill dizinini bir git deposu yapıp aynı disiplini kurabilirsiniz."
+    },
+    {
+      "type": "heading",
+      "text": "Hermes Kanban",
+      "id": "hermes-kanban"
+    },
+    {
+      "type": "prose",
+      "text": "v0.12.0 ile gelen **Kanban**, Hermes’i kişisel ajandan küçük bir ajan ekibine çeviriyor: görevler `~/.hermes/kanban.db` (SQLite, WAL) içinde; her çalışan kendi kimliği olan ayrı bir OS süreci; profiller görevi kira ve heartbeat ile sahipleniyor. Bu, araç manzarasında STARK’ın kurallarına en çok benzeyen şey. Bu yüzden ayrıca değerlendirilmeli."
+    },
+    {
+      "type": "table",
+      "columns": [
+        {
+          "key": "stark",
+          "label": "STARK kuralı"
+        },
+        {
+          "key": "kanban",
+          "label": "Hermes Kanban karşılığı",
+          "kind": "code"
+        },
+        {
+          "key": "gap",
+          "label": "Fark"
+        }
+      ],
+      "rows": [
+        {
+          "stark": "Bağımsız kümeler paralel başlar; eksik bağımlılıkla başlama",
+          "kanban": "--parent <id> · recompute_ready",
+          "gap": "Birebir karşılık: çocuk görev, ebeveynler done olunca ready olur. Döngü veritabanında engellenir."
+        },
+        {
+          "stark": "WAITING_FOR_PO / WAITING_FOR_QA",
+          "kanban": "kanban_block(kind=needs_input)",
+          "gap": "İnsana düşer; `hermes kanban unblock` ile aynı aşamaya döner."
+        },
+        {
+          "stark": "Geçici altyapı hatası bütçeden sayılmaz",
+          "kanban": "exit 75 → yeniden kuyruğa, sayılmaz",
+          "gap": "Aynı fikir. Kalıcı sağlayıcı hatası (exit 78) ilk seferde bloklar."
+        },
+        {
+          "stark": "Fix döngüsü sınırı, sonra ERROR",
+          "kanban": "kanban.failure_limit (varsayılan 2)",
+          "gap": "Ardışık hata sınırı var; ama görev toplamı, 120 dk aktif süre ve para tavanı yok. Çalıştırma başına --max-runtime var."
+        },
+        {
+          "stark": "Kişi başına 1 aktif iş",
+          "kanban": "max_in_progress_per_profile",
+          "gap": "Profil başına eşzamanlılık sınırı hazır."
+        },
+        {
+          "stark": "Çökme sonrası kesilen adıma dön",
+          "kanban": "claim_ttl + heartbeat · stale reclaim (4 sa)",
+          "gap": "Görev yeniden sahiplenilir ama adım baştan başlar; Temporal gibi olay geçmişinden replay yok."
+        },
+        {
+          "stark": "Kanıt paketi, denetim izi",
+          "kanban": "görev ve handoff satırları",
+          "gap": "Olay satırları var; SHA, AC sürümü ve test raporu bağlama sizin işiniz."
+        },
+        {
+          "stark": "Ekip çapında tek doğruluk kaynağı",
+          "kanban": "tek host, yerel güvenilir kullanıcı",
+          "gap": "Tasarım gereği tek makine. Çok host için aynı DB’yi bağlamak öneriliyor; ekip ölçeğinde kırılgan."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "note",
+      "title": "Kanban için tarafsız hüküm",
+      "text": "Tek makinede, hızlı bir prototip için Hermes Kanban STARK’ın birçok kuralını hazır veriyor; Faz 0’da fikir doğrulamak için gerçekten iyi bir seçenek. Ekip ölçeğinde ise Plane (pano) ve Temporal (durum) varken üçüncü bir durum sahibi olur; tek host sınırı, replay olmaması ve eksik bütçe türleri yüzünden omurga yapılmamalı. Hermes çalışan olarak kullanılırsa Kanban’ı Hermes’in kendi iç işleri (araştırma, dokümantasyon, triyaj) için kullanın; ekibin görevi Plane’de kalsın."
+    },
+    {
+      "type": "heading",
+      "text": "Önerilen konum"
+    },
+    {
+      "type": "steps",
+      "items": [
+        {
+          "title": "Operasyon ve kişisel ajan",
+          "text": "Backlog triyajı, günlük özet, Telegram / Slack bildirimi, zamanlanmış kontroller. Hermes’in en güçlü olduğu alan."
+        },
+        {
+          "title": "İsteğe bağlı kodlama çalışanı",
+          "text": "Temporal aktivite arayüzünün arkasında, Claude Code ve Codex ile aynı sözleşmeyle. Hat modunda skill dizini salt-okunur."
+        },
+        {
+          "title": "Öğrenme öneri modunda",
+          "text": "Yeni veya değişen skill → rules deposuna PR → Promptfoo / Inspect ile sabit örnek kümesinde karşılaştırma → insan onayı → merge."
+        },
+        {
+          "title": "Trajectory arşivi",
+          "text": "Ajan izleri saklanır; ileride kendi modelinizi ince ayarlamak isterseniz veri hazır olur. Model collapse riskine karşı yalnızca kapılardan ve QA’dan geçmiş izleri kullanın. Gerçek “kendini eğitme” bu adımdır ve çevrimdışıdır."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "success",
+      "title": "Hüküm",
+      "text": "Framework katmanı için PydanticAI (veya OpenAI Agents SDK) kullanın; ikisinin de Temporal entegrasyonu var. Hermes’i çalışan ve öğrenme kaynağı olarak konumlandırın, öğrendiklerini kontrollü biçimde hatta alın."
+    }
+  ]
+}

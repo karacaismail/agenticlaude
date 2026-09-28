@@ -1,0 +1,1829 @@
+{
+  "schema_version": "1.0.0",
+  "package_version": "0.7.0",
+  "research_only": true,
+  "installed": false,
+  "live_tests_run": false,
+  "current_platform_selection": null,
+  "researched_at": "2026-09-27",
+  "id": "DEEP-REVIEW-FINDINGS",
+  "title": "İlk karşılaştırmada kaçan davranış ve kanıt açıkları",
+  "records": [
+    {
+      "id": "DP-01",
+      "title": "Gizli bilgi taramasının bulduğu hata shell ifadesiyle başarıya dönüşüyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Scanner varlığı ile bulgu sonucu aynı başarı koluna katılmış; sır tarandı ifadesinin gerçek semantiği denetlenmemiş.",
+      "failure_trace": [
+        "GREEN sırasında gitleaks kuruludur ve çalışma ağacında sır benzeri bir bulgu yakalayıp sıfır dışı çıkış verir.",
+        "command -v ... && gitleaks ... || echo ifadesi bu çıkışı araç yokmuş gibi echo yoluna gönderir; echo başarılıdır.",
+        "_IZ son komutun sıfır çıkışını korur; KapiSonucu gizli-tarama için gecti=true üretir.",
+        "Kanit paketi gizli bilgi taraması yerelde geçti yazar. Şablondaki gerçek CI taraması bağlı ve doğru zorunluysa daha sonra engelleyebilir; yerel kapının başarılı olması güvenilir değildir."
+      ],
+      "required_change": "Kurulu değil, işlem hatası, bulgu var ve temiz sonuç ayrı tipler olmalı; gerekli taramada ilk üçü yayın yetkisi üretmemeli. Kanıt paketi gerçek gate receipt üzerinden üretilmeli.",
+      "source_refs": [
+        "DR-S001",
+        "DR-S002",
+        "DR-S003",
+        "DR-S004"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-06",
+          "CI-03",
+          "CMP-C06"
+        ],
+        "existing_coverage": "Zorunlu CI/test varlığı ve sonucunun güvenilirliği vardı; yerel scanner hata yutma mekanizması bulunmamıştı.",
+        "our_implementation": "Gerçek harness/sandbox ve zorunlu CI kapısı status.pending içinde uygulanmamış; scanner kullanan canlı akış yok.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Bilinen sahte test sırrı içeren fixture, eksik executable ve scanner çalışma hatası üç ayrı denemede yerel kapıyı kapatmalı; temiz fixture açıkça pass olmalı. Gerçek sır kullanma.",
+      "deep_review_contract_refs": [
+        "DR-C07"
+      ]
+    },
+    {
+      "id": "DP-02",
+      "title": "Alpha sağlık kilidi kendi onarımını ve insan reddindeki geri almayı durduruyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Yeni ihtiyaç adı değil: kaynak prototipin zaten tanımlı onarım istisnasını ihlal eden somut çapraz yol ve testlerin ortak kör noktası kaçmıştı.",
+      "failure_trace": [
+        "A değişikliği ana dala birleşir ve alpha sağlıksız hale gelir.",
+        "İnsan Rejected yapar veya onarım görevi B hazırlanır; geri alma taze dal/CI ile _birlestir yoluna girer.",
+        "_birlestir t.geri_alma olsa da _alpha_saglik_bekle çağırır; yalnız Plane In Progress kontrolü geri almada atlanır.",
+        "Alpha yalnız bu onarımla düzelebilecekse bekleme bitince eskalasyon oluşur; _geri_al hatayı yakalar, elle müdahale yorumuyla geri dönerek üst görevi reddedildi olarak kapatabilir."
+      ],
+      "required_change": "Güvenli onarım/geri alma için ayrı yetkili rota; aday ve geri dönüş verisi doğrulaması, etki kapsamı ve hedef digest koşulu. Sağlığı düzeltmek için gereken işlem sağlıklı ortam şartına bağlanmamalı; onarım başarısızsa terminal çıktı etkin kalan artifactı açık söylemeli.",
+      "source_refs": [
+        "DR-S005",
+        "DR-S006",
+        "DR-S007",
+        "DR-S008"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CR-01",
+          "CI-08",
+          "CMP-C10",
+          "CMP-C23"
+        ],
+        "existing_coverage": "Onarımın hata bütçesi kısıtında çıkmaza sokulmaması ve rollback katmanlarının ayrılması zaten sözleşmede var.",
+        "our_implementation": "Gerçek alpha/rollback status.pending; bu koşul bizim demo akışında uygulanmış değil.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Alpha false kalırken onu düzelten revert/repair adayını geçerli kanıtla ilerlet; sıradan özellik beklemeli. Onarımın yetki ve testlerini gevşetmeden dağıtımın sağlığı yeniden doğruladığını kontrol et.",
+      "deep_review_contract_refs": [
+        "DR-C08"
+      ]
+    },
+    {
+      "id": "DP-03",
+      "title": "CI ve entegrasyon onarımı sonrasında eski bağımsız inceleme yeni kod için kullanılıyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Aday değişince hangi kanıtın geçersizleştiği incelenmemiş. Bağımsız CI yeniden çalışması semantik review veya oracle bağının yeniden doğrulandığı anlamına gelmez.",
+      "failure_trace": [
+        "A adayında _inceleme onay verir; bu inceleme PR gövdesine konur.",
+        "CI kırmızı döner; _ci_bekle _yesil ile uygulayıcıya kodu değiştirtir ve B adayını push eder.",
+        "Alternatif olarak yeni main ile çatışma uygulayıcı tarafından çözülür; C için yerel kapılar ve CI tekrar çalışır.",
+        "İki yolda da _inceleme tekrar çağrılmaz; önceki güvenlik/semantik incelemenin kapsamı B/Cye otomatik taşınır. Testte ikinci uygulayıcı sayılır, ikinci reviewer aranmaz."
+      ],
+      "required_change": "Kanıt manifesti candidate/tree/base/config/oracle/test-suite hashlerini taşımalı; her değişimde etkilenen kanıtlar invalidate edilmeli. Güvenlik/semantik review dahil gerekli kapılar son yayın adayında tekrar tamamlanmalı; eski PR özeti güncellenmeli.",
+      "source_refs": [
+        "DR-S009",
+        "DR-S010",
+        "DR-S011",
+        "DR-S012"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-07",
+          "CA-08",
+          "CMP-C07",
+          "CMP-C08"
+        ],
+        "existing_coverage": "Birleşik artifact ve test kökeni yeniden sınanmalı ilkesi vardı. Review/güvenlik/oracle kanıtının onarım sonrası geçersizleşmesine ait yol kaydı yoktu.",
+        "our_implementation": "Bizim workflow.py:49-56 implement sonrası independent_verify çağırıyor; gerçek CI onarım/merge aşaması yok. contracts.py:66-69 SHA/base denetimi var fakat gerçek merge gateway pending.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "A onaylandıktan sonra CI onarımıyla yetki denetimini zayıflatan B üret; birim test ve CI yeşil olsa da A reviewsiyle yayınlanamasın. Aynı deney çatışma çözümü ve oracle/test profil değişimi için ayrı koşsun.",
+      "deep_review_contract_refs": [
+        "DR-C06"
+      ]
+    },
+    {
+      "id": "DP-04",
+      "title": "Workflow politikasının snapshot olması activities için aynı kural sürümünü garanti etmiyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Deterministik orchestration geçmişi ile dış faaliyetlerin canlı konfigürasyon çözümlemesi birbirine eşit kabul edilmiş.",
+      "failure_trace": [
+        "Run v1 politika/proje/ekip kopyasını kosu_yapilandirmasi ile event historyye alır.",
+        "Worker yeniden başlar veya politika dosyası v2ye değişir; workflow replay v1 değerleriyle karar verir.",
+        "Ajan ve kapı activities ayarlar.politika() dosyasını yeniden okur, projeler() ise süreçte ilk okunan cacheyi kullanır. Profil sıra numarası, runner, komut, image veya korunan yol aynı anlamda kalmak zorunda değildir.",
+        "Örneğin workflow v1de profil0=6GB ve modelbudget tahmini seçerken activity v2de profil0=16GB/başka runner kullanır; repo/alpha config değişimi daha ağır hedef karışıklığına dönüşebilir. Eski/yeni worker birlikteyse aynı koşu farklı değerlere ulaşabilir."
+      ],
+      "required_change": "Her activityye onaylı yürütme profilinin digest/immutable refi bağlanmalı; workflow yalnız indeks göndermez. Upgrade sırasında eski sürüm bulunamıyorsa sessiz latest kullanmak yerine açık migration/defer kararı gerekir. Çalışma alanı kimliği de fiziksel kök sürümünü taşımalı.",
+      "source_refs": [
+        "DR-S013",
+        "DR-S014",
+        "DR-S015",
+        "DR-S016",
+        "DR-S017"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-03",
+          "CMP-C03"
+        ],
+        "existing_coverage": "Motor/harness geçişinde checkpoint ve budget ayrımı var; activity seviyesinde kullanılan configuration binding test edilmemiş.",
+        "our_implementation": "Bizim RunRequest.mapping_version alanı var; gerçek broker/ci/deploy bağlama pending. Bu alanın bulunması bütün canlı adapters için immutable configuration kanıtı değil.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Run v1 beklerken runner/profil/test command/repo mapping v2ye geçsin; eski run aynı onaylı v1le devam etsin veya sürümlü açık geçişte dursun. İki worker sürümünde aynı activity farklı ayar okuyamasın.",
+      "deep_review_contract_refs": [
+        "DR-C04"
+      ]
+    },
+    {
+      "id": "DP-05",
+      "title": "Terminal workflow kimliği gecikmiş In Progress olayıyla yetkisiz yeni koşuya dönüşebiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Aynı event tekrarı ile meşru yeni generation ayrımı kaynak giriş yolunda yok. Sabit workflow ID tek başına ömür boyu iş tekilliği garantisi değil.",
+      "failure_trace": [
+        "Görev X bir koşuda tamamlanır/reddedilir; workflow ID gorev-X terminal olur.",
+        "Eski imzalı In Progress olayı gecikerek gelir. isle() event/revision ledger kontrolü yapmadan ALLOW_DUPLICATE ile aynı IDyi tekrar başlatır.",
+        "Yeni run hazırlıkta güncel formu okur fakat başlangıç stateinin hâlâ In Progress olduğunu denetlemez; eski event zamanı run girişinde taşınmaz.",
+        "En geç birleştirme öncesi state kontrolü durdurabilir, fakat pahalı plan/test/ajan çağrıları çoktan yapılmış olabilir. Gerçek yetkili yeni revision veya insan yeniden çalışma talebiyle aynı gecikmiş event ayırt edilmemiştir."
+      ],
+      "required_change": "Kalıcı inbox/event veya kaynak revision kimliği; authoritative state ve input digest okunarak yetkili generation kabulü; duplicate terminal aynı sonucu döndürmeli. Yetkili yeni revision yeni generation açmalı ve bütün koşuların bütçesi korunmalı; görevi sonsuza kadar kilitleme.",
+      "source_refs": [
+        "DR-S018",
+        "DR-S019",
+        "DR-S020",
+        "DR-S021",
+        "DR-S022",
+        "DR-S023"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-14"
+        ],
+        "existing_coverage": "Genel idempotency/kanıt ilkesi vardı; önceki CI notunda intake/terminal reuse incelenmemişti.",
+        "our_implementation": "Bizim intake.py:9-17 REJECT_DUPLICATE+ledger; RunRequest generation/digest taşır. status.json duplicate fixture geçti der. Gerçek Plane inbox/revision/actor yetkisi pending; genelde çözülmüş diye aktarılmaz.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Tamamlanan g1 için eski event 10 kez gelsin: model çağrısı/sahiplenme sıfır. Sonra yetkili rev2/g2 talebi bir kez çalışabilsin; eşzamanlı webhook+uzlaştırıcı tek kabul üretsin.",
+      "deep_review_contract_refs": [
+        "DR-C01"
+      ]
+    },
+    {
+      "id": "DP-06",
+      "title": "Görev formundaki proje adı kaynak projenin yetki sınırını aşabiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Kaynak görev kimliği ile yürütme hedefinin aynı yetkili mappinge bağlı olduğu varsayılmış.",
+      "failure_trace": [
+        "Plane P-A içindeki görev açıklamasında Proje alanı bilinen B anahtarına ayarlanır; bu yanlışlık veya yetkisiz kapsam değişimi olabilir.",
+        "hazir_mi yalnız anahtarın bilinen projelerde bulunduğunu denetler. kosu_yapilandirmasi B varsa onu P-A eşleşmesine tercih eder.",
+        "Workflow Bnin ekip, risk ve GitHub/alpha yapılandırmasıyla çalışır; Plane güncellemeleri ise girdideki P-A/issue kimliğine gider.",
+        "P-A görevini düzenleyebilen kişinin B deposuna iş açma yetkisi ayrıca sınanmadığı için proje bazlı ayrım bulanıklaşır. Bu iz ancak birden fazla proje ve farklı yetki kapsamı varsa güvenlik etkisi üretir; tek proje fixture bunu göstermez."
+      ],
+      "required_change": "Kaynak workspace/project/issue ve yetkili operatör mapping version hedef repo/tenant/ekibi bağlamalı. Görev metni yalnız yetkili seçenek önerebilir; başka projeye yönlendirme ayrı kapsamlı yetki ister. Actor stable ID ve rol kontrolü transport imzasından ayrı yapılmalı.",
+      "source_refs": [
+        "DR-S024",
+        "DR-S025",
+        "DR-S013",
+        "DR-S026",
+        "DR-S027"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CR-13",
+          "CMP-C26"
+        ],
+        "existing_coverage": "İnsan yetkisi ve politika sınırı genel tanımlı; bu karışık project mapping somutlaştırılmamış.",
+        "our_implementation": "Bizim contracts.py:53-64 operator mapping ve repository eşleşmesi var; gerçek Plane actor/revision mapping qualification status.pending. Proje adı eşleşmesi kullanıcı yetkisi kanıtı değildir.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "İki proje ve farklı actor yetkileriyle P-A görevine B yaz; Bde clone/model/push oluşmadan reddet. Yetkili çapraz proje routing varsa açık mapping ve audit receiptle kabul et.",
+      "deep_review_contract_refs": [
+        "DR-C02"
+      ]
+    },
+    {
+      "id": "DP-07",
+      "title": "Fabrikanın durum yazımı eşzamanlı insan reddini eski sayıp düşürebiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Zaman damgası nedensel olay kimliği yerine kullanılmış. Botun kendi güncellemesiyle insanın ayrı eyleminin revision ve actor bağı birbirinden ayrılmıyor.",
+      "failure_trace": [
+        "Fabrika T1 anında Plane durumunu Human Test yapar; updated_at almak için ayrı bir GET yapacaktır.",
+        "İnsan aradaki T2 anında Rejected yapar. Red webhooku T2 damgasıyla kuyruğa girer.",
+        "Fabrikanın GET yanıtı kendi T1 yazımı yerine insanın T2 güncellemesini döndürür; workflow son_plane_degisimi=T2 yapar.",
+        "Kuyruktaki red için T2 > T2 false olur; aynı updated_at ile reconciliation da sinyali kurtaramaz. İnsan reddi işlenmeden alpha kodu kalabilir."
+      ],
+      "required_change": "Kalıcı inbox, actor/olay kimliği ve açık task-generation kullan; bot yazımının receipt revisionını insan komutundan ayır. Yetkili insan kararını karşılaştırmalı sürüm geçişiyle uygula; cevabı olmayan GET hiçbir insan olayını tüketmesin. Cancel/reject teslim yan etkisinden önce ve sonra güncel yetki denetiminden geçsin.",
+      "source_refs": [
+        "DR-S028",
+        "DR-S029",
+        "DR-S030"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CMP-C01",
+          "CMP-C20"
+        ],
+        "existing_coverage": "Kabul oturumunun sürümü ve iptal/sahiplik sınırı zaten vardı; durum yazma watermarkının insan olayını tüketmesi bulunmamıştı.",
+        "our_implementation": "Demo workflow cancel kontrolleri ve ledger.revoke var. Gerçek Plane actor/revision/durable inbox status.pending; bu yarış canlı bağda çözülmüş sayılmaz.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "PATCH(T1), insan red(T2), GET(T2), webhook(T2) sırasını kontrollü fixture ile kur; red tam bir kez uygulanmalı. Ayrıca alpha doğrulaması sırasında iptalin daha geç bot state yazımıyla kaybolmadığını sınayın.",
+      "deep_review_contract_refs": [
+        "DR-C01"
+      ]
+    },
+    {
+      "id": "DP-08",
+      "title": "Kabul ölçütlerinin sayısı tutarken gerçek kapsam eksik kalabiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "90/90 testin kapsamın tamamı olduğunu kanıtlamadığı somutlaşmış oldu: hedef payda plan dilimleme sırasında küçülebiliyor; aynı AC iki kez sayılabiliyor.",
+      "failure_trace": [
+        "Form AC-1 ve AC-2 içerir. Reviewer iki satır döndürür; ikisi de yalnız AC-1 hakkında, karsilandi=true ve kanit doludur.",
+        "_eslesme_eksigi yalnız satır sayısını ve truthy alanları denetler; AC-2 kimliğinin gerçekten mevcut olduğunu aramaz. Karar onay ise çıktı kabul edilir.",
+        "Ayrı kapsam yolu: plan yedi alt iş üretir, sınır altıysa liste sessizce dilimlenir; kalan yedinci iş replan/backlog/explicit exclusion olarak kaydedilmez.",
+        "Test listesi yalnız işlenen parçalardan birikir. Sonuç 6/6 yeşil görünebilir; asıl 7/7 kapsamın kapanması veya AC-2nin karşılanması kanıtlanmış değildir."
+      ],
+      "required_change": "Yetkili formdaki sabit AC kimlikleri, plan iş kimlikleri, oracle ve test kanıtları arasında exact-set kapanış denetimi kur. Yinelenen/bilinmeyen/eksik AC reddedilsin; kapasite sınırı kapsamı sessizce silmesin, yeni alt plan veya kayıtlı kapsam kararı üretsin. Engelleyici bulgu varken onay alanı tek başına yeterli olmasın.",
+      "source_refs": [
+        "DR-S031",
+        "DR-S032",
+        "DR-S033"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-02",
+          "CA-06",
+          "CA-12",
+          "CR-03",
+          "CMP-C02",
+          "CMP-C06",
+          "CMP-C11"
+        ],
+        "existing_coverage": "Oracle, test varlığı ve plan kökeni ilkeleri vardı; satır sayısını kapsam sayan gerçek algoritma ve sessiz liste kesme birlikte incelenmemişti.",
+        "our_implementation": "Bizim kapalı demo GateEvidence başarılı/tam ve protected-path koşullarını kontrol ediyor; alan gereksiniminden tam AC/oracle/test kapsama grafı gerçek uygulamada yok.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "İki ACye karşı aynı AC-1in iki kez eşlenmesi; yedi alt iş/altı sınırı; onay+engelleyici bulgu; boş plan test listesi ayrı negatif fixturelar olsun. Hepsi yayın yetkisini kapatsın, yalnız tüm yetkili kapsam kapandığında ilerlesin.",
+      "deep_review_contract_refs": [
+        "DR-C05"
+      ]
+    },
+    {
+      "id": "DP-09",
+      "title": "Korunan dosya kontrolünden sonra çalışan test kodu aynı dosyaları değiştirebiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Repo kodu yalnız ajan sürecinde değil kurulum/test/derleme adımlarında da güvenilmeyen yürütmedir. Önceki temiz snapshot sonraki çalışma ağacının temiz olduğu anlamına gelmez.",
+      "failure_trace": [
+        "GREEN başında .github/, yönerge ve RED testleri temizdir; korunan-dosyalar kapısı pass kaydeder.",
+        "Sonra kurulum/test/derleme komutu çalışma ağacı rw bağlı aynı sandbox içinde çalışır. Değişmiş uygulama kodu veya bağımlılık kurulumu korunan bir dosyayı bu aşamada değiştirebilir.",
+        "Komutlar sıfır koduyla biter; korunan dosya denetimi en sonda tekrarlanmaz. .git read-only olması .github/ veya test içeriklerini read-only yapmaz.",
+        "Sonraki bağımsız reviewer değişimi fark edebilir fakat deterministik engel yoktur. git add -A son çalışma ağacını paketlediğinden ilk kapının görmediği değişiklik commit adayı olabilir."
+      ],
+      "required_change": "Korunan alanları yürütme sırasında salt okunur tut veya ayrık trusted workspace/sandbox çıktısı kullan; tüm untrusted komutlar bittikten sonra kanonik basea karşı final tree yeniden doğrulansın. Commit edilen tree, doğrulanan tree ve güvenilir üretici makbuzu aynı digestte birleşsin; ajan tarafından yazılan rapor tek başına kapı olmasın.",
+      "source_refs": [
+        "DR-S034",
+        "DR-S035",
+        "DR-S036",
+        "DR-S037"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-08",
+          "CMP-C08",
+          "CMP-C19"
+        ],
+        "existing_coverage": "Yetkili test ve commit kökeni korunması vardı; kontrol ile kullanım arasındaki repo-komutu yazma penceresi bulunmamıştı.",
+        "our_implementation": "Demo contracts.py protected_paths_changed bayrağına dayanıyor; gerçek sandbox, authoritative diff ve trusted check writer pending. Bu bayrağın doğru üretildiği canlı kanıt yok.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Zararsız fixture test komutu kontrol geçtikten sonra korunan bir dosyaya sentinel yazar ve exit0 döner. Son kapı bunu reddetsin; sentinel commit/push adayında görünmesin. Rapor sahteciliği ve CI onarım yollarında da aynı tree bağı doğrulansın.",
+      "deep_review_contract_refs": [
+        "DR-C06"
+      ]
+    },
+    {
+      "id": "DP-10",
+      "title": "CI bitiş sırası alpha sürümünü daha eski commit’e geri taşıyabiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Trunk birleşim sırası, CI tamamlanma sırası ve dağıtım hedef sırası üç ayrı düzlemdir. Bir deployun doğru SHAyı çalıştırması sistemin doğru en son hedefi koruduğunu kanıtlamaz.",
+      "failure_trace": [
+        "Ana dalda önce A sonra onun ardılı B vardır. A CI yavaş, B CI hızlı tamamlanır.",
+        "Bnin workflow_run olayı alpha işini başlatır ve B dağıtılıp kendi SHA kontrolünden geçer.",
+        "A CI daha sonra success olur. concurrency yalnız aynı anda çalışmayı sınırlar; A hedefinin artık eski olduğunu kontrol etmez.",
+        "A işi kendi event.head_sha değerini dağıtır; alpha=A olunca eşitlik kontrolü de başarılıdır. Alpha Bden A’ya geri gitmişken iki dağıtım da kendi testinde başarılı olabilir."
+      ],
+      "required_change": "Proje/ortam başına kalıcı desired generation ve yetkili artifact hedefi tut; dağıtıma başlarken ve promote ederken hedef güncelliği fenced/CAS denetimiyle doğrulansın. Geriye hareket yalnız açık rollback komutuyla yeni yetkili generation altında yapılabilsin; insan test oturumu artifacta sabitlensin.",
+      "source_refs": [
+        "DR-S038",
+        "DR-S039"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-01",
+          "CA-07",
+          "CI-04",
+          "CMP-C01",
+          "CMP-C07"
+        ],
+        "existing_coverage": "Alpha tam artifact ve insan oturumunun sabitliği vardı; sıralı deploymentın eski tamamlanan işi reddetmediği fark edilmemişti.",
+        "our_implementation": "Bizim gerçek alpha publisher status.pending. Demo alpha_receipt_fixture tek hedef koşar; ters CI bitiş sırası sınanmış gerçek dağıtım yok.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "A/B CI bitişlerini ters sıraya sok. B kabul edilmiş hedef olduktan sonra A deploy yetkisi alamamalı; bilinçli rollback farklı yetkili generationla mümkün olmalı. İki publisher ile aynı deney tekrarlansın.",
+      "deep_review_contract_refs": [
+        "DR-C09"
+      ]
+    },
+    {
+      "id": "DP-11",
+      "title": "Host RAM bütçesi ve ekip WIP’i worker süreç sayısıyla aşılabiliyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Ajan RAMini artırmak kapasiteyi büyütmek değildir. Hosttaki her worker kendi izin defterini tuttuğunda yatay worker eklemek görünürdeki toplam limiti de çoğaltır.",
+      "failure_trace": [
+        "Bir host için FABRIKA_HOST_BELLEK_GB=96 tanımlanır; iki bağımsız worker process aynı hostta başlar. Her biri kendi _BUTCE=96 sayacına sahiptir.",
+        "İkisi de kendi hesabında uygun gördüğü 72 GB iş alır: toplam 144 GB kabul edilir. İşlem sayacı Docker hostunun ortak rezervasyonu değildir.",
+        "Tek workerda da host bütçesi8GB iken16GB profili min(16,8) ile8GB sayılır; docker --memory yine16GB olur. Profil büyütme hostun uygunluğu diye yorumlanabilir.",
+        "Ekip eszamanlilik değeri prepare activitysini ve ağır activitylerin anlık sayısını sınırlar; tüm workflow ömrüne ait WIP lease yoktur. ART wip_tavani configte durur fakat çalışan görev kabul sayacına bağlanmaz."
+      ],
+      "required_change": "Host kaynakları ile proje/ekip/ART WIP için ortak atomik admission ve lease/fencing uygula; reservation gerçek profile eşit olmalı, hosttan büyük tek iş bölünmeli/başka hosta yönlenmeli/reddedilmeli. Worker restartı ve iptal kapasite sızıntısı veya çift tahsis üretmemeli; provider/CI/disk kapasitesi ayrı ölçülmeli.",
+      "source_refs": [
+        "DR-S040",
+        "DR-S041",
+        "DR-S042",
+        "DR-S043"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-10",
+          "CI-06",
+          "CI-07",
+          "CI-09",
+          "CMP-C21",
+          "CMP-C22",
+          "CMP-C25"
+        ],
+        "existing_coverage": "Kapasite sayılarının varsayım olduğu ve bütçe atomikliği vardı; host/worker/process sınırları ile run-WIP/activity-concurrency farkının gerçek uygulama sonucu çıkarılmamıştı.",
+        "our_implementation": "Bizim status.pending dağıtık capacity/fencing ve provider quota içerir. SQLite call budget kaynak kota/host RAM rezervasyonu yerine geçmez.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Aynı hosta iki workerla96GB toplam budget altında72+72GB talep gönder; ikincisi beklemeli.8GB host/16GB profile kapalı karar verilmeli. Activityler beklerken workflow WIPi sınırdan fazla büyüyememeli; crash sonrası reservation tek sahibinde kalmalı.",
+      "deep_review_contract_refs": [
+        "DR-C10"
+      ]
+    },
+    {
+      "id": "DP-12",
+      "title": "Activity retrysi aynı dış etkiyi aynı sonuç olarak geri almıyor",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Workflow replayinin deterministik olması, activitynin dış etkisinin idempotent olmasıyla karıştırılmamalı. Kanıt defterinin de tekrar denemede maliyeti iki kere sayması mümkündür.",
+      "failure_trace": [
+        "degisiklikleri_gonder soft-reset, commit ve push yapar; uzak dal A commitini alır. Activity yanıtı workflow historyye kaydolmadan worker/bağlantı kesilir.",
+        "Üç denemeli _makine çağrısı aynı activityyi yeniden çalıştırır. Yeniden soft-reset/commit yeni zaman damgasıyla B commitini üretebilir; remote ref taze fetch edilip force-with-lease ile değiştirilir.",
+        "Eski A için başlamış CI ve dış gözlemler varken aynı mantıksal push için B yan etkisi doğar. Lease fetch etmek aynı mantıksal işlem için receipt uzlaştırmak değildir.",
+        "Aynı sınıf olay_yazda da var: INSERT commitinden sonra yanıt kaybolursa unique effect id olmadığından retry ikinci maliyet kaydı ekleyebilir. Git revert başarıdan sonra yanıt kaybolursa ikinci revert doğal olarak öncekinin makbuzunu döndürmez."
+      ],
+      "required_change": "Her dış etki için run/generation/step/operation bağlayan kararlı effect key, prepare/unknown/confirmed durumu ve dış dünyadan reconcile ekle. Commit artifactı yayın öncesi sabitle; retry mevcut remote receipt/refi gözlemleyip aynı sonucu dönsün. Audit ve maliyet olayları effect kimliğiyle unique olsun; rollback bilinmeyen sonuçta kör tekrarlanmasın.",
+      "source_refs": [
+        "DR-S044",
+        "DR-S045",
+        "DR-S046",
+        "DR-S047"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "system": "claude_prototype_second_fixed_snapshot",
+        "observation": "static_code_path",
+        "runtime_incident_observed": false,
+        "our_system_comparison": "fixture_or_document_contract_and_pending_status; not_a_live_failure_claim"
+      },
+      "prior_coverage": {
+        "cluster14_refs": [
+          "CA-11",
+          "CI-05",
+          "CI-07",
+          "CMP-C20",
+          "CMP-C22",
+          "CMP-C24"
+        ],
+        "existing_coverage": "Durable execution, idempotency ve receipt ilkeleri önceki pakette vardı. Kaynakta hangi gerçek retrylerin commit/kayıt/revert etkisini çoğalttığı tek tek bağlanmamıştı.",
+        "our_implementation": "Bizim ledger.py:92-108 effect receipt ve fixture crash-after-effect uzlaştırması var; status.json bunu SQLite/demo ile sınırlar. Gerçek Git/CI/deploy adapterında sağlandığı iddia edilemez.",
+        "our_status_ref": "/Users/w6x/Documents/otomasyon coding 2/agentic-sistem/uygulama/status.json"
+      },
+      "confidence": {
+        "level": "high_for_code_path; conditional_for_runtime_impact",
+        "basis": "Sabit snapshot kodunun statik okunması; kaynak kod çalıştırılmadı, canlı hata yeniden üretilmedi."
+      },
+      "acceptance_description": "Push kabul edildikten hemen sonra activity cevabını düşür; retry aynı SHA/receipt dönmeli ve ikinci commit/CI üretmemeli. DB INSERT sonrası cevap kaybında tek maliyet satırı; revert sonrası cevap kaybında çift revert veya sahte çatışma olmamalı.",
+      "deep_review_contract_refs": [
+        "DR-C03"
+      ]
+    },
+    {
+      "id": "DE-01",
+      "title": "Self-host görev kaynağının olay zarfı bizim adaptörle uyuşmuyor",
+      "severity": "high",
+      "classification": "corrects",
+      "what_was_missed": "İlk tur prototip koduna ve ihtiyaç kümelerine odaklandı; E4 ve arşivlenmiş üretici kaynak karşı kontrolü incelenmedi.",
+      "failure_trace": [
+        "İncelenen self-host kaynak zarfında event/action/data ve X-Plane-Delivery başlığı var; version=v2 ile event_id alanları yok.",
+        "Bizim pilot adaptör bu alanları ve workitem.* olayını şart koşuyor; bu kaynak fixtureı mevcut kapıyı karşılamaz. Kurulu sunucuda olay kaybı yaşandığı bu tur gözlenmedi."
+      ],
+      "required_change": "Webhook sürümü/edisyonu capability manifestine bağlansın; ham imzalı örnek payloadlar ve teslim kimliği normalleştirmesi ayrı sürüm adaptörleriyle nitelendirilsin. Belge v2 ile CE kaynak gövdesi aynı kabul edilmesin.",
+      "source_refs": [
+        "DR-S048",
+        "DR-S049",
+        "DR-S050"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "our_adapter_static_mismatch",
+        "current_runtime_failure_observed": false,
+        "interpretation": "Statik uyumsuzluk doğrudan görülüyor. Kullanıcının kurulu Plane sürümü ve gerçek payload bu tur okunmadığı için canlı olayların gerçekten reddedildiği iddia edilmiyor."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [],
+        "limits": [
+          "Arşivlenmiş Python kaynağı birincil kod kopyasıdır; preview blob kısa kimliği E4 beyanıdır, kaynak repo commit zinciri bu tur yeniden indirilmedi.",
+          "Marka seçimi veya kurulum yapılmadı."
+        ]
+      },
+      "acceptance_description": "Kurulu sürümden imzalı olay v1/v2 sözleşme fixturelarıyla alınır; tekrar, eksik event_id, bilinmeyen şema ve geçersiz imza ayrı sonuç üretir; tanınmayan zarf sessiz iş kaybına dönüşmez.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C02"
+      ]
+    },
+    {
+      "id": "DE-02",
+      "title": "Webhook 5xx yanıtı ile ağ hatası aynı yeniden deneme garantisine sahip değil",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Taşıyıcının hata sınıfı ve devre dışı kalması arşiv kodundan okunmamıştı.",
+      "failure_trace": [
+        "Arşiv kodu ağ exceptionı için retry kuruyor, HTTP responseu ise kaydediyor; aynı 503 davranışı bu parçadan kesinleştirilemiyor.",
+        "Alıcının 503üne otomatik tekrar garantisi var sanılırsa olay düşebilir; kanalın pasifleşmesi ve eksik teslim bağımsız reconciliation ile görünür olmalıdır. pinned_fetch alt uygulaması bu kopyada yok."
+      ],
+      "required_change": "Teslim yokluğunu algılayan bağımsız reconciliation/watermark, webhook etkinlik alarmı ve kalıcı inbox yazılmadan 2xx dönmeme kabulü birlikte tanımlansın. Retry_count ve attempt_count ayrı tutulmalı; HTTP 5xx davranışı kurulu sürümde ölçülmeli.",
+      "source_refs": [
+        "DR-S051",
+        "DR-S052"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "archived_primary_code_semantics",
+        "current_runtime_failure_observed": false,
+        "interpretation": "Bu kod yolunda HTTP sonucu kaydetmek ve ağ exceptionını retry etmek ayrı. 5xx için explicit raise_for_status görünmüyor. pinned_fetch uygulaması bu kopyada yok; onun 5xx yükseltmediği nihai garantisi eksik. Kaynaktaki beş ağ hatası ifadesi beş tekrar ile ilk denemeyi karıştırıyor."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [],
+        "limits": [
+          "Beş tekrar yapılandırması altıncı toplam denemeyle aynı kavram değildir.",
+          "Kod semantiği üretim olayı olarak sayılmaz."
+        ]
+      },
+      "acceptance_description": "Aynı olay için 503, ağ timeoutu, kapalı webhook ve imzalı fakat eski olay enjekte edildiğinde iş kaybı, yinelenen kabul veya sahte başarı olmaz; kapalı kanal fark edilir ve pano polling ile uzlaştırılır.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C02"
+      ]
+    },
+    {
+      "id": "DE-03",
+      "title": "18 Eylül toparlanması son kabul değil: 25 Eylül kök iş ERROR/review görünümü var",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "İlk Kestra incelemesi son eşleşen 18 Eylül kaydında durdu; E6 ve sonraki public status görüntüsü kapsam dışı kaldı.",
+      "failure_trace": [
+        "18 Eylül ara toparlanma/entegrasyon kanıtından son kabul çıkarılması risklidir.",
+        "25 Eylül aynı kök işin yerel status görüntüsü ERROR/review, kanıt raporu AC-REQUEST NOT_TESTED gösterir. P7D süre eşleşmesi aday nedendir; execution bitiş eventi olmadan kesin kök neden değildir."
+      ],
+      "required_change": "U01 kapanmış kabul sayılmasın; dated_negative_snapshot_available olarak zenginleşsin. Sonuç metni: 18 Eylül ara toparlanma/entegrasyon kanıtı, 25 Eylül aynı kök işte kabul edilmemiş hata fotoğrafı; sonraki gerçek teslim belirsiz. Uzun insan beklemesi owner/deadline/reminder durumundan ayrı teknik yaşam süresine bağlansın.",
+      "source_refs": [
+        "DR-S053",
+        "DR-S054",
+        "DR-S055",
+        "DR-S056",
+        "DR-S057"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "dated_local_failure_observation",
+        "current_runtime_failure_observed": false,
+        "interpretation": "Tarihli kaydın ERROR/review ve NOT_TESTED olması doğrudan yerel kanıt. E6’nın 18.09 16:14→25.09 16:14 eşleşmesinden P7D nedeni çıkarması kısmi çıkarımdır; Kestra execution termination eventi bu tur yok. Aynı jobın bu fotoğrafından bütün sistem hiç çalışmadı denmez."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [],
+        "limits": [
+          "SF ek yerel dosyaları snapshot2 başlangıç envanterinde yoktur; ayrı zaman ve hash ile kopyalandı.",
+          "93 bilinmeyen kullanım sıfır maliyet sayılmaz; 456 çağrı bütçe ihlalinin nedenini tek başına kanıtlamaz."
+        ]
+      },
+      "acceptance_description": "Yedi günlük insan kabulü beklemesi zaman hızlandırmalı senaryoda işi kaybettirmez; owner/deadline/escalation görünürdür; teknik timeout ayrıca terminal reason verir. Gerçek kabul ancak aynı generation/SHA/deploy/acceptance receipt ile kapanır.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C13"
+      ]
+    },
+    {
+      "id": "DE-04",
+      "title": "Güvenlik önem derecesi kaynağa bağlı; CVSS v4 atlanınca var olan skor kayboluyor",
+      "severity": "medium",
+      "classification": "corrects",
+      "what_was_missed": "E3 eleştirileri toplu katalog farkı sayılıp ikinci otorite ve yeni CVSS alanı eşlemesi yapılmadı.",
+      "failure_trace": [
+        "Legacy cvss alanı null okunurken aynı birincil kayıt cvss_severities içinde v4 skoru taşıyor.",
+        "Tek alan okuyucusu mevcut skoru kaybeder; üretici high/diğer otorite critical ayrımı da tek etikete ezilirse doğru köken silinir."
+      ],
+      "required_change": "severity_observations[authority,source_url,retrieved_at,label,cvss_version,score,vector] ekle; legacy cvss null iken cvss_severities alanını da oku. Aynı GHSA farklı otoritelerin iddialarını kayıpsız taşır; kullanıcı ortamı uygulanabilirliği ayrı kalır.",
+      "source_refs": [
+        "DR-S058",
+        "DR-S059",
+        "DR-S060",
+        "DR-S061",
+        "DR-S062",
+        "DR-S063"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "primary_advisory_data_correction",
+        "current_runtime_failure_observed": false,
+        "interpretation": "Dört üretici/global endpoint 27.09.2026 13:13 UTC civarında yeniden okundu. Üretici etiketleri doğru aktarılmış; kaynaklar arası uyuşmazlık ve CVSS v4 eksikliği somut veri kaybıdır. Global etiketin tek evrensel doğru olduğu sonucu çıkarılmaz."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [
+          "https://github.com/advisories/GHSA-vv7q-7jx5-f767",
+          "https://github.com/PrefectHQ/fastmcp/security/advisories/GHSA-vv7q-7jx5-f767",
+          "https://github.com/advisories/GHSA-hx9v-6r9f-w677",
+          "https://github.com/deepset-ai/haystack/security/advisories/GHSA-hx9v-6r9f-w677"
+        ],
+        "limits": []
+      },
+      "acceptance_description": "FastMCP high/critical ve Haystack low/high birlikte kaynaklarıyla görünür; v3/v4 birbirine yazılmaz, null/0/unknown aynı sayılmaz; ham yayıncı verisi korunur.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C15"
+      ]
+    },
+    {
+      "id": "DE-05",
+      "title": "n8n sürüm dalları bizde birleştirilmemiş; üretici ile reviewed aralığı çelişiyor",
+      "severity": "medium",
+      "classification": "corrects",
+      "what_was_missed": "E3’ün eleştirisi kaynak otoritesi karşılaştırılmadan doğru sanılabilirdi; ham kaynaklara inildi.",
+      "failure_trace": [
+        "Kaynak eleştirisi n8n sürüm dallarının bizde birleştirildiğini söylüyor; ham hedef kaydı iki üretici aralığını koruyor.",
+        "Bu eleştiri düzeltme gerekçesi olamaz. Ancak reviewed kaynakta farklı alt sınır bulunduğundan aynı sürüm için kaynaklar farklı karar üretebilir; uyuşmazlık otoritesiyle korunmalıdır."
+      ],
+      "required_change": "Ham aralığı değiştirmeden authority etiketli ikinci gözlem ekle; machine decision policy ve ambiguity kaydı oluştur. Birincil kaynakta fix olarak gösterilen dal yanlışlıkla etkilenmiş sayılmamalı; çatışmalı kararda gerekçesiz otomatik seçim yapılmamalı.",
+      "source_refs": [
+        "DR-S064",
+        "DR-S065",
+        "DR-S066",
+        "DR-S067",
+        "DR-S068"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "source_criticism_partly_rejected",
+        "current_runtime_failure_observed": false,
+        "interpretation": "Bizim ham kayıt üretici API’sine sadık. E3’ün dönüştürme suçlaması yanlış; fakat 2.29.8 gibi örnekte yayıncı ilk aralığı ile reviewed aralıkları farklı cevap verir. H44J için de benzer kaynak çelişkisi var."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [
+          "https://github.com/advisories/GHSA-x5vx-c2c8-m3w9",
+          "https://github.com/n8n-io/n8n/security/advisories/GHSA-x5vx-c2c8-m3w9",
+          "https://github.com/advisories/GHSA-h44j-f5r5-ph73",
+          "https://github.com/n8n-io/n8n/security/advisories/GHSA-h44j-f5r5-ph73"
+        ],
+        "limits": []
+      },
+      "acceptance_description": "x5vx için 2.29.7/2.29.8/2.30.0/2.30.1; h44j için 2.27.3/2.27.4/2.28.0/2.28.1 sınır örnekleri kaynağa bağlı beklenen sonuç verir; aralıklar tek kontinü aralığa indirgenmez.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C15"
+      ]
+    },
+    {
+      "id": "DE-06",
+      "title": "Kaynak tarama tamamlığı ayrıca kanıtlanmalı: ilk sayfa, 403 ve 429 sıfır risk değildir",
+      "severity": "medium",
+      "classification": "strengthens",
+      "what_was_missed": "İlk tur arşivden yalnız E2E logunu okudu; araştırma başarısızlık logları ve sayfalı karşı küme görülmedi.",
+      "failure_trace": [
+        "Arşiv araştırma loglarında 403/429 var; kaynak betikte başarısız istekten [] yazma yolu görülüyor.",
+        "Başarısız boş yanıt veya ilk sayfa tam katalog sayılırsa bilinmeyen risk sıfır diye raporlanır. Betiğin tüm yolları canlı çalıştırılmış sayılmadı; tarama manifesti completeness kanıtını ayrıca ister."
+      ],
+      "required_change": "retrieved_count, unique_count, complete, last_cursor, request_failures, snapshot_at alanları ayrı; eksik tarama unknown_total/en_az olarak sunulsun. 403/429/boş başarısız yanıt hiç bulgu yok sınıfına düşmesin. 100 kayıt platform güvenliği veya gerçek toplam olarak raporlanmasın.",
+      "source_refs": [
+        "DR-S069",
+        "DR-S070",
+        "DR-S071",
+        "DR-S072",
+        "DR-S073"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "research_log_and_completeness_observation",
+        "current_runtime_failure_observed": false,
+        "interpretation": "Arşiv kayıt sayıları doğrudan 130/722, ancak Link/son sayfa/HTTP manifesti olmadığından güncel evrensel toplam diye kullanılmaz. Kaynak script --paginate niyetini gösterir; çalıştırılmış olması tek başına scriptten çıkmaz. Rate-limit logları gerçek araştırma olaylarıdır, yazılım fabrikası üretim arızası değildir."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [],
+        "limits": [
+          "130/722 bu arşivin benzersiz kayıt sayısıdır, bugünkü tam bildirim sayısı veya istismar yaygınlığı değildir."
+        ]
+      },
+      "acceptance_description": "201 kayıtlık fixture 3 sayfada eksiksiz alınır; orta sayfa 429/403 olduğunda complete=false ve unknown_total oluşur; tekrar alınan GHSA tekilleşir; başarısız HTTP [] diye başarıya çevrilmez.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C16"
+      ]
+    },
+    {
+      "id": "DE-07",
+      "title": "Skill taslağının katalogda bulunması geçerli yüklenebilir paket olduğu anlamına gelmiyor",
+      "severity": "medium",
+      "classification": "strengthens",
+      "what_was_missed": "E4’ün skill uyumluluğu itirazı dışlanan taslaklar arasında kaldı; bizim paket üzerinde ad kontrolü yapılmadı.",
+      "failure_trace": [
+        "SK10/SK17 örneklerinin üst dizinleri büyük, name metadata alanları küçük harf; taslaklar inactive.",
+        "İsim/dizin eşleşmesini isteyen paket sözleşmesi nitelendirilmeden bu dosyalar yüklenebilir aktif skill kabul edilemez; gerçek runtime bozdukları iddia edilmez."
+      ],
+      "required_change": "Taslak→paketlenmiş→yüklenebilir→yetkilendirilmiş→eval geçmiş ayrımı sicilde bulunsun; isim/case, metadata ve başvuru yolları paket terfisi öncesi linter kapısından geçsin.",
+      "source_refs": [
+        "DR-S074",
+        "DR-S075",
+        "DR-S076"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "our_inactive_skill_template_mismatch",
+        "current_runtime_failure_observed": false,
+        "interpretation": "21 şablon dizini envanterlendi. Resmî belirtim name alanının üst dizinle eşleşmesini istiyor; iki örnek doğrudan okundu. Taslakların aktif runtime’ı bozduğu iddia edilmiyor. E4’ün 20–30 skill eşiği için bu tur bağımsız kanıt yok; eşik aktarılmıyor."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [
+          "https://agentskills.io/specification"
+        ],
+        "limits": []
+      },
+      "acceptance_description": "Linux üzerinde case-sensitive temiz yükleyicide 21 paket adı-dizin eşleşir; bilinmeyen/bozuk paket fail closed; draft_inactive yine yetki kazanmaz.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C14"
+      ]
+    },
+    {
+      "id": "DE-08",
+      "title": "Yeni devir ve E araştırmaları bağımsız olay diye çoğaltılmamalı; özgün düzeltmeler de dışlanmamalı",
+      "severity": "medium",
+      "classification": "corrects",
+      "what_was_missed": "Önceki kapsamda E1–E6 ve devir-teslim hiç yoktu; hash eşitliği ile anlamsal kapsam aynı sanılabilirdi.",
+      "failure_trace": [
+        "Aynı olay bizim raporumuzdan kaynak E serisine, sonra yeniden karşılaştırmaya dönebiliyor.",
+        "Aynı anlatıyı bağımsız teyit saymak vaka sayısını şişirir; tüm E serisini elemek de özgün webhook/advisory karşı kontrolünü kaybettirir. Origin, derived_from ve review_action birlikte tutulmalıdır."
+      ],
+      "required_change": "origin/source_snapshot/derived_from/review_action ayrımıyla yeni kayıt ve yankı ayrıştırılsın. First-gate görünür 25 konu yeniden gereksinim sayılmasın; teknik tamamlanma→insan kabulü ayrımı korunarak kullanım deneyine bağlansın. Devir metnindeki kapasite tahmini ve insan müdahale önerileri yeni kullanıcı kararı yerine geçmesin.",
+      "source_refs": [
+        "DR-S077",
+        "DR-S078",
+        "DR-S079",
+        "DR-S080"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "evidence_provenance_method_correction",
+        "current_runtime_failure_observed": false,
+        "interpretation": "185 PDF/görsel dosyası eski baseline ve aynı yoldaki hedefle bayt eşit. Bu tekrar okumayı azaltır; bir dosyanın tüm semantiği incelendi demek değildir. E4 webhook ve E3 otorite farkı özgün kontrol; E5’te bizim vaka anlatısının geri alıntısı ikinci bağımsız teyit olmaz."
+      },
+      "verification": {
+        "method": "read_only_snapshot_and_targeted_primary_check",
+        "observed_at": "2026-09-27",
+        "execution_performed": false,
+        "urls": [],
+        "limits": [
+          "First-gate PDF bu tur yeniden render edilmedi; hashli önceki görsel okuma notları ve metin çıkarımı çapraz okundu.",
+          "Hiçbir DE bulgusu bir platformu seçmek veya canlı sistemi işletiyor olmak anlamına gelmez."
+        ]
+      },
+      "acceptance_description": "Aynı kaynak olayı üç özette geçerse vaka sayısı bir kalır; yeni tarihli artefakt ayrı gözlem olur. İncelenmeyen medya anlamsal olarak okundu işaretlenmez; tarihsel DEVIR yönergesi talimat olarak uygulanmaz.",
+      "data_correction_scope": "Ayrı kaynak veri düzeltmeleri runtime veya deney başarısı sayılmaz.",
+      "deep_review_contract_refs": [
+        "DR-C16"
+      ]
+    },
+    {
+      "id": "DK-01",
+      "title": "Üst ürün yükümlülüğünün ayrıştırma ve birleşimde korunması",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Kabul izlenebilirliği mevcut; eksik anlam üst amaç→yükümlülük→alt iş/ortak birleşim→ürün çıktısı arasında kayıpsız sorumluluk ve kanıt muhasebesidir.",
+      "failure_trace": [
+        "HRMS görevi özlük, puantaj ve bordro alt işlerine bölünür. Her alt işin yerel testleri geçer; şirket transferinin aynı dönem bordrosuna ve muhasebeye yansıması hiçbir alt işe atanmadığı için test envanterinde de görünmez. Üç yeşil PR üst ürünü kapatır.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Üst kapsamın uygulanabilir yükümlülük kümesi alt işlere atanan ve birleşimde doğrulanan yükümlülüklerin birleşimiyle karşılanır; atanmayan ve gerekçesiz iki kez sayılan yükümlülük ayrı hata olur. İşlevler arası, negatif kapsam, yetki, veri bütünlüğü ve kalite yükümlülükleri tek alt işin içine zorla konmaz; açık birleşim yükümlülüğü olabilir. Bir yükümlülüğe test ID bağlanması kapanış değildir; doğru oracle, bağlam ve sonuç gerekir. Alt iş silme/birleştirme/yeniden planlama yükümlülüğü düşüremez. Kapsam erteleme yalnız yetkili kapsam kararıyla görünür olur. Hikâye tamamlandı, modül incelemeye hazır ve bütün ürün kabul edildi ayrı hesaplanır.",
+      "source_refs": [
+        "DR-S081",
+        "DR-S082",
+        "DR-S083",
+        "DR-S084",
+        "DR-S085",
+        "DR-S086",
+        "DR-S087"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K01",
+            "target_need_refs": [
+              "I03-01",
+              "I03-02",
+              "I03-03",
+              "I03-04",
+              "I03-05"
+            ],
+            "prior_findings": [
+              "CR-05",
+              "CR-13"
+            ]
+          },
+          {
+            "cluster": "K02",
+            "target_need_refs": [
+              "I03-06",
+              "I04-03",
+              "I09-04",
+              "I09-08"
+            ],
+            "prior_findings": [
+              "CR-03",
+              "CR-06"
+            ]
+          },
+          {
+            "cluster": "K05",
+            "target_need_refs": [
+              "I11-01",
+              "I11-02",
+              "I11-03",
+              "I11-04",
+              "I11-05",
+              "I11-06",
+              "I11-07",
+              "I11-08",
+              "I11-09",
+              "I11-10"
+            ],
+            "prior_findings": [
+              "CR-10",
+              "CR-11"
+            ]
+          },
+          {
+            "cluster": "K24",
+            "target_need_refs": [
+              "I02-02",
+              "I02-03",
+              "I02-07",
+              "I09-08"
+            ],
+            "prior_findings": [
+              "CR-03"
+            ]
+          }
+        ],
+        "specific_reason": "K02→I03-06/I04-03/I09-04/I09-08 ile K05 test ID eşleştirmesinin varlığı üst ürünün bütün yükümlülüklerinin gerçekten alt işlere veya birleşim kapısına devredildiğini kanıtlamadı."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "goal_revision",
+          "obligation_id",
+          "source_revision_digest",
+          "obligation_kind",
+          "applicability",
+          "owner_scope",
+          "assigned_child_ids",
+          "join_obligation_ids",
+          "split_merge_lineage",
+          "required_evidence_kind",
+          "fulfillment_state",
+          "residual_obligation_ids",
+          "authorized_scope_change"
+        ],
+        "rules": [
+          "Üst kapsamın uygulanabilir yükümlülük kümesi alt işlere atanan ve birleşimde doğrulanan yükümlülüklerin birleşimiyle karşılanır; atanmayan ve gerekçesiz iki kez sayılan yükümlülük ayrı hata olur.",
+          "İşlevler arası, negatif kapsam, yetki, veri bütünlüğü ve kalite yükümlülükleri tek alt işin içine zorla konmaz; açık birleşim yükümlülüğü olabilir.",
+          "Bir yükümlülüğe test ID bağlanması kapanış değildir; doğru oracle, bağlam ve sonuç gerekir.",
+          "Alt iş silme/birleştirme/yeniden planlama yükümlülüğü düşüremez. Kapsam erteleme yalnız yetkili kapsam kararıyla görünür olur.",
+          "Hikâye tamamlandı, modül incelemeye hazır ve bütün ürün kabul edildi ayrı hesaplanır."
+        ]
+      },
+      "acceptance_description": "Üç çocuk çıktısı yeşilken üst sözleşmedeki şirket-transferi→puantaj→bordro→muhasebe yükümlülüğünü hiçbirine atama. Üst kapanış atanmayan obligation_id ile reddedilmeli; yükümlülük sayısını azaltan çocuk planı kabul edilmemeli. Bütünleşik kanıt eklenince yalnız o yükümlülük kapanmalı.",
+      "boundary": "Bu model bütün bilinmeyenlerin keşfedildiği iddiası değildir. Kaynak C5 içindeki uzman imzaları, güncel yasal değerler ve seçilmiş ürün reçetesi aynen benimsenmez.",
+      "deep_review_contract_refs": [
+        "DR-C05"
+      ]
+    },
+    {
+      "id": "DK-02",
+      "title": "Birden fazla depo ve veri sürümünden oluşan alpha ürününün kabul birimi",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Tek deponun commit kimliği ile çok bileşenli ERP ürün sürümü farklı kabul birimleridir. Veri kaydının yetkili sahibi ile kod alanının sahibi da ayrı tutulmalıdır.",
+      "failure_trace": [
+        "ERP çekirdeği, HRMS eklentisi ve arka plan bordro çalışanı farklı depolardan yayınlanır. HRMS v2 yeni çalışan alanını beklerken ERP v1 ve kuyrukta v1 olayları kalır. Her deponun SHA/CI makbuzu doğru olsa da toplam ürün bozulur.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Ürün release kimliği çalışan bileşen, şema, etkin kural ve gerekli yapılandırma vektörüne bağlanır. Her veri nesnesinde yetkili yazıcı/senkronizasyon ve kimlik eşleme kaynağı belirlenir; bir ekibin dosya sahipliği onu iş kaydının tek yetkili kaynağı yapmaz. Eski-yeni birlikte çalışma ve kuyruktaki eski mesajlarla sınama seçimi açık olur; tek seferde atomik çoklu depo yayını varsayılmaz. Yalnız etkilenen bağımlılık bileşeni sıralanır; bağımsız ürünler küresel yayın kilidine alınmaz.",
+      "source_refs": [
+        "DR-S088",
+        "DR-S089",
+        "DR-S090",
+        "DR-S091",
+        "DR-S092",
+        "DR-S084",
+        "DR-S093",
+        "DR-S094",
+        "DR-S095",
+        "DR-S096",
+        "DR-S097"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K03",
+            "target_need_refs": [
+              "I04-01",
+              "I04-02",
+              "I04-03",
+              "I14-07"
+            ],
+            "prior_findings": [
+              "CR-02",
+              "CR-03"
+            ]
+          },
+          {
+            "cluster": "K06",
+            "target_need_refs": [
+              "I14-01",
+              "I14-03",
+              "I14-04",
+              "I14-05",
+              "I14-06"
+            ],
+            "prior_findings": [
+              "CR-01"
+            ]
+          },
+          {
+            "cluster": "K31",
+            "target_need_refs": [
+              "I02-01",
+              "I02-03",
+              "I02-07",
+              "I04-02",
+              "I04-03"
+            ],
+            "prior_findings": [
+              "CR-02",
+              "CR-03"
+            ]
+          },
+          {
+            "cluster": "K33",
+            "target_need_refs": [
+              "I15-03",
+              "I15-04",
+              "I15-05",
+              "I13-05"
+            ],
+            "prior_findings": [
+              "CR-01",
+              "CR-05",
+              "CR-07"
+            ]
+          }
+        ],
+        "specific_reason": "K03/K06 arayüz ve migration başlıkları ile K31 alan sahipliği eşleşmeleri, ürünün aynı anda çalışan çoklu depo/bileşen sürümlerinin birlikte nitelendiğini ispatlamadı."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "product_release_id",
+          "component_repo_artifact_vector",
+          "schema_versions",
+          "event_versions_in_flight",
+          "master_record_owner",
+          "identity_mapping_revision",
+          "compatibility_matrix",
+          "deployment_order",
+          "mixed_version_window",
+          "migration_receipts",
+          "product_journey_evidence",
+          "rollback_or_forward_repair_boundary"
+        ],
+        "rules": [
+          "Ürün release kimliği çalışan bileşen, şema, etkin kural ve gerekli yapılandırma vektörüne bağlanır.",
+          "Her veri nesnesinde yetkili yazıcı/senkronizasyon ve kimlik eşleme kaynağı belirlenir; bir ekibin dosya sahipliği onu iş kaydının tek yetkili kaynağı yapmaz.",
+          "Eski-yeni birlikte çalışma ve kuyruktaki eski mesajlarla sınama seçimi açık olur; tek seferde atomik çoklu depo yayını varsayılmaz.",
+          "Yalnız etkilenen bağımlılık bileşeni sıralanır; bağımsız ürünler küresel yayın kilidine alınmaz."
+        ]
+      },
+      "acceptance_description": "HRMS v2 + ERP v1 + eski olay tüketicisi karışımında bireysel CI yeşil kalsın. Ürün release kapısı uyumsuz bileşen vektörünü reddetmeli; eski olay verisini sessizce düşürmemeli. Doğrulanmış geçiş matrisi oluşmadan insan incelemesine tam ürün diye sunmamalı.",
+      "boundary": "Çok depolu dağıtım koşulludur; tek depolu ilk pilotta gereksiz dağıtık işlem altyapısı kurulmaz. GAP02 iş kararı açık kalabilir; agent kararı gerçekmiş gibi doldurmaz.",
+      "deep_review_contract_refs": [
+        "DR-C09"
+      ]
+    },
+    {
+      "id": "DK-03",
+      "title": "İnsan reddi ve düzeltilen bilginin bağımlı ürünlere sınırlı yayılması",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Eksik olan geri bildirimin sadece yeni görev açması değil, daha önce türetilmiş doğruluk/kabul iddialarının etki grafı üzerinden yeniden değerlendirilmesidir.",
+      "failure_trace": [
+        "İnsan alpha üzerinde A bordro değişikliğini reddeder. B rapor işi A tabanından birleşmiş, C veri dönüşümü uygulanmış ve başka bir insan B inceleme oturumunu açmıştır. Yalnız A görevini Rejected yapmak veya git revert almak B/C kanıtını, veri durumunu ve açık kabul oturumunu düzeltmez.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Ret önce hangi davranış/varsayım/yükümlülüğün reddedildiğini tanımlar; her ret güvenlik acil durumu veya bütün sistem duruşu değildir. Bağımlı run, artifact, şema/veri etkisi, türetilmiş bilgi ve insan inceleme oturumları listelenir; geçerliliği bilinmeyen kayıt accepted görünmez. Etkilenmeyen dalın devam kararı kanıtlıdır; bağımlılık yok varsayımıyla veya küresel durdurmayla çözülmez. Kod geri dönüşü veri telafisi ve dış etkinin geri alınması demek değildir. Geç eski insan onayı yeniden açılmış kabulü kapatamaz. Düzeltilen bilgi yedek/önbellekten geldiğinde yeniden etkinleştirilmez.",
+      "source_refs": [
+        "DR-S098",
+        "DR-S099",
+        "DR-S100",
+        "DR-S101",
+        "DR-S102",
+        "DR-S097",
+        "DR-S103",
+        "DR-S104"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K08",
+            "target_need_refs": [
+              "I16-04",
+              "I16-05",
+              "I15-06"
+            ],
+            "prior_findings": [
+              "CR-11"
+            ]
+          },
+          {
+            "cluster": "K14",
+            "target_need_refs": [
+              "I07-01",
+              "I07-02",
+              "I07-03",
+              "I07-04",
+              "I07-05",
+              "I07-06",
+              "I07-07"
+            ],
+            "prior_findings": [
+              "CR-04",
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K17",
+            "target_need_refs": [
+              "I02-01",
+              "I02-05",
+              "I02-06",
+              "I02-08",
+              "I10-07"
+            ],
+            "prior_findings": [
+              "CR-11",
+              "CR-13"
+            ]
+          },
+          {
+            "cluster": "K26",
+            "target_need_refs": [
+              "I03-06",
+              "I09-01",
+              "I08-03",
+              "I14-04"
+            ],
+            "prior_findings": [
+              "CR-06",
+              "CR-12"
+            ]
+          }
+        ],
+        "specific_reason": "Önceki eşleşme sürüm kimliğini ve tek işin rollback sınırını ele aldı; ret/kural düzeltmesinin hangi bağımlı artifact, veri ve insan kabul iddialarını geçersizleştirdiği kapatılmadı."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "rejection_or_correction_id",
+          "authority",
+          "rejected_obligation_or_claim",
+          "source_revision",
+          "impact_edge_kind",
+          "affected_runs_artifacts_data_reviews",
+          "unaffected_scope_evidence",
+          "invalidate_or_recheck_decision",
+          "compensation_receipts",
+          "reacceptance_requirements"
+        ],
+        "rules": [
+          "Ret önce hangi davranış/varsayım/yükümlülüğün reddedildiğini tanımlar; her ret güvenlik acil durumu veya bütün sistem duruşu değildir.",
+          "Bağımlı run, artifact, şema/veri etkisi, türetilmiş bilgi ve insan inceleme oturumları listelenir; geçerliliği bilinmeyen kayıt accepted görünmez.",
+          "Etkilenmeyen dalın devam kararı kanıtlıdır; bağımlılık yok varsayımıyla veya küresel durdurmayla çözülmez.",
+          "Kod geri dönüşü veri telafisi ve dış etkinin geri alınması demek değildir. Geç eski insan onayı yeniden açılmış kabulü kapatamaz.",
+          "Düzeltilen bilgi yedek/önbellekten geldiğinde yeniden etkinleştirilmez."
+        ]
+      },
+      "acceptance_description": "A→B→C bağımlılık zinciri ve bağımsız D oluştur. A için gerekçeli ret geldikten sonra B artifact, C veri mutabakatı ve B review oturumu yeniden değerlendirilmeden kabul edilememeli; D çalışmaya devam etmeli. A revert başarılı C telafisi başarısızsa tümünün geri alındığı raporlanmamalı.",
+      "boundary": "N-K14-010 açıkça bizim T15 kaydımızdan türetilmiş; bağımsız ikinci kanıt değildir. Yeni katkı T15/CMP-C01/C07/C23 anlamlarının ürün kabul grafında birlikte işletilmesi sözleşmesidir.",
+      "deep_review_contract_refs": [
+        "DR-C08"
+      ]
+    },
+    {
+      "id": "DK-04",
+      "title": "İş türü ile kanıt yolunun zorunlu ve sürümlü eşleşmesi",
+      "severity": "medium",
+      "classification": "strengthens",
+      "what_was_missed": "Kalite profili var; iş sınıflamasının deterministik politika seçimine girdi olması, beklenen ilk sonucun sınıfa göre değişmesi ve kod dışı çıktının kapanışı eksik.",
+      "failure_trace": [
+        "Salt refactor veya belge düzeltmesi işi özelliğe özel RED→GREEN zincirine alınır. Ajan kırmızı sonuç üretmek için çalışan testi bozabilir; mevcut davranış doğru olduğunda sahte hata arar. Veri onarımında ise test süiti yeşilken hedef kayıtlar eksik kalabilir.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Yeni özellikte beklenen eksiklik, bugda tekrar üretme, refactorda mevcut yeşil davranışın korunması ayrı kanıt yollarıdır. Belge/araştırma/tasarım/altyapı/veri işi için uygun artifact ve kabul yükümlülüğü kullanılır; her çıktı için zorunlu kod PR veya çalışan alpha URLsi varsayılmaz. Tür sistemce türetilebilir; insan her görevde teknik sınıf seçmek zorunda değildir. Belirsiz/kritik sınıflama görünürdür. Ajan kolay kapı seçmek için iş türünü değiştiremez; karma iş alt türlere bölünürken DK-01 yükümlülükleri korunur.",
+      "source_refs": [
+        "DR-S105",
+        "DR-S106",
+        "DR-S107",
+        "DR-S108",
+        "DR-S109",
+        "DR-S110",
+        "DR-S111"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K01",
+            "target_need_refs": [
+              "I03-01",
+              "I03-02",
+              "I03-03",
+              "I03-04",
+              "I03-05"
+            ],
+            "prior_findings": [
+              "CR-05",
+              "CR-13"
+            ]
+          },
+          {
+            "cluster": "K03",
+            "target_need_refs": [
+              "I04-01",
+              "I04-02",
+              "I04-03",
+              "I14-07"
+            ],
+            "prior_findings": [
+              "CR-02",
+              "CR-03"
+            ]
+          },
+          {
+            "cluster": "K05",
+            "target_need_refs": [
+              "I11-01",
+              "I11-02",
+              "I11-03",
+              "I11-04",
+              "I11-05",
+              "I11-06",
+              "I11-07",
+              "I11-08",
+              "I11-09",
+              "I11-10"
+            ],
+            "prior_findings": [
+              "CR-10",
+              "CR-11"
+            ]
+          }
+        ],
+        "specific_reason": "K01 ve K05 başlık eşleşmesi, kaynak N-K01-012 ile N-K05-004 içindeki yeni özellik/bug/refactor/kod dışı iş akışı ayrımını bütün sözleşmeye taşımadı."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "work_kind",
+          "work_kind_evidence",
+          "classification_revision",
+          "risk_and_effect_class",
+          "verification_profile",
+          "expected_baseline_state",
+          "allowed_output_artifacts",
+          "completion_obligations",
+          "mixed_work_subtypes"
+        ],
+        "rules": [
+          "Yeni özellikte beklenen eksiklik, bugda tekrar üretme, refactorda mevcut yeşil davranışın korunması ayrı kanıt yollarıdır.",
+          "Belge/araştırma/tasarım/altyapı/veri işi için uygun artifact ve kabul yükümlülüğü kullanılır; her çıktı için zorunlu kod PR veya çalışan alpha URLsi varsayılmaz.",
+          "Tür sistemce türetilebilir; insan her görevde teknik sınıf seçmek zorunda değildir. Belirsiz/kritik sınıflama görünürdür.",
+          "Ajan kolay kapı seçmek için iş türünü değiştiremez; karma iş alt türlere bölünürken DK-01 yükümlülükleri korunur."
+        ]
+      },
+      "acceptance_description": "Aynı çerçeveye üç fixture ver: davranışı koruyan refactor, yalnız belge düzeltmesi, gerçek bug. Refactor için zorunlu kırmızı test üretilmemeli; belge işi deploy URLsi uydurmamalı; bug hatayı göstermeyen yeşil testle geçmemeli. Sınıfı sonradan refactor yaparak gerçek davranış değişikliğinin kapısı aşılamamalı.",
+      "boundary": "Sabit altı veya sekiz sınıf evrensel zorunluluk değildir. İş sınıfları sürümlü ve genişletilebilir olmalı; düşük etkili sınıflama otomatik yapılabilir.",
+      "deep_review_contract_refs": [
+        "DR-C11"
+      ]
+    },
+    {
+      "id": "DK-05",
+      "title": "Proje katılımı ve işletim onarımının görünmeyen insan işine dönüşmemesi",
+      "severity": "medium",
+      "classification": "strengthens",
+      "what_was_missed": "Tek görevin otonomisi ile fabrikanın kurulması/işletilmesi ayrı hizmet sözleşmeleri olmalı. Önceden nitelikli profil yokluğunu gizleyen demo gerçek girdi/çıktı deneyimi değildir.",
+      "failure_trace": [
+        "Kullanıcı yeni ERP projesini seçip In Progress yapar. Sistem ancak bir operatör repo/branch/alpha eşlemesi, test komutları, oracle ve yetki profilini elle YAML olarak ekledikten sonra ilerler. Arızada aynı kişiye altyapı tamiri yaptırılıp bu müdahale yeni girdi diye sayılır.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Kullanıcı amacı ve kaynak erişimini verir; sistem teknik profili keşfedip taslaklar ve dar yetkili kurulum/qualification işleriyle doğrular. Gerçek yetki verme veya bilinmeyen iş kuralı sistemce uydurulmaz. Proje ilk katılımı ayrı görünür sonuçtur: hazır, eksik yetki, eksik alan kararı veya platform kurulumu gerekli. Görev başlamış gibi sonsuz bekletilmez. Arıza girdisi ürün açıklaması eksikliği, geçici altyapı, yetki, kapasite ve platform onarımı diye ayrılır; insanın terminal/şema düzenlemesi ürün girdisi olarak gizlenmez. Platform sahibi sorumluluğu gerçek servis/otomasyon veya açık bir insan destek kapsamına bağlanır; kullanıcının geliştirici olması varsayılmaz.",
+      "source_refs": [
+        "DR-S112",
+        "DR-S113",
+        "DR-S114",
+        "DR-S115",
+        "DR-S116",
+        "DR-S109",
+        "DR-S117",
+        "DR-S118"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K16",
+            "target_need_refs": [
+              "I15-01",
+              "I15-03",
+              "I15-04",
+              "I15-05",
+              "I15-06",
+              "I15-07"
+            ],
+            "prior_findings": [
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K24",
+            "target_need_refs": [
+              "I02-02",
+              "I02-03",
+              "I02-07",
+              "I09-08"
+            ],
+            "prior_findings": [
+              "CR-03"
+            ]
+          },
+          {
+            "cluster": "K25",
+            "target_need_refs": [
+              "I02-01",
+              "I02-04",
+              "I02-08"
+            ],
+            "prior_findings": [
+              "CR-11",
+              "CR-15"
+            ]
+          },
+          {
+            "cluster": "K27",
+            "target_need_refs": [
+              "I02-04",
+              "I02-05",
+              "I02-06",
+              "I08-06",
+              "I14-01"
+            ],
+            "prior_findings": [
+              "CR-11",
+              "CR-13"
+            ]
+          }
+        ],
+        "specific_reason": "K24 platform sahibi ve CMP-C26 insan sınırı başlıklarının varlığı, çalışma sisteminin kullanıcının teknik operatörlüğüne bağımlı olmadan nasıl katılacağı ve arıza düzelteceğini çözmedi."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "project_onboarding_id",
+          "service_scope",
+          "discovered_profile_fields",
+          "authorized_bindings",
+          "qualification_receipts",
+          "profile_owner",
+          "support_responsibility",
+          "operator_action_kind",
+          "human_minutes_input_output_operations",
+          "project_readiness_state"
+        ],
+        "rules": [
+          "Kullanıcı amacı ve kaynak erişimini verir; sistem teknik profili keşfedip taslaklar ve dar yetkili kurulum/qualification işleriyle doğrular. Gerçek yetki verme veya bilinmeyen iş kuralı sistemce uydurulmaz.",
+          "Proje ilk katılımı ayrı görünür sonuçtur: hazır, eksik yetki, eksik alan kararı veya platform kurulumu gerekli. Görev başlamış gibi sonsuz bekletilmez.",
+          "Arıza girdisi ürün açıklaması eksikliği, geçici altyapı, yetki, kapasite ve platform onarımı diye ayrılır; insanın terminal/şema düzenlemesi ürün girdisi olarak gizlenmez.",
+          "Platform sahibi sorumluluğu gerçek servis/otomasyon veya açık bir insan destek kapsamına bağlanır; kullanıcının geliştirici olması varsayılmaz."
+        ]
+      },
+      "acceptance_description": "Hiç kayıtlı profili olmayan ikinci projeyi yalnız kullanıcı düzeyindeki form ve yetkili kaynak erişimiyle sun. Sistem hangi teknik alanları kendisinin keşfettiğini, hangi gerçek yetkinin eksik olduğunu ve kalan platform işini açık sonucu ile göstermeli; operatör gizlice YAML düzenleyince tam otonom başarı yazılmamalı. Sonra DB kesintisi oluştur; kullanıcıya iş kuralı sorusu gibi yansıtılmamalı.",
+      "boundary": "Sıfır insanla sunucu kurma, hukuki karar veya yetki verme vaat edilmez. Bir defalık kuruluş ve istisnai operasyon yükü görünürdür; her görev için rutin teknik müdahale gerekmemesi hedeflenir.",
+      "deep_review_contract_refs": [
+        "DR-C12"
+      ]
+    },
+    {
+      "id": "DK-06",
+      "title": "Girdi sürümünün dış referans okuma kümesi ve karar tazeliğiyle bağlanması",
+      "severity": "medium",
+      "classification": "strengthens",
+      "what_was_missed": "Kaynak URI kimliği içerik kimliği değildir. Çalışmanın hangi okunmuş girdilerle yetkilendirildiği ve yeni gözlemin anlamlı değişiklik olup olmadığı kaydedilmelidir.",
+      "failure_trace": [
+        "Görevin başlığı ve AC metni değişmez; formdaki aynı URLdeki bordro örneği veya tasarım eki yerinde değiştirilir. Aynı input_digest ile yeni içerik okunur ya da eski içerik sonucu yayınlanır; hangi girdinin yetkilendirildiği belirsizleşir. Ters yönde, zararsız yorum güncellemesi gereksiz yeni iş açabilir.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Kaynak adresi, gözlenen içerik ve yetkili kullanım amacı ayrılır; salt bilgilendirici not kabul kaynağına dönüşmez. Girdi snapshotı tekrar üretilebilirliği korur, güncel yetki iptali ve kritik düzeltme snapshot gerekçesiyle yok sayılmaz. Değişiklik etkilenmiş yükümlülük/kanıt üzerinden yeniden değerlendirilir; her yorum tüm koşuyu baştan başlatmaz. Yeni revizyon gerekiyorsa eski neslin yayın yetkisi kesilir; yalnız bağımsızlığı kanıtlanan ara artifact yeniden kullanılabilir.",
+      "source_refs": [
+        "DR-S119",
+        "DR-S120",
+        "DR-S121",
+        "DR-S099",
+        "DR-S122",
+        "DR-S123",
+        "DR-S124",
+        "DR-S125"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K01",
+            "target_need_refs": [
+              "I03-01",
+              "I03-02",
+              "I03-03",
+              "I03-04",
+              "I03-05"
+            ],
+            "prior_findings": [
+              "CR-05",
+              "CR-13"
+            ]
+          },
+          {
+            "cluster": "K13",
+            "target_need_refs": [
+              "I09-01",
+              "I09-02",
+              "I09-03",
+              "I09-04",
+              "I09-05",
+              "I09-06",
+              "I09-07"
+            ],
+            "prior_findings": [
+              "CR-12",
+              "CR-13"
+            ]
+          },
+          {
+            "cluster": "K14",
+            "target_need_refs": [
+              "I07-01",
+              "I07-02",
+              "I07-03",
+              "I07-04",
+              "I07-05",
+              "I07-06",
+              "I07-07"
+            ],
+            "prior_findings": [
+              "CR-04",
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K18",
+            "target_need_refs": [
+              "I10-01",
+              "I10-02",
+              "I10-03",
+              "I10-04",
+              "I10-05",
+              "I10-06",
+              "I10-07",
+              "I10-08",
+              "I10-09"
+            ],
+            "prior_findings": [
+              "CR-09"
+            ]
+          }
+        ],
+        "specific_reason": "Kaynak sürümü sabitleme ve kabul özeti eşleştirmesi, değişen harici belge/ek/proje keşfinin hangi task revisionunu doğurduğu veya hangi kanıtı bayatlattığına ilişkin kurala eşdeğer sayıldı."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "input_read_set",
+          "reference_uri",
+          "reference_revision_or_etag",
+          "content_digest",
+          "retrieved_at",
+          "authority_role",
+          "used_for_obligation_ids",
+          "material_change_class",
+          "snapshot_digest",
+          "revalidation_policy",
+          "revocation_epoch"
+        ],
+        "rules": [
+          "Kaynak adresi, gözlenen içerik ve yetkili kullanım amacı ayrılır; salt bilgilendirici not kabul kaynağına dönüşmez.",
+          "Girdi snapshotı tekrar üretilebilirliği korur, güncel yetki iptali ve kritik düzeltme snapshot gerekçesiyle yok sayılmaz.",
+          "Değişiklik etkilenmiş yükümlülük/kanıt üzerinden yeniden değerlendirilir; her yorum tüm koşuyu baştan başlatmaz.",
+          "Yeni revizyon gerekiyorsa eski neslin yayın yetkisi kesilir; yalnız bağımsızlığı kanıtlanan ara artifact yeniden kullanılabilir."
+        ]
+      },
+      "acceptance_description": "AC metni aynı kalsın; aynı URLdeki kabul fixtureını değiştir. İki içerik aynı kabul digestine veya sessizce aynı yetkilendirilmiş revizyona düşmemeli. İkinci denemede yalnız otomasyon yorumu değişsin; bu yeni ürün niyeti oluşturmamalı. Üçüncüde yetki geri alınsın; eski snapshot yayın izni verememeli.",
+      "boundary": "Düzeltme yayılımı N-K14-010/T15 açısından zaten ihtiyaçtır. Buradaki yeni ayrıntı girdi read-seti, etki tipi ve revision kararının bağlanmasıdır; web içeriği hiçbir durumda komut/yetki kaynağı olmaz.",
+      "deep_review_contract_refs": [
+        "DR-C01"
+      ]
+    },
+    {
+      "id": "DK-07",
+      "title": "Yürütme, kanıt yeterliliği ve insan kabul durumlarının kayıpsız çevrilmesi",
+      "severity": "high",
+      "classification": "strengthens",
+      "what_was_missed": "Başarı şartları zaten mevcut. Bunların farklı adaptör/sözleşme sözlüklerinde kaybolmasını önleyecek tiplenmiş boyutlar ve kapalı dönüşüm tablosu gerekir.",
+      "failure_trace": [
+        "Bağımsız doğrulayıcı verified_for_declared_scope döndürür. Adaptör bunu success olarak yorumlar; dağıtım yapılmadan ready_for_review yazar. Diğer yönde accepted_by_authorized_human olayının yeniden teslimi yeni run başlatır veya run sonucu accepted diye altı değerli şemayı bozar.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Çalışma sonucu, kanıt yeterliliği, dış etkinin durumu ve insan kabulü ayrı boyutlarda tek sahibince yazılır. verified_for_declared_scope tek başına ready_for_review değildir; uygun iş türü teslim kanıtı ve gerekli dağıtım doğrulanır. İnsan kabulü otomatik run sonucu değildir; replay yeni iş açmaz ve ret/geçersizleşme kararıyla sürümlenir. Tanımsız enum sessiz success fallbacki yapamaz; unsupported_contract olarak açıklanır.",
+      "source_refs": [
+        "DR-S126",
+        "DR-S127",
+        "DR-S128",
+        "DR-S129",
+        "DR-S130",
+        "DR-S131",
+        "DR-S132"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K05",
+            "target_need_refs": [
+              "I11-01",
+              "I11-02",
+              "I11-03",
+              "I11-04",
+              "I11-05",
+              "I11-06",
+              "I11-07",
+              "I11-08",
+              "I11-09",
+              "I11-10"
+            ],
+            "prior_findings": [
+              "CR-10",
+              "CR-11"
+            ]
+          },
+          {
+            "cluster": "K10",
+            "target_need_refs": [
+              "I05-02",
+              "I05-05",
+              "I05-06",
+              "I05-07",
+              "I08-06"
+            ],
+            "prior_findings": [
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K13",
+            "target_need_refs": [
+              "I09-01",
+              "I09-02",
+              "I09-03",
+              "I09-04",
+              "I09-05",
+              "I09-06",
+              "I09-07"
+            ],
+            "prior_findings": [
+              "CR-12",
+              "CR-13"
+            ]
+          },
+          {
+            "cluster": "K26",
+            "target_need_refs": [
+              "I03-06",
+              "I09-01",
+              "I08-03",
+              "I14-04"
+            ],
+            "prior_findings": [
+              "CR-06",
+              "CR-12"
+            ]
+          }
+        ],
+        "specific_reason": "N-K26 tek durum modeli karşılığı var diye yeterli sayıldı. Farklı sözlüklerin varlığı tek başına hata değil; fakat dönüşüm ve sahiplik kuralları olmadan aynı alanı paylaşmaları semantik entegrasyon açığıdır."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "execution_state",
+          "run_outcome",
+          "evidence_status",
+          "deployment_status",
+          "business_acceptance_state",
+          "decision_revision",
+          "projection_version",
+          "owner_of_each_dimension",
+          "unmapped_value_behavior"
+        ],
+        "rules": [
+          "Çalışma sonucu, kanıt yeterliliği, dış etkinin durumu ve insan kabulü ayrı boyutlarda tek sahibince yazılır.",
+          "verified_for_declared_scope tek başına ready_for_review değildir; uygun iş türü teslim kanıtı ve gerekli dağıtım doğrulanır.",
+          "İnsan kabulü otomatik run sonucu değildir; replay yeni iş açmaz ve ret/geçersizleşme kararıyla sürümlenir.",
+          "Tanımsız enum sessiz success fallbacki yapamaz; unsupported_contract olarak açıklanır."
+        ]
+      },
+      "acceptance_description": "Yedi completion değerini, altı outcome değerini ve kuyruk/bekleme durumlarını kombinasyonlu sözleşme fixturelarıyla döndür. Deploy eksik doğrulanmış kod ready_for_review olmamalı; unknown dış etki accepted maskesiyle kaybolmamalı; insan kabul olayı replayi yeni run üretmemeli.",
+      "boundary": "Bu metin bir runtime dönüşüm hatasının gözlendiği iddiası değildir. Farklı durum boyutlarının meşru ayrımını tek enumda birleştirmeyi önermiyor; açık kayıpsız projeksiyon istiyor.",
+      "deep_review_contract_refs": [
+        "DR-C13"
+      ]
+    },
+    {
+      "id": "DK-08",
+      "title": "Havuzda bulunmayan yeteneğin talep, niteleme ve işe geri bağlanma döngüsü",
+      "severity": "medium",
+      "classification": "strengthens",
+      "what_was_missed": "Katalog güveni ile yetenek tedarik hizmeti ayrı sözleşmelerdir. Güvenlik için kendi kendine terfiyi kapatırken bütün görevleri belirsiz platform ekibi bekleyişine bırakmamak gerekir.",
+      "failure_trace": [
+        "HRMS işi için gereken bir doğrulama yeteneği onaylı havuzda yoktur. Ajan ya pazar paketini doğrudan yükler ya da kullanıcıdan manifest/komut düzenlemesini bekleyerek takılır. İki ekip aynı açığı görünce iki ayrı paket sürümü niteleyip aynı rol adıyla kullanır.",
+        "Bu karşı örnek tasarım açığını sınar; gözlenmiş üretim olayı değildir."
+      ],
+      "required_change": "Eksik yetenek önce semantik ihtiyaç olarak kaydedilir; marka/paket adı gereksinime dönüşmez. Mevcut eşdeğer yetenek, izinli alternatif yol veya dar keşif/niteleme işi sıralı değerlendirilir; başlatıcı coder kendi adayını onaylayamaz. Niteleme sistemin ayrı işidir; aynı talep iki kez başlatılmaz, harcaması görünür ve bekleyen iş pahalı worker slotunu tutmaz. Yeni nitelikli profil açık koşuya sessizce takılmaz; güvenli devir veya yeni attempt ve gerekli yeniden doğrulama ile bağlanır. Karşılanamıyorsa missing_capability nedeniyle açıklanmış terminal çıktı verilir; alan girdisi eksikmiş gibi kullanıcıdan teknik dosya düzeltmesi istenmez.",
+      "source_refs": [
+        "DR-S133",
+        "DR-S134",
+        "DR-S114",
+        "DR-S135",
+        "DR-S136",
+        "DR-S137",
+        "DR-S138",
+        "DR-S139",
+        "DR-S140"
+      ],
+      "status": "documented_not_implemented",
+      "observed_in": {
+        "type": "target_semantic_contract_gap",
+        "current_runtime_failure_observed": false,
+        "proposed_counterexample": true
+      },
+      "prior_coverage": {
+        "cluster_mappings": [
+          {
+            "cluster": "K10",
+            "target_need_refs": [
+              "I05-02",
+              "I05-05",
+              "I05-06",
+              "I05-07",
+              "I08-06"
+            ],
+            "prior_findings": [
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K11",
+            "target_need_refs": [
+              "I06-01",
+              "I06-02",
+              "I06-03",
+              "I06-04",
+              "I06-05",
+              "I06-06"
+            ],
+            "prior_findings": [
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K12",
+            "target_need_refs": [
+              "I08-01",
+              "I08-02",
+              "I08-03",
+              "I08-04",
+              "I08-05",
+              "I08-06"
+            ],
+            "prior_findings": [
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K16",
+            "target_need_refs": [
+              "I15-01",
+              "I15-03",
+              "I15-04",
+              "I15-05",
+              "I15-06",
+              "I15-07"
+            ],
+            "prior_findings": [
+              "CR-12"
+            ]
+          },
+          {
+            "cluster": "K24",
+            "target_need_refs": [
+              "I02-02",
+              "I02-03",
+              "I02-07",
+              "I09-08"
+            ],
+            "prior_findings": [
+              "CR-03"
+            ]
+          },
+          {
+            "cluster": "K29",
+            "target_need_refs": [
+              "I02-08",
+              "I16-04",
+              "I16-05"
+            ],
+            "prior_findings": [
+              "CR-11"
+            ]
+          }
+        ],
+        "specific_reason": "Havuz yaşam döngüsü var eşleştirmesi, bir iş ihtiyaç anında havuzdan karşılık bulamadığında kimin işi üstlenip hangi bütçeyle niteleyerek nasıl geri döneceğini kapatmadı."
+      },
+      "semantic_contract": {
+        "proposal_status": "proposed_not_implemented",
+        "required_fields": [
+          "capability_request_id",
+          "requesting_goal_runs",
+          "required_semantic_capability",
+          "accepted_alternatives",
+          "deduplication_scope",
+          "qualification_job_id",
+          "qualification_budget",
+          "service_owner",
+          "wait_reason_and_deadline",
+          "qualification_receipts",
+          "approved_profile_digest",
+          "safe_rebind_decision"
+        ],
+        "rules": [
+          "Eksik yetenek önce semantik ihtiyaç olarak kaydedilir; marka/paket adı gereksinime dönüşmez.",
+          "Mevcut eşdeğer yetenek, izinli alternatif yol veya dar keşif/niteleme işi sıralı değerlendirilir; başlatıcı coder kendi adayını onaylayamaz.",
+          "Niteleme sistemin ayrı işidir; aynı talep iki kez başlatılmaz, harcaması görünür ve bekleyen iş pahalı worker slotunu tutmaz.",
+          "Yeni nitelikli profil açık koşuya sessizce takılmaz; güvenli devir veya yeni attempt ve gerekli yeniden doğrulama ile bağlanır.",
+          "Karşılanamıyorsa missing_capability nedeniyle açıklanmış terminal çıktı verilir; alan girdisi eksikmiş gibi kullanıcıdan teknik dosya düzeltmesi istenmez."
+        ]
+      },
+      "acceptance_description": "İki proje aynı eksik yeteneği istesin. Tek niteleme talebi açılsın; kuyruktaki işlerin ana bütçesi büyümesin. Aday malicious veya kontrat uyumsuzsa active olmamalı. Başarılı nitelemeden sonra eski katalog digestini kullanan koşuya sessiz yer değiştirme yapılmamalı; açık yeniden bağlanma kanıtı gerekir.",
+      "boundary": "Her yeni paket için insan ara onayı zorunlu varsayılmaz: yetkilendirilmiş dar otomasyon politikası içinde niteleme yapılabilir. Yeni güven sınırı veya yetki gerekiyorsa kendiliğinden verilmez. Kaynak A3teki saldırı yüzdeleri bu raporda doğrulanmış veri olarak kullanılmadı.",
+      "deep_review_contract_refs": [
+        "DR-C14"
+      ]
+    }
+  ],
+  "finding_count": 28,
+  "prior_round_finding_count": 41,
+  "prior_round_is_historical": true
+}

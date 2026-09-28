@@ -1,0 +1,1132 @@
+{
+ "meta": {
+  "konu": "D1 - Orkestrasyon / durable-execution katmaninda gercek hata raporlari",
+  "tarih": "2026-09-27",
+  "dil": "tr",
+  "durum": "tamamlandi",
+  "yontem": "gh search issues/gh api + web (resmi dokuman, blog, HN/Reddit)",
+  "kapsam_disi": "Airflow/Prefect/Argo: dogrudan karsilastiran kaynak bulunmadi (yalnizca Atlan Argo->Temporal basligi, icerik okunmadi)",
+  "not": "GitHub issue tarihleri acilis tarihidir; durum 2026-09-27 itibariyla. Issue'lar tekil raporlardir, yayginlik olcusu degildir."
+ },
+ "motorlar": [
+  {
+   "ad": "Kestra",
+   "repo": "kestra-io/kestra",
+   "hatalar": [
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Worker graceful shutdown sirasinda basarisiz olan task sonsuza kadar RUNNING'de yetim kaliyor",
+     "tarih": "2026-06-30",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/17124"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Postgres yeniden baslatilinca execution'lar takiliyor",
+     "tarih": "2025-04-11",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/8356"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "DB baglantisi kopunca Kestra servisleri cikmiyor/yeniden baslamiyor",
+     "tarih": "2026-01-08",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/14059"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "workerTaskRestartStrategy ayarina uyulmuyor",
+     "tarih": "2026-06-22",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/16970"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "(JDBC) OOM olan task'li execution zombi RUNNING olarak kalabiliyor",
+     "tarih": "2023-12-08",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/2653"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "CPU/bellek baskisi altinda Kill calismiyor",
+     "tarih": "2025-12-05",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/13426"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "KILLING durumunda takilan execution sonsuz retry dongusu; PostgreSQL 6 gunde 250GB log ile doldu",
+     "tarih": "2026-05-04",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/15829"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "JDBC kuyruk consumer thread'i gecici DB hatasinda oluyor, queues tablosu sinirsiz buyuyor",
+     "tarih": "2026-06-15",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/16794"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "MultipleConditionEvent mesajlari queues tablosunda birikiyor, trigger gecikmesi",
+     "tarih": "2026-04-01",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/15352"
+    },
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "JDBC broadcast consumer sira disi commit edilen mesajlari kalici atliyor: kill/trigger olaylari kayboluyor",
+     "tarih": "2026-09-27",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/19848"
+    },
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "Polling trigger JDBC backend'de sessizce takiliyor (evaluation lock birakilmiyor)",
+     "tarih": "2026-07-15",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/17445"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Gecici PostgreSQL deadlock'ta executor kapaniyor",
+     "tarih": "2026-07-22",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/17574"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "Pause task: resume/terminate edildikten sonra bile timeout flow'u fail ediyor",
+     "tarih": "2025-06-04",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/9319"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "pauseDuration dolunca 'errors' alt task'lari calismiyor",
+     "tarih": "2025-07-01",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/9794"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "Loop icindeki Pause parent execution'i duraklatiyor, hicbir sey devam ettirmiyor",
+     "tarih": "2026-09-10",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/19373"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "2+ executor replikasinda MultipleCondition trigger cift execution uretiyor",
+     "tarih": "2026-01-16",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/14196"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Birden fazla flow trigger tanimliyken flow birden fazla kez tetikleniyor",
+     "tarih": "2025-10-31",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/12560"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "17.5 -> 17.8 yukseltmesi tetiklenen flow execution'larini bozdu",
+     "tarih": "2024-07-01",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/4195"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "Eski (legacy) execution'larda NPE executor'u durduruyor",
+     "tarih": "2026-06-15",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/16784"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Buyuk metin degiskeninde task fail olduktan sonra container CPU ~%200'de takili",
+     "tarih": "2026-08-20",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/18310"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Kill edilen task yeniden submit ediliyor",
+     "tarih": "2026-09-22",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/19722"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Basarili task sonucu yeniden yayinlaniyor (Task succeed re-emitted)",
+     "tarih": "2026-09-21",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/19678"
+    },
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "STANDALONE + ayri WORKER kurulumunda worker job resubmission yok",
+     "tarih": "2024-06-26",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/4147"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Deserialize edilemeyen worker-job running kaydi tum geri alma (reclaim) yollarini blokluyor",
+     "tarih": "2026-09-22",
+     "durum": "open",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/19734"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "Script task timeout'u bulut container'ina (AWS/Azure/GCP Batch) yayilmiyordu",
+     "tarih": "2024-04-03",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/3461"
+    },
+    {
+     "sinif": "gozlemlenebilirlik",
+     "ozet": "Varsayilan dashboard donuyor, veritabaninda ciddi performans sorunu",
+     "tarih": "2025-11-20",
+     "durum": "closed",
+     "kaynak": "https://github.com/kestra-io/kestra/issues/13086"
+    },
+    {
+     "sinif": "lisans/fiyat",
+     "ozet": "HA (Kafka/Elasticsearch backend), Worker Groups, RBAC, SSO, audit log, secret manager entegrasyonu, Task Runners ve guvenli yukseltme icin Maintenance Mode yalnizca Enterprise'da",
+     "tarih": "belge (tarihsiz)",
+     "durum": "n/a",
+     "kaynak": "https://kestra.io/docs/oss-vs-paid"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": "OSS JDBC (Postgres) backend'inde kuyruk tablosu + executor mimarisi; 2026'da takili/kayip olay hatalarinin cogu JDBC kuyruk tuketicisinde. HA ve Maintenance Mode EE."
+  },
+  {
+   "ad": "Temporal",
+   "repo": "temporalio/temporal",
+   "hatalar": [
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "LangGraph ajanlari (20-30+ node, tool-call transkriptleri) Temporal Activity'lerine tasininca biriken tam state tek activity'ye verildiginde 'ScheduleActivityTaskCommandAttributes.Input exceeds size limit' ile workflow sonlandi",
+     "tarih": "2026-09-22",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1894"
+    },
+    {
+     "sinif": "iki beyin / bolunmus durum",
+     "ozet": "Ayni vaka: LangGraph'in kendi Postgres checkpointer'i her adimda yaziyordu; Temporal'a gecince bu kalicilik kayboldu, ekip kalicilik adimini elle geri eklemek zorunda kaldi (iki durum deposu)",
+     "tarih": "2026-09-22",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1894"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Uzun konusma + tur basina cok tool call'lu dayanikli ajan nasil kurulur sorusu (history limitleri)",
+     "tarih": "2026-09-21",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1890"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Resmi limit: Event History 51.200 olay veya 50MB; 10MB'da uyari. Asilinca Continue-As-New gerekir",
+     "tarih": "belge (tarihsiz)",
+     "durum": "n/a",
+     "kaynak": "https://docs.temporal.io/workflow-execution/limits"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "AI sohbet ajaninda 50MB/51.200 olay limitine yaklasinca Continue-As-New transkripti tasimiyor; transkriptin workflow disinda tutulmasi oneriliyor",
+     "tarih": "doğrulanamadı",
+     "durum": "n/a",
+     "kaynak": "https://ably.com/temporal/managing-conversation-history-in-a-temporal-ai-agent-chat"
+    },
+    {
+     "sinif": "determinizm/surumleme",
+     "ozet": "Python SDK: local activity + asyncio.gather ile nondeterminism",
+     "tarih": "2026-06-04",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1578"
+    },
+    {
+     "sinif": "determinizm/surumleme",
+     "ozet": "Cold-start'ta update islenince nondeterministic history uretiliyor",
+     "tarih": "2026-06-09",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1591"
+    },
+    {
+     "sinif": "determinizm/surumleme",
+     "ozet": "workflow.random().randint -> workflow.uuid4 sirasi replay'i TMPRL1100 ile bozuyor",
+     "tarih": "2025-09-19",
+     "durum": "closed",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1109"
+    },
+    {
+     "sinif": "determinizm/surumleme",
+     "ozet": "HN: 'workflow versioning, Temporal gibi sistemlerde en zor problem' yorumu",
+     "tarih": "2023-10-25",
+     "durum": "n/a",
+     "kaynak": "https://news.ycombinator.com/item?id=38011850"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Failover sonrasi parent/child workflow takiliyor",
+     "tarih": "2026-05-15",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/temporal/issues/10286"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Cancel, activity schedule edilmis-baslamamis + child workflow varken gelirse workflow task hic tamamlanmiyor",
+     "tarih": "2026-08-13",
+     "durum": "closed",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1751"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Daylight: Temporal Cloud'dan self-host'a gecis sonrasi haftalar icinde DB baglanti havuzu aclig(i): 'Slow gRPC call' uyarilari ve ara ara workflow asilmalari; havuz buyutuldu, Aurora buyutuldu",
+     "tarih": "2026-09-01",
+     "durum": "n/a",
+     "kaynak": "https://daylight.ai/blog/how-we-migrated-off-temporal-cloud-without-downtime"
+    },
+    {
+     "sinif": "lisans/fiyat",
+     "ozet": "Daylight: Temporal Cloud faturasi her yeni tenant ile artti (~500 workflow start/sn tepe; 10 sn-1 dk'lik schedule'lar); veri VPC disina cikiyordu -> self-host",
+     "tarih": "2026-09-01",
+     "durum": "n/a",
+     "kaynak": "https://daylight.ai/blog/how-we-migrated-off-temporal-cloud-without-downtime"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Reliant (AI chat/ajan urunu): sohbet workflow'u 52,4MB'ta 'Workflow history size exceeds limit' ile olduruldu (olay sayisi limitinin 13k altinda); recovery ayni sisik history'ye reset edip 2,5 dk sonra yine oldu",
+     "tarih": "2026-09-24",
+     "durum": "merged",
+     "kaynak": "https://github.com/reliant-labs/reliant/pull/292"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Uzun activity heartbeat timeout'la duserse bastan yeniden basliyor; islenmis kayitlar icin cift child workflow baslatildi. Temporal cevabi: heartbeat detayina ilerleme yaz, is ID'sini WorkflowId yap",
+     "tarih": "2023-05-11",
+     "durum": "n/a",
+     "kaynak": "https://community.temporal.io/t/activity-restarts-from-beginning-of-the-processs-on-heartbeattimeout-and-on-acitivitynotexistsexcpetion/8225"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Python SDK: CustomSlotSupplier + heartbeat atan activity'lerde kalici worker deadlock (GIL <-> sdk-core mutex)",
+     "tarih": "2026-07-14",
+     "durum": "closed",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1642"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Kisa bir Unavailable blip'i History kuyruk backoff'unu sifirlayip surekli retry firtinasina yol aciyor",
+     "tarih": "2026-08-13",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/temporal/issues/11547"
+    },
+    {
+     "sinif": "gozlemlenebilirlik",
+     "ozet": "Persistence rate-limit ResourceExhausted hatasi Unavailable'a duzlestiriliyor (neden gizleniyor)",
+     "tarih": "2026-08-14",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/temporal/issues/11571"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "Self-host: sunucu yalnizca ardisik minor surumler arasinda geriye uyumlu; surum atlamak veriyi okunamaz yapabilir, her adimda sema guncellemesi gerekli",
+     "tarih": "belge (tarihsiz)",
+     "durum": "n/a",
+     "kaynak": "https://docs.temporal.io/self-hosted-guide/upgrade-server"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "OpenAI Agents entegrasyonunda streaming destegi yok (uzun LLM cagrilarini durable activity'de akitma bosluklari)",
+     "tarih": "2025-07-29",
+     "durum": "open",
+     "kaynak": "https://github.com/temporalio/sdk-python/issues/1009"
+    }
+   ],
+   "goc_hikayeleri": [
+    {
+     "yon": "Temporal Cloud -> self-hosted Temporal",
+     "kim": "Daylight",
+     "tarih": "2026-09-01",
+     "neden": "tenant basina artan maliyet, veri yerlesimi",
+     "kaynak": "https://daylight.ai/blog/how-we-migrated-off-temporal-cloud-without-downtime"
+    },
+    {
+     "yon": "Inngest -> Temporal",
+     "kim": "Monk",
+     "tarih": "2026-06-16",
+     "neden": "'olcekte bizi incitmeye basladi' (detay verilmemis); tenant basi concurrency Temporal'da elle kurulmak zorunda",
+     "kaynak": "https://temporal.io/blog/how-monk-migrated-100-workflows-inngest-to-temporal"
+    },
+    {
+     "yon": "Argo -> Temporal",
+     "kim": "Atlan",
+     "tarih": "doğrulanamadı",
+     "neden": "doğrulanamadı (okunmadi)",
+     "kaynak": "https://blog.atlan.com/engineering/argo-to-temporal-migration/"
+    }
+   ],
+   "not": "LLM ajanlari icin asil sorun history/payload limiti ve deterministik olmayan kodun workflow'a sizmasi."
+  },
+  {
+   "ad": "Hatchet",
+   "repo": "hatchet-dev/hatchet",
+   "hatalar": [
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "TS SDK: engine listener stream'i kaybedince worker kalici zombi; heartbeat reddediliyor, health HEALTHY kaliyor",
+     "tarih": "2026-08-28",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4824"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "TS worker ACTIVE+heartbeat atarken atama stream'i sessizce duruyor, /health 200",
+     "tarih": "2026-06-22",
+     "durum": "closed",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4254"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Is yukleri RUNNING'de takili, iptal/silme yolu yok",
+     "tarih": "2025-11-26",
+     "durum": "closed",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/2573"
+    },
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "Scheduler atamasinda sessiz task dusmesi concurrency slotlarini kalici sizdiriyor",
+     "tarih": "2026-07-23",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4494"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Zamanlanmis workflow tetikleyicisi: atomik olmayan 3 adim + duvar saatine bagli idempotency TTL -> kayip veya cift execution",
+     "tarih": "2026-06-09",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4129"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Self-host engine ~1 hafta kullanimdan sonra kendi veritabanini bozuyor",
+     "tarih": "2026-05-05",
+     "durum": "closed",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/3823"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "statement_timeout havuzlanmis baglantilar arasinda sizmasi (SET vs SET LOCAL)",
+     "tarih": "2026-05-12",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/3898"
+    },
+    {
+     "sinif": "gozlemlenebilirlik",
+     "ozet": "TS SDK worker /health UNHEALTHY iken bile 200 donuyor, K8s liveness bozuluyor",
+     "tarih": "2026-08-28",
+     "durum": "closed",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4823"
+    },
+    {
+     "sinif": "gozlemlenebilirlik",
+     "ozet": "'Scheduling timed out' hata olarak gorunmuyor",
+     "tarih": "2026-05-15",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/3922"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Hatchet API sessizce cokuyor, supervizyon yok",
+     "tarih": "2026-09-14",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4961"
+    },
+    {
+     "sinif": "LLM rate-limit / backlog",
+     "ozet": "Statik rate-limit kuyruklari refill veya engine restart sonrasi durabiliyor",
+     "tarih": "2026-08-19",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4746"
+    },
+    {
+     "sinif": "LLM rate-limit / backlog",
+     "ozet": "Upstream cooldown'a (orn. 429) uymak icin rate-limit anahtarini zamana kadar durdurma talebi",
+     "tarih": "2026-09-03",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4880"
+    },
+    {
+     "sinif": "LLM rate-limit / backlog",
+     "ozet": "v1 scheduler rate limiter shouldRefill() kosulu ters",
+     "tarih": "2026-07-03",
+     "durum": "open",
+     "kaynak": "https://github.com/hatchet-dev/hatchet/issues/4346"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Hatchet yazarlari (HN, v1 lansmani): v0'da buyuk backlog + cok worker + long-polling CPU spike'larina ve zincirleme bozulmaya yol acti; UUID PK'li birlesik izleme tablolari index bloat yaratti; gorev basina en az 5 Postgres transaction",
+     "tarih": "2025-04-03",
+     "durum": "n/a",
+     "kaynak": "https://news.ycombinator.com/item?id=43572733"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Ayni HN baslik: bir kullanici 50MB+ payload'lu mesajlarda Postgres TOAST sorunlari, unlogged tablo + zamanli full vacuum gecici cozumu",
+     "tarih": "2025-04",
+     "durum": "n/a",
+     "kaynak": "https://news.ycombinator.com/item?id=43572733"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "v1 engine (24 Mart 2025) tam yeniden yazim; v0 listeleme/iptal/replay API'leri v1'de calismiyor, ozel concurrency metotlari kaldirildi (yalniz CEL)",
+     "tarih": "2025-03-24",
+     "durum": "n/a",
+     "kaynak": "https://docs.hatchet.run/v1/migrating/migration-guide-engine"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": "2026'da cok sayida durable/TS SDK zombi-worker hatasi acik."
+  },
+  {
+   "ad": "Restate",
+   "repo": "restatedev/restate",
+   "hatalar": [
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Takili invocation'lara karsi guvenlik agi (deployment hedefindeki hatalar yuzunden takili baglantilar, orn. Bun)",
+     "tarih": "2026-03-03",
+     "durum": "open",
+     "kaynak": "https://github.com/restatedev/restate/issues/4453"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Node restart'ta chain seal basarisiz olunca partition leader'lari log uygulamayi birakiyor",
+     "tarih": "2026-07-13",
+     "durum": "open",
+     "kaynak": "https://github.com/restatedev/restate/issues/5033"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Attempt baslarken eklenen bildirim iki kez teslim edilebiliyor (replay + forward)",
+     "tarih": "2026-09-21",
+     "durum": "closed",
+     "kaynak": "https://github.com/restatedev/restate/issues/5375"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Sonsuz retry'da her deneme journal'a ekleniyor mu, journal uzadikca sistem yavasliyor mu sorusu",
+     "tarih": "2025-05-04",
+     "durum": "open",
+     "kaynak": "https://github.com/restatedev/restate/issues/3216"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Journal entry boyut limiti destegi",
+     "tarih": "2025-07-30",
+     "durum": "closed",
+     "kaynak": "https://github.com/restatedev/restate/issues/3603"
+    },
+    {
+     "sinif": "worker OOM/kaynak",
+     "ozet": "Node restart/leader failover sirasinda invoker bellek sisinmesi",
+     "tarih": "2026-02-02",
+     "durum": "closed",
+     "kaynak": "https://github.com/restatedev/restate/issues/4311"
+    },
+    {
+     "sinif": "determinizm/surumleme",
+     "ozet": "TS SDK: Promise.all ile paralel ctx.run 'awaitNext already pending' ile crash-loop'a girebiliyor",
+     "tarih": "2026-06-10",
+     "durum": "closed",
+     "kaynak": "https://github.com/restatedev/sdk-typescript/issues/743"
+    },
+    {
+     "sinif": "lisans/fiyat",
+     "ozet": "Sunucu Business Source License 1.1; 'Public Restate Platform Service' olarak sunmak yasak",
+     "tarih": "repo (guncel)",
+     "durum": "n/a",
+     "kaynak": "https://github.com/restatedev/restate/blob/main/LICENSE"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": "Kamuya acik uretim postmortem'i bulunamadi; kanitlar issue duzeyinde."
+  },
+  {
+   "ad": "Inngest",
+   "repo": "inngest/inngest",
+   "hatalar": [
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Resmi limitler: adim donus verisi 4MiB, run state 32MB, fonksiyon basina 1000 adim, adim timeout en fazla 2 saat, free planda sleep 7 gun",
+     "tarih": "belge (tarihsiz)",
+     "durum": "n/a",
+     "kaynak": "https://www.inngest.com/docs/usage-limits/inngest"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Mastra ajani: tool sonucu Inngest step output limitini asinca run dogru fail ediyor ama API '500 [object Object]' donuyor, neden kayboluyor",
+     "tarih": "2026-09-25",
+     "durum": "open",
+     "kaynak": "https://github.com/mastra-ai/mastra/issues/25161"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Race-mode paralel adimlar iki kez calisiyor",
+     "tarih": "2026-09-21",
+     "durum": "closed",
+     "kaynak": "https://github.com/inngest/inngest/issues/4897"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Race-mode'da kaybeden waitForEvent iptal edilmiyor; run timeout'a kadar 'Running' kaliyor",
+     "tarih": "2026-07-02",
+     "durum": "open",
+     "kaynak": "https://github.com/inngest/inngest-js/issues/1617"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "workflow_version=0 kuyruk ogeleri sonsuz lease dongusu, scheduler bloklaniyor",
+     "tarih": "2026-04-26",
+     "durum": "open",
+     "kaynak": "https://github.com/inngest/inngest/issues/4060"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "waitForEvent sonrasi step.run fail olunca fonksiyon takiliyor",
+     "tarih": "2024-04-18",
+     "durum": "closed",
+     "kaynak": "https://github.com/inngest/inngest/issues/1290"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "step.waitForEvent asiri yuksek gecikme",
+     "tarih": "2025-05-13",
+     "durum": "closed",
+     "kaynak": "https://github.com/inngest/inngest/issues/2423"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "Self-host v1.27.0'da cron fonksiyonlari zamanlanamiyor (missing envID)",
+     "tarih": "2026-06-11",
+     "durum": "open",
+     "kaynak": "https://github.com/inngest/inngest/issues/4387"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "v1.8.1 regresyonu: GUI'de run yok, event'te panic",
+     "tarih": "2025-06-25",
+     "durum": "closed",
+     "kaynak": "https://github.com/inngest/inngest/issues/2627"
+    },
+    {
+     "sinif": "lisans/fiyat",
+     "ozet": "1.0 ile self-host geldi (23 Eyl 2024): tek surec, varsayilan SQLite, cok-dugumlu sunucu yok; lisans SSPL'den 3 yil sonra Apache 2.0'a donen modele gecti",
+     "tarih": "2024-09-23",
+     "durum": "n/a",
+     "kaynak": "https://www.inngest.com/blog/inngest-1-0-announcing-self-hosting-support"
+    }
+   ],
+   "goc_hikayeleri": [
+    {
+     "yon": "Inngest -> Temporal",
+     "kim": "Monk",
+     "tarih": "2026-06-16",
+     "neden": "olcekte sorun (detaysiz)",
+     "kaynak": "https://temporal.io/blog/how-monk-migrated-100-workflows-inngest-to-temporal"
+    }
+   ],
+   "not": ""
+  },
+  {
+   "ad": "Trigger.dev",
+   "repo": "triggerdotdev/trigger.dev",
+   "hatalar": [
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Gece sunucu restart'indan sonra task'lar kuyrukta takili kaliyor ve sonsuz cogaliyor",
+     "tarih": "2024-12-16",
+     "durum": "closed",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/1566"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "batchTriggerAndWait: tum child run'lar bitse de parent hic devam etmiyor",
+     "tarih": "2026-09-22",
+     "durum": "open",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/4971"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "v3 self-host: bazi task'lar suresiz bekliyor, run'lar tamamlanmiyor",
+     "tarih": "2025-02-05",
+     "durum": "closed",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/1668"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "python.runScript() >64KB stderr'de deadlock",
+     "tarih": "2026-04-10",
+     "durum": "open",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/3357"
+    },
+    {
+     "sinif": "worker OOM/kaynak",
+     "ozet": "/api/v1/runs/:runId/events sayfalama yok, OOM riski",
+     "tarih": "2026-05-23",
+     "durum": "open",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/3730"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "v2 EOL 31 Ocak 2025; v3'e gecis zorunlu (farkli mimari)",
+     "tarih": "2025-01-31",
+     "durum": "n/a",
+     "kaynak": "https://trigger.dev/blog/v2-end-of-life-announcement"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "Self-host: v4.5.1+ v3 trigger/deploy'lari reddediyor; v4.5.0 v3 icin son surum",
+     "tarih": "belge (tarihsiz)",
+     "durum": "n/a",
+     "kaynak": "https://trigger.dev/docs/migrating-from-v3"
+    },
+    {
+     "sinif": "gozlemlenebilirlik",
+     "ozet": "Self-host'ta OpenTelemetry span'lari timeline'da gorunmuyor",
+     "tarih": "2025-12-29",
+     "durum": "open",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/2821"
+    },
+    {
+     "sinif": "worker OOM/kaynak",
+     "ozet": "docker-provider log'u tam tamponladigi icin bellek sizintisi (P0)",
+     "tarih": "2026-01-15",
+     "durum": "closed",
+     "kaynak": "https://github.com/triggerdotdev/trigger.dev/issues/2894"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": ""
+  },
+  {
+   "ad": "DBOS",
+   "repo": "dbos-inc/dbos-transact-py",
+   "hatalar": [
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "Recovery sirasinda Postgres restart workflow'lari sonsuza kadar PENDING'de birakiyor",
+     "tarih": "2026-06-12",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/716"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Kurtarilan kuyruk workflow'u adimlar arasinda PENDING kalip concurrency=1 kuyrugu blokluyor",
+     "tarih": "2026-07-28",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/805"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Dequeue edilen workflow dispatch sirasinda hata olursa PENDING'de takiliyor",
+     "tarih": "2025-12-29",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/546"
+    },
+    {
+     "sinif": "self-host ops / DB yuku",
+     "ozet": "Cluster'da recovery sorunlari",
+     "tarih": "2025-09-04",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/453"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Bos workflow_uuid satiri her recovery turunda cift execution 'ghost-fork' ediyor",
+     "tarih": "2026-07-07",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/759"
+    },
+    {
+     "sinif": "determinizm/surumleme",
+     "ozet": "Moduller arasi ayni __qualname__ tek kayda cokuyor, recovery yanlis fonksiyona gidebiliyor",
+     "tarih": "2026-08-29",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/837"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "Stale get_pending_workflows sonucu sahiplik temizlendikten sonra kuyruk isini calistirabiliyor",
+     "tarih": "2026-06-24",
+     "durum": "closed",
+     "kaynak": "https://github.com/dbos-inc/dbos-transact-py/issues/742"
+    },
+    {
+     "sinif": "iki beyin / bolunmus durum",
+     "ozet": "Satici (DBOS) argumani: ayri motor + ayri uygulama DB'si varken 'DB guncellemesi checkpoint'siz basarili olabilir' penceresi var; DBOS adim checkpoint'ini ve uygulama yazmasini ayni transaction'da commit ediyor",
+     "tarih": "doğrulanamadı",
+     "durum": "n/a",
+     "kaynak": "https://www.dbos.dev/blog/co-locating-workflow-state-with-your-data"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": "Kutuphane-modeli (ayri sunucu yok); hatalarin cogu recovery/executor sahipligi etrafinda."
+  },
+  {
+   "ad": "Windmill",
+   "repo": "windmill-labs/windmill",
+   "hatalar": [
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Sonuclarda buyuk base64 dosyalar Postgres TOAST tablolarini sisirip diski hizla dolduruyor",
+     "tarih": "2025-10-17",
+     "durum": "open",
+     "kaynak": "https://github.com/windmill-labs/windmill/issues/6855"
+    },
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "no_flow_overlap'li zamanlanmis flow, gecici DB hatasi bir run'i cokertince kalici olarak yeniden zamanlanmiyor",
+     "tarih": "2026-07-17",
+     "durum": "closed",
+     "kaynak": "https://github.com/windmill-labs/windmill/issues/10168"
+    },
+    {
+     "sinif": "zaman asimi / insan beklemesi",
+     "ozet": "AI Sessions uzun konusmalarda yanit vermeyi birakiyor, 504'te retry dongusu",
+     "tarih": "2026-08-06",
+     "durum": "closed",
+     "kaynak": "https://github.com/windmill-labs/windmill/issues/10559"
+    },
+    {
+     "sinif": "gozlemlenebilirlik",
+     "ozet": "Isler 'waiting for workers' gosteriyor ama filtrede hicbir sey yok",
+     "tarih": "2025-11-30",
+     "durum": "closed",
+     "kaynak": "https://github.com/windmill-labs/windmill/issues/7258"
+    },
+    {
+     "sinif": "worker OOM/kaynak",
+     "ozet": "Playwright kullanimi cok sayida zombi surec uretiyor",
+     "tarih": "2025-06-25",
+     "durum": "closed",
+     "kaynak": "https://github.com/windmill-labs/windmill/issues/6048"
+    },
+    {
+     "sinif": "lisans/fiyat",
+     "ozet": "Kullanici: lisans sayfasinda AGPLv3/cift lisans acik degil, 'cok derine girince' fark ettim",
+     "tarih": "2024-10-10",
+     "durum": "closed",
+     "kaynak": "https://github.com/windmill-labs/windmill/issues/4514"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": ""
+  },
+  {
+   "ad": "Conductor (conductor-oss / Orkes)",
+   "repo": "conductor-oss/conductor",
+   "hatalar": [
+    {
+     "sinif": "lisans/fiyat",
+     "ozet": "Netflix 13 Aralik 2023'te Conductor OSS bakimini birakti, repo arsivlendi; Orkes fork'u conductor-oss devraldi",
+     "tarih": "2023-12-13",
+     "durum": "n/a",
+     "kaynak": "https://techcrunch.com/2023/12/13/orkes-forks-conductor-as-netflix-abandons-the-open-source-project/"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "PostgresLockDAO recursive lock desteklemiyor -> takili workflow'lar",
+     "tarih": "2025-09-24",
+     "durum": "open",
+     "kaynak": "https://github.com/conductor-oss/conductor/issues/588"
+    },
+    {
+     "sinif": "takili/zombi calisma",
+     "ozet": "Workflow hicbir hata olmadan takiliyor",
+     "tarih": "2025-04-04",
+     "durum": "open",
+     "kaynak": "https://github.com/conductor-oss/conductor/issues/436"
+    },
+    {
+     "sinif": "yukseltme/kirici degisiklik",
+     "ozet": "v3.21.16'ya yukseltince SIMPLE task'lar SCHEDULED'da kaliyor (Postgres queue)",
+     "tarih": "2025-11-13",
+     "durum": "open",
+     "kaynak": "https://github.com/conductor-oss/conductor/issues/656"
+    },
+    {
+     "sinif": "payload/durum boyutu",
+     "ozet": "Postgres tsvector limiti workflow hatalarina ve kaynak tukenmesine yol aciyor",
+     "tarih": "2025-10-09",
+     "durum": "open",
+     "kaynak": "https://github.com/conductor-oss/conductor/issues/604"
+    },
+    {
+     "sinif": "tekrar/cift yan etki",
+     "ozet": "HTTP Task COMPLETED'dan sonra iki kez calisiyor",
+     "tarih": "2025-10-30",
+     "durum": "open",
+     "kaynak": "https://github.com/conductor-oss/conductor/issues/630"
+    },
+    {
+     "sinif": "kayip gorev/olay",
+     "ozet": "Forked task'lar yanlis kuyruk sayaci yuzunden bazen calismiyor",
+     "tarih": "2024-10-11",
+     "durum": "open",
+     "kaynak": "https://github.com/conductor-oss/conductor/issues/282"
+    }
+   ],
+   "goc_hikayeleri": [],
+   "not": ""
+  }
+ ],
+ "siniflar_arasi_ozet": [
+  {
+   "sinif": "takili/zombi/stale RUNNING",
+   "hangi_motorlarda": [
+    "Kestra",
+    "Hatchet",
+    "Temporal",
+    "Inngest",
+    "Trigger.dev",
+    "DBOS",
+    "Conductor",
+    "Restate"
+   ],
+   "tipik_neden": "Worker kapanisi/DB baglanti kopmasi sirasinda durum makinesinin DB'de ara durumda kalmasi; saglik kontrolunun 'saglikli' demeye devam etmesi",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/17124",
+    "https://github.com/kestra-io/kestra/issues/8356",
+    "https://github.com/hatchet-dev/hatchet/issues/4824",
+    "https://github.com/dbos-inc/dbos-transact-py/issues/805",
+    "https://github.com/triggerdotdev/trigger.dev/issues/4971"
+   ]
+  },
+  {
+   "sinif": "restart sonrasi kayip gorev/olay",
+   "hangi_motorlarda": [
+    "Kestra",
+    "DBOS",
+    "Windmill",
+    "Hatchet",
+    "Conductor"
+   ],
+   "tipik_neden": "Atomik olmayan dequeue/ack; kuyruk tuketicisinin gecici DB hatasinda olmesi",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/19848",
+    "https://github.com/kestra-io/kestra/issues/4147",
+    "https://github.com/dbos-inc/dbos-transact-py/issues/716",
+    "https://github.com/windmill-labs/windmill/issues/10168",
+    "https://github.com/hatchet-dev/hatchet/issues/4494"
+   ]
+  },
+  {
+   "sinif": "zaman asimi / uzun LLM adimi / insan beklemesi",
+   "hangi_motorlarda": [
+    "Kestra",
+    "Inngest",
+    "Temporal",
+    "Windmill",
+    "Hatchet"
+   ],
+   "tipik_neden": "Pause/timeout kenar durumlari; platform ust limitleri (adim 2 saat, free plan sleep 7 gun); heartbeat'siz uzun activity",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/9319",
+    "https://github.com/kestra-io/kestra/issues/19373",
+    "https://www.inngest.com/docs/usage-limits/inngest",
+    "https://community.temporal.io/t/activity-restarts-from-beginning-of-the-processs-on-heartbeattimeout-and-on-acitivitynotexistsexcpetion/8225",
+    "https://github.com/windmill-labs/windmill/issues/10559"
+   ]
+  },
+  {
+   "sinif": "retry kaynakli cift yan etki / idempotency",
+   "hangi_motorlarda": [
+    "Temporal",
+    "Kestra",
+    "Conductor",
+    "Hatchet",
+    "Inngest",
+    "Trigger.dev",
+    "DBOS"
+   ],
+   "tipik_neden": "At-least-once teslim + coklu replika + restart; idempotency anahtarinin zamana/duvar saatine bagli olmasi",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/14196",
+    "https://github.com/kestra-io/kestra/issues/19722",
+    "https://github.com/conductor-oss/conductor/issues/630",
+    "https://github.com/hatchet-dev/hatchet/issues/4129",
+    "https://github.com/inngest/inngest/issues/4897",
+    "https://github.com/triggerdotdev/trigger.dev/issues/1566"
+   ]
+  },
+  {
+   "sinif": "determinizm / surumleme",
+   "hangi_motorlarda": [
+    "Temporal",
+    "Restate",
+    "DBOS"
+   ],
+   "tipik_neden": "Replay tabanli motorlarda kod degisikligi veya deterministik olmayan cagri; kayit adi cakismasi",
+   "kaynaklar": [
+    "https://github.com/temporalio/sdk-python/issues/1578",
+    "https://github.com/temporalio/sdk-python/issues/1109",
+    "https://news.ycombinator.com/item?id=38011850",
+    "https://github.com/restatedev/sdk-typescript/issues/743",
+    "https://github.com/dbos-inc/dbos-transact-py/issues/837"
+   ]
+  },
+  {
+   "sinif": "history/payload/durum boyutu",
+   "hangi_motorlarda": [
+    "Temporal",
+    "Inngest",
+    "Windmill",
+    "Conductor",
+    "Hatchet",
+    "Kestra",
+    "Restate"
+   ],
+   "tipik_neden": "LLM transkriptleri/tool ciktilari ve dosyalar motorun state'ine yaziliyor",
+   "kaynaklar": [
+    "https://github.com/reliant-labs/reliant/pull/292",
+    "https://github.com/temporalio/sdk-python/issues/1894",
+    "https://github.com/mastra-ai/mastra/issues/25161",
+    "https://github.com/windmill-labs/windmill/issues/6855",
+    "https://github.com/conductor-oss/conductor/issues/604"
+   ]
+  },
+  {
+   "sinif": "LLM rate-limit / concurrency / backlog",
+   "hangi_motorlarda": [
+    "Hatchet",
+    "Temporal",
+    "Inngest"
+   ],
+   "tipik_neden": "Rate limiter hatalari, upstream 429 cooldown'unu ifade edememe, retry firtinasi",
+   "kaynaklar": [
+    "https://github.com/hatchet-dev/hatchet/issues/4746",
+    "https://github.com/hatchet-dev/hatchet/issues/4880",
+    "https://github.com/temporalio/temporal/issues/11547",
+    "https://temporal.io/blog/how-monk-migrated-100-workflows-inngest-to-temporal"
+   ]
+  },
+  {
+   "sinif": "worker OOM / kaynak",
+   "hangi_motorlarda": [
+    "Kestra",
+    "Restate",
+    "Trigger.dev",
+    "Windmill"
+   ],
+   "tipik_neden": "Buyuk ciktilar, log tamponlama, alt surec sizintilari",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/2653",
+    "https://github.com/kestra-io/kestra/issues/18310",
+    "https://github.com/restatedev/restate/issues/4311",
+    "https://github.com/triggerdotdev/trigger.dev/issues/2894",
+    "https://github.com/windmill-labs/windmill/issues/6048"
+   ]
+  },
+  {
+   "sinif": "self-host ops / DB yuku",
+   "hangi_motorlarda": [
+    "Kestra",
+    "Hatchet",
+    "Temporal",
+    "DBOS"
+   ],
+   "tipik_neden": "Kuyruk-olarak-Postgres tablolarinin sisimesi, baglanti havuzu tukenmesi, gecici DB hatasinda servis cokmesi",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/15829",
+    "https://github.com/kestra-io/kestra/issues/16794",
+    "https://github.com/kestra-io/kestra/issues/17574",
+    "https://github.com/hatchet-dev/hatchet/issues/3823",
+    "https://news.ycombinator.com/item?id=43572733",
+    "https://daylight.ai/blog/how-we-migrated-off-temporal-cloud-without-downtime"
+   ]
+  },
+  {
+   "sinif": "yukseltme / kirici degisiklik",
+   "hangi_motorlarda": [
+    "Kestra",
+    "Temporal",
+    "Hatchet",
+    "Trigger.dev",
+    "Inngest",
+    "Conductor"
+   ],
+   "tipik_neden": "Motor yeniden yazimlari (Hatchet v1, Trigger.dev v3/v4), sema gocleri, eski execution verisiyle uyumsuzluk",
+   "kaynaklar": [
+    "https://github.com/kestra-io/kestra/issues/4195",
+    "https://github.com/kestra-io/kestra/issues/16784",
+    "https://docs.temporal.io/self-hosted-guide/upgrade-server",
+    "https://docs.hatchet.run/v1/migrating/migration-guide-engine",
+    "https://trigger.dev/blog/v2-end-of-life-announcement",
+    "https://github.com/conductor-oss/conductor/issues/656"
+   ]
+  },
+  {
+   "sinif": "gozlemlenebilirlik",
+   "hangi_motorlarda": [
+    "Hatchet",
+    "Temporal",
+    "Inngest(+Mastra)",
+    "Trigger.dev",
+    "Kestra",
+    "Windmill"
+   ],
+   "tipik_neden": "Yalan soyleyen health endpoint'leri, hata nedeninin katmanlar arasinda kaybolmasi",
+   "kaynaklar": [
+    "https://github.com/hatchet-dev/hatchet/issues/4823",
+    "https://github.com/temporalio/temporal/issues/11571",
+    "https://github.com/mastra-ai/mastra/issues/25161",
+    "https://github.com/triggerdotdev/trigger.dev/issues/2821",
+    "https://github.com/kestra-io/kestra/issues/13086"
+   ]
+  },
+  {
+   "sinif": "lisans / fiyat / sahiplik",
+   "hangi_motorlarda": [
+    "Conductor",
+    "Kestra",
+    "Restate",
+    "Inngest",
+    "Windmill",
+    "Temporal Cloud"
+   ],
+   "tipik_neden": "Open-core (HA/RBAC/SSO EE'de), BUSL/SSPL, proje sahibinin cekilmesi, olcekle artan bulut faturasi",
+   "kaynaklar": [
+    "https://techcrunch.com/2023/12/13/orkes-forks-conductor-as-netflix-abandons-the-open-source-project/",
+    "https://kestra.io/docs/oss-vs-paid",
+    "https://github.com/restatedev/restate/blob/main/LICENSE",
+    "https://www.inngest.com/blog/inngest-1-0-announcing-self-hosting-support",
+    "https://github.com/windmill-labs/windmill/issues/4514",
+    "https://daylight.ai/blog/how-we-migrated-off-temporal-cloud-without-downtime"
+   ]
+  },
+  {
+   "sinif": "iki beyin / bolunmus durum",
+   "hangi_motorlarda": [
+    "Temporal(+LangGraph)",
+    "DBOS (satici argumani)",
+    "Kestra (kullanicinin kendi denemesi)"
+   ],
+   "tipik_neden": "Ajan cercevesinin kendi checkpointer'i/transkript deposu ile motor history'sinin ayri tutulmasi; motor disi kodun gercek isi yapmasi",
+   "kaynaklar": [
+    "https://github.com/temporalio/sdk-python/issues/1894",
+    "https://github.com/reliant-labs/reliant/pull/292",
+    "https://ably.com/temporal/managing-conversation-history-in-a-temporal-ai-agent-chat",
+    "https://www.dbos.dev/blog/co-locating-workflow-state-with-your-data"
+   ]
+  }
+ ]
+}

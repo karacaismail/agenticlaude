@@ -1,0 +1,744 @@
+{
+ "meta": {
+  "soru": "C2 - OpenHands, OpenAI Symphony, Aperant derin inceleme + yurutucu seviyesinde tak-cikar standartlari",
+  "tarih": "2026-09-27",
+  "durum": "tamamlandi",
+  "yontem": "gh api (repo gercekleri), gh search issues (hata kanitlari), WebSearch/WebFetch (dokumanlar)"
+ },
+ "openhands": {
+  "repo_gercekleri": {
+   "OpenHands/OpenHands": {
+    "yildiz": 89263,
+    "fork": 11764,
+    "acik_issue_pr": 855,
+    "pushed_at": "2026-09-26",
+    "lisans": "MIT",
+    "son_surum": "v1.24.0 (2026-09-25)",
+    "surum_hizi": "v1.10.0 (2026-08-05) -> v1.24.0 (2026-09-25): ~7 haftada 15 minor surum",
+    "kaynak": [
+     "https://github.com/OpenHands/OpenHands",
+     "https://github.com/OpenHands/OpenHands/releases"
+    ]
+   },
+   "OpenHands/software-agent-sdk": {
+    "yildiz": 1175,
+    "acik_issue_pr": 513,
+    "lisans": "MIT",
+    "son_surum": "v1.49.6 (2026-09-25)",
+    "kaynak": "https://github.com/OpenHands/software-agent-sdk"
+   },
+   "OpenHands/legacy": {
+    "not": "2026-07-27 olusturuldu ve arsivlendi; eski OpenHands/OpenHands kodu (Local GUI + V0/V1 app server) buraya tasindi",
+    "kaynak": "https://github.com/OpenHands/legacy"
+   },
+   "OpenHands/enterprise": {
+    "not": "2026-07-27 olusturuldu, public, lisans NOASSERTION (kaynak-acik ticari)",
+    "kaynak": "https://github.com/OpenHands/enterprise"
+   },
+   "OpenHands/automation": {
+    "lisans": "MIT",
+    "olusturma": "2026-03-13",
+    "rol": "zamanlama, webhook, run history, dispatch",
+    "kaynak": "https://github.com/OpenHands/automation"
+   },
+   "OpenHands/sandbox-server": {
+    "lisans": "NOASSERTION",
+    "olusturma": "2026-07-27",
+    "rol": "OpenHands sandbox barindirma sunucusu",
+    "kaynak": "https://github.com/OpenHands/sandbox-server"
+   },
+   "OpenHands/OpenHands-CLI": {
+    "lisans": "MIT",
+    "not": "TUI bakim modunda (en az 2026-10-01'e kadar); headless ve ACP modlari suresiz destek",
+    "kaynak": [
+     "https://github.com/OpenHands/OpenHands-CLI",
+     "https://github.com/OpenHands/docs/issues/657"
+    ]
+   }
+  },
+  "mimari_2026_09": {
+   "ozet": "OpenHands/OpenHands reposu artik 'Agent Canvas' (TypeScript/Node frontend + yerel stack orkestrasyonu). Cekirdek ajan, araclar, konusmalar, workspace'ler ve REST/WebSocket Agent Server API'si OpenHands/software-agent-sdk reposunda (Python). Zamanlama/webhook/dispatch OpenHands/automation reposunda. Eski V0/V1 'Local GUI' kodu OpenHands/legacy (arsiv) reposuna, enterprise kodu OpenHands/enterprise reposuna tasindi.",
+   "katmanlar": {
+    "Agent Canvas (OpenHands/OpenHands)": "UI, backend secimi; birden cok Agent Server'a baglanabilir",
+    "Agent Server (software-agent-sdk/openhands-agent-server)": "'tek makinede birden cok ajan calistirmak icin REST API'; her Agent Server tek host/port",
+    "Automation Server (OpenHands/automation)": "zamanlanmis/olay tetiklemeli calismalar; konusmalari Agent Server'a dispatch eder",
+    "Workspace tipleri (openhands-workspace)": [
+     "docker",
+     "remote_api (Runtime API)",
+     "cloud (OpenHands Cloud)",
+     "apptainer",
+     "agent_sandbox (kubernetes-sigs/agent-sandbox pod'lari, SandboxWarmPool ile on-isitma)"
+    ],
+    "Istemciler": "Python SDK, TypeScript client (sdk reposunda clients/typescript), REST/WebSocket"
+   },
+   "kaynak": [
+    "https://github.com/OpenHands/OpenHands/blob/main/README.md",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/README.md",
+    "https://github.com/OpenHands/software-agent-sdk/tree/main/openhands-workspace/openhands/workspace",
+    "https://arxiv.org/abs/2511.03690"
+   ]
+  },
+  "churn_kaniti": {
+   "ozet": "18 ay icinde 3 buyuk yeniden yapilanma: V0 (OpenHands/OpenHands monolit) -> V1 (Software Agent SDK, 2025-08/11) -> Agent Canvas (2026-06 BETA, 2026-07-27 repo tasinmasi). Eski 'Local GUI' bakim moduna alindi; TUI bakim modunda (en az 2026-10-01'e kadar); OpenHands/agent-canvas reposu 3 ay yasayip arsivlendi; typescript-client reposu arsivlendi (SDK icine alindi).",
+   "resmi_ifade": "Agent Canvas transition FAQ (2026-06-03 tarihli): eski OpenHands/OpenHands kodu 'legacy frontend and a mostly-enterprise-licensed backend' olarak nitelenip tasinacagi; Local GUI'nin Agent Canvas izole/gecici sandbox destegi gelene kadar destekleneceği belirtiliyor.",
+   "kaynak": [
+    "https://github.com/OpenHands/docs/issues/657",
+    "https://github.com/OpenHands/legacy",
+    "https://github.com/OpenHands/agent-canvas"
+   ]
+  },
+  "diger_harness_calistirma_ACP": {
+   "cevap": "EVET. SDK'da ACPAgent (AgentBase alt sinifi) ACP sunucusuna delege eder; ACP sunucusu kendi LLM'ini, araclarini ve yurutmesini yonetir. Kayitli ACP saglayicilari: claude-code, codex, gemini-cli, kimi-code, pi, opencode. Agent Canvas README: 'Run OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent'. Uzak runtime icinde ACP ajani ornegi mevcut (09_acp_agent_with_remote_runtime.py).",
+   "sinir": "ACP modunda bir step() = tek uzak asistan turu; OpenHands'in kendi araclari/condenser/stuck-detector gibi ozellikleri ACP ajaninin icine islemez (ACP sunucusu kendi dongusunu yonetir) - cikarim, kod yorumundan.",
+   "kaynak": [
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-sdk/openhands/sdk/agent/acp_agent.py",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-sdk/openhands/sdk/settings/acp_providers.py",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/examples/01_standalone_sdk/40_acp_agent_example.py",
+    "https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents"
+   ]
+  },
+  "kaynak_ayak_izi": {
+   "k8s_ornek_degerler": "agent-sandbox SandboxTemplate orneginde agent-server pod'u: requests cpu 250m / memory 512Mi, limits cpu 2 / memory 2Gi, workspace PVC 5Gi; SandboxWarmPool replicas 2. (Ornek degerler; resmi kapasite rehberi degil.)",
+   "kaynak": [
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/examples/02_remote_agent_server/agent_sandbox_deploy/sandboxtemplate.yaml",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/examples/02_remote_agent_server/agent_sandbox_deploy/sandboxwarmpool.yaml"
+   ],
+   "Enterprise_resmi_boyutlandirma": {
+    "sandbox_basina": "'CPU: 0.5 vCPU, Memory: 4 GiB, Node disk: 10 GiB, Volume storage: 10 GiB'",
+    "tek_VM_kademeleri": {
+     "5": "8 vCPU / 32 GiB / 500 GiB SSD",
+     "15": "16 vCPU / 64 GiB / 1 TiB SSD",
+     "30": "32 vCPU / 128 GiB / 1.5 TiB",
+     "50": "64 vCPU / 256 GiB / 3 TiB",
+     "100": "96 vCPU / 384 GiB / 4 TiB"
+    },
+    "kubernetes": "100+ esz. sandbox icin Helm/K8s zorunlu; sandbox node havuzu 16 vCPU/64 GiB/400 GiB, platform havuzu 8 vCPU/32 GiB/100 GiB; 10-1.000 esz. sandbox kademeleri; 500+ sandbox'ta PostgreSQL ayri altyapiya.",
+    "izolasyon": "Varsayilan Sysbox runtime (Linux cekirdek >= 6.3, root) - sandbox icinde Docker calistirmak icin",
+    "trial_minimum": "16 vCPU / 64 GB / 200 GB, '~15 concurrent sandboxes'",
+    "kaynak": [
+     "https://docs.openhands.dev/enterprise/sizing-guide",
+     "https://docs.openhands.dev/enterprise/quick-start"
+    ]
+   }
+  },
+  "lisans_ve_entegrasyonlar": {
+   "MIT_cekirdek": "OpenHands/OpenHands (Agent Canvas), software-agent-sdk (SDK + Agent Server + workspace'ler), automation, OpenHands-CLI, extensions (MIT). extensions reposunda MIT otomasyon katalogu: github-issue-to-pr, github-pr-reviewer, github-issue-triage, gitlab-issue-to-mr, jira-issue-to-pr, jira-issue-to-gitlab-mr, jira-issue-to-bitbucket-pr, linear-issue-to-github-pr, linear-issue-to-gitlab-mr, linear-issue-to-bitbucket-pr, linear-triage-assistant, slack-channel-monitor vb. Entegrasyon katalogu MCP tabanli (jira, linear, github, gitlab, bitbucket, slack, asana, trello, monday, notion...). Plane YOK.",
+   "Enterprise_kaynak_acik_ticari": "OpenHands/enterprise reposu 'PolyForm Free Trial License 1.0.0' - README: 'This is not an open source license. Usage is limited to 30 days per calendar year without a commercial license.' integrations/ dizini: azure_devops, bitbucket, bitbucket_data_center, github, gitlab, jira, jira_dc, slack (yerlesik 'resolver' tarzi entegrasyonlar: @openhands etiketleme vb.). Ayrica RBAC(Keycloak), SAML, LiteLLM butce, Laminar gozlemlenebilirlik, 'unlimited parallel agent conversations'.",
+   "OSS_vs_Enterprise_tablosu": "Resmi karsilastirma: 'Isolated sandboxes' ve 'Scalable, always-on agents' Agent Canvas (Local) icin '—', Enterprise icin '✓'; multi-user/RBAC/SAML yalniz Enterprise.",
+   "onemli_nuans": "Izolasyon icin gereken yapi taslari (DockerWorkspace, APIRemoteWorkspace, AgentSandboxWorkspace/K8s, Apptainer) MIT SDK'da mevcut; yani dis bir orkestrator bunlarla kendi paralel/izole yurutucu havuzunu kurabilir. Ticari lisans gerektiren kisim hazir cok-kullanicili urun (Enterprise UI/RBAC/entegrasyon botlari).",
+   "eski_lisans_durumu": "Transition FAQ: eski OpenHands/OpenHands kodu 'mostly-enterprise-licensed backend' ve 'annoying dual license' idi; enterprise/ dizini artik ayri repoda.",
+   "kaynak": [
+    "https://github.com/OpenHands/enterprise/blob/main/LICENSE",
+    "https://github.com/OpenHands/enterprise/blob/main/README.md",
+    "https://github.com/OpenHands/enterprise/tree/main/integrations",
+    "https://github.com/OpenHands/extensions/tree/main/automations/catalog",
+    "https://github.com/OpenHands/extensions/tree/main/integrations/catalog",
+    "https://docs.openhands.dev/enterprise/enterprise-vs-oss",
+    "https://github.com/OpenHands/docs/issues/657"
+   ]
+  },
+  "paralel_yurutucu_API": {
+   "cevap": "EVET, belgelenmis. Dis orkestrator Agent Server REST + WebSocket API'si (veya Python SDK RemoteConversation / TypeScript client) ile konusma olusturup calistirabilir.",
+   "endpointler": [
+    "POST /api/conversations (olustur)",
+    "GET /api/conversations/search, /count",
+    "POST /api/conversations/{id}/run | /pause | /interrupt | /goal | /goal/stop | /goal/resume | /fork | /condense | /ask_agent | /switch_llm | /switch_acp_model | /secrets | /confirmation_policy",
+    "DELETE /api/conversations/{id}",
+    "GET /api/conversations/{id}/runtime, POST .../runtime/reprovision",
+    "WebSocket /sockets/events/{conversation_id}",
+    "POST /api/init (deferred_init warm-pool)"
+   ],
+   "not_prefix": "Router prefix '/conversations'; tam onek (/api) api.py'de - dogrulanmadi ayrintisi.",
+   "eszamanlilik_ayarlari": {
+    "max_concurrent_runs": "varsayilan 10 - 'Maximum number of conversations that can execute agent steps concurrently' (Agent Server basina thread pool)",
+    "conversation_runtime": "'local' veya 'docker'; docker'da konusma basina container varsayilanlari: memory 4g, cpus 2.0, pids_limit 512, startup_timeout 120 s, imaj ghcr.io/openhands/agent-server:latest-python",
+    "lease_ttl_seconds": "paylasimli depolamada iki sunucu orneginin ayni konusmaya sahip olmasini engelleyen lease (yatay olcek icin)",
+    "conversation_idle_ttl_seconds": "bosta konusma 20 dk sonra bellekten atilir, diskten yeniden yuklenir",
+    "deferred_init": "warm-pool pod'lari icin uyuyan mod"
+   },
+   "kubernetes": "AgentSandboxWorkspace: kubernetes-sigs/agent-sandbox controller + SandboxTemplate + SandboxWarmPool; ornek pod requests 250m CPU/512Mi, limits 2 CPU/2Gi. Resmi 'N pod icin kapasite' rehberi bulunamadi (dogrulanamadi).",
+   "hesap_144_takim": "Resmi Enterprise orani (4 GiB/sandbox, 0.5 vCPU) ile 144 esz. sandbox ~576 GiB RAM, ~72 vCPU istek (overhead haric) -> 'Kubernetes zorunlu' kademesi. Takim basina birden fazla ajan (orn. 3) calisirsa ~432 sandbox -> 500'e yakin, PostgreSQL ayri altyapi esigi. (Kendi hesabimiz; resmi rehberdeki oranlardan.)",
+   "kaynak": [
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-agent-server/openhands/agent_server/conversation_router.py",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-agent-server/openhands/agent_server/sockets.py",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-agent-server/openhands/agent_server/config.py",
+    "https://github.com/OpenHands/software-agent-sdk/tree/main/examples/02_remote_agent_server",
+    "https://docs.openhands.dev/sdk/guides/agent-server/overview"
+   ]
+  },
+  "headless_cli_resolver": {
+   "headless": "OpenHands-CLI headless mod ('claude -p' benzeri) ve ACP modu suresiz destekli; TUI bakim modunda.",
+   "github_resolver": "Eski 'openhands-resolver' (All-Hands-AI/openhands-resolver) ve eski repo icindeki resolver yerine: SDK examples/03_github_workflows (01_basic_action, 02_pr_review, 03_todo_management...) + extensions otomasyonlari (github-issue-to-pr vb.) + Enterprise github entegrasyonu. Yani resolver islevi 3 yere dagilmis durumda.",
+   "kaynak": [
+    "https://github.com/OpenHands/docs/issues/657",
+    "https://github.com/OpenHands/software-agent-sdk/tree/main/examples/03_github_workflows",
+    "https://github.com/OpenHands/extensions/tree/main/automations/catalog"
+   ]
+  },
+  "benchmark_kanitlari": {
+   "OpenHands_Index": {
+    "tanim": "5 kategori: SWE-bench Verified (issue cozumu, n=500), Commit0 (greenfield, n=16 repo), SWE-bench Multimodal, SWT-Bench (test yazimi), GAIA (bilgi toplama). Canli: https://index.openhands.dev/",
+    "kaynak": [
+     "https://www.openhands.dev/blog/openhands-index",
+     "https://github.com/OpenHands/openhands-index-results"
+    ]
+   },
+   "secili_skorlar_(OpenHands_ajan)": [
+    {
+     "model": "claude-fable-5",
+     "agent_version": "v1.28.0",
+     "swe_bench_verified": 95.8,
+     "commit0": 62.5,
+     "swt_bench": 91.9,
+     "swe_bench_mm_solveable": 70.6,
+     "gaia": 84.2,
+     "commit0_maliyet_usd_per_instance": 12.49,
+     "commit0_ort_sure_s": 1094
+    },
+    {
+     "model": "claude-opus-4-8",
+     "agent_version": "v1.24.0",
+     "swe_bench_verified": 83.8,
+     "commit0": 62.5,
+     "commit0_cozulen": "10/16",
+     "swt_bench": 84.3,
+     "swe_bench_mm_solveable": 50.0,
+     "gaia": 78.8,
+     "commit0_maliyet_usd_per_instance": 7.83
+    },
+    {
+     "model": "GPT-5.5",
+     "agent_version": "v1.18.1/v1.21.1",
+     "swe_bench_verified": 78.2,
+     "commit0": 43.8,
+     "swt_bench": 83.4,
+     "gaia": 86.1
+    },
+    {
+     "model": "claude-opus-4-6",
+     "swe_bench_verified": 76.8,
+     "commit0": 56.2
+    }
+   ],
+   "ayni_modelle_harness_karsilastirmasi_(Index icinde ACP ile)": [
+    {
+     "harness": "OpenHands ajan",
+     "model": "claude-opus-4-6",
+     "swe_bench": 76.8,
+     "commit0": 56.2,
+     "gaia": 80.0
+    },
+    {
+     "harness": "Claude Code (ACP uzerinden)",
+     "model": "claude-opus-4-6",
+     "swe_bench": 74.4,
+     "commit0": 37.5,
+     "gaia": 66.1,
+     "commit0_ort_sure_s": 1522
+    },
+    {
+     "harness": "OpenHands subagents",
+     "model": "claude-opus-4-6",
+     "swe_bench": 76.8,
+     "commit0": 62.5
+    },
+    {
+     "harness": "Claude Code (ACP)",
+     "model": "claude-opus-4-7",
+     "swe_bench": 75.8,
+     "commit0": 43.8
+    },
+    {
+     "harness": "OpenHands ajan",
+     "model": "GPT-5.4",
+     "swe_bench": 75.6,
+     "commit0": 56.2
+    },
+    {
+     "harness": "Codex (ACP)",
+     "model": "GPT-5.4",
+     "swe_bench": 73.8,
+     "commit0": 50.0
+    },
+    {
+     "harness": "Codex (ACP)",
+     "model": "GPT-5.5",
+     "swe_bench": 78.0,
+     "commit0": 37.5
+    }
+   ],
+   "yorum": "Bu, OpenHands'in kendi olcum duzeneginde (kendi harness'i lehine olasi yanlilik) yapilmis; ACP ile sarilan Claude Code/Codex'in yerel CLI performansini birebir yansitmayabilir. Commit0 n=16 oldugundan 1 repo = 6,25 puan; farklar istatistiksel olarak zayif.",
+   "uzun_ufuk_kaniti": "Commit0 disinda (kucuk kutuphaneleri yeniden uygulama) cok ozellikli, aylar suren ERP-olcekli teslimat icin yayinlanmis OpenHands vaka calismasi/sayisal kanit BULUNAMADI (dogrulanamadi). Commit0 skoru Hodoscope analizinde git gecmisinden kopya acigi nedeniyle duzeltildi (ornegin MiniMax-M2.5 %50 -> %18.8).",
+   "Commit0_duzeltme_kaynagi": "https://www.openhands.dev/blog/analyzing-and-improving-openhands-index",
+   "SDK_README_rozeti": "SWEBench 77.6 (tarih belirtilmemis rozet)",
+   "kaynak": [
+    "https://github.com/OpenHands/openhands-index-results/tree/main/results",
+    "https://github.com/OpenHands/openhands-index-results/tree/main/alternative_agents",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/README.md"
+   ]
+  },
+  "fiyat_ve_limitler": {
+   "Open_Source_Local": "ucretsiz, gunluk konusma 'Unlimited', 1 kullanici",
+   "Individual_SaaS": "ucretsiz, gunluk 10 konusma, 1 kullanici",
+   "Enterprise": "ozel fiyat, 'Unlimited concurrent convos per user', sinirsiz kullanici, SaaS veya self-hosted",
+   "kaynak": "https://www.openhands.dev/pricing"
+  },
+  "olcekte_hata_modlari": [
+   {
+    "konu": "CVE-2026-33718 (GHSA-7h8w-hj9j-8rjw, PYSEC-2026-106)",
+    "detay": "/api/conversations/{id}/git/diff 'path' parametresi get_git_diff() icinde shell'e temizlenmeden geciyor -> kimligi dogrulanmis saldirgan sandbox icinde komut calistirabilir. CVSS 3.1 vektoru AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:L/A:L (NVD/GitLab 7.6 HIGH; bazi ucuncu taraf siteler 9.9 yaziyor - celiskili). 1.5.0'da duzeltildi. Yayin: 2026-03-23/27.",
+    "kaynak": [
+     "https://github.com/OpenHands/OpenHands/security/advisories/GHSA-7h8w-hj9j-8rjw",
+     "https://osv.dev/vulnerability/CVE-2026-33718",
+     "https://advisories.gitlab.com/pkg/pypi/openhands/CVE-2026-33718/"
+    ]
+   },
+   {
+    "konu": "Sir maskeleme acigi",
+    "detay": "#4677 (2026-08-27, kapandi): secret masking 13 arac paketinden yalniz 1'inde (terminal) vardi; model file_editor, grep, glob, apply_patch, browser_use ile ham sirlari okuyabiliyordu. #4678: standart Agent yolunda model ciktisi maskelenmiyor.",
+    "kaynak": [
+     "https://github.com/OpenHands/software-agent-sdk/issues/4677",
+     "https://github.com/OpenHands/software-agent-sdk/issues/4678"
+    ]
+   },
+   {
+    "konu": "Eszamanlilik sinirinin calismamasi",
+    "detay": "#4063 (acik, 2026-07-10): max_concurrent_runs yalniz senkron fallback thread pool'unu sinirliyor; native async konusmalari sinirlamiyor.",
+    "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/4063"
+   },
+   {
+    "konu": "Konusmalar arasi kilitlenme/serilesme regresyonlari",
+    "detay": "#4588 (2026-08-23): global lifecycle lock deadlock (#4514 -> #4570), event loop'u bloklayan isler (#4481, #4417), global config uzerinden LLM cagrilarinin serilesmesi (#4473, OpenHands#16459 - 'agent server fiilen tek thread'li'), thread-pool tukenmesi (#4480, #3912, #4548). Yuk testleri surum kapisina sonradan eklendi; #4477 ucuz eszamanli yuk testi hala acik.",
+    "kaynak": [
+     "https://github.com/OpenHands/software-agent-sdk/issues/4588",
+     "https://github.com/OpenHands/software-agent-sdk/issues/4477"
+    ]
+   },
+   {
+    "konu": "Takili konusma",
+    "detay": "#4893 (acik, 2026-09-08): sandbox/VM calisma ortasinda duraklatilinca konusma diskte execution_status=RUNNING kaliyor ve API ile devam ettirilemiyor. OpenHands#16733: event WebSocket baglantisi dakikalar suruyor. SDK#4380: STUCK calismada goal dongusu 'interrupted' olarak duruyor.",
+    "kaynak": [
+     "https://github.com/OpenHands/software-agent-sdk/issues/4893",
+     "https://github.com/OpenHands/OpenHands/issues/16733",
+     "https://github.com/OpenHands/software-agent-sdk/issues/4380"
+    ]
+   },
+   {
+    "konu": "Bellek/kaynak",
+    "detay": "SDK#3136 atexit bellek sizintisi konusma temizligini engelliyordu; SDK#3141 biten konusmalar icin eviction yoktu (sonra idle TTL eklendi); OpenHands#16839 (acik) keep-alive baglantilarda proxy timeout listener birikmesi.",
+    "kaynak": [
+     "https://github.com/OpenHands/software-agent-sdk/issues/3136",
+     "https://github.com/OpenHands/software-agent-sdk/issues/3141",
+     "https://github.com/OpenHands/OpenHands/issues/16839"
+    ]
+   },
+   {
+    "konu": "SDK ile Agent Server arasi parite",
+    "detay": "#2725 (acik, 2026-04-06): SDK'da olup Agent Server'da olmayan ozellik bosluklari (uyumluluk matrisi).",
+    "kaynak": "https://github.com/OpenHands/software-agent-sdk/issues/2725"
+   },
+   {
+    "konu": "Tarihsel dongu sorunu",
+    "detay": "#5480 (2024-12): 'Agent stuck in loop' durumundan kurtulamama; SDK'da artik StuckDetector ornegi var (20_stuck_detector.py).",
+    "kaynak": [
+     "https://github.com/OpenHands/OpenHands/issues/5480",
+     "https://github.com/OpenHands/software-agent-sdk/blob/main/examples/01_standalone_sdk/20_stuck_detector.py"
+    ]
+   }
+  ],
+  "V0_V1_kirilmalari": {
+   "zaman_cizelgesi": [
+    "2025-08-27 'Proposal: Separate Repositories' (#10649)",
+    "2025-11 Software Agent SDK teknik raporu (arXiv 2511.03690) - V1 mimarisi",
+    "2026-01-14 '[Project] V0 API Deprecation' (#12417): 'there is no formal documentation for V0 APIs'; Trajectory API JSON yapisinda buyuk degisiklikler; kapanis 2026-05-06",
+    "2026-01-23 'V0 to V1 Migration Guide' (#12578), kapanis 2026-06-19",
+    "2026-02 OpenHands-Cloud Helm: 'Enable V1 APIs while defaulting new conversations to V0 for self-hosted' (#279)",
+    "2026-06-03 Agent Canvas BETA; 2026-07-27 eski kod OpenHands/legacy'ye, enterprise ayri repoya"
+   ],
+   "entegratorler_icin_etkisi": "V0 REST (/api/conversations...) ve trajectory JSON bicimi degisti; Cloud REST ve Agent Server API'leri ayrildi (enterprise'da /api/v1/app-conversations/..., SDK'da /api/conversations...); resolver ve GitHub Action yollari degisti (openhands-github-action arsivlendi 2025-10); typescript-client ayri repodan SDK icine alindi (2026-08 arsiv). Sonuc: OpenHands'e dogrudan baglanan bir orkestrator 12 ayda en az 2 kez API katmanini yeniden yazmak zorunda kalirdi (cikarim).",
+   "kaynak": [
+    "https://github.com/OpenHands/OpenHands/issues/10649",
+    "https://github.com/OpenHands/OpenHands/issues/12417",
+    "https://github.com/OpenHands/OpenHands/issues/12578",
+    "https://github.com/OpenHands/OpenHands-Cloud/issues/279",
+    "https://github.com/OpenHands/enterprise/issues/65",
+    "https://github.com/OpenHands/docs/issues/657"
+   ]
+  },
+  "uzun_ufuk_vaka": {
+   "kaynak": "https://www.openhands.dev/blog/automating-massive-refactors-with-parallel-agents",
+   "ozet": "OpenHands'in kendi V1 refaktorunde: yazar ayni anda ~5 ajan yonetiyor; her ajan kendi dalinda calisip 'rolling implementation branch'e PR aciyor; insan incelemesi zorunlu; gorevlerin 'only 80-90% automatable' oldugu acikca belirtiliyor; en zor kisim 'decomposing the project into individually achievable tasks'. (2025-10-09)",
+   "case_studies_sayfasi": "openhands.dev/case-studies 404 dondu; '50x verimlilik' iddiasi yalniz arama ozetinde goruldu - dogrulanamadi."
+  }
+ },
+ "symphony": {
+  "repo_gercekleri": {
+   "repo": "openai/symphony",
+   "yildiz": 27427,
+   "fork": 2840,
+   "lisans": "Apache-2.0",
+   "olusturma": "2026-02-26",
+   "son_push": "2026-09-15",
+   "surumler": "v0.0.1 (2026-07-18), v0.0.2 (2026-07-24), v0.0.3 (2026-09-15) + nightly",
+   "issues": "DEVRE DISI (repo issue kabul etmiyor)",
+   "PR": "64 birlestirilmis, 9 birlestirilmeden kapatilmis, 8 acik; son 30 PR'in birlestirilenlerinin tamami OpenAI calisanlarindan (frantic-openai, sharmila-oai); dis katkici PR'lari (#115, #122) kapatilmis",
+   "uyari": "README: 'Symphony is a low-key engineering preview for testing in trusted environments.'",
+   "kaynak": [
+    "https://github.com/openai/symphony",
+    "https://github.com/openai/symphony/pulls?q=is%3Apr"
+   ]
+  },
+  "duyuru": {
+   "tarih": "2026-04-27/28",
+   "iddia": "'Some teams at OpenAI saw a 500% increase in landed pull requests during the first three weeks' (OpenAI'nin kendi iddiasi; bagimsiz dogrulama yok)",
+   "bakim": "'The company does not plan to maintain Symphony as a standalone product, treating it as a reference implementation' (Help Net Security aktarimi; openai.com sayfasi 403 verdi, dogrudan okunamadi)",
+   "on_kosul": "'harness engineering' uygulanmis kod tabani (ajan-dostu repo yapisi, otomatik testler, korkuluklar)",
+   "kaynak": [
+    "https://openai.com/index/open-source-codex-orchestration-symphony/",
+    "https://www.helpnetsecurity.com/2026/04/28/openai-symphony-codex-orchestration-linear/"
+   ]
+  },
+  "SPEC_ozeti": {
+   "durum": "'Status: Draft v1 (language-agnostic)', ~2.300 satir, RFC 2119 dili. Onerilen kullanim: 'Implement Symphony according to the following spec' ile kendi ajanina uygulat; Elixir referans uygulamasi 'experimental'.",
+   "sinir": "'Symphony is a scheduler/runner and tracker reader.' Bilet yazmalari (durum gecisi, yorum, PR linki) ajan tarafindan saglayiciya ozgu araclarla yapilir. Basarili calisma 'Human Review' gibi bir devir durumunda bitebilir.",
+   "non_goals": [
+    "zengin web UI veya cok kiracili kontrol duzlemi",
+    "genel amacli is akisi motoru veya dagitik is zamanlayici",
+    "guclu sandbox zorunlulugu",
+    "kalici veritabani (restart kurtarma tracker + dosya sistemi uzerinden, bellek ici durum geri yuklenmez)"
+   ],
+   "bilesenler": [
+    "Workflow Loader",
+    "Config Layer",
+    "Issue Tracker Adapter",
+    "Orchestrator (tek otorite)",
+    "Workspace Manager",
+    "Agent Runner",
+    "Status Surface (opsiyonel)",
+    "Logging"
+   ],
+   "WORKFLOW.md_sozlesmesi": {
+    "bicim": "YAML front matter + Liquid uyumlu katı sablonlu Markdown prompt govdesi (bilinmeyen degisken render'i basarisiz kilar); repoda versiyonlanir, dinamik yeniden yukleme",
+    "ust_anahtarlar": [
+     "tracker{kind, provider, required_labels, active_states, terminal_states}",
+     "polling{interval_ms=30000}",
+     "workspace{root}",
+     "hooks{after_create, before_run, after_run, before_remove, timeout_ms=60000}",
+     "agent{max_concurrent_agents=10, max_turns=20, max_retry_backoff_ms=300000, max_concurrent_agents_by_state}",
+     "codex{command='codex app-server', approval_policy, thread_sandbox, turn_sandbox_policy, turn_timeout_ms=3600000, read_timeout_ms=5000, stall_timeout_ms=300000}"
+    ],
+    "not": "Bilinmeyen anahtarlar yok sayilir; uzantilar yeni ust anahtar ekleyebilir."
+   },
+   "durumlar": {
+    "orkestrasyon_claim": [
+     "Unclaimed",
+     "Claimed",
+     "Running",
+     "RetryQueued",
+     "Released"
+    ],
+    "calisma_denemesi": [
+     "PreparingWorkspace",
+     "BuildingPrompt",
+     "LaunchingAgentProcess",
+     "InitializingSession",
+     "StreamingTurn",
+     "Finishing",
+     "Succeeded",
+     "Failed",
+     "TimedOut",
+     "Stalled",
+     "CanceledByReconciliation"
+    ]
+   },
+   "zamanlama_uzlastirma": "Her tick: once uzlastirma (stall tespiti + tracker durum yenileme; terminal ise worker'i durdur ve workspace'i temizle), sonra preflight dogrulama, aday cekme, oncelik/created_at/identifier siralamasi, slot kadar dispatch. Hata retry: min(10000*2^(n-1), 300000) ms; temiz cikista 1 s continuation retry.",
+   "workspace_yasam_dongusu": "Issue basina deterministik dizin; basarili calismadan sonra korunur; terminal durumdaki issue'larin workspace'i startup'ta ve uzlastirmada silinir; hook'lar ile git clone vb.",
+   "tracker_adapter_sozlesmesi": "Zorunlu yalniz 2 okuma islemi: fetch_issues_by_states, fetch_issues_by_ids. 'Do not add generic comment/state/attachment CRUD merely to make providers look alike'. Normalize Issue: id, identifier, title, state, dispatchable (+ opsiyonel alanlar), native_ref.",
+   "SSH_worker_eki": "Appendix A (opsiyonel): tek merkezi orkestrator, worker.ssh_hosts havuzu, worker.max_concurrent_agents_per_host; app-server SSH stdio uzerinden baslatilir. Uzak ortam kaymasi, workspace yerelligi, cift yurutme riskleri listelenmis.",
+   "kaynak": "https://github.com/openai/symphony/blob/main/SPEC.md"
+  },
+  "tracker_adapterleri_referans_uygulama": {
+   "var": [
+    "linear",
+    "jira (Cloud)",
+    "github (Issues)",
+    "gitlab (Issues)",
+    "asana",
+    "memory (test)"
+   ],
+   "eklenme": "2026-07-18 (PR #102-#106)",
+   "Plane": "YOK - ne resmi repoda ne de bulunabilen topluluk catallarinda (dogrulanamadi: aramada Plane adapteri cikmadi). Spec'e gore 2 okuma islemi + opsiyonel ajan araci yazmak yeterli; Plane REST API ile yazilabilir (cikarim).",
+   "kaynak": [
+    "https://github.com/openai/symphony/tree/main/elixir/lib/symphony_elixir",
+    "https://github.com/openai/symphony/pull/102"
+   ]
+  },
+  "yurutucu_takilabilirligi": {
+   "resmi": "HAYIR (resmi olarak yalniz Codex). SPEC: 'Coding-agent executable that supports the targeted Codex app-server mode'; codex.command 'MUST speak a compatible app-server protocol over stdio'; 'the Codex protocol controls protocol shape and transport behavior'. Referans uygulamada yalniz codex/app_server.ex var.",
+   "topluluk": [
+    {
+     "repo": "cskwork/oh-my-symphony",
+     "yildiz": 30,
+     "not": "Codex, Claude Code, Gemini, Pi CLI surucusu + TUI; orkestrator/scheduler/retry/workspace upstream'den",
+     "pushed": "2026-09-22"
+    },
+    {
+     "repo": "Hisensen/symphony-claude-code",
+     "yildiz": 1,
+     "not": "claude -p ile yeniden yazim, Linear",
+     "pushed": "2026-05-13"
+    },
+    {
+     "repo": "maimuzo/continuo",
+     "yildiz": 0,
+     "not": "Symphony + Claude Code + GitHub Project v2",
+     "pushed": "2026-09-26"
+    }
+   ],
+   "degerlendirme": "Yurutucu degisimi spec'in ruhuna uygun (Agent Runner katmani ayrik) ama sozlesme Codex app-server protokolune baglidir; baska ajan icin ya protokol cevirici (shim) ya da catal gerekir. Topluluk catallari dusuk yildiz/tek gelistirici - uretim olgunlugu dogrulanamadi.",
+   "kaynak": [
+    "https://github.com/openai/symphony/blob/main/SPEC.md",
+    "https://github.com/cskwork/oh-my-symphony",
+    "https://github.com/Hisensen/symphony-claude-code"
+   ]
+  },
+  "bilinen_sorunlar_ve_riskler": [
+   "Issue takibi kapali: hata bildirimi/yol haritasi kamuya acik degil.",
+   "Kalici DB yok: yeniden baslatmada bellek ici durum (retry sayaclari, token muhasebesi) kaybolur; spec bunu bilinçli tercih olarak belirtir.",
+   "Tek orkestrator sureci (tek otorite) - yuksek erisilebilirlik/yatay olcek tanimli degil; 'distributed job scheduler' non-goal.",
+   "Guven siniri uygulamaya birakilmis; referans WORKFLOW.md 'approval_policy: never' + networkAccess: true ile calisiyor (yuksek guven).",
+   "Son commit'ler guvenlik/token temizleme (#119 GitHub/GitLab token aliaslarini scrub), GitLab Bearer auth (#124) - adapterler yeni ve olgunlasiyor.",
+   "Commit/PR hizi: Temmuz 2026 yogun, sonra seyrek (Agustos 1, Eylul 3 PR)."
+  ]
+ },
+ "aperant": {
+  "repo_gercekleri": {
+   "repo": "AndyMik90/Aperant (eski adi Auto Claude)",
+   "yildiz": 14572,
+   "fork": 1911,
+   "lisans": "AGPL-3.0 (+ CLA.md)",
+   "varsayilan_dal": "develop",
+   "olusturma": "2025-12-04",
+   "son_push": "2026-06-14 (yalniz README'ye 3.0 duyurusu)",
+   "son_kararli": "v2.7.6 (2026-02-20)",
+   "son_beta": "v2.8.0-beta.6 (2026-03-23)",
+   "issue_toplam": 698,
+   "acik_issue": 41,
+   "not_planned_kapatilan": 116,
+   "birlestirilen_PR": 557,
+   "kaynak": [
+    "https://github.com/AndyMik90/Aperant",
+    "https://github.com/AndyMik90/Aperant/releases"
+   ]
+  },
+  "bakim_durumu": {
+   "ozet": "2.x masaustu uygulamasi BAKIM MODUNDA; PR'lar durduruldu ('code PRs against the current app can't be merged and will be closed'); 3.0 'from the ground up' ayri (gorunmeyen) bir gelistirme reposunda yeniden yaziliyor, bulut ozellikleri eklenecek, kamuya acik tarih yok. 2026-05..09 arasinda cok sayida issue 'not_planned' ile toplu kapatildi (ornegin #1505 coklu repo destegi, #1864 rate limit, #1901 monorepo node_modules tekrari, #1854 AI merge cozmuyor).",
+   "kaynak": [
+    "https://github.com/AndyMik90/Aperant/blob/develop/README.md",
+    "https://github.com/AndyMik90/Aperant/issues/1505",
+    "https://github.com/AndyMik90/Aperant/issues/1864",
+    "https://github.com/AndyMik90/Aperant/issues/1901",
+    "https://github.com/AndyMik90/Aperant/issues/1854"
+   ]
+  },
+  "ne_yapar": {
+   "urun": "Electron masaustu uygulamasi (+CLI): Kanban, en fazla 12 ajan terminali, git worktree izolasyonu, kendi kendini dogrulayan QA dongusu, AI destekli semantik merge, Graphiti tabanli bellek (Python sidecar), GitHub/GitLab issue/PR, Linear senkronu, roadmap/ideation/changelog/insights.",
+   "is_akisi": "Gorev -> spec olusturma hatti (karmasiklik degerlendirme + spec yazimi/dogrulama) -> planner alt gorevlere boler -> coder uygular (paralel alt ajanlar) -> qa_reviewer -> qa_fixer -> kullanici inceleme ve merge. Faz makinesi: planning -> coding -> qa_review -> qa_fixing -> complete/failed.",
+   "kod_sabitleri": {
+    "MAX_QA_ITERATIONS": 50,
+    "MAX_CONSECUTIVE_ERRORS": "3 (sonra insana eskale)",
+    "RECURRING_ISSUE_THRESHOLD": 3,
+    "MAX_SUBTASK_RETRIES": 3,
+    "MAX_PLANNING_VALIDATION_RETRIES": 3,
+    "paralel_alt_gorev_DEFAULT_MAX_CONCURRENCY": 3,
+    "rate_limit_backoff": "30 s -> 300 s"
+   },
+   "ajan_katmani": "2.8 (develop) Claude Agent SDK'dan Vercel AI SDK v6'ya gecti; saglayicilar: Anthropic, Bedrock, Azure, Google, Groq, Mistral, OpenAI, OpenAI-compatible, xAI. 2.7.6 kararli surum Claude Code CLI + Claude Pro/Max aboneligi gerektiriyor.",
+   "guvenlik": "3 katman: OS sandbox, dosya sistemi kisitlari (proje dizini), yigina gore dinamik komut izin listesi.",
+   "kaynak": [
+    "https://github.com/AndyMik90/Aperant/blob/develop/CLAUDE.md",
+    "https://github.com/AndyMik90/Aperant/blob/develop/apps/desktop/src/main/ai/orchestration/build-orchestrator.ts",
+    "https://github.com/AndyMik90/Aperant/blob/develop/apps/desktop/src/main/ai/orchestration/qa-loop.ts",
+    "https://github.com/AndyMik90/Aperant/blob/develop/apps/desktop/src/main/ai/orchestration/parallel-executor.ts",
+    "https://github.com/AndyMik90/Aperant/blob/develop/apps/desktop/src/main/ai/providers/registry.ts"
+   ]
+  },
+  "WordPress_modulunden_ERP_144_takima_olcek": {
+   "neden_olceklenmez": [
+    "Tek kullanicili masaustu uygulamasi: sunucu/daemon modu, cok kiracili kontrol duzlemi, RBAC, merkezi kuyruk yok; 144 takim icin paylasimli orkestrasyon yok.",
+    "Tek repo varsayimi: coklu repo destegi talebi (#1505) 'not_planned' kapatildi; ERP modulu genellikle cok servisli/cok repolu.",
+    "Paralellik yerel makineyle sinirli: en fazla 12 terminal, alt gorev paralelligi varsayilan 3; izolasyon yalniz git worktree (container/VM degil).",
+    "Monorepo sorunlari: worktree basina ~1 GB node_modules kopyalanmasi (#1901), pnpm workspace bozulmasi (#2013), ic ice monorepo tespiti basarisiz (#1245 acik).",
+    "Entegrasyon: GitHub/GitLab/Linear var; Plane, Jira, harici orkestrator API'si yok; tracker'dan otomatik cekme (Symphony tarzi daemon) yok - gorev UI'dan olusturulur/iceri alinir.",
+    "Bakim: 2.x bakim modunda, PR kabul edilmiyor, 3.0 kapali gelistiriliyor -> teknoloji degisimine uyum ve hata duzeltme ucuncu tarafa bagli; ayrica AGPL-3.0 + CLA.",
+    "Abonelik bagimliligi: 2.7.x Claude Pro/Max OAuth ile calisir; Anthropic 2026-04-04'ten itibaren abonelik OAuth'unun ucuncu taraf ajan araclarinda kullanimini yasakladi (ikincil kaynaklar). 'Multi-Account Swapping' ozelligi bu politika ile catisma riski tasir.",
+    "DoD/kanit: QA dongusu var (50 iterasyon, tekrarlayan sorun esigi) ama ERP olcekli gereksinim izlenebilirligi, kabul kriteri->test eslemesi, bilinmeyen-bilinmeyen analizi icin ozel mekanizma kodda goruldu degil (dogrulanamadi); yayinlanmis benchmark/vaka calismasi yok."
+   ],
+   "neyi_iyi_yapar": "Tek gelistirici/kucuk takim icin tek repoda orta boy ozellik (ornegin bir WordPress eklentisi) icin spec->plan->kod->QA->merge dongusunu kutudan cikarir; iyi bir 'ic dongu' (inner loop) referansi ve prompt kutuphanesi (planner, coder, qa, pr_* ajanlari).",
+   "kaynak": [
+    "https://github.com/AndyMik90/Aperant/issues/1505",
+    "https://github.com/AndyMik90/Aperant/issues/1901",
+    "https://github.com/AndyMik90/Aperant/issues/2013",
+    "https://github.com/AndyMik90/Aperant/issues/1245",
+    "https://venturebeat.com/technology/anthropic-cuts-off-the-ability-to-use-claude-subscriptions-with-openclaw-and",
+    "https://alternativeto.net/news/2026/2/anthropic-officially-bans-using-subscription-authentication-for-third-party-claude-use"
+   ]
+  }
+ },
+ "yurutucu_standartlari": [
+  {
+   "ad": "ACP - Agent Client Protocol",
+   "sahip": "Zed baslatti; artik agentclientprotocol GitHub org'u (Apache-2.0, CLA yok)",
+   "katman": "istemci/orkestrator <-> kodlama ajani (JSON-RPC, genelde stdio)",
+   "olgunluk": "Kararli protokol surumu 1; Rust crate v1.9.1 (2026-09-18); schema v1.23.0 ve schema-v2.0.0-alpha.5 paralel gelisiyor (v2 kirilma riski). Resmi SDK: TS, Python, Rust, Kotlin, Java. Kayit defteri (registry) CI ile authMethods dogruluyor.",
+   "uygulayan_ajanlar": {
+    "yerel": [
+     "Gemini CLI",
+     "GitHub Copilot",
+     "Cursor",
+     "Cline",
+     "Goose",
+     "OpenCode",
+     "OpenHands",
+     "Junie (JetBrains)",
+     "Kimi CLI",
+     "Kiro CLI",
+     "Qwen Code",
+     "Mistral Vibe",
+     "Factory Droid",
+     "Augment Code",
+     "Hermes Agent",
+     "OpenClaw",
+     "Docker cagent",
+     "Poolside",
+     "Qoder CLI",
+     "VT Code",
+     "... (toplam ~37)"
+    ],
+    "adapter_ile": [
+     "Claude Agent/Claude Code -> agentclientprotocol/claude-agent-acp (2586★)",
+     "Codex CLI -> agentclientprotocol/codex-acp (412★)",
+     "Pi -> pi-acp"
+    ]
+   },
+   "yetenek_parcalanmasi_kaniti": "Registry protocol matrix (2026-09-26, 35 ajan yoklandi): initialize basarili 34; session/list destekleyen 22; session/resume 12; session/fork 9; session/stop 0; session/set_model 16; session/new icin kimlik dogrulama gereken 22. Yani 'ACP uyumlu' demek, orkestratorun ihtiyac duydugu devam ettirme/durdurma yeteneklerinin varligini garanti etmez.",
+   "yurutucu_degisimi_icin_kanit": "OpenHands SDK ACPAgent ile ayni Conversation/Agent Server API'si uzerinden claude-code, codex, gemini-cli, kimi-code, pi, opencode calistiriyor ve OpenHands Index bunlari ayni benchmark duzenegiyle olcuyor (alternative_agents/acp-claude, acp-codex, acp-gemini). Kullanicinin 'Hermes -> OpenClaw' ornegindeki her iki ajan da ACP'yi yerel destekliyor. => Su an yurutucuyu orkestratoru yeniden yazmadan degistirmeye EN YAKIN standart.",
+   "sinirlar": "Editor-merkezli tasarim (izin istekleri, dosya/terminal geri cagirmalari istemciye); headless toplu calisma, kaynak kotasi, sandbox provizyonu, maliyet raporu, sonuc/artefakt sozlesmesi (PR, test raporu) kapsam disi; bunlari orkestrator ayrica tanimlamali.",
+   "kaynak": [
+    "https://github.com/agentclientprotocol/agent-client-protocol",
+    "https://agentclientprotocol.com/overview/agents",
+    "https://github.com/agentclientprotocol/registry",
+    "https://github.com/agentclientprotocol/registry/tree/main/.protocol-matrix",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-sdk/openhands/sdk/settings/acp_providers.py"
+   ]
+  },
+  {
+   "ad": "A2A - Agent2Agent",
+   "sahip": "Google baslatti; Linux Foundation projesi; 2026-08'de AAIF (Agentic AI Foundation) cati altina alindigi bildirildi (ikincil kaynak, Axios aktarimi)",
+   "katman": "opak ajanlar arasi gorev delegasyonu (Agent Card, Task yasam dongusu, HTTP/JSON-RPC/gRPC, streaming)",
+   "olgunluk": "v1.0.0 (2026-03-12), v1.0.1 (2026-05-28); 25.9k★",
+   "kodlama_ajani_destegi": "Gemini CLI'da 'experimental' a2a-server paketi var; Claude Code, Codex, OpenHands icin yerel A2A sunucu kaniti bulunamadi (dogrulanamadi).",
+   "degerlendirme": "Orkestrator<->uzak ajan servis sinirinda (farkli ekip/kurum ajanlari) uygun; kodlama yurutucusu takas etmek icin bugun pratik degil cunku baslica kodlama ajanlari A2A konusmuyor.",
+   "kaynak": [
+    "https://github.com/a2aproject/A2A",
+    "https://github.com/a2aproject/A2A/releases",
+    "https://github.com/google-gemini/gemini-cli/tree/main/packages/a2a-server",
+    "https://blog.pebblous.ai/blog/a2a-mcp-agentic-ai-foundation-authorization/en/"
+   ]
+  },
+  {
+   "ad": "MCP - Model Context Protocol",
+   "sahip": "Anthropic baslatti; AAIF/Linux Foundation (2025-12)",
+   "katman": "ajan <-> araclar/veri (tool/resource/prompt)",
+   "yurutucu_takasina_etkisi": "Araclarin (tracker, CI, deploy, DB) tum ajanlarda ayni kalmasini saglar: OpenHands, Codex, Claude Code, Aperant hepsi MCP istemcisi. Ajani 'MCP sunucusu' olarak sunmak (orn. codex mcp-server, claude mcp serve) mumkun ama uzun sureli oturum/durum/iptal semantigi zayif. => Arac katmaninin tak-cikar standardi; yurutucu takasi icin degil.",
+   "kaynak": [
+    "https://github.com/modelcontextprotocol/modelcontextprotocol",
+    "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation"
+   ]
+  },
+  {
+   "ad": "AGENTS.md",
+   "sahip": "OpenAI baslatti; AAIF/Linux Foundation (2025-12)",
+   "katman": "repo ici talimat/baglam dosyasi",
+   "yurutucu_takasina_etkisi": "Proje kurallari/test komutlari tum ajanlar icin tek dosyada: OpenHands ACP ajanlari icin 'the CLI reads AGENTS.md itself'; Codex, Claude Code (CLAUDE.md ile birlikte), Aperant kendi CLAUDE.md'sini kullaniyor. Davranis tasinabilirligi saglar; calistirma protokolu degildir.",
+   "kaynak": [
+    "https://github.com/agentsmd/agents.md",
+    "https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-agent-server/openhands/agent_server/config.py"
+   ]
+  },
+  {
+   "ad": "Symphony WORKFLOW.md",
+   "sahip": "OpenAI (Apache-2.0, 'engineering preview')",
+   "katman": "repo-ici is akisi politikasi: tracker durumlari, hook'lar, esz. limitleri, prompt sablonu",
+   "yurutucu_takasina_etkisi": "Tracker adapter sozlesmesi (2 okuma islemi) gercekten tasinabilir; ancak yurutucu blogu 'codex' adinda ve Codex app-server protokolune bagli. Takas icin catal/shim gerekir (oh-my-symphony gibi).",
+   "kaynak": "https://github.com/openai/symphony/blob/main/SPEC.md"
+  },
+  {
+   "ad": "OpenHands SDK AgentBase / Agent Server API",
+   "sahip": "OpenHands (MIT)",
+   "katman": "Python ajan soyutlamasi + REST/WebSocket konusma API'si + Workspace soyutlamasi (Docker, remote API, K8s agent-sandbox, Apptainer, Cloud)",
+   "yurutucu_takasina_etkisi": "ACPAgent sayesinde ic ajan takas edilebilir; Workspace soyutlamasi sayesinde sandbox takas edilebilir. Ancak API'nin kendisi OpenHands'e ozgu ve son 12 ayda 2 kez buyuk degisti (V0->V1->Agent Canvas).",
+   "kaynak": [
+    "https://github.com/OpenHands/software-agent-sdk",
+    "https://github.com/OpenHands/docs/issues/657"
+   ]
+  },
+  {
+   "ad": "Codex app-server protokolu",
+   "sahip": "OpenAI",
+   "katman": "Codex'i JSON-RPC ile gomme (thread/turn)",
+   "yurutucu_takasina_etkisi": "Tek saticiya ozgu; Symphony bunun uzerine kurulu. Surum-bagimli sema ('codex app-server generate-json-schema').",
+   "kaynak": [
+    "https://github.com/openai/codex/tree/main/codex-rs/app-server",
+    "https://developers.openai.com/codex/app-server/"
+   ]
+  },
+  {
+   "ad": "Agent Protocol (AI Engineer Foundation / agi-inc)",
+   "sahip": "agi-inc/agent-protocol",
+   "katman": "genel REST ajan arayuzu (task/step)",
+   "olgunluk": "Son push 2025-04-08; fiilen durgun",
+   "degerlendirme": "Kullanilmamali (bakimsiz).",
+   "kaynak": "https://github.com/agi-inc/agent-protocol"
+  }
+ ],
+ "sentez": {
+  "katman_eslemesi": {
+   "gorev_kaynagi(tracker)": "Symphony tracker adapter sozlesmesi (2 okuma islemi + opsiyonel ajan araclari) en temiz, tasinabilir arayuz tasarimi; Plane icin adapter yazilmali. OpenHands extensions otomasyonlari (Jira/Linear/GitHub/GitLab->PR) hazir ama Plane yok. Aperant: GitHub/GitLab/Linear, masaustu.",
+   "orkestrator/dispatcher": "Symphony = referans tasarim (tek surec, DB'siz, 'distributed job scheduler' non-goal) -> 144 takim icin dogrudan kullanilmaz, ama durum makinesi/uzlastirma/geri cekilme mantigi dayanikli is akisi motoruna (Temporal vb.) tasinabilir. OpenHands automation servisi (beta) zamanlama/webhook icin; genel orkestrator degil.",
+   "yurutucu(harness)": "ACP bugun en pratik takas noktasi (OpenHands ACPAgent, ~37 ajan). OpenHands Agent Server ayni zamanda 'ACP host + sandbox' rolu oynayabilir.",
+   "sandbox": "OpenHands Workspace soyutlamasi (Docker/remote API/K8s agent-sandbox/Apptainer) MIT; Enterprise resmi boyutlandirma: 0.5 vCPU + 4 GiB/sandbox, 100+ esz. icin K8s.",
+   "VCS/CI/deploy/feedback": "Uc aracin hicbiri trunk-based entegrasyon, merge kuyrugu, alpha ortamina deploy, insan geri bildiriminden yeni gorev uretimi dongusunu uctan uca saglamiyor; Symphony 'Human Review' devir durumu ve ajanin PR/CI kanitlari ile en yakin olan."
+  },
+  "OpenHands_yeterli_mi": {
+   "karar": "HAYIR - tek basina yeterli degil; ama 'yurutucu + sandbox' katmani icin guclu bir ADAY bilesen.",
+   "gerekceler": [
+    "Kapsam: OpenHands bir yurutucu/ajan calisma zamani ve kisisel/ekip kontrol merkezidir; 144 takimlik portfoy/ART seviyesinde is ayrisimi, bagimlilik grafigi, merge kuyrugu, DoD kapisi, alpha deploy ve geri bildirim->gorev dongusu saglamaz.",
+    "Lisans: izole sandbox + cok kullanici + RBAC + 'unlimited concurrent' Enterprise'da (PolyForm Free Trial - 30 gun/yil, ticari lisans gerekir). MIT SDK ile kendi havuzunuzu kurabilirsiniz ama bu is size kalir.",
+    "Churn: 18 ayda V0->V1->Agent Canvas; eski kod arsivlendi, TUI bakim modunda, typescript-client ve agent-canvas repolari aylar icinde arsivlendi. Dogrudan OpenHands API'sine baglanmak tak-cikar hedefiyle celisir -> araya kendi yurutucu arayuzunuzu (ACP + ince adapter) koyun.",
+    "Olcek olgunlugu: 2026-08'de konusmalar arasi deadlock/serilesme regresyonlari, max_concurrent_runs'in async yolda calismamasi (#4063 acik), takili RUNNING konusmalar (#4893 acik); yuk testleri surum kapisina yeni eklendi.",
+    "Guvenlik: CVE-2026-33718 (komut enjeksiyonu), sir maskelemenin 13 aractan 1'inde olmasi (#4677) -> ek savunma katmani (ag cikisi, sir enjeksiyonu, denetim) sizin sorumlulugunuzda.",
+    "Uzun ufuk kaniti: Commit0 (16 kucuk kutuphane) en iyi %62,5; ERP-olcekli cok ozellikli teslimat icin yayinlanmis kanit yok; OpenHands'in kendi yazisi gorevlerin '80-90% automatable' oldugunu soyluyor -> 90/90 sorununu arac degil surec (ayrisim, kabul kriteri, test kapilari, insan devri) cozer.",
+    "Harness farki: Ayni modelle OpenHands ajan (Opus 4.6: SWE-bench 76.8, Commit0 56.2) ile ACP uzerinden Claude Code (74.4 / 37.5) farkli sonuc veriyor; yurutucuyu benchmark'la secip degistirebilmek icin ACP soyutlamasi degerli."
+   ],
+   "kaynak": [
+    "https://docs.openhands.dev/enterprise/enterprise-vs-oss",
+    "https://github.com/OpenHands/enterprise/blob/main/LICENSE",
+    "https://github.com/OpenHands/docs/issues/657",
+    "https://github.com/OpenHands/software-agent-sdk/issues/4588",
+    "https://github.com/OpenHands/software-agent-sdk/issues/4063",
+    "https://github.com/OpenHands/software-agent-sdk/issues/4893",
+    "https://osv.dev/vulnerability/CVE-2026-33718",
+    "https://github.com/OpenHands/openhands-index-results",
+    "https://www.openhands.dev/blog/automating-massive-refactors-with-parallel-agents"
+   ]
+  },
+  "oneri": [
+   "Orkestratoru kendiniz yazin/secin (Symphony spec'ini tasarim girdisi olarak kullanin: claim durumlari, uzlastirma, backoff, WORKFLOW.md benzeri repo-ici politika), ama kalici durum ve yatay olcek icin dayanikli is akisi motoru kullanin.",
+   "Yurutucu sinirini ACP + kendi ince 'ExecutorPort' arayuzunuz (baslat/devam/durdur/sonuc artefakti/maliyet) olarak tanimlayin; ACP'deki eksik yetenekleri (session/stop 0/35, resume 12/35) adapter katmaninda tamamlayin.",
+   "OpenHands Agent Server'i ilk yurutucu+sandbox saglayicisi olarak degerlendirin (MIT), Enterprise lisansi ancak cok kullanicili UI/RBAC gerekiyorsa.",
+   "Aperant'i platform olarak degil, planner/coder/QA prompt ve faz tasarimi icin referans olarak kullanin (AGPL - kod kopyalamada dikkat).",
+   "Tracker olarak Plane kullanilacaksa Symphony tarzi 2 islemli adapter yazin; araclara (tracker yazma, CI, deploy) MCP ile, repo kurallarina AGENTS.md ile standart erisim verin."
+  ]
+ }
+}

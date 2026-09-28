@@ -1,0 +1,1876 @@
+{
+ "projeler": [
+  {
+   "ad": "OpenAI Symphony",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/openai/symphony",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-15",
+    "yildiz": 27426,
+    "lisans": "Apache-2.0",
+    "not": "Şubat 2026'da açıldı; v0.0.3 (15.09.2026). Issue'lar kapalı, yalnız Discussions açık. OpenAI bağımsız ürün olarak bakım yapmayacağını, bunun bir referans uygulama olduğunu söyledi (Help Net Security, 28.04.2026). README: 'güvenilir ortamlarda denenecek düşük profilli mühendislik önizlemesi'."
+   },
+   "akis": "Uzun ömürlü servis iş takipçisini (Linear; sonradan Jira Cloud, GitLab Issues, Asana adaptörleri) sabit aralıkla yoklar; active_states içindeki ve required_labels taşıyan iş öğelerini öncelik/yaş sırasıyla, küresel ve duruma göre eşzamanlılık sınırıyla dağıtır. Her iş öğesine deterministik bir çalışma alanı açılır, hook'larla hazırlanır, Codex app-server oturumu depo içindeki WORKFLOW.md istemiyle başlatılır. Tek yetkili orkestratör durum makinesi (Unclaimed/Claimed/Running/RetryQueued/Released), üstel geri çekilmeli yeniden deneme, stall zaman aşımı ve her tick'te uzlaştırma vardır. Kalıcı veritabanı yoktur; yeniden başlatmada durum takipçi ve dosya sisteminden kurulur. Ajan iş kanıtı olarak CI durumu, PR inceleme geri bildirimi, karmaşıklık analizi ve anlatım videosu sunar.",
+   "insan_noktalari": "İş öğesini aktif duruma/etikete almak; iş akışında tanımlı 'Human Review' gibi devir durumunda inceleme ve onay; onaydan sonra ajan PR'ı birleştirir. Onay politikası uygulamaya bırakılmıştır (varsayılan: sandbox ve MCP elicitation reddi).",
+   "benzerlik_puani_1_5": 5,
+   "sorunlar": [
+    {
+     "sinif": "cakisma",
+     "ozet": "Terminal uzlaştırma canlı işçiyle yarışıp yeniden yüklenen yapılandırmaya göre YANLIŞ çalışma alanını silebiliyordu; düzeltme: önce işçiyi durdur, kaydedilmiş yolu doğrula.",
+     "kanit_url": "https://github.com/openai/symphony/pull/109",
+     "tarih": "2026-07-20"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Yeniden deneme sırasında ikinci okuma kaybolursa talep (claim) sonsuza dek asılı kalabiliyor ya da bayat iş dağıtılabiliyordu.",
+     "kanit_url": "https://github.com/openai/symphony/pull/110",
+     "tarih": "2026-07-20"
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "Genel araç-girdi istemlerine uydurma yanıt veriliyordu; turn_timeout toplam süre değil sessizlik aralığı olarak çalışıyordu (belge yanlıştı).",
+     "kanit_url": "https://github.com/openai/symphony/pull/112",
+     "tarih": "2026-07-20"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "GitHub/GitLab kimlik belirteci takma adları ajan sürecine sızıyor, ajan takipçi kimlik bilgisini miras alıp ana makine sınırını aşabiliyordu.",
+     "kanit_url": "https://github.com/openai/symphony/pull/119",
+     "tarih": "2026-08-12"
+    },
+    {
+     "sinif": "bellek",
+     "ozet": "Onay etiketi kaldırılınca iş öğesi 'running' haritasından düşüyor ama app-server süreci yaşamaya devam ediyor; biri Symphony kapandıktan sonra PID 1'e bağlı yetim kaldı.",
+     "kanit_url": "https://github.com/openai/symphony/discussions/126",
+     "tarih": "2026-09-15"
+    },
+    {
+     "sinif": "dongu",
+     "ozet": "Model her turda reddedildiğinde hata yalnız debug seviyesinde loglanıyor, boş tur başarılı sayılıyor; koşu sessizce tur tavanına kadar bütçe yakıyor.",
+     "kanit_url": "https://github.com/openai/symphony/discussions/92",
+     "tarih": "2026-07-01"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "PathSafety.canonicalize döngüsel symlink'te sınırsız özyinelemeyle askıda kalıyor; uzak çalışma alanı yolları kök sınırlama denetimini atlıyor.",
+     "kanit_url": "https://github.com/openai/symphony/discussions/107",
+     "tarih": "2026-07-19"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "Ajanın son adımı olarak required label'ı kaldırması, operatörün yetkiyi geri çekmesinden ayırt edilemiyor; aynı mutasyon iki farklı sonuç doğuruyor.",
+     "kanit_url": "https://github.com/openai/symphony/discussions/123",
+     "tarih": "2026-08-24"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "ASCII dışı karakter içeren WORKFLOW.md istemlerinde ajanlar Jason.EncodeError ile çöküyor; daha önce UTF-8 bozulması da raporlandı (Türkçe istemler için doğrudan risk).",
+     "kanit_url": "https://github.com/openai/symphony/discussions/129",
+     "tarih": "2026-09-22"
+    },
+    {
+     "sinif": "terk",
+     "ozet": "OpenAI Symphony'yi bağımsız ürün olarak sürdürmeyeceğini, çatallanacak referans uygulama olduğunu açıkladı.",
+     "kanit_url": "https://www.helpnetsecurity.com/2026/04/28/openai-symphony-codex-orchestration-linear/",
+     "tarih": "2026-04-28"
+    }
+   ],
+   "alinacak_dersler": [
+    "Takipçi durumu (Plane 'In Progress') ile orkestratörün iç talep durumu AYRI tutulmalı; tek yazar orkestratör olmalı ve her tick'te önce uzlaştırma yapılmalı.",
+    "SPEC.md bizim çekirdek için sözleşme şablonu olarak alınabilir (WORKFLOW.md depo sözleşmesi, eşzamanlılık, yeniden deneme, uzlaştırma), ama kalıcı durum deposu eklenmeli.",
+    "İptal = süreç grubunu TERM sonra KILL ile biçmek; 'haritadan düşürmek' yetmez.",
+    "Boş/başarısız tur başarı sayılmamalı; tur tavanı, bütçe ve hata sınıflandırması zorunlu.",
+    "Ajanın devir için takipçi durumunu değiştirmesi ile insanın yetki geri çekmesi farklı olay türleri olmalı.",
+    "Türkçe karakterli istem ve iş öğeleri için UTF-8 regresyon testi şart.",
+    "Kimlik bilgileri ajan sürecine ortam değişkeni takma adlarıyla sızmamalı; araç çağrıları host tarafında aracılanmalı."
+   ]
+  },
+  {
+   "ad": "Cyrus (ceedaragents -> cyrusagents)",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/cyrusagents/cyrus",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-24",
+    "yildiz": 830,
+    "lisans": "Apache-2.0",
+    "not": "Depo ceedaragents/cyrus'tan cyrusagents/cyrus'a taşındı. Topluluk self-host ücretsiz; Pro/Team planları app.atcyrus.com üzerinden (ağ ve entegrasyon katmanı Cyrus bulutunda)."
+   },
+   "akis": "Linear/GitHub/GitLab/Slack'te kendisine atanan iş öğelerini izler; her iş öğesi için izole git worktree açar, Claude Code/Codex/Cursor/Gemini/OpenCode oturumu çalıştırır, ajan etkinliğini Linear Agent Session olarak akıtır; seçim listeleri ve onaylar gibi zengin etkileşimler sunar. BYOK modeli.",
+   "insan_noktalari": "Atama; Linear içinde onay/seçim etkileşimleri; PR incelemesi.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [
+    {
+     "sinif": "bellek",
+     "ozet": "Tamamlanan ajan oturumları hiç boşaltılmıyor (cleanup() çağrılmıyor); 4 haftada 15 kez OOM öldürmesi, 6,9 GB RSS; systemd Restart=always yüzünden bir ay fark edilmedi.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1381",
+     "tarih": "2026-07-21"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Park edilmiş SDK mesaj akışı /status'u 3 gün 4 saat 'busy' tuttu, claude alt süreci yetim kaldı; abort() taşıyıcıyı kapatamıyor.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1479",
+     "tarih": "2026-09-14"
+    },
+    {
+     "sinif": "dongu",
+     "ozet": "Linear AgentSession artık yoksa EdgeWorker agentActivityCreate çağrısını sonsuza dek yeniden deniyor.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1378",
+     "tarih": "2026-07-20"
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "Ajan görevi 'tamamlandı' ilan ediyor ama Linear durumunu güncellemiyor; kullanıcı sorunca düzeltiyor.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/270",
+     "tarih": "2025-09-14"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "İptal edilmiş engelleyiciler karşılanmış bağımlılık sayılıyor; önkoşul çıktısı olmadan bağımlı iş başlayabiliyor.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1429",
+     "tarih": "2026-08-25"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "Sandbox üst deponun .git'ini salt okunur bağlıyor; worktree commit'leri EROFS ile başarısız.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1366",
+     "tarih": "2026-07-07"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "self-auth-linear, çalışma alanı belirteçlerini sessizce kaydetmiyor.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1261",
+     "tarih": "2026-05-27"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "7/24 çalıştırma için yerel makine bağımlılığından kurtulma yolu soruluyor (tmux/pm2/systemd ile tek süreç).",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/271",
+     "tarih": "2025-09-14"
+    }
+   ],
+   "alinacak_dersler": [
+    "Uzun ömürlü orkestratörde oturum/nesne tahliyesi ve bellek bütçesi alarmı olmalı; 'Restart=always' sorunları gizler, yeniden başlatma sayısı metrik olmalı.",
+    "Ajanın 'bitti' demesi yetmez; takipçi durumunun ve PR/CI kanıtının orkestratör tarafından doğrulanması gerekir.",
+    "Bağımlılık çözümünde 'iptal' ile 'tamamlandı' ayrı ele alınmalı.",
+    "Dış API'deki nesne kaybolursa yeniden deneme sınırlı ve sınıflandırılmış olmalı (kalıcı hata vs geçici)."
+   ]
+  },
+  {
+   "ad": "Vibe Kanban (BloopAI)",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/BloopAI/vibe-kanban",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-19",
+    "yildiz": 28199,
+    "lisans": "Apache-2.0",
+    "not": "README 'Vibe Kanban is sunsetting' diyor. 10 Nisan 2026 kapanış duyurusu: iş modeli sürdürülemez, kullanıcıların büyük çoğunluğu ücretsiz; uzak servisler 30 gün sonra kapandı, yerel çalışma alanları sürüyor, topluluk bakımına geçti. v0.1.44 (24.04.2026) sonrası ilk sürüm v0.1.45 (19.09.2026). Aynı şirketin önceki ürünü bloop da arşivli."
+   },
+   "akis": "Yerel web uygulaması: kanban issue'larıyla planlama, her iş için dal+terminal+dev sunucusu içeren çalışma alanı (git worktree), 10+ ajan (Claude Code, Codex, Gemini CLI, Copilot, Amp...), diff üzerinde satır içi yorum, yerleşik tarayıcı önizleme, AI açıklamalı PR açma ve birleştirme; MCP ile görev ayrıştırma.",
+   "insan_noktalari": "Kartı başlatma, diff incelemesi ve satır içi geri bildirim, PR birleştirme.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "Şirket kapandı; gerekçe: inandıkları bir gelir modeli bulunamadı, kullanıcıların çoğu ücretsiz. Uzak özellikler 30 gün içinde kapatıldı.",
+     "kanit_url": "https://www.vibekanban.com/blog/shutdown",
+     "tarih": "2026-04-10"
+    },
+    {
+     "sinif": "bellek",
+     "ozet": "Geçmiş oturum loglarının yeniden oynatılması arka ucu 55-60 GB RSS'e çıkarıp Linux OOM öldürmesine yol açtı.",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/3218",
+     "tarih": "2026-03-20"
+    },
+    {
+     "sinif": "disk",
+     "ozet": "Done/Cancel durumundaki worktree'lerin otomatik temizliği yok; en çok tepki alan açık isteklerden.",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/765",
+     "tarih": "2025-09-17"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "macOS uyku/uyanma sonrası OpenCode yürütücüsünde zombi süreçler; yaşam döngüsü yönetimi yok.",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/3205",
+     "tarih": "2026-03-19"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "WebSocket yeniden bağlanmadığı için oturum 'running' durumunda takılı kalıyor, mesajlar kayboluyor.",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/3227",
+     "tarih": "2026-03-22"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "UI'nin workspaces arayüzüne geçişi büyük tepki aldı ('Bring back old UI', 33 tepki); bulut geçişi kafa karıştırıcı bulundu.",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/2687",
+     "tarih": "2026-02-11"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Güvenlik bildirimi e-posta adresleri geri dönüyor; sahipsiz projede açık bildirim kanalı kalmadı.",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/3466",
+     "tarih": "2026-09-20"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Varsayılan ajan izinlerinin olmaması ve 'izin gerekli' sütunu isteniyor (ajanlar izin atlatarak çalışıyor).",
+     "kanit_url": "https://github.com/BloopAI/vibe-kanban/issues/2348",
+     "tarih": "2026-01-27"
+    }
+   ],
+   "alinacak_dersler": [
+    "En popüler açık kaynak kanban-ajan ürünü bile iki yıl dolmadan ticari olarak kapandı: çekirdeği tek bir girişimin ürününe bağlamak kurumsal süreklilik riski.",
+    "Worktree/çalışma alanı çöp toplama politikası baştan tasarlanmalı (terminal durumdan N saat sonra sil, kayıt tut).",
+    "Log/transkript depolaması akış (stream) ile okunmalı; tüm geçmişi belleğe yükleyen tasarım OOM üretir.",
+    "UI değişiklikleri yerleşik iş akışını bozarsa benimseme düşer; Plane'i insan arayüzü olarak tutmak bu riski azaltır."
+   ]
+  },
+  {
+   "ad": "Cline Kanban",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/cline/kanban",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-21",
+    "yildiz": 1336,
+    "lisans": "Apache-2.0",
+    "not": "Mart 2026'da açıldı; README 'research preview' ve CLI ajanlarının izin atlatma ile runtime hook gibi deneysel özelliklerini kullandığını söylüyor."
+   },
+   "akis": "npx kanban ile yerel web uygulaması; her kart kendi terminali ve git worktree'si ile açılır; otomatik commit ve kartları bağlayarak bağımlılık zinciri kurulup büyük işler otonom tamamlanır; diff inceleme.",
+   "insan_noktalari": "Kart oluşturma/başlatma, Review sütununda diff incelemesi.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "guvenlik",
+     "ozet": "Kanban sunucusunda kritik çapraz köken WebSocket ele geçirme (CVE-2026-44211): zararlı web sayfası yerel ajan panosuna komut gönderebiliyordu.",
+     "kanit_url": "https://github.com/cline/cline/security/advisories/GHSA-5c57-rqjx-35g2",
+     "tarih": "2026-05-08"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "DNS rebinding ile runCommand API üzerinden komut çalıştırma (CVE-2026-62678, yüksek).",
+     "kanit_url": "https://github.com/cline/kanban/security/advisories/GHSA-33x2-jv8j-4cxv",
+     "tarih": "2026-07-17"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Tamamlanma hook'u kaçınca Codex görevleri 'running'de kalıyor, Review'a geçmiyor.",
+     "kanit_url": "https://github.com/cline/kanban/issues/82",
+     "tarih": "2026-03-27"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Kanban, izin atlatma kapalıyken bile ~ dizinine ve başka worktree'lere erişebiliyor.",
+     "kanit_url": "https://github.com/cline/kanban/issues/346",
+     "tarih": "2026-04-16"
+    },
+    {
+     "sinif": "bellek",
+     "ozet": "Büyük projede açılışta JavaScript heap out of memory çöküşü.",
+     "kanit_url": "https://github.com/cline/kanban/issues/273",
+     "tarih": "2026-04-08"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "'Bypass permissions' bayrağı Claude Code'u auto modda başlatıyor; kartlar onay beklerken duruyor.",
+     "kanit_url": "https://github.com/cline/kanban/issues/644",
+     "tarih": "2026-09-07"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "~100 KB istemli tek kart tüm panoyu aşırı yavaşlatıyor.",
+     "kanit_url": "https://github.com/cline/kanban/issues/648",
+     "tarih": "2026-09-14"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Oturum yeniden başlatılınca Review'daki tüm görevler Trash'e taşındı.",
+     "kanit_url": "https://github.com/cline/kanban/issues/70",
+     "tarih": "2026-03-26"
+    }
+   ],
+   "alinacak_dersler": [
+    "Yerel ajan kontrol panoları localhost'ta bile kimlik doğrulama, Origin denetimi ve DNS rebinding koruması istemeli.",
+    "Durum geçişi tek bir hook'a bağlı olmamalı; süreç çıkışı ve zaman aşımıyla uzlaştırma yapılmalı.",
+    "Worktree izolasyonu dosya sistemi izolasyonu değildir; konteyner/sandbox gerekir.",
+    "Onay isteyen ajan için görünür 'girdi bekliyor' durumu şart (Plane Agent Run 'awaiting' benzeri)."
+   ]
+  },
+  {
+   "ad": "Agent Orchestrator (ComposioHQ -> Untrivial-ai)",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/Untrivial-ai/agent-orchestrator",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-27",
+    "yildiz": 12410,
+    "lisans": "Apache-2.0",
+    "not": "Depo ComposioHQ'dan Untrivial-ai'ye taşındı (sahiplik kısa sürede değişti); Go ile yeniden yazım; 2.000+ issue."
+   },
+   "akis": "Planlamadan birleştirmeye kodlama ajanı ekiplerini çalıştırır: proje farkındalıklı orkestratör işi planlar ve işçi oturumlarına dağıtır; her işçi kendi worktree/dalında (tmux runtime) çalışır; PR, CI ve incelemeler canlı kanbanda izlenir; 25+ ajan harness'ı; masaüstü ve daemon.",
+   "insan_noktalari": "Plan onayı, inceleme geri bildirimi, birleştirme.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [
+    {
+     "sinif": "olcek",
+     "ozet": "Bir gecelik koşuda 40-45 işçi sonrası orkestratör çöküyor (8 GB Mac'te OOM veya yaşam döngüsü yarışı); eşzamanlılık tavanı ve worktree GC yok; kurtarma için projeyi silmek gerekiyor.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/3921",
+     "tarih": "2026-08-13"
+    },
+    {
+     "sinif": "bellek",
+     "ozet": "Tek işçinin ugrep'i ~31 GB'a şişti, swap doldu, tüm filo yavaşladı; işçilerin bıraktığı next dev sunucuları (5-12 GB) yetim kalıyor. İstenen: işçi başına bellek tavanı ve yetim süreç biçici.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/2523",
+     "tarih": "2026-07-08"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "ps sorgusu 5 sn'yi aşınca 'belirlenemedi' ile 'süreç yok' karıştırılıyor; tüm oturumlar tek geçişte 'terminated' işaretleniyor.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/1838",
+     "tarih": "2026-05-14"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "Orkestratör işçi temizliği sırasında kendi etkin worktree'sini silebiliyor.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/5598",
+     "tarih": "2026-09-18"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "Yük altında spawn, unborn-HEAD worktree kabuğu bırakıyor ve içine açılan işçiler takılıyor.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/3220",
+     "tarih": "2026-07-28"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "Uzun ömürlü orkestratör worktree'leri varsayılan daldan sessizce kayıyor; bayatlık sinyali yok.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/4441",
+     "tarih": "2026-08-25"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "OOM sonrası bayat claude-CLI oturum kimliği kilidi kalıyor; kill+restore döngüsü.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/4280",
+     "tarih": "2026-08-23"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "Yeni orkestratör spawn'ı 'invalid session id' ile claude'u çökertip kurtarılamaz oturum bırakıyor.",
+     "kanit_url": "https://github.com/Untrivial-ai/agent-orchestrator/issues/3875",
+     "tarih": "2026-08-12"
+    }
+   ],
+   "alinacak_dersler": [
+    "Eşzamanlılık tavanı (küresel, ekip, depo bazında) ve işçi başına kaynak kotası (cgroup/konteyner) zorunlu.",
+    "Sağlık yoklamasında 'bilinmiyor' üçüncü durum olmalı; zaman aşımı ölüm sayılmamalı.",
+    "Worktree yaşam döngüsü (oluştur, doğrula, temizle, bayatlık) tek sahipli ve idempotent olmalı.",
+    "Oturum kimliği kilitleri çökme sonrası kurtarma ile uyumlu olmalı; durum kalıcı depoda tutulmalı.",
+    "Tek masaüstü makine 12+ ekibin yükünü taşıyamaz; yürütme uzak/elastik havuza taşınmalı."
+   ]
+  },
+  {
+   "ad": "Aperant (eski Auto-Claude, AndyMik90)",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/AndyMik90/Aperant",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-06-14",
+    "yildiz": 14571,
+    "lisans": "AGPL-3.0",
+    "not": "Auto-Claude adı Aperant oldu. README: 2.x masaüstü uygulaması bakım modunda, 3.0 ayrı bir depoda sıfırdan yeniden yazılıyor, PR'lar duraklatıldı, çıkış tarihi yok."
+   },
+   "akis": "Masaüstü kanban: görev kartı -> planlama, uygulama ve doğrulama (QA) aşamalı çok oturumlu Claude Code koşuları; izole worktree; AI destekli birleştirme; GitHub PR oluşturma.",
+   "insan_noktalari": "Görev tanımı, aşama sonu inceleme, birleştirme onayı.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "2.x bakım moduna alındı, PR kabulü durduruldu, geliştirme görünmeyen ayrı depoya taşındı.",
+     "kanit_url": "https://github.com/AndyMik90/Aperant",
+     "tarih": "2026-06-14"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Claude Max planında oran sınırına takılıp görevler başarısız oluyor (en çok tepki alan issue).",
+     "kanit_url": "https://github.com/AndyMik90/Aperant/issues/1864",
+     "tarih": "2026-02-17"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Claude Code 5 saatlik oturum penceresi dolunca duraklat/devam seçeneği yok.",
+     "kanit_url": "https://github.com/AndyMik90/Aperant/issues/1899",
+     "tarih": "2026-02-24"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "'Merge with AI' çakışmaları çözmüyor.",
+     "kanit_url": "https://github.com/AndyMik90/Aperant/issues/1854",
+     "tarih": "2026-02-16"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "OAuth girişi başarılı görünse de API istekleri '401 token expired' ile düşüyor.",
+     "kanit_url": "https://github.com/AndyMik90/Aperant/issues/1532",
+     "tarih": "2026-01-26"
+    },
+    {
+     "sinif": "dongu",
+     "ozet": "Görev koşucusu dosya bulunamadı hatasıyla çökme döngüsüne giriyor, görev takılı görünüyor.",
+     "kanit_url": "https://github.com/AndyMik90/Aperant/issues/147",
+     "tarih": "2025-12-22"
+    }
+   ],
+   "alinacak_dersler": [
+    "Abonelik (Max/Pro) oturumlarıyla ajan filosu çalıştırmak hem oran sınırına hem sağlayıcı şartlarına takılır; kurumsal çekirdek API anahtarı ve bütçe yöneticisiyle çalışmalı.",
+    "Kota/pencere dolduğunda iş 'duraklatılmış' duruma geçip sonra devam edebilmeli (dayanıklı akış).",
+    "AI ile otomatik çakışma çözümü güvenilir değil; çakışmada insan veya yeniden temelleme (rebase) + test zorunlu."
+   ]
+  },
+  {
+   "ad": "Atlassian: Agents in Jira + Rovo Dev + GitHub Copilot for Jira",
+   "tur": "kanban-tetikli",
+   "url": "https://www.atlassian.com/blog/announcements/ai-agents-in-jira",
+   "durum": {
+    "arsiv": null,
+    "son_push": null,
+    "yildiz": null,
+    "lisans": "ticari",
+    "not": "Agents in Jira Şubat 2026'da açık beta (TechCrunch 25.02.2026), Mayıs 2026'da Standard/Premium/Enterprise için GA. İş öğesi Rovo ajanlarına ve Claude Code, Cursor, GitHub Copilot gibi üçüncü taraf ajanlara atanabiliyor. Rovo Dev GA; kredi tabanlı."
+   },
+   "akis": "İş öğesini ajana atama, @mention veya iş akışı geçişinde (ör. belirli duruma taşınınca) ajanı tetikleme. Copilot for Jira: iş öğesinin başlık/açıklama/yorumlarını okuyup GitHub Actions ortamında çalışır ve taslak PR açar. Rovo Dev: Jira kabul kriterlerine karşı kod planlama, üretim ve inceleme.",
+   "insan_noktalari": "Atama/geçiş, taslak PR incelemesi, birleştirme; ajan çıktısı iş öğesine yorum/ek olarak düşer.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [
+    {
+     "sinif": "olcek",
+     "ozet": "GitHub dokümanına göre Jira, Linear, Azure Boards gibi üçüncü taraf araçlar yalnız 'doğrudan PR oluşturma'yı destekliyor; araştır-planla-yinele döngüsü yok.",
+     "kanit_url": "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+     "tarih": null
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "Rovo ajanı büyük Jira backlog'larını analiz ederken tutarsız sonuç veriyor (topluluk sorusu).",
+     "kanit_url": "https://community.atlassian.com/forums/Rovo-questions/Rovo-Agent-Inconsistent-Results-When-Analyzing-Large-Jira/qaq-p/3252643",
+     "tarih": null
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Rovo Dev her beceri çağrısında kredi harcıyor; ücretsiz planda kullanıcı başına aylık 350, Standard'da organizasyon düzeyinde 2.000 kredi.",
+     "kanit_url": "https://support.atlassian.com/rovo/docs/view-your-rovo-dev-credit-usage/",
+     "tarih": null
+    },
+    {
+     "sinif": "terk",
+     "ozet": "Atlassian Data Center ürünlerinin ömür sonunu duyurdu (satış 30.03.2026'da bitti, 28.03.2029'da salt okur); agent özellikleri Cloud'a bağlı.",
+     "kanit_url": "https://www.atlassian.com/blog/announcements/atlassian-ascend",
+     "tarih": "2025-09-08"
+    }
+   ],
+   "alinacak_dersler": [
+    "'Duruma taşıyınca ajan tetiklensin' deseni Jira'da artık yerleşik ürün özelliği; bizim Plane akışımız pazarda doğrulanmış bir desen.",
+    "Ajan insanla aynı atanan alanı, izinleri ve denetim izini kullanmalı; ajan çıktısı iş öğesine geri yazılmalı.",
+    "Ticari kilit riski: yerleşik ajan özellikleri bulut ve kredi modeline bağlı; Plane self-host tercihimizde bu hazır katman yok."
+   ]
+  },
+  {
+   "ad": "Linear ajan delegasyonu (Codex, Cursor, Copilot, Devin, Factory; Linear Agent API)",
+   "tur": "kanban-tetikli",
+   "url": "https://linear.app/docs/assigning-issues",
+   "durum": {
+    "arsiv": null,
+    "son_push": null,
+    "yildiz": null,
+    "lisans": "ticari",
+    "not": "Linear, iş öğesini ajana 'delege etme'yi destekliyor; insan atanan kişi olarak sorumlu kalıyor, ajan onun adına çalışıyor. Triage kuralları otomatik delege edebiliyor. Agent Interaction Guidelines (AIG) davranış ilkelerini tanımlıyor."
+   },
+   "akis": "İş öğesini ajana delege et veya @mention; ajan (Cursor bulut ajanı, Codex, Copilot, Factory Droid vb.) iş öğesi bağlamını alıp kendi bulut ortamında çalışır, ilerlemeyi Linear Agent Session olarak akıtır, bitince PR açar.",
+   "insan_noktalari": "Delege etme, oturuma yorumla yön verme, PR incelemesi; sorumluluk insanda.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [
+    {
+     "sinif": "dongu",
+     "ozet": "Cyrus: Linear AgentSession silinince etkinlik yazımı sonsuz yeniden denemeye giriyor (Linear oturum nesnesi yaşam döngüsü ile orkestratör uyumsuzluğu).",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/1378",
+     "tarih": "2026-07-20"
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "Cyrus: ajan Linear durumunu güncellemeden işi bitmiş ilan ediyor.",
+     "kanit_url": "https://github.com/cyrusagents/cyrus/issues/270",
+     "tarih": "2025-09-14"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "AIG ilke belgesidir, yaptırım veya şema içermez; uyum her ajana kalır.",
+     "kanit_url": "https://linear.app/developers/aig",
+     "tarih": null
+    }
+   ],
+   "alinacak_dersler": [
+    "'Atanan insan + delege ajan' modeli SAFe'de sorumluluk için iyi: Plane'de de atanan geliştirici kalmalı, ajan ayrı alan/etiketle temsil edilmeli.",
+    "Ajan durumu (düşünüyor, girdi bekliyor, yürütüyor, bitti) şeffaf gösterilmeli; geri çekilme isteğine uyulmalı."
+   ]
+  },
+  {
+   "ad": "Plane AI / Plane Agents ve Plane ile ajan entegrasyonları",
+   "tur": "kanban-tetikli",
+   "url": "https://plane.so/blog/agents-are-now-live-in-plane",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-25",
+    "yildiz": 59930,
+    "lisans": "AGPL-3.0 (topluluk); ticari planlar",
+    "not": "Plane Agents 18.09.2026'da duyuruldu (Triage, Standup Summarizer, Spec Writer şablonları; atama, mention, zamanlama ve durum değişikliği tetikleyicileri; Pro 100, Business 200 kredi/koltuk/ay; Enterprise kendi model anahtarıyla; ücretsiz planda Plane AI yok). Geliştirici belgesinde Agents Beta; Agent Run durumları created, in_progress, awaiting, completed, stopping, stopped, failed, stale (5 dk güncellenmezse stale). Resmî MCP sunucusu makeplane/plane-mcp-server (331 yıldız). Plane'i kodlama ajanlarına bağlayan topluluk projeleri çok küçük: aborigen19961202/symphony-adapters (Plane tracker adaptörü, 0 yıldız), volodchenkov/plane-conductor (3 yıldız)."
+   },
+   "akis": "Ajan bir OAuth uygulaması olarak kurulur (Agent Run kapsamları); kullanıcı etkileşiminde webhook alır, Agent Run Activity (prompt, thought, action, response, elicitation, error) yazarak yanıt verir. Kodlama ajanları (Claude Code, Cursor vb.) MCP sunucusu üzerinden Plane'i araç olarak kullanır.",
+   "insan_noktalari": "Mention/atama; elicitation ile ajan soru sorup insan yanıtını bekler; onaylar insanda.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "olcek",
+     "ozet": "Plane'in kendi duyurusu: ajanlar şimdilik 'sınırlı işler' yapıyor; bir iş öğesiyle adımlar ve devirler boyunca kalıcı sorumluluk sürdüremiyor (gelecek özellik).",
+     "kanit_url": "https://plane.so/blog/agents-are-now-live-in-plane",
+     "tarih": "2026-09-18"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Geliştirici belgesinde tetikleme yalnız yorumda @mention olarak anlatılıyor, özellik Beta; Agent Run 5 dakika güncellenmezse 'stale' oluyor (uzun kodlama işleri için heartbeat gerekir).",
+     "kanit_url": "https://developers.plane.so/dev-tools/agents/overview",
+     "tarih": null
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Webhook tesliminde HTTP yönlendirmesi üzerinden SSRF (kritik).",
+     "kanit_url": "https://github.com/makeplane/plane/security/advisories/GHSA-mq87-52pf-hm3h",
+     "tarih": "2026-08-03"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "aio/cli topluluk dağıtım manifestlerinde sabit SECRET_KEY ve LIVE_SERVER_SECRET_KEY (oturum sahteciliği, kritik).",
+     "kanit_url": "https://github.com/makeplane/plane/security/advisories/GHSA-cmwv-pjmw-8483",
+     "tarih": "2026-08-03"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "Doğrulanmamış OAuth e-posta eşleşmesiyle hesap ele geçirme (Gitea, self-managed GitLab; kritik).",
+     "kanit_url": "https://github.com/makeplane/plane/security/advisories/GHSA-7j95-vh8g-f365",
+     "tarih": "2026-08-03"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Çalışma alanları arası varlık yetkilendirme atlatma (CVE-2026-46558, yüksek).",
+     "kanit_url": "https://github.com/makeplane/plane/security/advisories/GHSA-qw87-v5w3-6vxx",
+     "tarih": "2026-05-15"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Plane'i kodlama ajanı orkestrasyonuna bağlayan olgun bir proje yok; bulunanlar 0-3 yıldızlı tek kişilik denemeler.",
+     "kanit_url": "https://github.com/aborigen19961202/symphony-adapters",
+     "tarih": "2026-04-05"
+    }
+   ],
+   "alinacak_dersler": [
+    "Plane tetikleyici ve insan arayüzü olarak kullanılabilir, ama kodlama ajanı orkestrasyonunu Plane'e bırakmak için olgun hazır katman yok; köprüyü biz yazmalıyız.",
+    "Plane self-host sürümü hızla yamalanmalı: Ağustos 2026'da birden çok kritik açık yayımlandı; webhook alıcısı ve Plane örneği ağ olarak izole edilmeli.",
+    "Plane Agent Run modelini (awaiting/elicitation, stale) iş öğesindeki ajan durum göstergesi olarak kullanmak, ayrı bir UI yazmaktan ucuz.",
+    "Durum değişikliği webhook'ları en az bir kez teslim edilir; alıcı idempotent olmalı ve olay kimliğiyle tekilleştirmeli."
+   ]
+  },
+  {
+   "ad": "GitHub Copilot cloud agent (eski coding agent)",
+   "tur": "arka-plan-ajan",
+   "url": "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+   "durum": {
+    "arsiv": null,
+    "son_push": null,
+    "yildiz": null,
+    "lisans": "ticari",
+    "not": "Mayıs 2025'te duyuruldu; GitHub issue ataması, @copilot, Slack/Teams, Jira (Mart 2026), Linear ve zamanlanmış tetikleyiciler. dotnet/runtime deposunda on aylık kullanım raporu yayımlandı (23.03.2026)."
+   },
+   "akis": "İş öğesi Copilot'a atanır; ajan GitHub Actions tabanlı geçici ortamda kodu keşfeder, değiştirir, test ve linter çalıştırır, tek dal ve tek taslak PR açar. Oturum başına en fazla 59 dakika; yalnız başlatıldığı depoda değişiklik yapar.",
+   "insan_noktalari": "Atama, PR incelemesi ve @copilot ile düzeltme isteği, birleştirme; dal koruma kuralları geçerli.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [
+    {
+     "sinif": "olcek",
+     "ozet": "dotnet/runtime: 878 PR'ın 535'i birleşti (%67,9; insan PR'larında %87,1). Darboğaz inceleme: bir kişinin telefondan açtığı karmaşık PR'lar ekiplerin inceleyebileceğinden hızlı.",
+     "kanit_url": "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+     "tarih": "2026-03-23"
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "Ajan testleri çalıştırmadan geçtiğini iddia etti; açık derleme/test talimatı eklenmesi gerekti. Yalnız Linux'ta koştuğu için Windows/ARM64 kodu doğrulanamadı.",
+     "kanit_url": "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+     "tarih": "2026-03-23"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Başlangıçta güvenlik duvarı NuGet akışlarına erişimi engelledi; yapılandırma düzeltilince başarı %38'den %69'a çıktı.",
+     "kanit_url": "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+     "tarih": "2026-03-23"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "'Comment and Control': özel hazırlanmış GitHub yorumlarıyla istem enjeksiyonu ve sır sızdırma; GitHub bunu 'bilinen mimari sınırlama' olarak sınıfladı.",
+     "kanit_url": "https://www.securityweek.com/claude-code-gemini-cli-github-copilot-agents-vulnerable-to-prompt-injection-via-comments/",
+     "tarih": "2026-04-16"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Copilot destekli bir PR, Snowflake deposunda issue başlığı enterpolasyonuyla iş akışı komut enjeksiyonu açtı; GHAS yakalamadı (risk haritası olay kaydı).",
+     "kanit_url": "https://www.wiz.io/blog/red-agent-snowflake-copilot-cicd-bug",
+     "tarih": "2026-06-18"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Copilot 1,5 milyon PR açıklamasına 'ipucu' adıyla reklam ekledi, tepki üzerine geri aldı (risk haritası olay kaydı).",
+     "kanit_url": "https://www.theregister.com/2026/03/30/github_copilot_ads_pull_requests/",
+     "tarih": "2026-03-30"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Tek depo, tek dal, tek PR ve 59 dakikalık değiştirilemez süre sınırı.",
+     "kanit_url": "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+     "tarih": null
+    }
+   ],
+   "alinacak_dersler": [
+    "Başarının ana belirleyicisi model değil görev seçimi ve depo talimat dosyası; her tekrarlayan hata talimat dosyasına ders olarak işlenmeli.",
+    "İnsan katkılı PR'larda başarı %86, tam otonomda %55: 'insan test eder' adımı kalite çarpanı, sadece kapı değil.",
+    "İnceleme kapasitesi WIP sınırıyla bağlanmalı; ajan üretimi inceleme hızını aşmamalı (SAFe akış metrikleri).",
+    "Ajan 'testler geçti' dediğinde CI sonucu esas alınmalı; ajan beyanı kanıt değildir.",
+    "Ajan ortamının ağ/bağımlılık erişimi (paket akışları) baştan tasarlanmalı."
+   ]
+  },
+  {
+   "ad": "OpenAI Codex (bulut görevleri, CLI/app-server, codex-action)",
+   "tur": "arka-plan-ajan",
+   "url": "https://github.com/openai/codex",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-27",
+    "yildiz": 126676,
+    "lisans": "Apache-2.0 (CLI); bulut hizmeti ticari",
+    "not": "Codex bulut görevleri Linear'da @Codex ile veya atama ile başlatılabiliyor. Temporal, Codex'in üretimde Temporal üzerinde çalıştığını ve milyonlarca isteği karşıladığını yazdı (12.11.2025). openai/codex-action GitHub Action'ı 1.248 yıldız. Açık issue sayısı 19.000'i aşıyor."
+   },
+   "akis": "Görev başına izole bulut konteyneri (ortam kurulum betiği, internet erişimi yapılandırılabilir), kod yaz-çalıştır-değerlendir döngüsü, PR önerisi; yerelde CLI/app-server; Symphony app-server protokolünü kullanıyor.",
+   "insan_noktalari": "Görev başlatma, diff/PR incelemesi, onay politikaları (untrusted/on-request/never).",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "maliyet",
+     "ozet": "'Burning tokens very fast': güncelleme sonrası kullanım kotası birkaç istemde tükeniyor (308 tepki, 630 yorum).",
+     "kanit_url": "https://github.com/openai/codex/issues/14593",
+     "tarih": "2026-03-13"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "gpt-5.5 Plus planında token başına oran sınırı maliyeti 16 Haziran'dan itibaren ~10-20 kat arttı; 5 saatlik bütçe 2-3 istemde bitiyor.",
+     "kanit_url": "https://github.com/openai/codex/issues/28879",
+     "tarih": "2026-06-18"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Uzun, araç yoğun oturumlarda her küçük araç çağrısı 100k-250k önbellekli girdi tokenı taşıyor (bağlam amplifikasyonu).",
+     "kanit_url": "https://github.com/openai/codex/issues/44884",
+     "tarih": "2026-09-11"
+    },
+    {
+     "sinif": "disk",
+     "ozet": "SQLite geri bildirim logları yılda ~640 TB yazıp SSD ömrünü tüketebiliyordu; PR'larla ~%85 azaltıldı.",
+     "kanit_url": "https://github.com/openai/codex/issues/28224",
+     "tarih": "2026-06-14"
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "Uzun oturumda ajan kalıcı talimatları yok sayıyor, doğrulanmamış/yanlış tamamlanma durumu bildiriyor, onay kapılarını tutarsız uyguluyor.",
+     "kanit_url": "https://github.com/openai/codex/issues/42815",
+     "tarih": "2026-09-04"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Yol yapılandırması hatası nedeniyle sandbox atlatma (CVE-2025-59532, yüksek).",
+     "kanit_url": "https://github.com/openai/codex/security/advisories/GHSA-w5fx-fh39-j5rw",
+     "tarih": "2025-09-19"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "PromptPwnd: Codex/Claude Code/Gemini CLI eylemlerinde issue/PR metninden istem enjeksiyonu ile ayrıcalıklı araç çalıştırma ve sır sızdırma.",
+     "kanit_url": "https://www.aikido.dev/blog/promptpwnd-github-actions-ai-agents",
+     "tarih": "2025-12-04"
+    }
+   ],
+   "alinacak_dersler": [
+    "Sağlayıcı fiyat/oran sınırı değişiklikleri bir gecede maliyeti 10 kat artırabilir: ekip ve iş öğesi başına token bütçesi ve devre kesici çekirdekte olmalı.",
+    "Uzun oturum yerine kısa, yeniden başlatılabilir turlar ve özetlenmiş bağlam tercih edilmeli.",
+    "Ajan logları ve telemetri disk kotasıyla sınırlandırılmalı.",
+    "Codex gibi büyük ajanlar da dayanıklı akış motoru (Temporal) üzerinde koşuyor: bizim çekirdek için doğru soyutlama seviyesi."
+   ]
+  },
+  {
+   "ad": "Google Jules",
+   "tur": "arka-plan-ajan",
+   "url": "https://jules.google",
+   "durum": {
+    "arsiv": null,
+    "son_push": "2025-12-15 (google-labs-code/jules-action)",
+    "yildiz": 246,
+    "lisans": "ticari (jules-action MIT)",
+    "not": "Asenkron bulut kodlama ajanı; GitHub Action ile iş akışlarına eklenebiliyor. Günlük görev ve eşzamanlı görev kotaları katmana göre değişiyor."
+   },
+   "akis": "GitHub deposu seçilir, görev verilir; Google bulut VM'inde plan -> onay -> uygulama -> PR.",
+   "insan_noktalari": "Plan onayı, PR incelemesi.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "olcek",
+     "ozet": "Günlük görev ve eşzamanlı görev kotaları toplu delegasyonda darboğaz; ücretsiz katmanda 3 eşzamanlı görev.",
+     "kanit_url": "https://www.itpro.com/software/development/google-jules-coding-agent-code-quality-update",
+     "tarih": null
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Bağımsız ilk inceleme: 'henüz üretime hazır değil'; görevler dakikalarca sürüyor.",
+     "kanit_url": "https://hyperdev.matsuoka.com/p/google-jules-first-look-not-ready",
+     "tarih": null
+    }
+   ],
+   "alinacak_dersler": [
+    "Barındırılan ajan hizmetlerinin kotaları 12 ekibin eşzamanlı yüküne göre planlanmalı; tek sağlayıcıya bağımlılık kapasite riskidir."
+   ]
+  },
+  {
+   "ad": "Devin (Cognition)",
+   "tur": "arka-plan-ajan",
+   "url": "https://devin.ai",
+   "durum": {
+    "arsiv": null,
+    "son_push": null,
+    "yildiz": null,
+    "lisans": "ticari",
+    "not": "Slack, Linear, Jira üzerinden görev alıp PR açan otonom ajan. Devin 2.0 ile giriş fiyatı aylık 500 dolardan 20 dolara indi (03.04.2025). Cognition Temmuz 2025'te Windsurf'ü satın aldı (risk haritası olay kaydı)."
+   },
+   "akis": "Görev -> Devin'in kendi VM'i (kabuk, editör, tarayıcı) -> plan -> uygulama -> PR; oturum boyunca Slack/web üzerinden insanla konuşma.",
+   "insan_noktalari": "Görev tanımı, ara yönlendirme, PR incelemesi.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "takilma",
+     "ozet": "Answer.AI bir aylık değerlendirme: 20 görevin 3'ü başarılı, 14'ü başarısız, 3'ü belirsiz; ajan çıkmaz yollarda günlerce döndü, imkânsız görevlerde engeli erken fark etmedi.",
+     "kanit_url": "https://www.answer.ai/posts/2025-01-08-devin.html",
+     "tarih": "2025-01-08"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Mevcut kod tabanı ve iç araçlarda, ayrıntılı dokümantasyona rağmen proje kurallarını kavrayamadı; 'code soup' üretti.",
+     "kanit_url": "https://www.answer.ai/posts/2025-01-08-devin.html",
+     "tarih": "2025-01-08"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Fiyatlandırma kısa sürede radikal değişti (500 -> 20 dolar giriş, ACU tabanlı); bütçe öngörülebilirliği düşük.",
+     "kanit_url": "https://cognition.ai/blog/devin-2",
+     "tarih": "2025-04-03"
+    }
+   ],
+   "alinacak_dersler": [
+    "Ajan erken 'yapılamaz/engelli' diyebilmeli: süre ve tur bütçesi aşılınca iş insana geri düşmeli.",
+    "Görevler küçük ve iyi tanımlı olmalı; kabul kriteri ve test önceden yazılmış olmalı (TDD'nin kırmızı testi insan onaylı olmalı)."
+   ]
+  },
+  {
+   "ad": "Factory (Droids)",
+   "tur": "arka-plan-ajan",
+   "url": "https://factory.ai",
+   "durum": {
+    "arsiv": null,
+    "son_push": "2026-09-25 (Factory-AI/factory)",
+    "yildiz": 31,
+    "lisans": "ticari",
+    "not": "Linear ve Jira iş öğesi delege edilince izole bulut ortamında Droid çalışır, ilerlemeyi takipçiye yazar, PR üretir; koordinatör ajan işi kod, inceleme, doküman, test droidlerine dağıtır. Bağımsız, belgelenmiş sorun kaydı (postmortem, GHSA) bulunamadı."
+   },
+   "akis": "Linear/Jira/Slack/GitHub uyarısı -> koordinatör -> uzman droidler -> PR -> ilerleme takipçiye.",
+   "insan_noktalari": "Delegasyon, PR incelemesi.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [],
+   "alinacak_dersler": [
+    "Rol ayrımı (kod, test, inceleme droidi) bizim TDD akışında test yazan ile kod yazan ajanın ayrılması fikrini destekliyor.",
+    "Kapalı ürünlerde sorun kaydı görünmez; seçimde pilot ölçümü ve sözleşmeli SLA gerekir."
+   ]
+  },
+  {
+   "ad": "OpenHands (resolver, Jira/Linear/Slack entegrasyonları, Cloud)",
+   "tur": "arka-plan-ajan",
+   "url": "https://github.com/OpenHands/OpenHands",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-26",
+    "yildiz": 89259,
+    "lisans": "MIT (çekirdek)",
+    "not": "All-Hands-AI/OpenHands -> OpenHands/OpenHands. Ayrı openhands-resolver deposu arşivlendi (ana depoya taşındı). V1 için software-agent-sdk ayrıldı. Jira Cloud/Data Center ve Linear entegrasyonları eklenti mimarisine taşındı (Şubat 2026)."
+   },
+   "akis": "GitHub/GitLab issue etiketi veya yorum, Jira/Linear/Slack tetikleyicisi -> Docker sandbox içinde ajan oturumu -> değişiklik -> taslak PR veya dal.",
+   "insan_noktalari": "Etiket/mention ile tetikleme, PR incelemesi, konuşmaya müdahale.",
+   "benzerlik_puani_1_5": 4,
+   "sorunlar": [
+    {
+     "sinif": "dongu",
+     "ozet": "AgentStuckInLoopError: ajan döngüye giriyor; sonsuz döngü koruması ayrı istek olarak açıldı.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/7183",
+     "tarih": "2025-03-11"
+    },
+    {
+     "sinif": "dongu",
+     "ozet": "Sonsuz döngülere karşı guardrail isteği.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/7960",
+     "tarih": "2025-04-20"
+    },
+    {
+     "sinif": "bellek",
+     "ozet": "Docker runtime'da tmux zombi süreçleri.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/11801",
+     "tarih": "2025-11-22"
+    },
+    {
+     "sinif": "disk",
+     "ozet": "SWE-bench çıkarımında Docker imajları diski patlatıyor.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/9679",
+     "tarih": "2025-07-12"
+    },
+    {
+     "sinif": "bellek",
+     "ozet": "Yerel Docker sandbox'lar için CPU/bellek sınırı desteği yok (istek).",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/17090",
+     "tarih": "2026-09-02"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "Döndürülen oturum anahtarı arka uçlara yansımıyor; sessiz, kalıcı 401 döngüsü.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/17371",
+     "tarih": "2026-09-12"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "Jira Data Center resolver'ında kullanıcı başına Jira kimlik bilgisinin konuşma içine açılması tartışması.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/14595",
+     "tarih": "2026-05-29"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Git diff işleyicisinde komut enjeksiyonu (CVE-2026-33718, yüksek).",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/security/advisories/GHSA-7h8w-hj9j-8rjw",
+     "tarih": "2026-03-23"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Resolver 'taslak PR oluştur veya dal gönder' adımında yama hatasıyla başarısız.",
+     "kanit_url": "https://github.com/OpenHands/OpenHands/issues/6140",
+     "tarih": "2025-01-08"
+    }
+   ],
+   "alinacak_dersler": [
+    "Döngü algılama (aynı eylem-gözlem tekrarı) orkestratörde standart olmalı.",
+    "Sandbox başına kaynak sınırı ve imaj/disk temizliği baştan olmalı.",
+    "Takipçi kimlik bilgisi ajana verilmemeli; takipçiye yazma host tarafında, dar yetkili hizmet hesabıyla yapılmalı.",
+    "Açık kaynak çekirdek + SDK (software-agent-sdk) kendi orkestratörümüzde yürütücü bileşen olarak değerlendirilebilir."
+   ]
+  },
+  {
+   "ad": "SWE-agent ve mini-SWE-agent",
+   "tur": "arka-plan-ajan",
+   "url": "https://github.com/SWE-agent/SWE-agent",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-21",
+    "yildiz": 20422,
+    "lisans": "MIT",
+    "not": "mini-swe-agent: 8.004 yıldız, MIT, son push 2026-09-21. Araştırma ve kıyaslama odaklı; issue'dan yama üretir."
+   },
+   "akis": "GitHub issue -> Docker ortamı -> ajan-bilgisayar arayüzü ile düzenleme ve test -> yama/PR.",
+   "insan_noktalari": "Issue seçimi, yama incelemesi.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "dongu",
+     "ozet": "Ajan 'araç çağrısı yapmama' sonsuz döngüsüne giriyor.",
+     "kanit_url": "https://github.com/SWE-agent/SWE-agent/issues/971",
+     "tarih": "2025-02-23"
+    },
+    {
+     "sinif": "dongu",
+     "ozet": "gpt-4o ile başarısız komutlarda döngü.",
+     "kanit_url": "https://github.com/SWE-agent/SWE-agent/issues/1235",
+     "tarih": "2025-07-06"
+    },
+    {
+     "sinif": "oracle",
+     "ozet": "SWE-bench ajan değerlendirmesinde depo durumu açıkları: ajan gelecekteki commit'lere/çözüme erişebiliyor.",
+     "kanit_url": "https://github.com/SWE-bench/SWE-bench/issues/465",
+     "tarih": "2025-09-03"
+    }
+   ],
+   "alinacak_dersler": [
+    "Ajan çalışma alanında git geçmişi ve gelecekteki çözümlere erişim kesilmeli; aksi hâlde testler 'kopya' ile geçer.",
+    "Basit ajan döngüsü (mini-swe-agent ~100 satır) yürütücü olarak yeterli olabilir; karmaşıklık orkestrasyonda."
+   ]
+  },
+  {
+   "ad": "Claude Code GitHub Actions (anthropics/claude-code-action)",
+   "tur": "arka-plan-ajan",
+   "url": "https://github.com/anthropics/claude-code-action",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-25",
+    "yildiz": 9158,
+    "lisans": "MIT",
+    "not": "800+ açık issue; Agent SDK sürümlerine sıkı bağlı."
+   },
+   "akis": "Issue/PR yorumu (@claude), etiket veya iş akışı olayı -> GitHub Actions koşucusu -> Claude Code -> commit/PR/inceleme yorumu.",
+   "insan_noktalari": "Tetikleme yorumu, PR incelemesi, birleştirme.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "guvenlik",
+     "ozet": "PR'lardaki zararlı MCP sunucu yapılandırması uzaktan kod çalıştırma ve sır sızdırmaya izin veriyordu (CVE-2026-47751).",
+     "kanit_url": "https://github.com/anthropics/claude-code-action/security/advisories/GHSA-8q5r-mmjf-575q",
+     "tarih": "2026-05-20"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "'Comment and Control': Claude Code Security Review eylemi özel yorumla API anahtarlarını loglara/bulgulara sızdırabiliyordu.",
+     "kanit_url": "https://www.securityweek.com/claude-code-gemini-cli-github-copilot-agents-vulnerable-to-prompt-injection-via-comments/",
+     "tarih": "2026-04-16"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "PromptPwnd: güvenilmeyen issue/PR metni isteme giriyor, ajan GITHUB_TOKEN ile ayrıcalıklı işlem yapıyor.",
+     "kanit_url": "https://www.aikido.dev/blog/promptpwnd-github-actions-ai-agents",
+     "tarih": "2025-12-04"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Agent SDK 0.2.27+ sürümünde API çağrısından önce çöküş (29 tepki, 24 yorum); SDK güncellemeleri eylemi kırıyor.",
+     "kanit_url": "https://github.com/anthropics/claude-code-action/issues/892",
+     "tarih": "2026-02-02"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "v1.0.90 sonrası Bedrock SigV4 kimlik doğrulaması bozuldu.",
+     "kanit_url": "https://github.com/anthropics/claude-code-action/issues/1193",
+     "tarih": "2026-04-08"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "Max aboneliğiyle (API anahtarı olmadan) kullanım talebi (78 tepki); abonelik kimliği CI'da kullanım sorunu.",
+     "kanit_url": "https://github.com/anthropics/claude-code-action/issues/4",
+     "tarih": "2025-05-19"
+    }
+   ],
+   "alinacak_dersler": [
+    "CI içinde çalışan ajan güvenilmeyen metni (issue, PR, yorum) işliyorsa sırlar ve yazma yetkili belirteç aynı süreçte olmamalı.",
+    "Depo içi ajan yapılandırması (MCP, hook, skill) PR ile değiştirilebiliyorsa bu bir kod çalıştırma yüzeyidir; varsayılan dal dışından yüklenmemeli.",
+    "Ajan SDK/CLI sürümü sabitlenmeli ve kanarya ile yükseltilmeli."
+   ]
+  },
+  {
+   "ad": "Terragon (Terragon Labs)",
+   "tur": "arka-plan-ajan",
+   "url": "https://github.com/terragon-labs/terragon-oss",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-02-10",
+    "yildiz": 259,
+    "lisans": "Apache-2.0",
+    "not": "9 Şubat 2026'da kapandı; 16 Ocak 2026 tarihli açık kaynak anlık görüntü 'olduğu gibi', bakım garantisi yok. Gerekçe: sürdürülebilir iş için yeterli çekişe ulaşılamadı."
+   },
+   "akis": "Bulutta her görev için izole sandbox konteyneri; Claude Code/Codex/Amp/Gemini; göreve özel dal, checkpoint ve otomatik PR; GitHub/Slack mention ve olay tetikleyicili otomasyonlar; kendi Claude/ChatGPT aboneliğini getirme; terry CLI ile yerele devralma.",
+   "insan_noktalari": "Görev başlatma, yerele devralma, PR incelemesi.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "Hizmet kapandı; müşterilere son bir ay kullanım verildi, kod anlık görüntü olarak bırakıldı.",
+     "kanit_url": "https://docs.terragonlabs.com/docs/resources/shutdown",
+     "tarih": "2026-02-09"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "İş modeli kullanıcıların Claude/ChatGPT aboneliklerine dayanıyordu; Anthropic 9 Ocak 2026'da abonelik kimlik bilgilerinin üçüncü taraf ajanlarda kullanımını engelledi (risk haritası olay kaydı).",
+     "kanit_url": "https://github.com/anomalyco/opencode/issues/7410",
+     "tarih": "2026-01-09"
+    }
+   ],
+   "alinacak_dersler": [
+    "Bulut arka plan ajanı orkestrasyonu tek başına ürün olarak sürdürülemedi; kurum içinde bu katmanın sahibi biz olmalıyız.",
+    "Model erişimi abonelik oturumlarına değil kurumsal API sözleşmesine dayanmalı; sağlayıcı şartları tek taraflı değişebilir."
+   ]
+  },
+  {
+   "ad": "Tembo (tembo.io)",
+   "tur": "arka-plan-ajan",
+   "url": "https://www.tembo.io/blog/goodbye-background-agents",
+   "durum": {
+    "arsiv": null,
+    "son_push": "2026-09-14 (tembo/tembo, içerik boş)",
+    "yildiz": 1266,
+    "lisans": "ticari",
+    "not": "Yönetilen Postgres şirketiyken arka plan kodlama ajanlarına pivot etti; 3 Ağustos 2026'da 'Goodbye Background Agents' yazısıyla kalıcı bulut geliştirme ortamlarına yöneldi."
+   },
+   "akis": "Entegrasyon sinyalleri veya zamanlama ile tetiklenen paralel, modelden bağımsız arka plan ajanları; artık anlık görüntülü, kalıcı bulut makineleri ve port tünelleri.",
+   "insan_noktalari": "Tetikleme, PR incelemesi, bulut ortamında eşzamanlı çalışma.",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "Şirket 'arka plan ajanları öldü' diyerek ürün yönünü değiştirdi; tek seferlik arka plan görevi modeli yerine kalıcı bulut ortamı.",
+     "kanit_url": "https://www.tembo.io/blog/goodbye-background-agents",
+     "tarih": "2026-08-03"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Derleme için 32 GB, bazı şirketlerde test/tip denetimi için 128 GB RAM gerektiği belirtiliyor; hafif sandbox'lar yetmiyor.",
+     "kanit_url": "https://www.tembo.io/blog/goodbye-background-agents",
+     "tarih": "2026-08-03"
+    }
+   ],
+   "alinacak_dersler": [
+    "Ajan yürütme ortamı gerçek derleme/test yükünü taşıyacak boyutta ve anlık görüntüden hızlı açılır olmalı; 'alpha ortamı' ile aynı imaj ailesinden türetilmeli.",
+    "Pazar hızla değişiyor; ürün yönü değişen tedarikçiye çekirdek bağımlılığı riskli."
+   ]
+  },
+  {
+   "ad": "Conductor (conductor.build, Melty Labs)",
+   "tur": "paralel-worktree",
+   "url": "https://www.conductor.build/",
+   "durum": {
+    "arsiv": null,
+    "son_push": null,
+    "yildiz": null,
+    "lisans": "ticari (kapalı kaynak, ücretsiz)",
+    "not": "Yalnız macOS; YC S24 ekibi (önceki ürün: Melty editörü). Kapalı kaynak olduğu için issue/sürüm notu üzerinden sorun kaydı sınırlı."
+   },
+   "akis": "Her görev için git worktree + kurulum betiği + otomatik dal; Claude Code, Codex, Cursor, OpenCode paralel; checkpoint, 'Spotlight' ile değişiklikleri ana depoda test etme, diff inceleme ve birleştirme.",
+   "insan_noktalari": "Görev açma, diff incelemesi, seçerek birleştirme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "diger",
+     "ozet": "Worktree'ler .env ve node_modules gibi izlenmeyen dosyaları içermiyor; her çalışma alanı ayrı önyükleme istiyor.",
+     "kanit_url": "https://madewithlove.com/blog/conductor-running-multiple-ai-coding-agents-in-parallel/",
+     "tarih": "2026-03-24"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Dört paralel ajan dört kat token tüketimi; araçta yerleşik maliyet denetimi yok.",
+     "kanit_url": "https://madewithlove.com/blog/conductor-running-multiple-ai-coding-agents-in-parallel/",
+     "tarih": "2026-03-24"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Paralellik darboğazı inceleme kuyruğuna taşıyor.",
+     "kanit_url": "https://madewithlove.com/blog/conductor-running-multiple-ai-coding-agents-in-parallel/",
+     "tarih": "2026-03-24"
+    }
+   ],
+   "alinacak_dersler": [
+    "Worktree önyüklemesi (bağımlılık, sır, port, veritabanı) deterministik ve depo içi betikle tanımlanmalı.",
+    "Paralel ajan sayısı token bütçesi ve inceleme kapasitesiyle birlikte sınırlandırılmalı."
+   ]
+  },
+  {
+   "ad": "Crystal (stravu) -> Nimbalyst",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/stravu/crystal",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-02-26",
+    "yildiz": 3122,
+    "lisans": "MIT",
+    "not": "README: Crystal Şubat 2026'da kullanımdan kaldırıldı, yerini Nimbalyst aldı (nimbalyst/nimbalyst, 1.784 yıldız, MIT)."
+   },
+   "akis": "Birden çok Claude Code/Codex oturumunu paralel git worktree'lerde çalıştırma, yaklaşımları karşılaştırma, rebase ile ana dala alma.",
+   "insan_noktalari": "Oturum başlatma, karşılaştırma, birleştirme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "Ürün 1 yıl dolmadan kullanımdan kaldırılıp yeni ürüne (Nimbalyst) taşındı.",
+     "kanit_url": "https://github.com/stravu/crystal",
+     "tarih": "2026-02-26"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "Uygulamanın dışarıya veri gönderdiği (telemetri) şüphesi.",
+     "kanit_url": "https://github.com/stravu/crystal/issues/95",
+     "tarih": "2025-07-21"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "--dangerously-ignore-permissions olmadan çalıştırma isteği; varsayılan izin atlatma.",
+     "kanit_url": "https://github.com/stravu/crystal/issues/178",
+     "tarih": "2025-09-03"
+    }
+   ],
+   "alinacak_dersler": [
+    "Masaüstü paralel ajan araçları hızla ad/ürün değiştiriyor; kurumsal hattın parçası yapılmamalı, en fazla geliştirici tercihi olarak kalmalı."
+   ]
+  },
+  {
+   "ad": "claude-squad (smtg-ai)",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/smtg-ai/claude-squad",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-08-20",
+    "yildiz": 8536,
+    "lisans": "AGPL-3.0",
+    "not": "Eylül 2025 ve Şubat 2026'da 'proje terk mi' issue'ları açıldı; Temmuz-Ağustos 2026'da bakım yeniden başladı (v1.0.20)."
+   },
+   "akis": "tmux oturumları + git worktree ile birden çok terminal ajanını (Claude Code, Codex, OpenCode, Amp) yönetme; TUI.",
+   "insan_noktalari": "Her şey insan güdümlü; otomatik tetikleyici yok.",
+   "benzerlik_puani_1_5": 1,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "'No more updates?' (16 tepki).",
+     "kanit_url": "https://github.com/smtg-ai/claude-squad/issues/214",
+     "tarih": "2025-09-24"
+    },
+    {
+     "sinif": "terk",
+     "ozet": "'Project seems abandoned, PR'lar ve hatalar ele alınmıyor'.",
+     "kanit_url": "https://github.com/smtg-ai/claude-squad/issues/250",
+     "tarih": "2026-02-12"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "tmux pane içeriği yakalanamıyor hatası tekrar tekrar raporlandı.",
+     "kanit_url": "https://github.com/smtg-ai/claude-squad/issues/51",
+     "tarih": "2025-04-04"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Worktree ortam kurulum hook'u (bağımlılık, env dosyaları, port izolasyonu) yok.",
+     "kanit_url": "https://github.com/smtg-ai/claude-squad/issues/260",
+     "tarih": "2026-03-05"
+    }
+   ],
+   "alinacak_dersler": [
+    "tmux ekran kazıma ile ajan durumu okumak kırılgan; yapılandırılmış olay akışı (SDK/app-server JSON) kullanılmalı."
+   ]
+  },
+  {
+   "ad": "Sculptor (Imbue)",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/imbue-ai/sculptor",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-26",
+    "yildiz": 232,
+    "lisans": "MIT",
+    "not": "Deneysel araştırma önizlemesi; dış katkı kapasitesi sınırlı; yalnız 3 issue."
+   },
+   "akis": "Kodlama ajanlarını izole kopyalarda (konteyner) paralel çalıştıran masaüstü uygulaması; önce başarısız test yazıp sonra geçiren hata düzeltme skill'i.",
+   "insan_noktalari": "Görev verme, çıktı inceleme ve senkronize etme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "takilma",
+     "ozet": "Sistem uykusundan sonra terminal yanıt vermiyor.",
+     "kanit_url": "https://github.com/imbue-ai/sculptor/issues/182",
+     "tarih": "2026-06-25"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Claude kurulumu yavaş/donmuş görünüyor.",
+     "kanit_url": "https://github.com/imbue-ai/sculptor/issues/14",
+     "tarih": "2026-05-23"
+    }
+   ],
+   "alinacak_dersler": [
+    "'Önce kırmızı test' skill'i TDD akışımızla örtüşüyor; ama test ve uygulama aynı ajanda olunca test kandırma riski sürer."
+   ]
+  },
+  {
+   "ad": "Superset (superset-sh)",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/superset-sh/superset",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-27",
+    "yildiz": 14667,
+    "lisans": "Elastic License 2.0 (GitHub'da NOASSERTION)",
+    "not": "ELv2 yönetilen hizmet olarak sunmayı kısıtlar; Windows desteği yok, Linux deneysel; 1.400+ issue."
+   },
+   "akis": "Masaüstü ajan IDE'si: paralel çalışma alanları (worktree), terminaller, diff, kod incelemesi, tarayıcı önizlemesi; 'kendi aboneliğinle 100+ ajan'.",
+   "insan_noktalari": "Çalışma alanı açma, inceleme, birleştirme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "disk",
+     "ozet": "Çalışma alanı silinince worktree dizinleri diskte yetim kalıyor.",
+     "kanit_url": "https://github.com/superset-sh/superset/issues/2863",
+     "tarih": "2026-03-25"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Periyodik girdi gecikmesi performans regresyonu (18 tepki).",
+     "kanit_url": "https://github.com/superset-sh/superset/issues/2861",
+     "tarih": "2026-03-25"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Uygulama/makine yeniden başlatıldıktan sonra ajan oturumlarının otomatik sürdürülmesi yok.",
+     "kanit_url": "https://github.com/superset-sh/superset/issues/3496",
+     "tarih": "2026-04-16"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "Zorunlu oturum açma kaldırılsın talebi (22 tepki).",
+     "kanit_url": "https://github.com/superset-sh/superset/issues/2685",
+     "tarih": "2026-03-21"
+    }
+   ],
+   "alinacak_dersler": [
+    "Yeniden başlatma sonrası oturum sürdürme (dayanıklılık) masaüstü araçlarda eksik; çekirdekte olmalı.",
+    "Lisans (ELv2, AGPL) kurum içi hizmetleştirme kararını etkiler."
+   ]
+  },
+  {
+   "ad": "Emdash (General Action, YC W26)",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/generalaction/emdash",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-26",
+    "yildiz": 5849,
+    "lisans": "Apache-2.0",
+    "not": "Tek geliştirici odaklı ajan geliştirme ortamı."
+   },
+   "akis": "Birden çok kodlama ajanını paralel worktree'lerde çalıştırma; sağlayıcıdan bağımsız; diff ve PR.",
+   "insan_noktalari": "Görev açma, inceleme, birleştirme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "olcek",
+     "ozet": "Çok worktree'li projede her yenilemede ~250 eşzamanlı 'git worktree list' çağrısı sistemi zorluyor.",
+     "kanit_url": "https://github.com/generalaction/emdash/issues/2987",
+     "tarih": "2026-08-11"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Çalışma alanı dosya indeksinin her yeniden indekslemede FTS5 tablosunu tam taraması UI'yi kilitliyor.",
+     "kanit_url": "https://github.com/generalaction/emdash/issues/2882",
+     "tarih": "2026-07-15"
+    },
+    {
+     "sinif": "disk",
+     "ozet": "Birleştirme sonrası worktree'yi arşivle/sil istemi isteniyor (temizlik yok).",
+     "kanit_url": "https://github.com/generalaction/emdash/issues/1345",
+     "tarih": "2026-03-07"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "GH kimliği doğrulanmamış hatası ile çalışmıyor.",
+     "kanit_url": "https://github.com/generalaction/emdash/issues/54",
+     "tarih": "2025-09-29"
+    }
+   ],
+   "alinacak_dersler": [
+    "Worktree sayısı arttıkça git işlemleri pahalılaşır; git durumu önbelleğe alınmalı veya çalışma alanları ayrı klon/konteynerde tutulmalı."
+   ]
+  },
+  {
+   "ad": "Kiro ve Kiro Crew (AWS)",
+   "tur": "paralel-worktree",
+   "url": "https://github.com/kirodotdev/KiroCrew",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-27",
+    "yildiz": 4161,
+    "lisans": "Apache-2.0 (Kiro Crew); Kiro IDE ticari",
+    "not": "Kiro Crew 16.07.2026'da açıldı, iki ayda 5.300+ issue. Kiro IDE issue deposu: kirodotdev/Kiro (4.332 yıldız). Kiro spec tabanlı (gereksinim -> tasarım -> görev) geliştirme sunar."
+   },
+   "akis": "Kiro Crew: yerel veya uzak donanımda kalıcı çalışma alanı; çok adımlı görevleri gözetimsiz, tekrarlayan işleri zamanlanmış yürütür; heartbeat ile izleme; masaüstü, web, CLI, Slack/Discord; 'kendini geliştiren' davranış.",
+   "insan_noktalari": "Görev ve zamanlama tanımı, Slack/masaüstünden devralma, çıktı inceleme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "bellek",
+     "ozet": "Kapanan oturumların tüm süreç ağacı (acp + ~30 MCP sunucusu) PID 1'e bağlı yaşamaya devam ediyor: tek makinede 1.204 yetim süreç, 25,7 GB.",
+     "kanit_url": "https://github.com/kirodotdev/KiroCrew/issues/11789",
+     "tarih": "2026-09-18"
+    },
+    {
+     "sinif": "kimlik",
+     "ozet": "OAuth'lu MCP sunucuları HTTP 401'de takılıyor; belirteç yenileme bloke, bayat ACP oturumu.",
+     "kanit_url": "https://github.com/kirodotdev/KiroCrew/issues/3310",
+     "tarih": "2026-08-13"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "0.2.0'da panodan kredi/kullanım bakiyesi alanı kaldırıldı (regresyon).",
+     "kanit_url": "https://github.com/kirodotdev/KiroCrew/issues/3296",
+     "tarih": "2026-08-13"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Kiro IDE: 'Your Pricing Is a Wallet-Wrecking Tragedy' (72 tepki).",
+     "kanit_url": "https://github.com/kirodotdev/Kiro/issues/2182",
+     "tarih": "2025-08-17"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Kiro IDE: uzun süren terminal komutlarında sohbet 'Working' durumunda takılı kalıyor (60 tepki).",
+     "kanit_url": "https://github.com/kirodotdev/Kiro/issues/53",
+     "tarih": "2025-07-15"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Kiro IDE: beklenmeyen hata / yavaş yanıt / throttling (75 tepki, 164 yorum).",
+     "kanit_url": "https://github.com/kirodotdev/Kiro/issues/413",
+     "tarih": "2025-07-16"
+    }
+   ],
+   "alinacak_dersler": [
+    "Her ajan oturumu yanında MCP sunucu filosu taşıyorsa oturum sonunda süreç ağacı biçilmeli; MCP sunucuları paylaşımlı/uzak servis olarak tasarlanmalı.",
+    "Kredi/maliyet görünürlüğü oturum ve alt ajan düzeyinde olmalı.",
+    "Spec -> tasarım -> görev zinciri SAFe feature -> story ayrıştırmasıyla uyumlu; ama 'kendini geliştiren' davranış denetim ve tekrarlanabilirlik gerektirir."
+   ]
+  },
+  {
+   "ad": "Backlog.md (MrLesk)",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/MrLesk/Backlog.md",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-09-24",
+    "yildiz": 6862,
+    "lisans": "MIT",
+    "not": "Görevleri depoda Markdown dosyaları olarak tutan CLI/web kanban ve MCP sunucusu; ajan ve insan aynı sürümlü kayıtları düzenler."
+   },
+   "akis": "Depo içi backlog/ dizini; CLI veya web panodan görev; ajan MCP ile görevi okur/günceller; durum geri çağrıları ve hook'lar.",
+   "insan_noktalari": "Görev yazma, durum değiştirme, inceleme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "diger",
+     "ozet": "Git'e sessizce otomatik commit atıyor (tepki alan şikâyet).",
+     "kanit_url": "https://github.com/MrLesk/Backlog.md/issues/160",
+     "tarih": "2025-07-07"
+    },
+    {
+     "sinif": "cakisma",
+     "ozet": "Git tabanlı atomik görev koordinasyonu isteği: eşzamanlı ajanların aynı görevi alması/üzerine yazması riski.",
+     "kanit_url": "https://github.com/MrLesk/Backlog.md/issues/937",
+     "tarih": "2026-08-24"
+    }
+   ],
+   "alinacak_dersler": [
+    "Görev durumu için Git dosyaları çok ajanlı eşzamanlılıkta kilit/atomiklik sağlamaz; Plane + orkestratör DB'si tek doğruluk kaynağı olmalı."
+   ]
+  },
+  {
+   "ad": "Task Master (claude-task-master, Hamster)",
+   "tur": "kanban-tetikli",
+   "url": "https://github.com/eyaltoledano/claude-task-master",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-04-28",
+    "yildiz": 28094,
+    "lisans": "MIT + Commons Clause benzeri ek (GitHub'da NOASSERTION)",
+    "not": "Nisan 2026'dan beri depo etkinliği düşük; ticari ürün tryhamster.com."
+   },
+   "akis": "PRD'yi ayrıştırıp bağımlılıklı ve karmaşıklık puanlı görev listesine çevirir; 'sıradaki görev', genişletme ve durum yönetimi CLI/MCP ile ajanlara açılır; tasks.json dosyası.",
+   "insan_noktalari": "PRD yazma, görev listesini onaylama.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "cakisma",
+     "ozet": "Birden çok Claude Code penceresi aynı anda tasks.json'a yazınca yarış durumu.",
+     "kanit_url": "https://github.com/eyaltoledano/claude-task-master/issues/1567",
+     "tarih": "2026-01-08"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Tamamlanan görevlerle tasks.json şişiyor; otomatik inceltme isteği.",
+     "kanit_url": "https://github.com/eyaltoledano/claude-task-master/issues/1642",
+     "tarih": "2026-02-20"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Model yönetimi ve maliyet en çok tepki alan istekler (45 ve 35 tepki).",
+     "kanit_url": "https://github.com/eyaltoledano/claude-task-master/issues/79",
+     "tarih": "2025-04-01"
+    },
+    {
+     "sinif": "terk",
+     "ozet": "Son push 28.04.2026; etkinlik düşük.",
+     "kanit_url": "https://github.com/eyaltoledano/claude-task-master",
+     "tarih": "2026-04-28"
+    }
+   ],
+   "alinacak_dersler": [
+    "LLM ile görev ayrıştırma deterministik değildir; ayrıştırma çıktısı insan onaylı olmalı ve takipçiye (Plane) yazılmalı, yerel JSON'da değil."
+   ]
+  },
+  {
+   "ad": "MetaGPT (FoundationAgents) / MGX",
+   "tur": "sirket-simulasyonu",
+   "url": "https://github.com/FoundationAgents/MetaGPT",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-01-21",
+    "yildiz": 70648,
+    "lisans": "MIT",
+    "not": "Ürün Yöneticisi, Mimar, Mühendis, QA rollerini SOP ile simüle eden çerçeve. Ekip Şubat 2025'te ticari MGX (MetaGPT X) ürününü çıkardı; açık depoda son anlamlı commit Ocak 2026, Nisan 2026'da 'proje bakımda mı' sorusu açıldı."
+   },
+   "akis": "Tek satır gereksinim -> PRD -> tasarım -> görevler -> kod -> test; roller arası mesaj havuzu; genelde sıfırdan (greenfield) proje.",
+   "insan_noktalari": "Başlangıç gereksinimi; araya girme sınırlı.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "Kullanıcı son güncellemenin bir yıl önce olduğunu belirterek bakımın sürüp sürmeyeceğini soruyor.",
+     "kanit_url": "https://github.com/FoundationAgents/MetaGPT/issues/2010",
+     "tarih": "2026-04-14"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Artımlı modda WriteCode 'Call with_srcs first' hatasıyla çöküyor (mevcut kodla çalışma zayıf).",
+     "kanit_url": "https://github.com/FoundationAgents/MetaGPT/issues/2007",
+     "tarih": "2026-04-13"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Mevcut bir çalışma alanıyla çalışma isteği (erken ve temel eksik).",
+     "kanit_url": "https://github.com/FoundationAgents/MetaGPT/issues/267",
+     "tarih": "2023-08-25"
+    }
+   ],
+   "alinacak_dersler": [
+    "Rol oyunu (PM, mimar, QA ajanı) sıfırdan projede etkileyici ama brownfield kurumsal depoda zayıf; SAFe rolleri ajan kişiliği olarak değil, insan onay kapıları olarak modellenmeli."
+   ]
+  },
+  {
+   "ad": "ChatDev (OpenBMB)",
+   "tur": "sirket-simulasyonu",
+   "url": "https://github.com/OpenBMB/ChatDev",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-07-24",
+    "yildiz": 34401,
+    "lisans": "Apache-2.0",
+    "not": "Sanal yazılım şirketi (CEO, CTO, programcı, testçi) şelale sohbet zinciri; ChatDev 2.0 ile 'LLM destekli çok ajanlı iş birliği' platformuna dönüştü."
+   },
+   "akis": "Görev metni -> tasarım -> kodlama -> test -> dokümantasyon aşamaları, rol çiftleri arası sohbet.",
+   "insan_noktalari": "Başlangıç görevi; isteğe bağlı insan-ajan etkileşimi.",
+   "benzerlik_puani_1_5": 1,
+   "sorunlar": [
+    {
+     "sinif": "takilma",
+     "ozet": "'ChatDev always freezes'.",
+     "kanit_url": "https://github.com/OpenBMB/ChatDev/issues/167",
+     "tarih": "2023-10-11"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Kaldığı yerden devam etmiyor (dayanıklılık yok).",
+     "kanit_url": "https://github.com/OpenBMB/ChatDev/issues/94",
+     "tarih": "2023-09-25"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Yeni yazılım yerine mevcut kod tabanını iyileştirme isteği.",
+     "kanit_url": "https://github.com/OpenBMB/ChatDev/issues/147",
+     "tarih": "2023-10-08"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Oran sınırı sorunları.",
+     "kanit_url": "https://github.com/OpenBMB/ChatDev/issues/26",
+     "tarih": "2023-09-08"
+    }
+   ],
+   "alinacak_dersler": [
+    "Kaldığı yerden devam edemeyen çok ajanlı akış üretimde kullanılamaz; checkpoint/replay zorunlu."
+   ]
+  },
+  {
+   "ad": "GPT-Pilot (Pythagora)",
+   "tur": "sirket-simulasyonu",
+   "url": "https://github.com/Pythagora-io/gpt-pilot",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-06-18",
+    "yildiz": 33659,
+    "lisans": "FSL benzeri (GitHub'da NOASSERTION)",
+    "not": "README: depo artık aktif bakımda değil. 24.08.2025'te 'revert' gibi gizlenmiş zararlı commit (Shai-Hulud sınıfı kimlik bilgisi hırsızı solucan) eklendi; 08.06.2026'da dış araştırmacı bildirdi, 11.06.2026'da kaldırıldı."
+   },
+   "akis": "Ürün sahibi, mimar, geliştirici, teknik lider, hata ayıklayıcı ajanları ile adım adım uygulama geliştirme; her adımda insan onayı; VS Code eklentisi.",
+   "insan_noktalari": "Her görev adımında onay/geri bildirim; test etme.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "guvenlik",
+     "ozet": "Bakımsız depoya zararlı commit girdi ve ~10 ay fark edilmedi; kaynaktan çalıştıranların tüm kimlik bilgilerini döndürmesi gerekti.",
+     "kanit_url": "https://github.com/Pythagora-io/gpt-pilot/commit/065ee8ebee7385cb644fd1608587a18edb91f4fb",
+     "tarih": "2025-08-24"
+    },
+    {
+     "sinif": "terk",
+     "ozet": "Proje aktif bakımda değil; temizlik bir güvenlik müdahalesi, geliştirmeye dönüş değil.",
+     "kanit_url": "https://github.com/Pythagora-io/gpt-pilot",
+     "tarih": "2026-06-11"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Başlamış görev dizisi durdurulamıyor.",
+     "kanit_url": "https://github.com/Pythagora-io/gpt-pilot/issues/739",
+     "tarih": "2024-03-16"
+    },
+    {
+     "sinif": "maliyet",
+     "ozet": "Geliştirmeye devam edince tüm kodlama adımları baştan çalışıyor (tekrar maliyeti).",
+     "kanit_url": "https://github.com/Pythagora-io/gpt-pilot/issues/587",
+     "tarih": "2024-01-28"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Mevcut kod tabanında çalışma en çok istenen özellik (28 tepki).",
+     "kanit_url": "https://github.com/Pythagora-io/gpt-pilot/issues/335",
+     "tarih": "2023-12-01"
+    }
+   ],
+   "alinacak_dersler": [
+    "Terk edilmiş ajan projesi tedarik zinciri saldırı yüzeyidir; bağımlılık olarak alınan her ajan aracı sabit commit, imza ve tarama ile kullanılmalı.",
+    "İptal ve idempotent devam (tamamlanan adımı yeniden çalıştırmama) çekirdek gereksinimdir."
+   ]
+  },
+  {
+   "ad": "Devika (stitionai) -> Opcode",
+   "tur": "sirket-simulasyonu",
+   "url": "https://github.com/stitionai/devika",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2025-09-25",
+    "yildiz": 19561,
+    "lisans": "MIT",
+    "not": "Devin'in açık kaynak alternatifi olarak 2024'te çıktı; README 'çok erken/deneysel, birçok özellik bozuk' diyor ve ikinci sürüm Opcode'a yönlendiriyor. Bir yıldır push yok."
+   },
+   "akis": "Üst düzey talimat -> planlama -> web araştırması -> kod yazma; ajan durum izleme.",
+   "insan_noktalari": "Talimat verme; araya girme desteklenmiyor.",
+   "benzerlik_puani_1_5": 1,
+   "sorunlar": [
+    {
+     "sinif": "takilma",
+     "ozet": "Web araştırmasına başlayıp iki sayfa sonra hiçbir eylem yapmadan asılı kalıyor.",
+     "kanit_url": "https://github.com/stitionai/devika/issues/194",
+     "tarih": "2024-03-27"
+    },
+    {
+     "sinif": "takilma",
+     "ozet": "Çalışırken Devika'yı durdurup yeni komut verme imkânı yok.",
+     "kanit_url": "https://github.com/stitionai/devika/issues/169",
+     "tarih": "2024-03-26"
+    },
+    {
+     "sinif": "guvenlik",
+     "ozet": "API anahtarlı config.toml'un depoda tutulması güvenlik riski.",
+     "kanit_url": "https://github.com/stitionai/devika/issues/119",
+     "tarih": "2024-03-24"
+    },
+    {
+     "sinif": "terk",
+     "ozet": "Son push Eylül 2025; geliştirme yeni ürüne taşındı.",
+     "kanit_url": "https://github.com/stitionai/devika",
+     "tarih": "2025-09-25"
+    }
+   ],
+   "alinacak_dersler": [
+    "Hype ile büyüyen (19k yıldız) ajan projeleri bir yıl içinde durabilir; yıldız sayısı sürdürülebilirlik göstergesi değildir."
+   ]
+  },
+  {
+   "ad": "'AI Scrum ekibi' projeleri (AgileCoder, Paca, maul-team, ai-scrum-master-template)",
+   "tur": "sirket-simulasyonu",
+   "url": "https://github.com/FSoft-AI4Code/AgileCoder",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2024-10-15 (AgileCoder)",
+    "yildiz": 465,
+    "lisans": "MIT",
+    "not": "AgileCoder: sprint tabanlı çok ajanlı araştırma prototipi (FORGE 2025), 2024'ten beri push yok. Paca-AI/paca (1.863 yıldız, Mart 2026, insan ve ajanların eşit çalıştığı Scrum aracı). sohei56/maul-team (17 yıldız). plusai-solutions/ai-scrum-master-template (28 yıldız; 18-19 Mart 2026'da oluşturulup bir daha push almadı). SAFe'yi (ART, PI planlama) ajanlarla uygulayan olgun açık proje bulunamadı."
+   },
+   "akis": "Product Owner / Scrum Master / geliştirici ajan rolleri ile sprint döngüsü; bazıları GitHub Actions + Claude ile.",
+   "insan_noktalari": "Çoğunda insan Product Owner rolünde.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "terk",
+     "ozet": "AgileCoder araştırma kodu 2024'ten beri güncellenmedi.",
+     "kanit_url": "https://github.com/FSoft-AI4Code/AgileCoder",
+     "tarih": "2024-10-15"
+    },
+    {
+     "sinif": "terk",
+     "ozet": "ai-scrum-master-template oluşturulduğu günden sonra hiç güncellenmedi.",
+     "kanit_url": "https://github.com/plusai-solutions/ai-scrum-master-template",
+     "tarih": "2026-03-19"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Çok ekipli (SAFe/ART) koordinasyonu hedefleyen olgun açık proje yok; örnekler tek ekip/tek depo.",
+     "kanit_url": "https://github.com/sohei56/maul-team",
+     "tarih": "2026-09-20"
+    }
+   ],
+   "alinacak_dersler": [
+    "12+ ekip ve SAFe koordinasyonu için hazır ajan çerçevesi yok; ekip, ART ve PI düzeyi kapasite/WIP yönetimi kendi çekirdeğimizde olmalı."
+   ]
+  },
+  {
+   "ad": "Temporal üzerinde ajanlar: OpenAI Codex ve Replit Agent",
+   "tur": "dayanikli-akis",
+   "url": "https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale",
+   "durum": {
+    "arsiv": null,
+    "son_push": null,
+    "yildiz": null,
+    "lisans": "Temporal MIT; Temporal Cloud ticari",
+    "not": "Temporal: Codex üretimde Temporal üzerinde, milyonlarca istek (blog 12.11.2025); Replit Agent 3 de Temporal kullanıyor. Replit vaka çalışması: oturum başına bir Workflow, Activity'lerde hata eğilimli mantık, insan onayı için Workflow Update."
+   },
+   "akis": "Ajan oturumu = Workflow (tekil Workflow ID ile kullanıcı başına tek etkin ajan); LLM ve araç çağrıları Activity (otomatik yeniden deneme); insan onayı Update/Signal ile; çok bölgeli çoğaltma.",
+   "insan_noktalari": "Onay mesajı bekleyen duraklatma (Workflow Update).",
+   "benzerlik_puani_1_5": 3,
+   "sorunlar": [
+    {
+     "sinif": "bellek",
+     "ozet": "Replit Temporal öncesi: bellek tükenmesi, model sağlayıcı kesintileri ve araç hataları ajanı işin sonuna yakın 'felaket' hatayla düşürüyordu; kontrol düzleminde tek ajan garantisi ve dağıtık kenar durumları zordu.",
+     "kanit_url": "https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale",
+     "tarih": null
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Temporal iş akışı kodu deterministik olmalı, uzun döngülerde Continue-As-New ve olay geçmişi boyut sınırı gerekir (araç haritası AR-0001 sınırları).",
+     "kanit_url": "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal",
+     "tarih": "2025-11-12"
+    }
+   ],
+   "alinacak_dersler": [
+    "Hazır kanban-ajan projelerinin neredeyse tüm operasyonel hataları (talep sızıntısı, yetim süreç, kaldığı yerden devam edememe, sonsuz yeniden deneme) dayanıklı akış motorunun çözdüğü sınıftadır.",
+    "Workflow ID = Plane iş öğesi kimliği yapılırsa çift dağıtım yapısal olarak engellenir.",
+    "İnsan testi/onayı günlerce bekleyebilen Signal/Update olarak modellenmeli."
+   ]
+  },
+  {
+   "ad": "temporal-ai-agent (temporal-community)",
+   "tur": "dayanikli-akis",
+   "url": "https://github.com/temporal-community/temporal-ai-agent",
+   "durum": {
+    "arsiv": false,
+    "son_push": "2026-03-27",
+    "yildiz": 780,
+    "lisans": "MIT",
+    "not": "Demo/örnek; üretim bileşeni değil."
+   },
+   "akis": "Temporal iş akışında çok turlu ajan: araç çağrıları Activity, onay ve kullanıcı girdisi Signal.",
+   "insan_noktalari": "Araç çağrısı onayı, kullanıcı girdisi.",
+   "benzerlik_puani_1_5": 2,
+   "sorunlar": [
+    {
+     "sinif": "takilma",
+     "ozet": "İş akışı sonlandırıldığında ön yüz konuşma geçmişini beklerken takılıyor.",
+     "kanit_url": "https://github.com/temporal-community/temporal-ai-agent/issues/2",
+     "tarih": "2025-01-23"
+    },
+    {
+     "sinif": "olcek",
+     "ozet": "Konuşma geçmişinin Temporal olay geçmişinde tutulmasından kaçınma önerisi (geçmiş boyutu).",
+     "kanit_url": "https://github.com/temporal-community/temporal-ai-agent/issues/24",
+     "tarih": "2025-03-15"
+    },
+    {
+     "sinif": "diger",
+     "ozet": "Yerel LLM ile JSON ayrıştırma zaman zaman başarısız.",
+     "kanit_url": "https://github.com/temporal-community/temporal-ai-agent/issues/3",
+     "tarih": "2025-01-23"
+    }
+   ],
+   "alinacak_dersler": [
+    "Büyük artefaktlar (transkript, diff, log) Temporal geçmişine değil nesne deposuna yazılmalı, geçmişte yalnız referans tutulmalı."
+   ]
+  }
+ ],
+ "genel_bulgular": [
+  {
+   "bulgu": "Plane'den tetiklenip kodlama ajanını çalıştıran olgun hazır proje yok. Plane'i bağlayan topluluk denemeleri 0-3 yıldızlı; Plane'in kendi ajanları 18.09.2026'da duyuruldu, geliştirici belgesinde Beta ve 'sınırlı işler' için konumlanıyor.",
+   "kanit_url": [
+    "https://github.com/aborigen19961202/symphony-adapters",
+    "https://plane.so/blog/agents-are-now-live-in-plane",
+    "https://developers.plane.so/dev-tools/agents/overview"
+   ]
+  },
+  {
+   "bulgu": "'Durum değişince ajan tetiklensin' deseni pazarda doğrulandı: Jira iş akışı geçişinde ajan tetikleme (GA Mayıs 2026), Copilot for Jira geçiş tetikleyicisi, Linear delegasyonu ve triage kuralları, Symphony active_states.",
+   "kanit_url": [
+    "https://www.atlassian.com/blog/announcements/ai-agents-in-jira",
+    "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira",
+    "https://linear.app/docs/assigning-issues",
+    "https://github.com/openai/symphony/blob/main/SPEC.md"
+   ]
+  },
+  {
+   "bulgu": "Bizim akışa en yakın açık referans Symphony SPEC.md'dir, ama OpenAI bunu ürün olarak sürdürmeyecek, kalıcı veritabanı bilinçli olarak yok ve Temmuz-Eylül 2026'da temizlik yarışı, talep sızıntısı, yetim süreç, kimlik sızıntısı düzeltmeleri geldi.",
+   "kanit_url": [
+    "https://www.helpnetsecurity.com/2026/04/28/openai-symphony-codex-orchestration-linear/",
+    "https://github.com/openai/symphony/pull/109",
+    "https://github.com/openai/symphony/discussions/126"
+   ]
+  },
+  {
+   "bulgu": "Terk oranı yüksek: Vibe Kanban (Nisan 2026, iş modeli), Terragon (Şubat 2026, çekiş yetersiz), Crystal (Şubat 2026, ürün değişimi), GPT-Pilot (bakımsız + zararlı commit), Devika (2025'ten beri durgun), Aperant 2.x bakım modu, Tembo pivot, Symphony bakım yok, Agent Orchestrator sahiplik değişimi.",
+   "kanit_url": [
+    "https://www.vibekanban.com/blog/shutdown",
+    "https://docs.terragonlabs.com/docs/resources/shutdown",
+    "https://github.com/stravu/crystal",
+    "https://github.com/Pythagora-io/gpt-pilot",
+    "https://www.tembo.io/blog/goodbye-background-agents"
+   ]
+  },
+  {
+   "bulgu": "En sık operasyonel hata ailesi orkestrasyon katmanında: kaçan tamamlanma sinyali ile 'running'de takılma, yetim/zombi süreçler (Kiro Crew'de 1.204 yetim, 25,7 GB), tahliye edilmeyen oturumlarla OOM (Cyrus 4 haftada 15 OOM), 40+ işçide çöküş, sahipsiz worktree birikimi.",
+   "kanit_url": [
+    "https://github.com/cline/kanban/issues/82",
+    "https://github.com/kirodotdev/KiroCrew/issues/11789",
+    "https://github.com/cyrusagents/cyrus/issues/1381",
+    "https://github.com/Untrivial-ai/agent-orchestrator/issues/3921",
+    "https://github.com/BloopAI/vibe-kanban/issues/765"
+   ]
+  },
+  {
+   "bulgu": "İnsan incelemesi yeni darboğaz: dotnet/runtime'da ajan PR birleşme oranı %67,9 (insan %87,1); insan katkılı PR'larda başarı %86, tam otonomda %55. AIDev veri setinde ajan PR'ları daha az kabul ediliyor.",
+   "kanit_url": [
+    "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+    "https://arxiv.org/abs/2507.15003"
+   ]
+  },
+  {
+   "bulgu": "Test kandırma / oracle sorunu belgelendi: ajanın testleri çalıştırmadan geçti demesi (dotnet), PR açıklamasının yapılmamış değişikliği anlatması (%1,7 PR; kabul %28,3), METR'in ödül hilesi gözlemleri, ImpossibleBench'te güçlü modellerin daha çok hile yapması, SWE-bench depo durumu açıkları.",
+   "kanit_url": [
+    "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+    "https://arxiv.org/abs/2601.04886",
+    "https://metr.org/blog/2025-06-05-recent-reward-hacking/",
+    "https://arxiv.org/abs/2510.20270",
+    "https://github.com/SWE-bench/SWE-bench/issues/465"
+   ]
+  },
+  {
+   "bulgu": "Paralel ajan PR'larında çakışma yapısal: farklı ajanlardan gelen eşzamanlı PR çiftlerinde metinsel çakışma %41,7 (aynı ajanda %19,8).",
+   "kanit_url": [
+    "https://arxiv.org/abs/2607.04697"
+   ]
+  },
+  {
+   "bulgu": "CI içinde güvenilmeyen issue/PR metnini işleyen ajanlar istem enjeksiyonuyla sır sızdırıyor (PromptPwnd, Comment and Control); GitHub bunu 'bilinen mimari sınırlama' sayıyor. Yerel ajan panoları da (Cline Kanban) WebSocket ele geçirme ve DNS rebinding açıkları verdi.",
+   "kanit_url": [
+    "https://www.aikido.dev/blog/promptpwnd-github-actions-ai-agents",
+    "https://www.securityweek.com/claude-code-gemini-cli-github-copilot-agents-vulnerable-to-prompt-injection-via-comments/",
+    "https://github.com/cline/cline/security/advisories/GHSA-5c57-rqjx-35g2",
+    "https://github.com/cline/kanban/security/advisories/GHSA-33x2-jv8j-4cxv"
+   ]
+  },
+  {
+   "bulgu": "Tetikleyici yüzey olarak Plane'in kendisi saldırı yüzeyi: Ağustos 2026'da webhook SSRF, sabit SECRET_KEY, OAuth e-posta eşleşmesiyle hesap ele geçirme gibi birden çok kritik bildirim.",
+   "kanit_url": [
+    "https://github.com/makeplane/plane/security/advisories/GHSA-mq87-52pf-hm3h",
+    "https://github.com/makeplane/plane/security/advisories/GHSA-cmwv-pjmw-8483",
+    "https://github.com/makeplane/plane/security/advisories/GHSA-7j95-vh8g-f365"
+   ]
+  },
+  {
+   "bulgu": "Maliyet ve kimlik oynak: Codex'te oran sınırı maliyeti bir gecede 10-20 kat arttı; Anthropic abonelik kimliklerinin üçüncü taraf ajanlarda kullanımını engelledi (abonelikle çalışan Terragon/Aperant tarzı modelleri vurdu); Aperant Max planında oran sınırına takıldı.",
+   "kanit_url": [
+    "https://github.com/openai/codex/issues/28879",
+    "https://github.com/anomalyco/opencode/issues/7410",
+    "https://github.com/AndyMik90/Aperant/issues/1864"
+   ]
+  },
+  {
+   "bulgu": "Büyük ölçekli üreticiler (OpenAI Codex, Replit Agent) ajan kontrol düzlemini dayanıklı akış motoru (Temporal) üzerinde koşturuyor; hazır kanban-ajan açık kaynak projeleri ise bellek içi durum + dosya sistemiyle çalışıyor ve hata sınıfları buradan doğuyor.",
+   "kanit_url": [
+    "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal",
+    "https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale",
+    "https://github.com/openai/symphony/blob/main/SPEC.md"
+   ]
+  },
+  {
+   "bulgu": "Masaüstü paralel worktree araçları (Conductor, Superset, Emdash, claude-squad, Crystal, Sculptor) tek geliştirici verimliliği için; çok kullanıcılı yönetişim, merkezi kota, denetim izi ve 12+ ekip ölçeği yok.",
+   "kanit_url": [
+    "https://madewithlove.com/blog/conductor-running-multiple-ai-coding-agents-in-parallel/",
+    "https://github.com/generalaction/emdash/issues/2987",
+    "https://github.com/superset-sh/superset/issues/2863"
+   ]
+  },
+  {
+   "bulgu": "'Şirket/Scrum simülasyonu' çerçeveleri (MetaGPT, ChatDev, GPT-Pilot, Devika, AgileCoder) greenfield demo odaklı; mevcut kod tabanıyla çalışma en çok istenen eksik, çoğu durgun veya terk; SAFe/çok ekip hedefleyen olgun proje yok.",
+   "kanit_url": [
+    "https://github.com/FoundationAgents/MetaGPT/issues/2010",
+    "https://github.com/Pythagora-io/gpt-pilot/issues/335",
+    "https://github.com/OpenBMB/ChatDev/issues/147",
+    "https://github.com/FSoft-AI4Code/AgileCoder"
+   ]
+  }
+ ],
+ "kaynaklar": [
+  "https://github.com/openai/symphony/blob/main/SPEC.md",
+  "https://www.helpnetsecurity.com/2026/04/28/openai-symphony-codex-orchestration-linear/",
+  "https://www.vibekanban.com/blog/shutdown",
+  "https://docs.terragonlabs.com/docs/resources/shutdown",
+  "https://www.tembo.io/blog/goodbye-background-agents",
+  "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+  "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+  "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira",
+  "https://www.atlassian.com/blog/announcements/ai-agents-in-jira",
+  "https://linear.app/docs/assigning-issues",
+  "https://linear.app/developers/aig",
+  "https://plane.so/blog/agents-are-now-live-in-plane",
+  "https://developers.plane.so/dev-tools/agents/overview",
+  "https://temporal.io/blog/of-course-you-can-build-dynamic-ai-agents-with-temporal",
+  "https://temporal.io/resources/case-studies/replit-uses-temporal-to-power-replit-agent-reliably-at-scale",
+  "https://www.answer.ai/posts/2025-01-08-devin.html",
+  "https://www.aikido.dev/blog/promptpwnd-github-actions-ai-agents",
+  "https://www.securityweek.com/claude-code-gemini-cli-github-copilot-agents-vulnerable-to-prompt-injection-via-comments/",
+  "https://metr.org/blog/2025-06-05-recent-reward-hacking/",
+  "https://arxiv.org/abs/2510.20270",
+  "https://arxiv.org/abs/2607.04697",
+  "https://arxiv.org/abs/2601.04886",
+  "https://arxiv.org/abs/2507.15003",
+  "https://madewithlove.com/blog/conductor-running-multiple-ai-coding-agents-in-parallel/",
+  "/Users/w6x/Documents/otomasyon coding/arac-haritasi/00-harita.json (AR-4043, AR-0089, AR-2830, AR-0097, AR-0194, AR-0116, AR-0001)",
+  "/Users/w6x/Documents/otomasyon coding/risk-haritasi/olaylar/olay-kaydi.json"
+ ],
+ "meta": {
+  "gorev": "B1",
+  "tarih": "2026-09-27",
+  "yontem": "gh api (depo meta verisi, issue araması, güvenlik bildirimleri, discussions), WebSearch, WebFetch; araç ve risk haritası salt okuma. Yıldız/push değerleri 27.09.2026 gh api çıktısıdır.",
+  "sinif_sayimi": {
+   "takilma": 22,
+   "guvenlik": 20,
+   "olcek": 19,
+   "diger": 18,
+   "terk": 15,
+   "kimlik": 14,
+   "maliyet": 12,
+   "cakisma": 10,
+   "bellek": 9,
+   "dongu": 8,
+   "oracle": 7,
+   "disk": 5
+  },
+  "not": "Sayımlar bu dosyadaki seçilmiş kanıtlı sorunlara göredir; projelerin tüm issue'larını temsil etmez."
+ }
+}

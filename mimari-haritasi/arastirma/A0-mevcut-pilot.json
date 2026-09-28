@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "tarih": "2026-09-27",
+    "kok_dizin": "/Users/w6x/Developer/software-factory",
+    "yontem": "salt okuma: dosya, git log/show/diff --stat/status, docker ps/inspect/logs --tail 200, ps; DB sorgusu yok; sır dosyaları açılmadı",
+    "rapor": "A0-mevcut-pilot-inceleme.md"
+  },
+  "mimari_bilesenler": [
+    {"ad": "Plane CE 1.4.2", "rol": "görev girişi ve durum; web/space/admin/live/api/worker/beat/proxy + valkey + RabbitMQ + MinIO + plane-db; 127.0.0.1:8088", "kanit": "compose.yaml:57-464"},
+    {"ad": "Kestra 2.0.1 (OCI nightly, sha256:948dae5a)", "rol": "aşama sırası ve UI; LoopUntil ile 15 sn'de bir Postgres yoklar (11 LoopUntil, 29 JDBC Query, 1 Pause, delivery'de retry yok); concurrency 5", "kanit": "flows/delivery.yaml:15-66,579-584,653-667"},
+    {"ad": "Kestra Java eklentisi io.kestra.plugin.fabrika.Control", "rol": "Kestra formu -> Postgres control_requests komut kuyruğu -> Python; OSS dashboard 405 olduğu için yazıldı", "kanit": "plugins/kestra-control/src/main/java/io/kestra/plugin/fabrika/*.java; README.md:54; VALIDATION-V7.md:27"},
+    {"ad": "factory Postgres şeması", "rol": "92 tablo: iş, aşama, lease, sayaç, çağrı, sözleşme, outbox, olay/kurtarma, hesap havuzu", "kanit": "scripts/*.sql; CREATE TABLE sayımı"},
+    {"ad": "Python süpervizör factory_service.py (launchd)", "rol": "3 sn döngü: Plane intake (30 sn), dispatch, reconcile, outbox, snapshot, worker/maintenance/optimizer alt süreçleri; iş parçacıkları: kontrol dağıtıcı 250 ms, ECA 1 s", "kanit": "factory_service.py:12-95; infrastructure.md:110"},
+    {"ad": "Ek host süreçleri", "rol": "factory_autonomy_service --management/--background/--reporting, factory_blockage_worker, factory_storybook_live, caffeinate -dis", "kanit": "ps (2026-09-27)"},
+    {"ad": "factory_worker.py", "rol": "aşama işçisi; 120 sn lease + 15 sn heartbeat; plan/test_red/code_green/review/readiness/github/build/deploy", "kanit": "factory_worker.py:251-856; factory_scheduler.py:22"},
+    {"ad": "Ajan sandbox (docker run, Colima factory)", "rol": "read-only rootfs, cap-drop ALL, no-new-privileges, pids 256, 2g/2cpu, yalnız worktree + hesap dizini (RW) + çıktı dosyası; docker.sock yok", "kanit": "factory_agent_runtime.py:44-68; config/agent-image.json"},
+    {"ad": "Claude Agent SDK 0.3.270 / Claude Code 2.1.267", "rol": "coder ve teknik roller; bypassPermissions, persistSession:false, continue:false", "kanit": "runtime/sdk/claude.mjs:72-87; DEVIR-RAPORU.md:20"},
+    {"ad": "Codex SDK 0.154.0 / Codex CLI 0.153.4", "rol": "PO, SM, SDET, platform/release, bağımsız inceleme; startThread danger-full-access (sınır Docker)", "kanit": "runtime/sdk/codex.mjs:72-76"},
+    {"ad": "GitHub atonota/v1test", "rol": "gh CLI ile push/PR/CI yoklama (10 sn, 600 sn)/--match-head-commit merge; SHA sabitli CI", "kanit": "factory_worker.py:626-664; projects/v1test/.github/workflows/ci.yml"},
+    {"ad": "Yerel ortamlar", "rol": "tek imaj alpha 8111/beta 8112/rc 8113/prod 8114 (+ generic 8200-8202); manifestler state/delivery-repo", "kanit": "docker ps; VALIDATION-V5.md:12; README.md:50"},
+    {"ad": "Storybook canlı önizleme", "rol": "6017; commit SHA eşlemeli", "kanit": "DEVIR-RAPORU.md:33-37"},
+    {"ad": "Colima factory VM", "rol": "10 CPU / 24 GiB / 100 GiB; bugün alakasız 25+ konteynerle paylaşımlı (penpot, postiz+temporal+elasticsearch, open-notebook)", "kanit": "infrastructure.md:20; docker ps; docker info"}
+  ],
+  "dogrulanmis_calisanlar": {
+    "gorevler": [
+      {"id": "e108c171", "ad": "ilk pilot", "sonuc": "RELEASED/prod", "cagri": 10, "onbelleksiz_girdi": 179908, "toplam_girdi": 1242948, "onbellek": 1063040, "cikti": 21018, "sure": "~26 dk (22:52->23:18 TRT)", "not": "2 elle kurulum onarımı; müdahalesiz değil", "kanit": "docs/PILOT-RESULT.md:5-34; evidence/e108c171*/ zaman damgaları"},
+      {"id": "cd2d3525", "ad": "V4/V5 adaptif UI", "sonuc": "ERROR_REPAIR_LIMIT; ürün operatörce elle yayınlandı", "cagri": 10, "onbelleksiz_girdi": 226471, "cikti": 8503, "kanit": "VALIDATION-V5.md:16-20"},
+      {"id": "364c693e", "ad": "V8 generic Python app", "sonuc": "RC'ye kadar PASS, PR #3 merged; evaluator değişince ERROR/rc; prod yok", "cagri": 5, "onbelleksiz_girdi": 61694, "cikti": 3670, "kanit": "VALIDATION-V8.md:38-66"},
+      {"id": "30bc1cb8", "ad": "V1-4 UI kütüphanesi (73 Ant Design karşılığı)", "sonuc": "ERROR KESTRA_FAILED (review); AC-REQUEST NOT_TESTED; 73 paket yerel dalda MERGED, GitHub PR yok", "cagri": 456, "cagri_kullanimi_bilinen": 363, "cagri_kullanimi_bilinmeyen": 93, "onbelleksiz_girdi": 24097677, "toplam_girdi": 419985626, "onbellek": 395887949, "cikti": 6997704, "sure": "2026-09-12 22:43 UTC -> 2026-09-25 (13 gün)", "hata_dongusu": {"RUNNING_to_ERROR": 46, "ERROR_to_RUNNING_or_QUEUED": 47}, "olay_kaydi": 198, "paket_teslim_satiri": {"MERGED": 79, "SUPERSEDED": 22, "LOCAL": 1, "farkli_MERGED_paket": 73}, "yerel_dal_diff": "251 commit, 1346 dosya, +116987 satır", "kanit": "state/public/status.json; evidence/autonomy-reports/30bc1cb8-1b94-4a62-bb83-8d9211ef4e96/v3494-3a1e42b3577fb3e2.md; projects/v1test git"},
+      {"id": "9 çocuk takım işi", "sonuc": "RUNNING/code_green görünüyor, son güncelleme 16-18.09; hiçbir worker süreci yok", "cagri_toplam": 391, "kanit": "state/public/status.json; ps"}
+    ],
+    "basari_orani": {"kok_gorev": 4, "otonom_mudahalesiz_prod": 0, "mudahaleyle_RELEASED": 1, "RC_ye_ulasan": 3},
+    "tum_zamanlar_toplam": {"cagri": 481, "onbelleksiz_girdi": 24565750, "cikti": 7030895, "kullanimi_bilinmeyen_cagri": 93, "para_kredi_maliyeti": "ölçülmedi (UNKNOWN)"},
+    "gecen_testler": {"pilot_urun_testleri": "133 test (93 RED -> GREEN)", "V5": "137 pytest + 36 x3 tarayıcı", "V8_kontrol": "383 geçti", "Java_eklenti": 65, "not": "farklı kapsamlar; toplanmamalı", "kanit": "PILOT-RESULT.md:14; VALIDATION-V5.md:26-33; VALIDATION-V8.md:70; VALIDATION-V7.md:64"}
+  },
+  "olculmus_kaynak_kullanimi": {
+    "host": "Apple M5 Max, 18 CPU, 128 GiB RAM",
+    "colima_vm": "10 CPU, ~23,4 GiB (MemTotal 25145901056), 100 GiB disk",
+    "coder_ajan_konteyneri_MiB": [208.5, 205.8],
+    "coder_ajan_limit": "2 GiB / 2 CPU",
+    "tarayici_testi": "710,5 MiB / 1 GiB, %93,9 CPU (~1 çekirdek)",
+    "kestra": "2,93 GiB / 6 GiB, %4,1 CPU",
+    "plane_celery_worker": "805,8 MiB / 2 GiB",
+    "factory_postgres": "154 MiB, %19,9 CPU",
+    "konteyner_toplami": "~6,2 GiB (tek örnek)",
+    "macos_vm_rss": "~20,18 GiB",
+    "swap_kumulatif": "9,79 GiB",
+    "eski_pilot_ortamlari": "~170 MiB (7 konteyner)",
+    "fabrika_konteyner_limit_toplami_GiB": 23.75,
+    "host_supervizor_rss": "factory_service ~133 MiB; diğer süreçler 15-90 MiB",
+    "evidence_disk": "2,4 GiB; tek görevin raporları 3935 dosya / 306 MiB",
+    "eszamanlilik": {
+      "pilot_profili": "1 proje / 1 görev",
+      "v8": "2 slot",
+      "olculen_aktif_model_cagrisi_14_09": 2,
+      "15_09_gozlenen": ">=6 eşzamanlı Claude coder çağrısı reviewer'ı aç bıraktı",
+      "yapilandirma_bugun": {"scheduler_max_slots": 8, "kestra_delivery_concurrency": 5, "claude_hesap_basina": 4},
+      "not": "belge (2), flow (5) ve scheduler (8) arasında sapma; eşzamanlılık artışının verime etkisi ölçülmedi"
+    },
+    "zaman_verimi": "V1-4 5. nesil: 9 sa 43 dk duvar saatinde ~101 dk çağrı süresi",
+    "kanit": "docs/audits/2026-09-14-reliability-efficiency/infrastructure.md:19-31; RAPOR.md:51-57; config/scheduler.json; config/provider-concurrency.json; docker inspect; ps; du"
+  },
+  "karmasiklik_olculeri": {
+    "factory_modul": 98,
+    "satir": 27294,
+    "byte": 1814019,
+    "fonksiyon": 1432,
+    "test_dosyasi": 215,
+    "test_fonksiyonu": 1797,
+    "test_satiri": 29895,
+    "test_kod_orani_satir": 1.10,
+    "postgres_tablo": 92,
+    "kestra_flow": 22,
+    "kestra_flow_satir": 1641,
+    "sql_satir": 904,
+    "java_eklenti_satir": 298,
+    "skill": 18,
+    "canliya_aktivasyon_manifesti": 60,
+    "deploy_betigi": 62,
+    "git": {"commit": 3, "izlenen_dosya": 70, "izlenmeyen_factory_modulu": 87, "izlenmeyen_girdi": 428, "degisen": 27, "silinen": 3},
+    "buyume": "11.09: 11 modül -> 18.09: 98 modül (~7 günde +87 modül)",
+    "kavram_tekrari": {
+      "istenen_kume_modul": 17,
+      "istenen_kume_satir": 4530,
+      "moduller": {"blockage": ["factory_blockages", "factory_blockage_activation", "factory_blockage_checkpoint", "factory_blockage_repair", "factory_blockage_resume", "factory_blockage_store", "factory_blockage_worker"], "repair": ["factory_self_repair", "factory_runtime_repair", "factory_foundation_repair"], "recovery": ["factory_recovery", "factory_package_recall"], "correction": ["factory_controller_correction", "factory_autonomy_corrections"], "resume_retry": ["factory_job_resume", "factory_oracle_resume", "factory_component_retry"]},
+      "ariza_kurtarma_alani_genis": {"modul": 24, "satir": 6566, "kod_tabani_orani": 0.24},
+      "benzer_kayit_tipleri": ["blockage_cases", "incidents", "recovery_queue", "support_requests", "maintenance_requests", "foundation_defects", "package_recalls", "runtime_handoffs"]
+    },
+    "kestra_yetmeyince_yazilan_ozel_cozumler": [
+      "Java eklentisi + Postgres komut kuyruğu (control_requests)",
+      "OSS dashboard POST 405 -> önce 8090 web paneli, sonra kaldırıldı; control-dashboard.yaml etkin değil",
+      "Aşama yürütme Kestra dışında; LoopUntil 15 sn yoklama, P7D sınırı",
+      "Özel lease/heartbeat/zombi slot/uyku dayanıklılığı",
+      "4 ayrı outbox + recovery_queue + ayrı rapor flow'u"
+    ],
+    "kanit": "wc -l/grep sayımları; README.md:54; VALIDATION-V6.md:81; VALIDATION-V7.md:27-31; experiments/sleep-tolerant-leases-20260915/README.md"
+  },
+  "kok_nedenler": [
+    {"neden": "Dayanıklı iş akışı ilkeleri (lease, heartbeat, retry, bekleme, devam, outbox) Python+SQL ile elle yazıldı; Kestra yalnız 15 sn yoklayıcı", "kanit": "flows/delivery.yaml:32-43 (LoopUntil PT15S, P7D); factory_scheduler.py:22; factory_worker.py:755; DEVIR-RAPORU.md:47-89; logs/autonomy.log (7 DeadlockDetected, 569 recovery_dispatch_pending StopJob); sleep-tolerant-leases README:18-32 (1275 BlockageStoreError); V1-4 son hata KESTRA_FAILED (25.09, 7 gün bekleme sonrası)", "etki": "Zamanın çoğu kontrol düzlemi hatalarına gitti (SAATLIK-ILERLEME:5); 198 olay kaydı, 326 SUPERSEDED_BY_CONTROLLER_CORRECTION"},
+    {"neden": "Canlı sistem sürüm kontrolü olmadan yamalandı; düzeltmeleri fabrika değil GUI Codex/Claude oturumları yaptı", "kanit": "git: 3 commit, 87/98 modül izlenmiyor; 60 activation-manifest; SAAS-UI-FIRST-DELIVERY-REPORT.md:24; SAATLIK-ILERLEME-2026-09-14.md:42; RAPOR.md:138-142", "etki": "Tekrarlanabilirlik ve geri alma yok; her kontrol kodu değişikliği eski kanıtı geçersiz kılıyor (VALIDATION-V8.md:64; CORRECTION_SOURCE_CHANGED)"},
+    {"neden": "Kapsam patlaması: tek pilot sonrası 7 günde SAFe/ART 9 takım, 10 uzman, ECA, Kaizen/CAPA, çoklu sağlayıcı, adaptör niteleme; ilk ürün 73 bileşenli tam kütüphane (MVP değil)", "kanit": "IHTIYACLAR-VE-GAP-ANALIZI-2026-09-12.md:11-28 (16 ihtiyaç); AI-CREDIT-OPTIMIZATION-ACTION-PLAN.md:9 (225 mantıksal sorumluluk); SAAS-UI-FIRST-DELIVERY-REPORT.md:7,54; git ls-files (11 -> 98 modül)", "etki": "Temel akış sağlamlaşmadan her katman yeni arıza sınıfı ekledi; 92 tablo, 27k satır"},
+    {"neden": "Kabul/oracle problemi: genel AC-REQUEST, dosya varlığı = kanıt sanılması, eksik probe'lar; paket yeşili ürün kabulüne dönüşmedi", "kanit": "son rapor satır 7-9 (AC-REQUEST NOT_TESTED); VALIDATION-V6.md:24; VALIDATION-V8.md:40; foundation-repair README bulgu 4 (UI-09 14x review FAIL); 22 SUPERSEDED paket; RAPOR.md:106-110; DEVIR-RAPORU.md:93-101", "etki": "456 çağrı ve 73 MERGED paket sonrası ürün kabul edilemedi; WAITING_DECISION/CHANGE_REQUIRED"},
+    {"neden": "Sağlayıcı/hesap kapasitesi darboğazı ve bakım bütçesi onarımı aç bıraktı", "kanit": "README.md:31,60 (tek Codex hesabı); DEVIR-RAPORU.md:59 (2+2, kota doğrulanmamış); logs/blockages.log: 330 PROVIDER_CAPACITY_UNAVAILABLE, 56 MAINTENANCE_DAILY_BUDGET, 405 diagnostician-assigned; config/provider-concurrency.json:3; RAPOR.md:116", "etki": "Coder'lar kapasiteyi tüketti; teşhis/onarım/inceleme bekledi; arızalar kapanmadı"},
+    {"neden": "Mac uykusu üretimi ve lease'leri kırıyor", "kanit": "README.md:74; experiments/sleep-tolerant-leases-20260915/README.md:9-22 (pmset ile saniye eşleşmesi; caffeinate -i kapak uykusunu engellemez; zombi slotlar tüm kapasiteyi tuttu)", "etki": "Gece üretimi durur; uyanışta SCHEDULER_LEASE_LOST, zombi slot, kurtarma döngüsü"},
+    {"neden": "Bütçe/tekrar sınırları adaptive modda uyarıya dönüştü", "kanit": "config/policy.json:26-27 (adaptive, hard_limits []); factory_execution_policy.py:30-58; ADAPTIVE-EXECUTION-2026-09-13.md:7,13; V1-4: 456/12 çağrı, 24,1M/250k önbelleksiz girdi, 7,0M/50k çıktı", "etki": "Yakınsama olmadan harcama büyüdü; 46 ERROR / 47 yeniden başlatma"},
+    {"neden": "Eşzamanlılık artışı verime dönüşmedi; durum doğruluğu zayıf", "kanit": "README.md:31 (2) vs flows/delivery.yaml:15 (5) vs config/scheduler.json (8); RAPOR.md:51-52 (6 takım, 2 aktif çağrı); status.json (9 çocuk RUNNING, worker süreci yok); factory_core.py:63 (Plane 429); 3935 rapor dosyası", "etki": "Kullanıcı gerçek ilerlemeyi göremiyor; paralel slotlar lease/kapasite hatalarıyla bloke"},
+    {"neden": "Çağrılar arası oturum/bağlam devamı yok; aynı iş yeniden keşfediliyor", "kanit": "runtime/sdk/claude.mjs:75; runtime/sdk/codex.mjs:73; economics.md:25; V1-4 girdisinin %94'ü önbellek (395,9M/420M)", "etki": "Token maliyeti yüksek; onarım çağrıları önceki muhakemeyi yeniden kuruyor"}
+  ],
+  "tasinacaklar": [
+    {"parca": "Sürümlü kabul sözleşmesi + aşamaya bağlı koşullar (PENDING, eski kanıt reddi)", "yol": "factory_readiness.py; factory_phase_contracts.py; docs/ADR-009-TEST-ORACLES.md", "neden": "V8'de yanlış kabul bağlaması yakalandı, düzeltildi, RC'ye kadar geçti (VALIDATION-V8.md:40-52); model olarak taşınmalı"},
+    {"parca": "Korumalı test / evaluator kilidi; test yazarı-coder-bağımsız inceleme ayrımı; altyapı hatası RED sayılmaz", "yol": "config/evaluator-lock.json; README.md:58; KAIZEN.md:13,21-27", "neden": "Pilot: 133 test, 93 davranış RED -> GREEN; inceleme gerçek hata buldu (PILOT-RESULT.md:14)"},
+    {"parca": "Atomik bütçe sayaçları + kök bütçeye yayılım (sert limitle)", "yol": "factory_core.py:295-328; factory_budget_roots.py", "neden": "Eşzamanlı rezervasyon ve sayaç koruması testle doğrulandı (PILOT-RESULT.md:18; VALIDATION-V6.md:42)"},
+    {"parca": "Plane durum sözlüğü + outbox ile durum senkronu", "yol": "scripts/bootstrap_plane.py:29; scripts/governance.sql:97,109; factory_core.py:171-294", "neden": "4 görevde tutarlı geçişler (READY->IN_PROGRESS->REVIEW->RELEASED/ERROR)"},
+    {"parca": "Plane giriş sözleşmesi (fabrika JSON bloğu, FABRIKA: satırı, fabrika:app= etiketleri) + işaretli yorumla soru/rapor", "yol": "factory_plane_intake.py:11,20-36; factory_plane_dialogue.py:19-37", "neden": "Deterministik hedef çözümü; eksik bilgi soruya dönüşür, ERROR'a değil"},
+    {"parca": "Skills klasörü", "yol": "skills/*/SKILL.md (18 dosya, 189 satır)", "neden": "Kısa, rol odaklı; acceptance-contract, tdd-refactor, test-oracle, evidence-review özellikle"},
+    {"parca": "CI şablonu", "yol": "projects/v1test/.github/workflows/ci.yml", "neden": "SHA sabitli action'lar; pytest + Playwright 3 tarayıcı + axe + Storybook; PR #1/#2/#3 başarılı"},
+    {"parca": "Ajan sandbox parametreleri", "yol": "factory_agent_runtime.py:44-68", "neden": "Güvenli izolasyon; coder başına ölçülen ~210 MiB RAM (infrastructure.md:26)"},
+    {"parca": "SDK adaptörleri ve dürüst kullanım muhasebesi (UNKNOWN != 0)", "yol": "runtime/sdk/claude.mjs; runtime/sdk/codex.mjs; factory_provider_pool.py:421", "neden": "Önbellek/önbelleksiz/çıktı ayrımıyla güvenilir token kaydı"},
+    {"parca": "GitHub merge koruması + tek imajla alpha->beta->rc->prod terfisi", "yol": "factory_worker.py:626-712; state/delivery-repo", "neden": "Dört ortamda aynı imaj SHA'sı doğrulandı (PILOT-RESULT.md:12); --match-head-commit, base değişince yeniden inceleme"},
+    {"parca": "Hata sınıflandırma sözlüğü ve durma sebepleri", "yol": "factory_core.py:347-360; factory_governance.py:232", "neden": "Aynı hata tekrarını ve ürün/altyapı ayrımını yakalıyor"},
+    {"parca": "Mevcut denetim/devir belgeleri (hata senaryosu envanteri)", "yol": "docs/audits/2026-09-14-reliability-efficiency/; docs/handoffs/2026-09-15-claude/DEVIR-RAPORU.md", "neden": "Yeni sistemin kabul/regresyon test listesi olarak kullanılabilir"}
+  ],
+  "plane_durumlari": {
+    "durumlar": [
+      {"ad": "BACKLOG", "grup": "backlog", "renk": "#64748b", "varsayilan": true, "anlam": "taslak; fabrika_gorev formu önce BACKLOG açar", "kanit": "scripts/bootstrap_plane.py:29; factory_control.py:101-102"},
+      {"ad": "READY", "grup": "unstarted", "renk": "#3b82f6", "anlam": "tetik; fabrika 30 sn'de bir yalnız READY okur", "kanit": "factory_core.py:118; README.md:17,23"},
+      {"ad": "IN_PROGRESS", "grup": "started", "renk": "#8b5cf6", "anlam": "kabul edilen/çalışan iş (outbox ile)", "kanit": "factory_autonomy_service.py:78; factory_controller_correction.py:251"},
+      {"ad": "REVIEW", "grup": "started", "renk": "#f59e0b", "anlam": "RC hazır; Kestra Pause 24 sa, onay yoksa CANCEL", "kanit": "factory_worker.py:730; flows/delivery.yaml:579-584"},
+      {"ad": "WAITING_DECISION", "grup": "started", "renk": "#f59e0b", "anlam": "kapsam/kabul çelişkisi; beklerken AI çağrısı yok", "kanit": "README.md:9; scripts/governance.sql:94"},
+      {"ad": "ERROR", "grup": "cancelled", "renk": "#ef4444", "anlam": "terminal; READY'ye taşımak sayaçları sıfırlamaz", "kanit": "README.md:23; scripts/governance.sql:97"},
+      {"ad": "RELEASED", "grup": "completed", "renk": "#22c55e", "anlam": "yerel prod yayını", "kanit": "scripts/governance.sql:109; scripts/schema.sql:71"}
+    ],
+    "ozel_alanlar": "Plane custom property kullanılmıyor",
+    "meta_veri_tasima": ["açıklamada ```fabrika {...}``` JSON bloğu", "FABRIKA: {...} satırı", "etiketler: fabrika:app=, fabrika:module=, fabrika:target=, fabrika:release="],
+    "izinli_alanlar": ["app", "module", "target", "release_target", "requirements"],
+    "kabul_kriteri": "açıklamanın serbest metni; ayrı kriter yoksa tek madde AC-REQUEST",
+    "soru_ve_rapor": "Plane yorumu; <code>FABRIKA:<QUESTION|REPORT>:<issue>:<digest16></code> işareti + <pre> gövde (<=100k karakter); cevaplar yetkili kullanıcı yorumlarından okunur",
+    "alt_gorevler": "takım alt işleri Plane'de alt görev olarak açılmaz; yalnız DB'de (autonomy_delivery_children)",
+    "workspace_proje": "workspace fabrika; proje 'Fabrika Durum ve Görev Panosu' (v1test); repo atonota/v1test; alpha 8111, beta 8112, rc 8113, prod 8114",
+    "kanit": "factory_plane_intake.py:11,20-36; factory_plane_dialogue.py:19-37,167-180; scripts/bootstrap_plane.py:35; AGENT-ANALIZI-VE-IS-AKISI-V2.md:102"
+  },
+  "ek_gozlemler": [
+    "Ürün reposundaki 259 commit ve fabrika reposundaki 2 commit 'Factory Bot <factory@localhost>' kimliğiyle atılmış; kullanıcının git yazar politikası bu sistemde uygulanmıyor (git log)",
+    "happy_banach adlı asılı 'claude auth login' konteyneri 14.09'dan beri çalışıyor (docker inspect)",
+    "Colima factory VM bugün alakasız yüklerle paylaşımlı (46 çalışan konteyner); fabrika konteyner limitlerinin toplamı (23,75 GiB) tek başına VM belleğine eşit",
+    "Pytest autouse fixture'ları DB'yi initialize eder; canlı DB'de test çalıştırma riski (DEVIR-RAPORU.md:185)"
+  ]
+}

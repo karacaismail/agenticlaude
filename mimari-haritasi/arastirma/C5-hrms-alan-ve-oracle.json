@@ -1,0 +1,3763 @@
+{
+ "meta": {
+  "soru": "C5 - Turkiye icin HRMS 'DoD'ye kadar tamam' ne demek ve oracle nereden gelir",
+  "tarih": "2026-09-27",
+  "durum": "tamamlandi (JSON + C5-ozet.md)",
+  "kurallar": "Her yasal/olgusal iddia URL ile; dogrulanamayan 'dogrulanamadi'; 2026 degerleri sadece resmi 2026 kaynagi varsa",
+  "alt_dosyalar": [
+   "_C5-alt-karsilastirma.json (rakip karsilastirma, alt ajan)",
+   "_C5-alt-oracle-entegrasyon.json (oracle artefaktlari ve entegrasyonlar, alt ajan)"
+  ],
+  "yontem": "Birincil kaynaklar yerel olarak indirilip (mevzuat.gov.tr PDF, CSGB/SGK/GIB PDF, Resmi Gazete HTML) macOS PDFKit ile metne cevrildi ve ilgili maddeler okundu; Frappe HRMS git clone ile olculdu; iki alt ajan (karsilastirma, oracle/entegrasyon) paralel calisti."
+ },
+ "moduller": [
+  {
+   "modul": "Dashboard + Gorevlerim (onay gelen kutusu, uyarilar)",
+   "alt_ekranlar": [
+    "KPI kartlari",
+    "oncelikli uyarilar",
+    "bekleyen onaylar",
+    "otomasyon takvimi",
+    "gorev listesi"
+   ],
+   "yetenekler": [
+    "tum modullerden onay/gorev toplama (izin, FM, PDKS duzeltme, bordro onayi, belge imzasi)",
+    "son tarih uyarilari (MPHB 26'si, ise giris bildirgesi baslama oncesi, ayrilis 10 gun, deneme suresi bitisi)",
+    "rol bazli gorunum",
+    "AI ozetlerinin kaynak veriye izlenebilirligi"
+   ],
+   "varliklar": [
+    "Task",
+    "ApprovalRequest",
+    "Notification",
+    "DeadlineRule"
+   ],
+   "bagimliliklar": [
+    "tum moduller"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Yasal son tarihler: MPHB ayi izleyen ayin 26'si (GIB kilavuzu), ise giris baslama oncesi, ayrilis 10 gun (5510 md.8-9)",
+     "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "e-posta/Slack/Teams bildirimleri"
+   ],
+   "oracle_kaynagi": "Son tarih kurallari: mevzuat; KPI tanimlari: musteri",
+   "ai_test_edebilir": [
+    "son tarih hesaplari (hafta sonu/tatile denk gelme kurali - uzman teyidi)",
+    "gorev toplama ve yetki filtreleri",
+    "AI ozetindeki sayilarin kaynak sorguyla eslesmesi (halusinasyon testi)"
+   ],
+   "insan_gerekir": [
+    "KPI anlamliligi, UX kabul"
+   ],
+   "prototipte_var": "KPI'lar, AI oncelikli uyarilar, bekleyen izinler, ayrilma riski tablosu, departman dolulugu, otomasyon takvimi; Gorevlerim sayfasi",
+   "eksik": [
+    "yasal son tarih motoru",
+    "AI ozetlerinin veri kaynagina baglantisi (prototipte metinler statik)"
+   ]
+  },
+  {
+   "modul": "Calisanlar (Employee master / Employee 360)",
+   "alt_ekranlar": [
+    "liste+filtre",
+    "Employee 360 detay (kimlik, iletisim, is, sozlesme, SGK, ucret, izin, belge, zimmet, gecmis)",
+    "yeni calisan sihirbazi",
+    "toplu ice aktarma"
+   ],
+   "yetenekler": [
+    "effective-dated calisan kaydi",
+    "TCKN/yabanci kimlik (YKN) dogrulama ve maskeleme",
+    "coklu istihdam (ayni kisi farkli sirketlerde)",
+    "yakinlar/bakmakla yukumlu (engellilik indirimi, BES, SGK)",
+    "engellilik derecesi",
+    "egitim durumu, meslek kodu",
+    "banka/IBAN (dogrulamali)",
+    "calisan numarasi sirket bazli"
+   ],
+   "varliklar": [
+    "Person",
+    "Employee(Employment)",
+    "EmployeeHistory",
+    "Dependent",
+    "BankAccount",
+    "IdentityDocument",
+    "DisabilityRecord"
+   ],
+   "bagimliliklar": [
+    "Organizasyon (sirket, isyeri, departman)",
+    "Pozisyonlar",
+    "Ozluk",
+    "Ucretler",
+    "SGK (meslek kodu, belge turu)",
+    "tum modullerin ana verisi"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Ozluk dosyasi tutma ve bilgileri durustluk kuralina uygun kullanma yukumlulugu (4857 md.75)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Kisisel veri isleme sartlari, ozel nitelikli veri (saglik, biyometrik, sendika, ceza mahkumiyeti) (6698 md.5-6)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    },
+    {
+     "kural": "Engellilik indirimi derece ve tutarlari (GVK md.31; 2026: 12.000/7.000/3.000 TL)",
+     "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFile?objectKey=DUYURU/UNIVERSAL/2026/2026_Ucret_Geliri.pdf"
+    },
+    {
+     "kural": "50+ isci calistiran ozel sektor isyerinde %3 engelli istihdam yukumlulugu (4857 md.30)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "e-Devlet/MERNIS kimlik dogrulama: dogrulanamadi (ozel sektor erisim kosullari ayri arastirilmali)",
+    "SSO/SCIM (Entra ID vb.)"
+   ],
+   "oracle_kaynagi": "Veri modeli icin mevzuat alan listeleri (SGK ise giris bildirgesi alanlari, 4857 md.75); kurallar icin kanun metni. Is kurali cogunlukla deterministik; oracle = bildirge alan sozlugu + KVKK uzmani.",
+   "ai_test_edebilir": [
+    "CRUD, effective-dating (gecmis sorgu 'as-of' dogru mu)",
+    "TCKN algoritmik dogrulama (mod-10/11 kurali) property testi",
+    "maskeleme ve rol bazli alan gorunurlugu (yetki matrisi testleri)",
+    "ice aktarma (CSV) round-trip, erisilebilirlik, e2e"
+   ],
+   "insan_gerekir": [
+    "hangi alanlarin 'ozel nitelikli' sayilacagi ve saklama sureleri (KVKK uzmani)",
+    "UX kabul"
+   ],
+   "prototipte_var": "Liste (calisan, departman, konum, baslangic, durum, ayrilma riski, katilim), KPI, AI ozet, 'AI ile hizli kayit'; Employee 360 yalniz 'satira tiklayin' notu",
+   "eksik": [
+    "Employee 360 alan seti ve form",
+    "yakinlar/bakmakla yukumlu",
+    "engellilik",
+    "coklu istihdam",
+    "effective-dated gecmis gorunumu",
+    "AI risk skorunun aciklanabilirligi ve KVKK md.11(1-g) otomatik isleme itiraz hakki ile iliskisi (uzman teyidi)"
+   ]
+  },
+  {
+   "modul": "Organizasyon (tuzel kisilik, isyeri, departman, ekip, masraf merkezi)",
+   "alt_ekranlar": [
+    "org agaci",
+    "tuzel kisilikler (VKN)",
+    "SGK isyerleri (sicil no)",
+    "masraf merkezleri",
+    "vekalet/yonetici zinciri"
+   ],
+   "yetenekler": [
+    "holding>sirket>isyeri>departman>ekip hiyerarsisi",
+    "effective-dated yapi degisikligi",
+    "her SGK isyeri icin ayri sicil, tehlike sinifi, kisa vadeli prim orani, tesvik uygunlugu",
+    "sirket bazli ayar kalitimi (tenant>sirket>modul)",
+    "yonetici zinciri ve vekil"
+   ],
+   "varliklar": [
+    "Tenant",
+    "Company(LegalEntity: VKN, vergi dairesi)",
+    "Workplace(SGK sicil, NACE, tehlike sinifi, il/ilce)",
+    "Department",
+    "Team",
+    "CostCenter",
+    "OrgUnitHistory"
+   ],
+   "bagimliliklar": [
+    "Calisanlar",
+    "Bordro (isyeri bazli MPHB/APHB)",
+    "SGK tesvikleri (isyeri bazli kosullar: borc, ortalama sigortali sayisi)",
+    "Muhasebe (masraf merkezi)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Isyeri bildirgesi ve isyeri bazli prim belgesi; imalat sektoru 5 puan / diger 2 puan ayrimi isyerinin faaliyetine bagli (5510 md.81/1-ı, gecici 108; 7566 md.23,27)",
+     "kaynak": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm"
+    },
+    {
+     "kural": "Tesvik kosullari isyeri bazinda (onceki 6 ay ortalama sigortali sayisi, borc yoklugu vb.)",
+     "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK isyeri sicil sorgulama: dogrulanamadi"
+   ],
+   "oracle_kaynagi": "SGK sicil numarasi yapisi ve tesvik kosullari: SGK genelgeleri; kurum yapisi: musteri",
+   "ai_test_edebilir": [
+    "hiyerarsi invariantlari (dongu yok, tek kok)",
+    "as-of tarihli sorgular",
+    "sirket izolasyonu (tenant/company leakage testleri)"
+   ],
+   "insan_gerekir": [
+    "isyerinin 'imalat' sayilip sayilmadigi (NACE kodu yorumu) - mali musavir/SGK uzmani"
+   ],
+   "prototipte_var": "Org agaci, 2 tuzel kisilik (VKN), 4 SGK isyeri sicil no, masraf merkezleri, 'isgucu zinciri' anlatimi",
+   "eksik": [
+    "isyeri NACE/tehlike sinifi/kisa vadeli prim orani alanlari",
+    "tesvik uygunluk durumu (sadece KPI)",
+    "org degisikliginin gecmis gorunumu"
+   ]
+  },
+  {
+   "modul": "Pozisyonlar (pozisyon, is, kademe, butce/kadro plani)",
+   "alt_ekranlar": [
+    "pozisyon listesi",
+    "kademe/iş ailesi",
+    "kadro plani & butce",
+    "pozisyon acma onayi"
+   ],
+   "yetenekler": [
+    "pozisyon != kisi (bos pozisyon kadroda kalir)",
+    "kademe-ucret bandi baglantisi",
+    "SGK meslek kodu eslemesi (pozisyon/unvan -> meslek kodu)",
+    "butce/aylik brut maliyet",
+    "ise alim talebine donusum"
+   ],
+   "varliklar": [
+    "Position",
+    "Job",
+    "JobFamily",
+    "Grade",
+    "StaffingPlan",
+    "PositionBudget"
+   ],
+   "bagimliliklar": [
+    "Organizasyon",
+    "Ucretler (bant)",
+    "Ise Alim (talep)",
+    "SGK (meslek kodu)",
+    "Terfiler"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Sigortalinin meslek kodu bildirimi (ise giris bildirgesi/MPHB alanlari) - kod listesi SGK'dan; dogrulanamadi (kod listesi URL'si alt ajan raporunda)",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK meslek kodlari listesi (ISCO-08 tabanli)"
+   ],
+   "oracle_kaynagi": "SGK meslek kod listesi (acik veri) + musteri kadro plani",
+   "ai_test_edebilir": [
+    "butce hesap tutarliligi",
+    "durum makinesi (bos>butcelenmis>dolu>dondurulmus)",
+    "meslek kodu gecerlilik (liste uyeligi)"
+   ],
+   "insan_gerekir": [
+    "unvan->meslek kodu eslemesinin dogrulugu (IK uzmani)"
+   ],
+   "prototipte_var": "Pozisyon listesi (kademe, butce, durum), kademe dagilimi, is aileleri",
+   "eksik": [
+    "meslek kodu alani",
+    "kadro plani donemsel versiyonlama",
+    "pozisyon-ucret bandi uyumsuzluk kurali"
+   ]
+  },
+  {
+   "modul": "Ozluk (personel dosyasi)",
+   "alt_ekranlar": [
+    "dosya tamlik listesi",
+    "zorunlu belge kontrol listesi",
+    "sozlesme gecmisi",
+    "zimmet"
+   ],
+   "yetenekler": [
+    "zorunlu belge setinin rol/pozisyona gore tanimi (saglik raporu, diploma, adli sicil vb.)",
+    "dosya tamlik skoru",
+    "maskeli gorunum + 'tam erisim' izinli ve denetimli",
+    "saklama suresi ve imha isleri"
+   ],
+   "varliklar": [
+    "PersonnelFile",
+    "RequiredDocumentRule",
+    "Contract(ContractType: belirsiz/belirli/kismi/cagri/deneme)",
+    "AssetAssignment(zimmet)",
+    "AccessLog"
+   ],
+   "bagimliliklar": [
+    "Calisanlar",
+    "Belgeler",
+    "Onboarding/Offboarding",
+    "KVKK saklama-imha politikasi"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Ozluk dosyasi zorunlulugu ve istendiginde yetkililere ibraz (4857 md.75)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Isyeri defter, kayit ve belgelerini izleyen yil basindan itibaren 10 yil saklama (5510 md.86)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "Deneme suresi en cok 2 ay, TIS ile 4 aya kadar (4857 md.15)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Isleme sebebi ortadan kalkinca silme/yok etme/anonimlestirme; diger kanunlardaki saklama hukumleri sakli (6698 md.7)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "e-imza/KEP ile sozlesme (bkz. Belgeler)"
+   ],
+   "oracle_kaynagi": "Kanun metni + saklama-imha politikasini onaylayan KVKK/IK hukukcusu",
+   "ai_test_edebilir": [
+    "zorunlu belge kurallari -> tamlik skoru",
+    "deneme suresi <= 2 ay (TIS varsa 4) validasyonu",
+    "maskeleme/denetim kaydi e2e",
+    "imha isinin dogru kayitlari secmesi (tarih aritmetigi)"
+   ],
+   "insan_gerekir": [
+    "hangi belgenin hangi sure saklanacagi (mevzuat catismasi: 5510 md.86 10 yil, is davasi zamanasimi, VUK) - hukukcu",
+    "belge setinin sektore gore belirlenmesi"
+   ],
+   "prototipte_var": "Dosya tamlik, eksik belge, sozlesme turu, maskeli kimlik notu, effective-dated ucret notu",
+   "eksik": [
+    "sozlesme turu kurallari (deneme suresi validasyonu yok - prototip verisi 22 aylik deneme gosteriyor)",
+    "zimmet ekrani",
+    "imha is akisi ve imha tutanagi"
+   ]
+  },
+  {
+   "modul": "Belgeler (sozlesme, politika, sertifika, form; e-imza)",
+   "alt_ekranlar": [
+    "belge arsivi",
+    "sablonlar",
+    "imza bekleyenler",
+    "suresi dolanlar",
+    "politika onay takibi"
+   ],
+   "yetenekler": [
+    "sablon + calisan verisi ile belge uretimi",
+    "nitelikli e-imza/KEP ile imza ve tebligat",
+    "surum ve gecerlilik takibi (ISG sertifikasi vb.)",
+    "politika okundu/onaylandi kaydi",
+    "e-bordro/ucret hesap pusulasi elektronik teslimi"
+   ],
+   "varliklar": [
+    "Document",
+    "DocumentTemplate",
+    "SignatureRequest",
+    "PolicyAcknowledgement",
+    "Certificate"
+   ],
+   "bagimliliklar": [
+    "Ozluk",
+    "Onboarding/Offboarding",
+    "Egitim (sertifikalar)",
+    "Bordro (pusula)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Ucret hesap pusulasi zorunlulugu ve icerigi: odeme gunu, donem, fazla calisma/hafta tatili/bayram ekleri ve vergi, SGK, avans, nafaka, icra kesintileri ayri ayri (4857 md.37)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Elektronik imza/KEP/e-bordro mevzuati: alt ajan raporuna bakiniz; bu bolumde dogrulanamadi",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "nitelikli e-imza saglayicilari",
+    "KEP",
+    "e-arsiv"
+   ],
+   "oracle_kaynagi": "4857 md.37 alan listesi; e-imza gecerliligi icin hukukcu",
+   "ai_test_edebilir": [
+    "sablon doldurma, sure takibi, hatirlatma zamanlamasi",
+    "pusulada md.37 alanlarinin eksiksizligi (sozlesme testi)"
+   ],
+   "insan_gerekir": [
+    "sozlesme sablonlarinin hukuki icerigi (IK hukukcusu)",
+    "e-imza ile imzalanan belgenin ispat gucu"
+   ],
+   "prototipte_var": "Belge listesi, tur dagilimi, sure takibi, 'AI ile taslak', e-imza bekleyen sayaci",
+   "eksik": [
+    "gercek e-imza/KEP akisi",
+    "e-bordro teslim ve okundu kaydi",
+    "surum karsilastirma"
+   ]
+  },
+  {
+   "modul": "Izinler (yillik, mazeret, hastalik/rapor, dogum/sut, ucretsiz, uzaktan)",
+   "alt_ekranlar": [
+    "talep/onay",
+    "bakiye ve hak edis",
+    "izin defteri (ledger)",
+    "politika tanimi",
+    "ekip takvimi/cakisma",
+    "izin kayit belgesi ciktisi"
+   ],
+   "yetenekler": [
+    "kidem yili bazli hak edis (1-5 yil 14, 5-15 yil 20, 15+ 26 gun) ve yas kurali (18 ve alti, 50 ve ustu en az 20 gun)",
+    "hak edis tarihi = ise giris yildonumu; md.55 calisilmis sayilan haller ve devamsizlikla yildonumunun otelenmesi",
+    "bolme kurali: bir bolumu en az 10 gun (taraf anlasmasi)",
+    "izin gunu hesabinda hafta tatili, ulusal bayram, genel tatil sayilmaz",
+    "yol izni: 4 gune kadar ucretsiz",
+    "izin ucreti pesin/avans; ayrilista kullanilmayan izin ucreti son ucretten",
+    "raporlu gunler -> SGK eksik gun kodu ve vizite entegrasyonu",
+    "ucretsiz izin -> SGK eksik gun",
+    "yeralti isleri +4 gun",
+    "TIS/sozlesmeyle artirilmis haklar"
+   ],
+   "varliklar": [
+    "LeaveType",
+    "LeavePolicy",
+    "LeaveEntitlement(hak edis yili)",
+    "LeaveLedgerEntry",
+    "LeaveRequest",
+    "LeaveApproval",
+    "MedicalReport(vizite)",
+    "LeaveRecordCertificate"
+   ],
+   "bagimliliklar": [
+    "Takvim (tatiller, arife)",
+    "Vardiyalar (planli is gunu)",
+    "Puantaj (hakli yokluk)",
+    "Bordro (izin ucreti, eksik gun)",
+    "Offboarding (izin ucreti)",
+    "SGK (eksik gun nedenleri)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "En az 1 yil calisana yillik izin; 14/20/26 gun; 18 ve alti ile 50 ve ustu en az 20 gun; yeralti +4 (4857 md.53)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Hak kazanma suresi hesabi, ayni isverenin isyerleri birlestirilir (md.54); calisilmis gibi sayilan haller (md.55)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Isveren bolemez; anlasmayla bir bolumu 10 gunden az olmamak uzere bolunebilir; tatiller izin suresinden sayilmaz; 4 gune kadar ucretsiz yol izni; izin kayit belgesi zorunlu (md.56)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Izin ucreti izne baslamadan pesin/avans; belirsiz ucretlilerde son 1 yil ortalamasi (md.57)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Sozlesme sona erince kullanilmayan izin ucreti son ucretten odenir (md.59)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Eksik gun nedeni ve sayisi aylik belgede/MPHB'de beyan edilir (5510 md.86/4)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "2026 DEGISIKLIGI: 7578 s.K. (22/4/2026) md.15 ile 4857 md.74 analik izni dogum sonrasi 8->16 hafta, toplam 16->24 hafta (mevzuat.gov.tr konsolide metin dipnot 24; yururluk tablosunda 1/5/2026 goruluyor - kismen dogrulandi)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "2026 DEGISIKLIGI: 7578 md.16 ile 4857 Ek Madde 2 esinin dogumunda ucretli izin 5->10 gun; evlilik/evlat edinme/olum 3 gun; %70+ engelli/sureğen hastalikli cocuk icin yilda 10 gune kadar ucretli izin",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Yillik izin ucreti, kidem, ihbar, kotuniyet vb. tazminatlarda zamanasimi 5 yil (4857 Ek Madde 3) - saklama politikasini etkiler",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Genel tatillerde calisilip calisilmayacagi TIS/is sozlesmesiyle; hukum yoksa isci onayi (4857 md.44)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK vizite (is goremezlik raporu onayi) - alt ajan raporuna bakiniz",
+    "takvim senkronu (Google/Outlook)"
+   ],
+   "oracle_kaynagi": "Kanun metni (deterministik kurallar icin yeterli) + CSGB 'yillik izin hesaplama' araci varsa (alt ajan) + IK hukukcusu (hak edis donemi otelenmesi, kismi sureli calisanlar, TIS yorumlari)",
+   "ai_test_edebilir": [
+    "hak edis tablosu (kidem x yas) exhaustive/property testleri",
+    "yildonumu ve devamsizlik otelemesi tarih aritmetigi (artik yil, 29 Subat ise girisi)",
+    "tatil/hafta tatili dislama, arife yarim gun",
+    "bakiye ledger invariantlari (bakiye = tahakkuk - kullanim +/- duzeltme; negatif bakiye politikasi)",
+    "cakisma tespiti, onay akisi e2e"
+   ],
+   "insan_gerekir": [
+    "kismi sureli/cagri uzerine calisanlarda izin",
+    "hak edis doneminin md.55 kapsamindaki olaylarla otelenmesi (yargi yorumlari)",
+    "TIS'li isyerleri",
+    "kullanilmayan iznin devri/zamanasimi uygulamasi"
+   ],
+   "prototipte_var": "Talep listesi (tur, tarih, gun, durum, AI gorusu), bakiye (x/y gun), devamsizlik isi haritasi; Ayarlar'da '14/20/26' varsayilani",
+   "eksik": [
+    "yas kurali (18-/50+ -> 20 gun)",
+    "izin defteri ve hak edis yildonumu mantigi",
+    "10 gun bolunme kurali",
+    "yol izni",
+    "izin kayit belgesi ciktisi",
+    "rapor/vizite ve SGK eksik gun baglantisi",
+    "prototip verisinde 'Dogum 13-28 Eyl 112 gun' tutarsizligi (tarih araligi 16 gun)",
+    "2026 icinde yururluge giren analik izni (24 hafta) ve babalik izni (10 gun) degisikligi prototipte/parametrelerde yok -> 'gelistirme sirasinda mevzuat degisikligi' riskinin canli ornegi"
+   ]
+  },
+  {
+   "modul": "Vardiyalar (planlama, rotasyon)",
+   "alt_ekranlar": [
+    "plan (gun/hafta/ay)",
+    "vardiya tipleri",
+    "rotasyon sablonlari",
+    "talep (degisim/takas)",
+    "yayinla/kilitle"
+   ],
+   "yetenekler": [
+    "vardiya tipi (baslangic/bitis, mola, gece bayragi)",
+    "gece yarisini asan vardiya (is gunu atamasi kurali)",
+    "rotasyon (12/36 vb.) ve denklestirme donemi",
+    "kisit motoru: gunluk 11 saat ust sinir, gece calismasi 7,5 saat siniri, gece postasi rotasyonu, posta degisiminde dinlenme, haftalik 45 saat/denklestirme, hafta tatili 24 saat kesintisiz",
+    "planli vs gerceklesen (PDKS) karsilastirma",
+    "taslak>yayinlandi>kilitli durumlari"
+   ],
+   "varliklar": [
+    "ShiftType",
+    "ShiftPattern/Rotation",
+    "ShiftAssignment",
+    "ShiftSwapRequest",
+    "RosterPeriod",
+    "ConstraintRule(parametrik)"
+   ],
+   "bagimliliklar": [
+    "Takvim",
+    "Izinler",
+    "PDKS",
+    "Puantaj",
+    "Fazla Mesai"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Haftada en cok 45 saat; anlasmayla gunluk 11 saati asmamak kaydiyla farkli dagitim; denklestirme 2 ay (TIS ile 4; turizm 4/6) (4857 md.63; Calisma Sureleri Yon. md.5)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Gece: en gec 20.00-en erken 06.00, en fazla 11 saat; iscilerin gece calismasi 7,5 saati gecemez (turizm, ozel guvenlik, saglik, petrol istisnalari yazili onayla); gece/gunduz postalari haftalik nobetlesme (md.69)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Gece calismasinda fazla calisma yapilamaz (md.41)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Hafta tatili: 7 gunluk dilimde kesintisiz en az 24 saat (md.46)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Posta degisiminde en az 11 saat dinlenme - 'Postalar Halinde Isci Calistirilarak Yurutulen Islerde...' yonetmeligi; birincil metin bu calismada acilmadi: kismen dogrulandi (ikincil: https://legal.param.com.tr/postalar-halinde-calisma-hakkinda-yasal-duzenlemeler/)",
+     "kaynak": "kismen dogrulandi"
+    }
+   ],
+   "entegrasyonlar": [
+    "takvim/mesajlasma (Slack/Teams) bildirimleri"
+   ],
+   "oracle_kaynagi": "Kanun metni kisitlari deterministik; sektor istisnalari ve TIS hukumleri icin IK hukukcusu",
+   "ai_test_edebilir": [
+    "kisit motoru icin property-based testler (rastgele planlar -> ihlal tespiti)",
+    "gece yarisi asan vardiyalar, DST yok (Turkiye UTC+3 sabit) ama saat dilimi farkli sube/uzaktan calisan",
+    "cakisma, yayinlama durum makinesi"
+   ],
+   "insan_gerekir": [
+    "sektor istisnasinin uygulanabilirligi (turizm/saglik/ozel guvenlik)",
+    "denklestirme anlasmasinin varligi (yazili anlasma belgesi)"
+   ],
+   "prototipte_var": "Haftalik plan, AI oneri, cakisma, kapsama; AI kurallari: '11 saat dinlenme', 'ardisik gece en fazla 3', 'aylik FM ust siniri 72 saat'",
+   "eksik": [
+    "md.69 gece 7,5 saat siniri: prototip 22-06 (8 saat) gece vardiyasi planliyor ve gece nobetine fazla mesai ekliyor -> md.41/69 ile catisma riski",
+    "'ardisik gece en fazla 3' kanuni degil politika; kanuni kural haftalik posta nobetlesmesi",
+    "denklestirme donemi hesabi",
+    "hafta tatili 24 saat kontrolu"
+   ]
+  },
+  {
+   "modul": "PDKS (ham zaman olaylari, cihazlar, istisnalar)",
+   "alt_ekranlar": [
+    "ham hareketler",
+    "istisna kuyrugu",
+    "duzeltme talepleri",
+    "cihazlar/senkron",
+    "bugun iceride"
+   ],
+   "yetenekler": [
+    "append-only ham olay deposu (degismez), duzeltmeler ayri kayit + denetim izi",
+    "kart/PIN/RFID/NFC/QR/mobil+geofence; biyometri varsayilan kapali",
+    "cihaz senkronu, cevrimdisi tampon, cift IN/eksik OUT/vardiyasiz hareket tespiti",
+    "tolerans kurallari",
+    "saat senkronu ve zaman damgasi butunlugu"
+   ],
+   "varliklar": [
+    "Device",
+    "RawPunch(immutable)",
+    "AttendanceException",
+    "CorrectionRequest",
+    "AttendanceDay(yorumlanmis)"
+   ],
+   "bagimliliklar": [
+    "Vardiyalar (plan)",
+    "Izinler",
+    "Puantaj",
+    "KVKK politikasi"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Isveren calisma surelerini uygun araclarla belgelemek zorunda (Calisma Sureleri Yonetmeligi md.9)",
+     "kaynak": "https://www.csgb.gov.tr/Media/xzsazpw2/i%C5%9F-kanununa-ili%C5%9Fkin-%C3%A7al%C4%B1%C5%9Fma-s%C3%BCreleri-y%C3%B6netmeli%C4%9Fi.pdf"
+    },
+    {
+     "kural": "Biyometrik veri ozel nitelikli kisisel veridir (6698 md.6)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    },
+    {
+     "kural": "KVK Kurulu 29.04.2026 tarih 2026/921 sayili ilke karari: mesai takibi amaciyla biyometrik veri isleme olculuk ilkesine aykiri (acik riza olsa dahi) - RG 02.06.2026 sayi 33268 (ikincil kaynaklar RG bilgisini veriyor)",
+     "kaynak": "https://www.kvkk.gov.tr/Icerik/8762/mesai-takibi-amaciyla-biyometrik-veri-islenmesi-hakkinda-kisisel-verileri-koruma-kurulunun-29-04-2026-tarihli-ve-2026-921-sayili-ilke-kararina-iliskin-kamuoyu-duyurusu"
+    }
+   ],
+   "entegrasyonlar": [
+    "cihaz ureticileri (ZKTeco vb.) SDK/push API; mobil check-in",
+    "SCIM/AD ile kart eslemesi"
+   ],
+   "oracle_kaynagi": "Ham olay -> yorumlanmis gun donusumu icin musteri politikasi (tolerans, yuvarlama) + kanun; biyometri icin KVKK karari",
+   "ai_test_edebilir": [
+    "immutability (UPDATE/DELETE reddi) testleri",
+    "istisna siniflandirma icin tablo-gudumlu testler",
+    "cevrimdisi/yeniden senkron idempotency, duplicate punch",
+    "yuk testi (vardiya degisiminde ani olay patlamasi)"
+   ],
+   "insan_gerekir": [
+    "duzeltme onay politikalari ve ispat degeri (is davalarinda PDKS kaydi) - IK hukukcusu",
+    "KVKK aydinlatma metni"
+   ],
+   "prototipte_var": "Ham hareket sayaclari, istisna tablosu, cihaz durumu, KVKK 2026/921 atfi (dogru; karar mevcut), 'ham kayit degismez' ilkesi",
+   "eksik": [
+    "cihaz entegrasyon katmani (gercek)",
+    "olay->gun yorumlama kurallarinin parametrik tanimi",
+    "KVKK aydinlatma/kayit ekranlari"
+   ]
+  },
+  {
+   "modul": "Puantaj (time calculation engine)",
+   "alt_ekranlar": [
+    "donem puantaji",
+    "calisan detay (gun gun)",
+    "yeniden hesapla",
+    "onayla ve kilitle",
+    "bordroya aktar"
+   ],
+   "yetenekler": [
+    "plan (vardiya) + gercek (PDKS) + hakli yokluk (izin/rapor) + FM/duzeltme -> payroll units (normal saat, FM %50, fazla surelerle calisma %25, hafta tatili, genel tatil calismasi, gece saati, devamsizlik, eksik gun + neden kodu)",
+    "denklestirme donemi sonunda FM hesabi",
+    "donem kilidi ve kilit sonrasi retro duzeltme (sonraki doneme fark)",
+    "SGK icin 30 gun kurali ve eksik gun kodu uretimi"
+   ],
+   "varliklar": [
+    "TimesheetPeriod",
+    "TimesheetLine(gun)",
+    "PayrollUnit(tip, miktar, kaynak)",
+    "TimesheetLock",
+    "RetroAdjustment"
+   ],
+   "bagimliliklar": [
+    "Vardiyalar",
+    "PDKS",
+    "Izinler",
+    "Fazla Mesai",
+    "Takvim",
+    "Bordro"
+   ],
+   "mevzuat": [
+    {
+     "kural": "FM: haftalik 45 saati asan; saat ucreti %50 zamli; fazla surelerle calisma %25; serbest zaman alternatifi (1s30dk / 1s15dk, 6 ay icinde) (4857 md.41)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Genel tatilde calismayana o gunun ucreti tam; calisana ayrica bir gunluk ucret (md.47)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Eksik gun nedeni ve sayisi beyani (5510 md.86/4)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "SGK eksik gun nedeni kodlari (00-..., 01 istirahat, 02 ucretsiz izin, 06 kismi istihdam, 07 puantaj kayitlari, 12 birden fazla, 15 devamsizlik, 19 ucretsiz dogum izni, 20 ucretsiz yol izni ...)",
+     "kaynak": "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+    }
+   ],
+   "entegrasyonlar": [],
+   "oracle_kaynagi": "Kanun (oranlar), musteri politikasi (yuvarlama, tolerans), eksik gun kod listesi (SGK); denklestirme ve 30 gun kurali icin SGK uzmani",
+   "ai_test_edebilir": [
+    "metamorfik testler (ayni toplam saat farkli dagilim -> denklestirme sonucu)",
+    "sinir degerleri (45 saat, 270 saat/yil, 7,5 saat gece)",
+    "donem kilidi sonrasi degisikligin retro fark olarak akmasi",
+    "idempotent yeniden hesaplama"
+   ],
+   "insan_gerekir": [
+    "30 gunluk SGK hesabi (28/29/31 ceken aylar, ay ortasi giris/cikis) ve eksik gun kodu secimi - SGK uzmani",
+    "FM ispatinda imzali puantaj gereksinimi (yargi pratigi) - dogrulanamadi"
+   ],
+   "prototipte_var": "Donem puantaji (calisilan gun, normal saat, FM, gece, devamsiz, gec, durum), 'Hesaplandi>Onay>Kilit>Bordroya aktarim'",
+   "eksik": [
+    "eksik gun nedeni kodlari",
+    "hafta tatili/genel tatil calismasi ayrimi",
+    "fazla surelerle calisma (%25) ve serbest zaman secenegi",
+    "denklestirme",
+    "kilit sonrasi retro"
+   ]
+  },
+  {
+   "modul": "Fazla Mesai",
+   "alt_ekranlar": [
+    "talep/onay",
+    "yillik 270 saat takibi",
+    "isci onayi (yillik yazili onay)",
+    "serbest zaman bakiyesi"
+   ],
+   "yetenekler": [
+    "yillik 270 saat kumulatif sayac (takvim yili) ve engelleme",
+    "isci onayi kaydi",
+    "gece calismasinda FM engeli",
+    "FM ucret vs serbest zaman secimi ve 6 ay icinde kullandirma",
+    "FM ile fazla surelerle calisma ayrimi (sozlesme saati < 45 ise)"
+   ],
+   "varliklar": [
+    "OvertimeRequest",
+    "OvertimeConsent",
+    "OvertimeBalance(serbest zaman)",
+    "OvertimeLedger"
+   ],
+   "bagimliliklar": [
+    "Vardiyalar",
+    "Puantaj",
+    "Bordro"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Fazla calisma toplami yilda 270 saati gecemez; fazla saatlerle calisma icin isci onayi; gece calismasinda FM yapilamaz (4857 md.41)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Fazla Calisma Yonetmeligi ayrintilari (onayin sekli/suresi) - bu calismada yonetmelik metni acilmadi: dogrulanamadi",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [],
+   "oracle_kaynagi": "Kanun metni; onay seklinin ispat gucu icin IK hukukcusu",
+   "ai_test_edebilir": [
+    "270 saat sinirinda engelleme (sinir ve +1)",
+    "gece vardiyasina FM talebi reddi",
+    "serbest zaman 6 ay vade testi"
+   ],
+   "insan_gerekir": [
+    "olaganustu/zorunlu hallerde FM (md.42-43) yorumu",
+    "ust duzey yonetici FM'nin ucrete dahil sayilmasi (sozlesme hukumleri) - yargi yorumu"
+   ],
+   "prototipte_var": "Talep listesi, aylik toplam (x/72), departman dagilimi; metin 'Yasal aylik ust sinir 270 saat/yil' ve 'yasal aylik sinira 28 saat kaldi'",
+   "eksik": [
+    "yasal sinir yillik (270) iken prototip 'aylik yasal sinir' anlatiyor -> hukuki metin hatasi",
+    "isci onayi kaydi",
+    "gece FM engeli",
+    "serbest zaman secenegi"
+   ]
+  },
+  {
+   "modul": "Takvim (calisma takvimleri, resmi/dini tatiller)",
+   "alt_ekranlar": [
+    "calisma takvimleri",
+    "tatil takvimi (yillik)",
+    "yarim gun (arife)",
+    "sirket/isyeri atama"
+   ],
+   "yetenekler": [
+    "2429 s.K.'ya gore ulusal bayram/genel tatil; arife 13.00'ten itibaren (Ramazan 3,5 gun, Kurban 4,5 gun), 28 Ekim 13.00'ten itibaren",
+    "dini bayram tarihlerinin her yil Diyanet takvimiyle guncellenmesi",
+    "effective-dated takvim; gecmis puantaja etki etmez",
+    "isyeri bazli takvim (farkli sehir/sube)",
+    "idari izin (kamu 'kopru' gunleri) ozel sektor icin baglayici degil ayrimi - dogrulanamadi"
+   ],
+   "varliklar": [
+    "WorkCalendar",
+    "HolidayCalendar",
+    "Holiday(tam/yarim, saat)",
+    "CalendarAssignment"
+   ],
+   "bagimliliklar": [
+    "Vardiyalar",
+    "Izinler (gun sayimi)",
+    "Puantaj (genel tatil ucreti)",
+    "Bordro"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Ulusal bayram 29 Ekim (28 Ekim 13.00'ten itibaren); genel tatiller; Ramazan arife 13.00'ten 3,5 gun, Kurban arife 13.00'ten 4,5 gun; 1 Ocak, 1 Mayis, 15 Temmuz (2429 md.1-2)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2429.pdf"
+    },
+    {
+     "kural": "2429 md.2 son hukmu: '29 Ekim gunu ozel isyerlerinin kapanmasi zorunludur' - 4857 md.44 ile iliskisi yorum gerektirir",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2429.pdf"
+    },
+    {
+     "kural": "2026 dini gunler: Ramazan Bayrami arife 19 Mart, bayram 20-22 Mart; Kurban Bayrami arife 26 Mayis, bayram 27-30 Mayis (Diyanet)",
+     "kaynak": "https://vakithesaplama.diyanet.gov.tr/icerik.php?icerik=153"
+    },
+    {
+     "kural": "Genel tatilde calisma ucreti (4857 md.47)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "Diyanet dini gunler listesi (yillik; resmi acik veri API'si dogrulanamadi)"
+   ],
+   "oracle_kaynagi": "2429 s.K. + Diyanet yillik listesi (resmi); tatile denk gelen vardiyalarin ucretlendirilmesi icin kanun",
+   "ai_test_edebilir": [
+    "yillik tatil listesinin Diyanet listesiyle diff testi",
+    "yarim gun saat hesabi (13.00 sonrasi)",
+    "tatile denk gelen izin gunlerinin sayilmamasi"
+   ],
+   "insan_gerekir": [
+    "29 Ekim'de ozel isyeri calismasi (2429 md.2 son cumle) - IK hukukcusu",
+    "TIS'te ek tatil gunleri"
+   ],
+   "prototipte_var": "4 calisma takvimi, Turkiye 2026 tatil listesi, 28 Eki yarim gun; 'Yillik is gunu 251'",
+   "eksik": [
+    "Ramazan/Kurban arifesi ayri yarim gun olarak gosterilmemis ('19-22 Mar', '26-30 May' birlesik)",
+    "'yillik is gunu 251' kaynaksiz (dogrulanamadi)",
+    "Depo takviminde 29 Ekim vardiyasi planlanmis -> 2429 md.2 son cumle ile hukuki teyit gerekir"
+   ]
+  },
+  {
+   "modul": "Bordrolar (bordro motoru ve calistirma)",
+   "alt_ekranlar": [
+    "donem/calistirma (Draft>Calculate>Validate>Review>Approve>Finalize>Pay>Close)",
+    "calisan bordro detayi (brutten nete kalem kalem)",
+    "on-dogrulama engelleyicileri",
+    "retro/off-cycle",
+    "donem kapat/yeniden ac",
+    "ucret hesap pusulasi",
+    "simulasyon (net->brut, zam senaryosu)"
+   ],
+   "yetenekler": [
+    "brut->net ve net->brut (iteratif) hesap",
+    "kumulatif GV matrahi (yil ici, isveren bazli) ve dilim gecisi",
+    "asgari ucret GV ve DV istisnasi (aylik degisen tutarlar)",
+    "SGK isci/isveren, issizlik, PEK alt/ust sinir, 30 gun kurali, eksik gun",
+    "engellilik indirimi",
+    "ozel gider/diger istisnalar (yemek, yol vb. - parametrik; kapsami dogrulanamadi)",
+    "kismi ay (ay ortasi giris/cikis), ucret degisikligi ay icinde (proration)",
+    "retro fark hesabi (gecmis donem parametre/ucret degisikligi)",
+    "off-cycle (ayrilis, ikramiye) ve ayni ayda birden fazla odeme",
+    "yuvarlama politikasi (kurus, kalem bazli vs toplam)",
+    "donem kilidi, yeniden acma ve tam denetim izi",
+    "surumlu yasal parametreler (effective_from/to, legal_reference, version)",
+    "coklu sirket/isyeri ve isveren degisiminde kumulatif matrah (ayni yil icinde yeni isveren)"
+   ],
+   "varliklar": [
+    "PayrollPeriod",
+    "PayrollRun",
+    "Payslip",
+    "PayslipLine(component, base, rate, amount)",
+    "SalaryComponent",
+    "LegalParameter(key, value, valid_from, valid_to, legal_ref, version)",
+    "CumulativeTaxBase(employee, employer, year)",
+    "RetroDiff",
+    "PayrollAuditLog"
+   ],
+   "bagimliliklar": [
+    "Puantaj (payroll units)",
+    "Ucretler",
+    "Degisken Odemeler",
+    "Kesintiler",
+    "SGK",
+    "Beyannameler",
+    "Odemeler",
+    "Muhasebe"
+   ],
+   "mevzuat": [
+    {
+     "kural": "2026 GV tarifesi (ucret): 190.000/%15, 400.000/%20, 1.500.000/%27, 5.300.000/%35, ustu %40 (GVK md.103)",
+     "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFileResources?objectKey=arsiv%2Fyardim-kaynaklar%2Fyararli-bilgiler%2Fgelir-vergisi-tarifeleri%2Fgelir-vergisi-tarifesi-2026.pdf"
+    },
+    {
+     "kural": "Asgari ucret istisnasi: asgari ucretin isci SGK+issizlik dusulmus tutarina isabet eden ucretler GV'den istisna (GVK md.23/1-18, 7349 s.K.; uygulama 319 Seri No.lu GVGT)",
+     "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFile?objectKey=DUYURU/UNIVERSAL/2026/2026_Ucret_Geliri.pdf"
+    },
+    {
+     "kural": "2026 brut asgari ucret 33.030 TL; net 28.075,50 TL; isveren SGK %21,75 (indirimsiz)",
+     "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf"
+    },
+    {
+     "kural": "PEK ust sinir alt sinirin 9 kati (5510 md.82, 7566 md.24)",
+     "kaynak": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm"
+    },
+    {
+     "kural": "Engellilik indirimi 2026: 12.000/7.000/3.000 TL",
+     "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFile?objectKey=DUYURU/UNIVERSAL/2026/2026_Ucret_Geliri.pdf"
+    },
+    {
+     "kural": "Ucret hesap pusulasi icerigi (4857 md.37)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Damga vergisi binde 7,59 (488 s.K. (1) sayili tablo) - resmi tablo metni bu calismada acilamadi; oran Odoo TR dokumani ve ikincil kaynaklarla tutarli: kismen dogrulandi",
+     "kaynak": "https://www.odoo.com/documentation/19.0/applications/hr/payroll/payroll_localizations/turkey.html"
+    }
+   ],
+   "entegrasyonlar": [
+    "Muhasebe (Logo/Mikro/ERP) yevmiye fisi",
+    "BI"
+   ],
+   "oracle_kaynagi": "(1) CSGB asgari ucret tablosu (tek satirlik altin test), (2) SGK Tesvikler 2026 kitapcigi rakamli ornekleri, (3) GIB Ucret Geliri Rehberi 2026 ornekleri ve 319 Seri No.lu GVGT ornekleri, (4) bagimsiz ikinci motor (differential test: incumbent Logo/Mikro vb. ile ayni girdiler -> ayni cikti), (5) mali musavir imzali altin bordro seti",
+   "ai_test_edebilir": [
+    "parametre tablosu ile yuvarlama dahil birebir tekrar (golden)",
+    "property: net monoton artan (brut artinca net azalmaz), net->brut->net ters fonksiyon tutarliligi",
+    "metamorfik: kumulatif matrahin dilim gecisi (Temmuz 2026 asgari ucret istisnasi 4.537,75) ",
+    "differential test: iki bagimsiz uygulama (ornegin Python referans + uretim motoru) ve incumbent yazilim ciktilari",
+    "mutasyon testi (oranlari bozan mutantlari yakaliyor mu)",
+    "performans: 10k calisan donem hesabi suresi",
+    "denetim izi ve kilit"
+   ],
+   "insan_gerekir": [
+    "altin setin (golden) hukuki dogrulugunun imzasi - mali musavir",
+    "yorum gerektiren kalemler (ayni yardimlarin istisna sinirlari, prim/ikramiye SGK'ya tabiyeti, ucret niteligi) - SGK/vergi uzmani",
+    "retro farklarin hangi donem beyannamesine yazilacagi",
+    "ilk canli donem paralel kosum (eski sistemle) sonucu kabul"
+   ],
+   "prototipte_var": "Calistirma durum makinesi, retro ve off-cycle ornekleri, on-dogrulama engelleyicileri, anomali tablosu, departman maliyeti, 'ne olur' simulasyonu",
+   "eksik": [
+    "kalem bazli bordro detayi ve pusula",
+    "kumulatif matrah ve istisna gosterimi",
+    "net->brut",
+    "donem yeniden acma kurallari",
+    "isveren maliyeti orani %23,5 metni 2026 oranlariyla (en az %21,75+%2 indirimsiz) tutarlilik kontrolu yok"
+   ]
+  },
+  {
+   "modul": "Ucretler (ucret yapilari, bantlar, tarihli ucret gecmisi)",
+   "alt_ekranlar": [
+    "ucret yapilari (aylik/saatlik/yonetici)",
+    "kademe bantlari",
+    "ucret gecmisi",
+    "toplu revizyon/zam",
+    "compa-ratio"
+   ],
+   "yetenekler": [
+    "effective-dated ucret; geriye donuk zam -> retro",
+    "brut/net anlasmali ucret (net anlasmada isveren vergi riski)",
+    "saatlik ucret x puantaj",
+    "asgari ucretin altina dusme kontrolu (yas bazli asgari ucret yok - 2026 tek asgari ucret? dogrulanamadi)",
+    "ucret gizliligi: rol bazli ve denetimli erisim"
+   ],
+   "varliklar": [
+    "PayStructure",
+    "PayGrade/Band",
+    "CompensationRecord(effective_from)",
+    "CompensationChangeRequest"
+   ],
+   "bagimliliklar": [
+    "Pozisyonlar",
+    "Bordro",
+    "Terfiler",
+    "Performans (merit)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Asgari ucretin altinda ucret odenemez; 2026 brut 33.030 TL",
+     "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf"
+    },
+    {
+     "kural": "Ucretin Turk parasi ile ve banka hesabina odenmesi (4857 md.32)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "ucret anketleri (piyasa medyani) - opsiyonel"
+   ],
+   "oracle_kaynagi": "Musteri politikasi + asgari ucret tablosu",
+   "ai_test_edebilir": [
+    "effective-dating ve retro tetikleme",
+    "asgari ucret alti engeli",
+    "yetki: ucret sayfasi goruntuleme denetim kaydi"
+   ],
+   "insan_gerekir": [
+    "ucret politikasi ve bant kararlari (IK/yonetim)"
+   ],
+   "prototipte_var": "Kademe bantlari (min/orta/maks), 3 ucret yapisi, compa-ratio, departman ortalamasi, kisitli yetki notu",
+   "eksik": [
+    "ucret gecmisi ekrani",
+    "net anlasmali ucret",
+    "toplu zam ve retro akisi"
+   ]
+  },
+  {
+   "modul": "Degisken Odemeler (prim, ikramiye, komisyon, nobet, yan haklar)",
+   "alt_ekranlar": [
+    "donem girdileri",
+    "Excel/CRM ice aktarim",
+    "politika kontrolu",
+    "onay"
+   ],
+   "yetenekler": [
+    "kaynak sistemden (CRM/OKR/puantaj) eslestirme",
+    "SGK'ya tabi/tabi olmayan ve GV istisnali kalem siniflandirmasi (yemek, yol, cocuk/aile yardimi, BES isveren katkisi vb.) - parametrik",
+    "ikramiyenin SGK'da ait oldugu aylara yayilmasi (dogrulanamadi - uzman teyidi)",
+    "retro isaretleme"
+   ],
+   "varliklar": [
+    "VariablePayItem",
+    "PayComponentTaxProfile(GV/SGK/DV tabiiyet)",
+    "ImportBatch"
+   ],
+   "bagimliliklar": [
+    "Bordro",
+    "Performans",
+    "Puantaj",
+    "Satis/CRM"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Prime esas kazanca dahil/haric unsurlar 5510 md.80 - madde metni bu calismada ayrintili okunmadi: dogrulanamadi",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "Kidem tazminatina esas ucret 'giydirilmis ucret' (surekli yan odemeler) - yargi yorumu: insan oracle",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "CRM, OKR, puantaj ice aktarimi"
+   ],
+   "oracle_kaynagi": "SGK/GIB uzmani (kalem bazli tabiiyet matrisi), musteri prim politikasi",
+   "ai_test_edebilir": [
+    "ice aktarim dogrulama (sema, mukerrer)",
+    "tabiiyet matrisinin bordroya dogru uygulanmasi (matris verildikten sonra)"
+   ],
+   "insan_gerekir": [
+    "her yeni kalemin GV/SGK/DV tabiiyet siniflandirmasi"
+   ],
+   "prototipte_var": "Kalem listesi (tur, tutar, kaynak, durum), kaynak eslesmesi KPI",
+   "eksik": [
+    "kalem tabiiyet profili (GV/SGK/DV)",
+    "ikramiyenin SGK aylara dagitimi"
+   ]
+  },
+  {
+   "modul": "Kesintiler (avans, icra, nafaka, BES, sendika, borc/zimmet)",
+   "alt_ekranlar": [
+    "bireysel kesintiler",
+    "icra dosyalari (siralama)",
+    "BES otomatik katilim",
+    "sendika aidati",
+    "taksit planlari"
+   ],
+   "yetenekler": [
+    "icra: haczedilebilir kisim en az 1/4, birden fazla haciz siraya konur (sonraki haciz oncekini bekler)",
+    "nafaka icrasi onceligi - uzman teyidi",
+    "BES: 45 yas alti otomatik dahil, PEK'in %3'u, ucret odeme gununu izleyen is gunu sirkete aktarim, 2 ay cayma",
+    "ucret kesme cezasi sinirlari (ayda 2 gundelik)",
+    "zimmet/borc taksitleri; itiraz"
+   ],
+   "varliklar": [
+    "DeductionPlan",
+    "GarnishmentOrder(icra dairesi, dosya no, sira, oran/tutar)",
+    "PensionAutoEnrolment(BES)",
+    "UnionMembership",
+    "DeductionLedger"
+   ],
+   "bagimliliklar": [
+    "Bordro",
+    "Odemeler (icra dairesine/BES sirketine odeme)",
+    "Offboarding (kalan borc)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Maas/ucretlerin haczedilecek miktari dortte birinden az olamaz; birden fazla haciz siraya konur (IIK md.83)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.3.2004.pdf"
+    },
+    {
+     "kural": "BES otomatik katilim: 45 yasini doldurmamis 4/a calisanlar; katki PEK'in %3'u; ucret odeme gununu izleyen is gunu aktarim; 2 ay cayma (4632 Ek Madde 2)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4632.pdf"
+    },
+    {
+     "kural": "Ucret kesme cezasi ayda 2 gundelikten fazla olamaz, sebebiyle bildirilir (4857 md.38)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Ucret pusulasinda avans, nafaka, icra kesintileri ayri gosterilir (4857 md.37)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "BES sirketleri (sirkete ozgu kanal; kamu standardi yok - alt ajan)",
+    "UYAP/icra dairesi bildirimleri (elektronik kanal dogrulanamadi)"
+   ],
+   "oracle_kaynagi": "IIK/4632 metni + icra hukuku uzmani (siralama, nafaka onceligi, ikramiyeden kesinti) + BES sirketi mutabakati",
+   "ai_test_edebilir": [
+    "siralama invariantlari (oncelikli haciz bitmeden sonraki baslamaz)",
+    "%3 BES hesap ve yas esigi (45. yas gunu sinir testi)",
+    "taksit plani toplam = borc"
+   ],
+   "insan_gerekir": [
+    "icra kesinti matrahi (net ucret tanimi, asgari gecim), nafaka onceligi, emekli/cok isverenli durumlar - icra hukukcusu"
+   ],
+   "prototipte_var": "Bireysel kesinti listesi (tur, toplam, kalan, plan, durum), yasal kesinti dagilimi; 'icra yasal 1/4 oraniyla otomatik'",
+   "eksik": [
+    "icra siralama ve dosya bazli takip",
+    "BES otomatik katilim ekrani",
+    "'1/4' alt sinir olarak degil sabit oran olarak anlatilmis -> IIK 83 'dortte birinden az olamaz'"
+   ]
+  },
+  {
+   "modul": "SGK (yerellestirme paketi: isyerleri, meslek kodlari, belge turleri, eksik gun, tesvikler)",
+   "alt_ekranlar": [
+    "surumlu yasal parametreler",
+    "isyerleri ve tesvik durumu",
+    "tesvik secimi/optimizasyonu",
+    "meslek kodlari",
+    "eksik gun kodlari",
+    "belge turleri"
+   ],
+   "yetenekler": [
+    "parametre surumleme (effective_from/to, legal_reference, version) ve retro yeniden hesap",
+    "tesvik uygunluk motoru (isyeri + sigortali kosullari; 6 ay onceki ortalama, borc yoklugu, yas, issizlik suresi)",
+    "tesvik kombinasyonu ve sirasi (orn. 5746'da once 2/5 puan sonra kalan payin yarisi)",
+    "asgari ucret destegi (gunluk 42,33 TL x gun)",
+    "PEK alt/ust sinir, 30 gun kurali, eksik gun nedenleri"
+   ],
+   "varliklar": [
+    "SGKParameterVersion",
+    "Workplace",
+    "IncentiveLaw(kanun no, kosullar, bitis)",
+    "IncentiveEligibility",
+    "InsuranceType/DocumentType(belge turu)",
+    "MissingDayReason",
+    "OccupationCode"
+   ],
+   "bagimliliklar": [
+    "Organizasyon",
+    "Bordro",
+    "Beyannameler",
+    "Puantaj"
+   ],
+   "mevzuat": [
+    {
+     "kural": "5510 md.81 oranlari 2026 (MYO isveren %12; 81/1-ı 2 puan; imalat 5 puan 2026 sonuna kadar)",
+     "kaynak": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm"
+    },
+    {
+     "kural": "Guncel 14 tesvik ve kosullari, rakamli ornekler (2026)",
+     "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+    },
+    {
+     "kural": "6111 (4447 gecici 10): 01.03.2011-31.12.2026 ise alinanlar; 6-54 ay",
+     "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+    },
+    {
+     "kural": "5746 Ar-Ge: isveren hissesinin yarisi 31.12.2028'e kadar",
+     "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+    },
+    {
+     "kural": "Ise giris bildirgesi calismaya baslamadan once (5510 md.8); gec bildirimde sigortali basina asgari ucret tutarinda idari para cezasi (md.102)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "Isten ayrilis en gec 10 gun icinde (5510 md.9)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "Belgeleri izleyen yil basindan 10 yil saklama (md.86)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK 4/a ise giris/ayrilis SOAP web servisi (test ortami var - alt ajan)",
+    "e-Bildirge V2 (portal + XML; test ortami dogrulanamadi)",
+    "Vizite web servisi"
+   ],
+   "oracle_kaynagi": "SGK Tesvikler 2026 kitapcigi (rakamli ornekler), SGK genelgeleri; tesvik secimi icin SGK uzmani/mali musavir",
+   "ai_test_edebilir": [
+    "kitapciktaki her rakamli ornegi altin test olarak otomatik dogrulama",
+    "parametre surum secimi (donem tarihine gore) property testi",
+    "tesvik kosul motoru icin karar tablosu testleri"
+   ],
+   "insan_gerekir": [
+    "en avantajli tesvik secimi ve geriye donuk tesvik (yorum + risk)",
+    "isyerinin 'imalat' sayilmasi",
+    "SGK denetim riski kabulu"
+   ],
+   "prototipte_var": "Surumlu parametre tablosu (anahtar, deger, baslangic, bitis, yasal referans, surum), isyerleri, tesvik tasarrufu KPI",
+   "eksik": [
+    "2026 oranlari yanlis/eskimis: isveren %20,5 (dogrusu indirimsiz %21,75), '5 puan' (imalat disi 2 puan), tavan 'x7,5' (dogrusu x9)",
+    "tesvik motoru yok",
+    "eksik gun/belge turu kodlari yok"
+   ]
+  },
+  {
+   "modul": "Beyannameler (MUHSGK/MPHB, e-Bildirge, ise giris/ayrilis bildirgeleri)",
+   "alt_ekranlar": [
+    "takvim ve son tarihler",
+    "on-dogrulama",
+    "XML uretimi",
+    "gonderim ve tahakkuk arsivi",
+    "duzeltme/iptal (ek/iptal belge)"
+   ],
+   "yetenekler": [
+    "MPHB (GIB) XML/BDP formatinda uretim, sema surum adaptoru",
+    "SGK ise giris/ayrilis bildirgesi web servisi",
+    "eksik gun bildirimi ve belgeleri",
+    "gecmis donem duzeltme (iptal/ek) akisi",
+    "tahakkuk fisleri arsivi ve odeme takibi",
+    "son tarih uyarilari ve gecikme cezasi riski"
+   ],
+   "varliklar": [
+    "Declaration(tur, donem, surum)",
+    "DeclarationLine(sigortali satiri)",
+    "SchemaAdapter(version)",
+    "Submission",
+    "Accrual(tahakkuk)",
+    "Correction"
+   ],
+   "bagimliliklar": [
+    "Bordro",
+    "SGK",
+    "Odemeler (vergi/prim odeme)",
+    "Muhasebe"
+   ],
+   "mevzuat": [
+    {
+     "kural": "MPHB kanallari ve kilavuz: alt ajan raporu (GIB muphb1.pdf, BDP)",
+     "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf"
+    },
+    {
+     "kural": "Ise giris bildirgesi baslamadan once; ayrilis 10 gun (5510 md.8-9); idari para cezalari (md.102)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "MPHB ait oldugu ayi takip eden ayin 26'si 23.59'a kadar elektronik ortamda verilir",
+     "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf"
+    },
+    {
+     "kural": "MPHB XML'i BDP/DVD/DBS veya format uyumlu 3. taraf XML ile yuklenir; format degisince BDP guncellenir (Haziran 2026 donemi format guncellemesi - ikincil kaynak); MUHSGK icin test ortami bulunamadi",
+     "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf ; https://prozon.net/sirkuler/vergi-danismani-mustafa-celik-bildiriyor-gib-haziran-2026-doneminden-itibaren-gecerli-olmak-uzere-mphib-formatini-guncelledi-sistemden-onay-alabilmek-icin-bdpyi-yenileyin/"
+    },
+    {
+     "kural": "e-Bildirge V2 portal + XML (XSD yayinli); 4/a icin bildirge verisi buyuk olcude MUHSGK uzerinden gelir; e-Bildirge'nin hangi durumlarda ayrica kullanilacagi (gecmis donem ek/iptal, MPHB disi belge turleri vb.) SGK uzmani teyidi gerektirir",
+     "kaynak": "https://e.sgk.gov.tr/Uygulamalar/Detay/E-BildirgeV2-2026-04-21-09-12-18"
+    }
+   ],
+   "entegrasyonlar": [
+    "GIB e-Beyanname (MUHSGK icin test ortami bulunamadi - alt ajan)",
+    "SGK SgkTescil4a SOAP (test ortami var)",
+    "e-Bildirge V2 (XSD yayinli)"
+   ],
+   "oracle_kaynagi": "GIB/SGK XSD semalari (yapisal oracle), kilavuzlar; gercek dogrulama ancak canli gonderimde (tahakkuk) veya mali musavirin BDP ile yan yana karsilastirmasi",
+   "ai_test_edebilir": [
+    "XSD sema dogrulamasi (yapisal)",
+    "bordro toplamlari = beyanname toplamlari (mutabakat invariant)",
+    "sema surum degisikliginde regresyon",
+    "SGK test ortaminda ise giris/ayrilis e2e"
+   ],
+   "insan_gerekir": [
+    "canli gonderim yetkisi ve sorumlulugu (mali musavir/isveren)",
+    "reddedilen beyannamenin duzeltilmesi",
+    "MUHSGK icin test ortami olmadigindan ilk canli donem paralel kosum"
+   ],
+   "prototipte_var": "Beyanname listesi, adaptor surumu v2026-04, dogrulama %, 'yakinda' uyarisi",
+   "eksik": [
+    "gercek XML uretimi",
+    "MPHB ile e-Bildirge V2'nin iliskisi netlestirilmeli (prototip ayni donem ve ayni 120 kisi icin ikisini ayri beyan gibi gosteriyor - kapsam alt ajan raporuyla kontrol edilmeli)",
+    "duzeltme/iptal akisi"
+   ]
+  },
+  {
+   "modul": "Odemeler (banka toplu odeme, muhasebe fisi, off-cycle)",
+   "alt_ekranlar": [
+    "banka dosyalari",
+    "muhasebe fisi",
+    "masraf merkezi dagilimi",
+    "off-cycle",
+    "vergi/SGK/icra/BES odemeleri"
+   ],
+   "yetenekler": [
+    "bankaya ozgu toplu maas dosyasi adaptorleri",
+    "IBAN dogrulama (mod-97)",
+    "muhasebe fisi (hesap plani esleme, masraf merkezi)",
+    "icra dairesi, BES sirketi, vergi ve SGK odeme listeleri",
+    "mutabakat (odendi/iade)"
+   ],
+   "varliklar": [
+    "PaymentBatch",
+    "BankFileAdapter(banka, surum)",
+    "PaymentLine",
+    "JournalEntry",
+    "Reconciliation"
+   ],
+   "bagimliliklar": [
+    "Bordro",
+    "Kesintiler",
+    "Muhasebe/ERP",
+    "Beyannameler"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Ucretin banka hesabina odenmesi (4857 md.32)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Ucretin odeme gununden itibaren 20 gun icinde odenmemesi (md.34) - bu calismada madde metni okunmadi: dogrulanamadi",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "banka formatlari (ulusal standart bulunamadi - alt ajan)",
+    "ERP muhasebe (Logo, Mikro vb.)"
+   ],
+   "oracle_kaynagi": "Banka format dokumanlari (sozlesmeli musteriye verilir) + banka test/on-akibet (sozlesmeye bagli); muhasebe icin musteri hesap plani ve mali musavir",
+   "ai_test_edebilir": [
+    "IBAN checksum, dosya format sozlesme testleri (golden file)",
+    "toplam kontrol: bordro net = odeme dosyasi toplami",
+    "fis borc=alacak dengesi"
+   ],
+   "insan_gerekir": [
+    "banka format onayi (banka), muhasebe hesap plani eslemesi (mali musavir)"
+   ],
+   "prototipte_var": "Banka dosyasi (Ziraat, Garanti), Logo muhasebe fisi, off-cycle, masraf merkezi dagilimi",
+   "eksik": [
+    "gercek dosya formatlari",
+    "vergi/SGK/icra/BES odeme listeleri",
+    "mutabakat"
+   ]
+  },
+  {
+   "modul": "Onboarding",
+   "alt_ekranlar": [
+    "sablon kontrol listeleri",
+    "kisi bazli ilerleme",
+    "gorev sahipleri (IK/IT/yonetici/calisan)"
+   ],
+   "yetenekler": [
+    "teklif kabulunden calisan kaydi olusturma",
+    "SGK ise giris bildirgesi baslama gununden once (otomasyon + insan onayi)",
+    "zorunlu belgeler, KVKK aydinlatma, sozlesme e-imza",
+    "IT hesaplari (SCIM), zimmet, oryantasyon egitimleri, buddy",
+    "deneme suresi (<= 2 ay) takibi ve degerlendirme"
+   ],
+   "varliklar": [
+    "OnboardingTemplate",
+    "OnboardingTask",
+    "OnboardingCase"
+   ],
+   "bagimliliklar": [
+    "Ise Alim",
+    "Calisanlar",
+    "SGK/Beyannameler",
+    "Belgeler",
+    "Egitim",
+    "IT (SCIM)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Ise giris bildirgesi sigortalilik baslangicindan once (5510 md.8); gec/eksik bildirimde idari para cezasi (md.102)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "Deneme suresi en cok 2 ay (TIS ile 4) (4857 md.15)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "KVKK aydinlatma yukumlulugu (6698 md.10) - madde metni ayrintili okunmadi; varligi kanun yapisindan",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK SgkTescil4a iseGirisKaydet (test ortami var)",
+    "SCIM/IdP"
+   ],
+   "oracle_kaynagi": "5510 sureleri (deterministik); SGK test ortami (yapisal); gorev seti icin musteri",
+   "ai_test_edebilir": [
+    "baslama tarihi - 1 gun bildirim zamanlama (hafta sonu/tatil kenar durumlari)",
+    "SGK test servisine e2e (test sicili ile)",
+    "gorev akisi e2e"
+   ],
+   "insan_gerekir": [
+    "canli SGK bildiriminin onayi",
+    "sozlesme icerigi"
+   ],
+   "prototipte_var": "Kisi bazli kontrol listesi, SGK ise giris planlama, e-imza bekleyen, buddy",
+   "eksik": [
+    "sablon yonetimi",
+    "KVKK aydinlatma adimi",
+    "deneme suresi kurali"
+   ]
+  },
+  {
+   "modul": "Transferler (departman/isyeri/sirket/yonetici degisimi)",
+   "alt_ekranlar": [
+    "transfer talebi ve onayi",
+    "gecerlilik tarihi",
+    "etki analizi (SGK isyeri, ucret, masraf merkezi, izin)"
+   ],
+   "yetenekler": [
+    "effective-dated org kaydi",
+    "ayni sirket farkli SGK isyeri: isyeri degisikligi bildirimleri (ayrilis+giris) - kod ve kurallar SGK uzmani teyidi",
+    "grup ici farkli tuzel kisilige gecis: yeni isveren -> kumulatif GV matrahi ve kidem/izin devamliligi sorulari",
+    "ay ortasi transferde iki isyeri icin bolunmus prim gunu"
+   ],
+   "varliklar": [
+    "TransferRequest",
+    "OrgAssignmentHistory"
+   ],
+   "bagimliliklar": [
+    "Organizasyon",
+    "Bordro",
+    "SGK",
+    "Izinler",
+    "Kidem hesabi"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Yillik izin hak edisinde ayni isverenin isyerlerindeki sureler birlestirilir (4857 md.54)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Kidem, ayni isverenin bir veya degisik isyerlerindeki sureler ve isyeri devri durumunda toplam sureden hesaplanir (1475 md.14)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.1475.pdf"
+    },
+    {
+     "kural": "Grup sirketleri arasi gecisin 'ayni isveren' sayilip sayilmayacagi (organik bag) - yargi yorumu: insan oracle",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK bildirgeleri"
+   ],
+   "oracle_kaynagi": "Kanun + IK hukukcusu (grup ici gecis), SGK uzmani (isyeri degisikligi bildirimi)",
+   "ai_test_edebilir": [
+    "effective-dating; ay ortasi bolunmus hesap; transfer sonrasi raporlama"
+   ],
+   "insan_gerekir": [
+    "sirketler arasi transferin hukuki niteligi (devir, yeni sozlesme, kidem tasinmasi)"
+   ],
+   "prototipte_var": "Transfer listesi (nereden/nereye, gecerlilik, durum), SGK isyeri degisimi notu",
+   "eksik": [
+    "tuzel kisilik degisimi senaryosu (Karaca Teknoloji -> Karaca Lojistik)",
+    "kumulatif matrah devri"
+   ]
+  },
+  {
+   "modul": "Terfiler",
+   "alt_ekranlar": [
+    "terfi talebi/onayi",
+    "butce",
+    "aday onerisi"
+   ],
+   "yetenekler": [
+    "unvan/kademe/ucret degisikligi tarihli",
+    "SGK meslek kodu guncelleme tetikleyicisi",
+    "butce kontrolu",
+    "performans kanitlari"
+   ],
+   "varliklar": [
+    "PromotionRequest",
+    "CompensationChange",
+    "PositionChange"
+   ],
+   "bagimliliklar": [
+    "Pozisyonlar",
+    "Ucretler",
+    "Performans",
+    "SGK (meslek kodu)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Terfi icin ozel yasal kural yok; esit davranma ilkesi (4857 md.5) - madde metni bu calismada okunmadi: dogrulanamadi",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [],
+   "oracle_kaynagi": "Musteri politikasi",
+   "ai_test_edebilir": [
+    "onay akisi, butce limiti, retro ucret tetigi"
+   ],
+   "insan_gerekir": [
+    "terfi kararlari, AI onerilerinin adilligi/ayrimcilik riski (hukuk + etik)"
+   ],
+   "prototipte_var": "Terfi listesi (mevcut/hedef, ucret etkisi, gecerlilik), AI aday onerisi",
+   "eksik": [
+    "butce onay akisi",
+    "meslek kodu tetigi uygulamasi"
+   ]
+  },
+  {
+   "modul": "Offboarding (fesih, kidem/ihbar, ibra, cikis bildirimi)",
+   "alt_ekranlar": [
+    "fesih turu ve gerekcesi",
+    "ihbar suresi planlama (is arama izni)",
+    "kidem/ihbar/izin ucreti hesabi",
+    "zimmet iadesi, erisim iptali",
+    "SGK isten ayrilis bildirgesi (cikis kodu)",
+    "calisma belgesi",
+    "cikis mulakati"
+   ],
+   "yetenekler": [
+    "fesih nedeni -> kidem/ihbar hakki karar tablosu (istifa, isveren feshi, hakli nedenler, emeklilik, askerlik, evlilik (kadin, 1 yil icinde), olum)",
+    "ihbar sureleri: <6 ay 2 hf, 6 ay-1,5 yil 4 hf, 1,5-3 yil 6 hf, 3+ yil 8 hf",
+    "ihbar suresince gunde en az 2 saat is arama izni",
+    "kidem: her tam yil icin 30 gunluk ucret; kidem tavani (2026/1: 64.948,77; 2026/2: 73.729,87)",
+    "kidem tazminati GV istisnasi (GVK 25/7) ve DV",
+    "kullanilmayan izin ucreti (md.59)",
+    "SGK cikis kodu ve 10 gun icinde bildirim",
+    "calisma belgesi (md.28)",
+    "is guvencesi kapsami (30+ isci, 6 ay kidem) uyarisi"
+   ],
+   "varliklar": [
+    "Termination(tur, neden kodu, tarih)",
+    "SeveranceCalc",
+    "NoticeCalc",
+    "FinalSettlement",
+    "ExitInterview",
+    "ClearanceChecklist",
+    "EmploymentCertificate"
+   ],
+   "bagimliliklar": [
+    "Bordro (off-cycle)",
+    "Izinler",
+    "Kesintiler (kalan borc)",
+    "SGK/Beyannameler",
+    "Belgeler",
+    "IT (SCIM)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Kidem tazminati halleri ve 30 gunluk ucret; isyeri devrinde sure birlesmesi (1475 md.14)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.1475.pdf"
+    },
+    {
+     "kural": "Ihbar sureleri ve ihbar tazminati (4857 md.17)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Is guvencesi: 30+ isci, 6 ay kidem, gecerli sebep (md.18); fesih bildirimi yazili ve gerekceli (md.19)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Is arama izni gunde en az 2 saat (md.27); calisma belgesi (md.28)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Kullanilmayan izin ucreti (md.59); tazminatlarda 5 yil zamanasimi (Ek Madde 3)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Kidem tavani 01.07-31.12.2026: 73.729,87 TL (TURMOB sirkuleri 09.07.2026/98; HMB genelgesine dayanir); 01.01-30.06.2026: 64.948,77 TL (ikincil: EY sirkuleri https://www.ey.com/tr_tr/services/tax/sosyal-guvenlikte-gundem/sirkuler/2026/sirkuler-no-2)",
+     "kaynak": "https://www.turmob.org.tr/ekutuphane/download/4bca3949-fb63-40cd-90c6-3f5e2a0e69d4"
+    },
+    {
+     "kural": "Isten ayrilis bildirgesi en gec 10 gun (5510 md.9)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+    },
+    {
+     "kural": "SGK isten cikis nedeni kodlari (01-..., 03 isci tarafindan fesih, 04 isveren feshi hakli sebep bildirilmeden, 08 emeklilik, 12 askerlik, 13 kadin iscinin evlenmesi ...)",
+     "kaynak": "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK istenCikisKaydet (test ortami var)",
+    "SCIM erisim iptali",
+    "ibraname icin noter/e-imza - dogrulanamadi"
+   ],
+   "oracle_kaynagi": "CSGB/e-Devlet kidem-ihbar hesaplama araclari (alt ajan raporu) + kanun + IK hukukcusu (fesih nedeni siniflandirmasi, giydirilmis ucret)",
+   "ai_test_edebilir": [
+    "karar tablosu (fesih turu x kidem suresi x hak) exhaustive testi",
+    "ihbar suresi sinirlari (6 ay, 1,5 yil, 3 yil gun hesabi)",
+    "kidem tavan uygulamasi (donem basi/sonu gecisi: fesih 30.06 vs 01.07)",
+    "resmi hesaplayici ile differential test"
+   ],
+   "insan_gerekir": [
+    "fesih nedeninin hukuki niteligi (hakli/gecerli)",
+    "giydirilmis ucrete giren kalemler",
+    "ibraname gecerliligi",
+    "dava riski"
+   ],
+   "prototipte_var": "Kontrol listesi (form, mulakat, kidem/izin hesabi, zimmet, SCIM, SGK ayrilis 10 gun), ayrilma nedenleri",
+   "eksik": [
+    "fesih turu->hak karar tablosu yok; prototip 'istifa' eden calisana kidem/ihbar hesapliyor (1475 md.14 istisnalari disinda yanlis)",
+    "ihbar/is arama izni planlamasi",
+    "calisma belgesi",
+    "SGK cikis kodu"
+   ]
+  },
+  {
+   "modul": "Ise Alim (ATS)",
+   "alt_ekranlar": [
+    "ilanlar",
+    "aday hatti (asamalar)",
+    "mulakat/geri bildirim",
+    "teklif",
+    "aday havuzu ve KVKK saklama"
+   ],
+   "yetenekler": [
+    "pozisyon/kadro talebinden ilan",
+    "coklu kaynak (kariyer siteleri, referans)",
+    "AI puanlama (aciklanabilir, onyargi denetimi)",
+    "teklif -> onboarding",
+    "aday verisi saklama ve imha (politika)",
+    "ISKUR ilan/engelli kontenjan iliskisi"
+   ],
+   "varliklar": [
+    "JobRequisition",
+    "JobPosting",
+    "Candidate",
+    "Application",
+    "Interview",
+    "Scorecard",
+    "Offer",
+    "ConsentRecord"
+   ],
+   "bagimliliklar": [
+    "Pozisyonlar",
+    "Onboarding",
+    "KVKK"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Aday verisi kisisel veri; islenme sartlari ve silme (6698 md.5,7). KVKK sabit sure koymaz; saklama suresi politika ile",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    },
+    {
+     "kural": "50+ isci: %3 engelli istihdami (4857 md.30)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Otomatik sistemlerle analiz sonucu aleyhe sonuca itiraz hakki (6698 md.11/1-g) - madde metni ayrintili okunmadi; AI puanlama icin uzman teyidi",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "kariyer siteleri (Kariyer.net, LinkedIn) - ticari API kosullari dogrulanamadi",
+    "ISKUR e-Sube (API yok - alt ajan)"
+   ],
+   "oracle_kaynagi": "Musteri sureci; KVKK uzmani; AI puanlamada adalet metrikleri icin insan degerlendirmesi",
+   "ai_test_edebilir": [
+    "asama durum makinesi, e2e, e-posta sablonlari",
+    "saklama suresi doldugunda imha isi",
+    "AI puanlama icin demografik parite/tutarlilik testleri (sentetik veri)"
+   ],
+   "insan_gerekir": [
+    "AI puanlamanin ayrimcilik riski ve hukuki savunulabilirligi",
+    "teklif kararlari"
+   ],
+   "prototipte_var": "Aday hatti, AI puani, kaynak analizi, teklif kabul KPI",
+   "eksik": [
+    "KVKK riza/aydinlatma ve imha",
+    "AI puaninin aciklanmasi ve itiraz sureci",
+    "mulakat puan kartlari"
+   ]
+  },
+  {
+   "modul": "Performans",
+   "alt_ekranlar": [
+    "hedefler (OKR/KRA)",
+    "donem/degerlendirme",
+    "360 geri bildirim",
+    "kalibrasyon",
+    "1:1"
+   ],
+   "yetenekler": [
+    "donem tanimi, hedef agirliklari, yetkinlikler",
+    "yonetici/calisan/360 formlari",
+    "kalibrasyon ve dagilim",
+    "performans -> prim/terfi baglantisi"
+   ],
+   "varliklar": [
+    "ReviewCycle",
+    "Goal",
+    "Competency",
+    "Review",
+    "Feedback",
+    "CalibrationSession"
+   ],
+   "bagimliliklar": [
+    "Terfiler",
+    "Degisken Odemeler",
+    "Egitim"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Performansa dayali fesihte gecerli sebep ve objektif olcut (4857 md.18) - yargi pratigi: insan oracle",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "OKR araclari (opsiyonel)"
+   ],
+   "oracle_kaynagi": "Musteri politikasi",
+   "ai_test_edebilir": [
+    "form/akis/agirlikli puan hesabi",
+    "yetki (yalniz kendi ekibi)"
+   ],
+   "insan_gerekir": [
+    "AI yazdigi degerlendirme taslaklarinin adilligi",
+    "kalibrasyon"
+   ],
+   "prototipte_var": "Hedef listesi, AI ilerleme tahmini, dagilim, AI taslak (yakinda)",
+   "eksik": [
+    "donem/form yapisi",
+    "360",
+    "kalibrasyon"
+   ]
+  },
+  {
+   "modul": "Egitim (zorunlu ISG/KVKK dahil)",
+   "alt_ekranlar": [
+    "programlar",
+    "katilim/tamamlama",
+    "sertifikalar ve gecerlilik",
+    "ogrenme yollari"
+   ],
+   "yetenekler": [
+    "zorunlu egitim takibi (ISG temel egitimleri tehlike sinifina gore periyot)",
+    "sertifika gecerlilik ve uyari",
+    "LMS/SCORM entegrasyonu",
+    "egitim maliyeti ve butce"
+   ],
+   "varliklar": [
+    "TrainingProgram",
+    "TrainingSession",
+    "Enrollment",
+    "Certificate",
+    "LearningPath"
+   ],
+   "bagimliliklar": [
+    "Belgeler",
+    "Organizasyon (tehlike sinifi)",
+    "Performans"
+   ],
+   "mevzuat": [
+    {
+     "kural": "6331 s. ISG Kanunu ve Calisanlarin ISG Egitimleri Yonetmeligi (periyot ve sure) - bu calismada metin okunmadi: dogrulanamadi",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "LMS (SCORM/xAPI)"
+   ],
+   "oracle_kaynagi": "ISG yonetmeligi + ISG uzmani",
+   "ai_test_edebilir": [
+    "periyot hesaplari, hatirlatma zamanlamasi"
+   ],
+   "insan_gerekir": [
+    "egitim iceriklerinin yeterliligi (ISG uzmani)"
+   ],
+   "prototipte_var": "Program kartlari, tamamlama %, zorunlu uyum KPI (yakinda)",
+   "eksik": [
+    "tehlike sinifi bazli ISG periyot kurali",
+    "sertifika-belge baglantisi"
+   ]
+  },
+  {
+   "modul": "HR Vakalari (disiplin, sikayet, olay/is kazasi, yardim masasi)",
+   "alt_ekranlar": [
+    "vaka listesi",
+    "SLA",
+    "gizli vaka erisimi",
+    "savunma talebi/uyari yazisi",
+    "is kazasi bildirimi"
+   ],
+   "yetenekler": [
+    "vaka turleri ve SLA",
+    "gizlilik (yalniz IK+ilgili yonetici) ve denetim izi",
+    "savunma alma ve yazili bildirim sureleri",
+    "is kazasi -> SGK bildirimi (sure) ve ISG kaydi",
+    "calisma belgesi vb. talepler"
+   ],
+   "varliklar": [
+    "Case",
+    "CaseEvent",
+    "DisciplinaryAction",
+    "DefenseRequest",
+    "IncidentReport"
+   ],
+   "bagimliliklar": [
+    "Calisanlar",
+    "Offboarding (hakli fesih kaniti)",
+    "SGK (is kazasi)"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Isci davranisina dayali fesihten once savunma alinmasi (4857 md.19) - metnin ilgili fikrasi bu calismada okunmadi: kismen dogrulandi",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+    },
+    {
+     "kural": "Is kazasi bildirimi 5510 md.13 (sure: 3 is gunu) - madde metni okunmadi: dogrulanamadi",
+     "kaynak": "dogrulanamadi"
+    }
+   ],
+   "entegrasyonlar": [
+    "SGK is kazasi bildirimi (kanal dogrulanamadi)"
+   ],
+   "oracle_kaynagi": "IK hukukcusu (disiplin sureci), ISG uzmani",
+   "ai_test_edebilir": [
+    "SLA hesap, yetki/gizlilik testleri, sablon uretimi"
+   ],
+   "insan_gerekir": [
+    "disiplin kararlari, AI uyari taslaklarinin hukuki uygunlugu"
+   ],
+   "prototipte_var": "Vaka listesi, SLA, gizlilik notu (yakinda)",
+   "eksik": [
+    "savunma sureci",
+    "is kazasi SGK bildirimi"
+   ]
+  },
+  {
+   "modul": "Capraz: Coklu sirket/holding, yetki ve denetim, raporlar, portallar, veri gocu",
+   "alt_ekranlar": [
+    "sirket degistirici",
+    "konsolide raporlar",
+    "rol/yetki matrisi",
+    "denetim gunlugu",
+    "ESS/MSS portallari",
+    "veri gocu sihirbazi"
+   ],
+   "yetenekler": [
+    "sirketler arasi veri izolasyonu + holding duzeyi konsolidasyon (yetkiye bagli)",
+    "alan duzeyinde maskeleme (TCKN, IBAN, ucret, saglik)",
+    "her hassas goruntulemenin denetimi",
+    "KVKK yurt disi aktarim (AI saglayici bolgesi) kontrolu",
+    "incumbent sistemlerden (Logo, Mikro, Netsis, Luca vb.) calisan, izin bakiyesi, kumulatif matrah, ucret gecmisi, tesvik gecmisi aktarimi ve mutabakat"
+   ],
+   "varliklar": [
+    "Tenant",
+    "Company",
+    "Role",
+    "Permission",
+    "FieldPolicy",
+    "AuditLog",
+    "MigrationBatch",
+    "ReconciliationReport"
+   ],
+   "bagimliliklar": [
+    "tum moduller"
+   ],
+   "mevzuat": [
+    {
+     "kural": "Kisisel verilerin yurt disina aktarimi 6698 md.9 (7499 s.K. ile 2024 degisikligi)",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    },
+    {
+     "kural": "Veri guvenligi yukumlulukleri 6698 md.12 - madde metni ayrintili okunmadi",
+     "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+    }
+   ],
+   "entegrasyonlar": [
+    "SSO/SCIM",
+    "BI",
+    "ERP"
+   ],
+   "oracle_kaynagi": "Veri gocunde oracle = eski sistemin son donem bordro/beyanname ciktilari (mutabakat); yetkide = musteri yetki matrisi",
+   "ai_test_edebilir": [
+    "tenant/company leakage testleri (her endpoint icin negatif yetki testi)",
+    "veri gocu mutabakat testleri (toplamlar, kumulatif matrah, izin bakiyesi)",
+    "erisilebilirlik (WCAG 2.2 AA), performans, guvenlik (OWASP ASVS)"
+   ],
+   "insan_gerekir": [
+    "yetki matrisinin onayi",
+    "goc edilen verinin kabulu (IK+mali musavir)",
+    "KVKK yurt disi aktarim karari"
+   ],
+   "prototipte_var": "Sirket degistirici (Karaca Holding), rol tablosu, SSO/SCIM, maskeleme, API anahtarlari, webhooklar, raporlar, portal onizlemeleri",
+   "eksik": [
+    "konsolide raporlar",
+    "denetim gunlugu ekrani",
+    "veri gocu araci",
+    "AI saglayicisina aktarimin KVKK md.9 degerlendirmesi ('bolge: AB')"
+   ]
+  }
+ ],
+ "karsilastirma": [
+  {
+   "urun": "Odoo HR (Community + Enterprise)",
+   "lisans": "Community: LGPL-3 (odoo/odoo); Enterprise: ticari abonelik (OEEL). OCA/payroll: AGPL-3.",
+   "turkiye_ozel": [
+    "Enterprise'da 'Türkiye - Payroll' (l10n_tr_hr_payroll) ve 'Türkiye - Payroll with Accounting' (l10n_tr_hr_payroll_account) modülleri resmi dokümanda listeleniyor (Odoo 19.0 docs).",
+    "Kapsam (dokümana göre): SGK işçi %14 / işveren %15, işsizlik işçi %1 / işveren %2, SGK tavanı (SSI Base Amount Ceiling), kümülatif matrahla artan oranlı gelir vergisi (2025 dilimleri %15-%40), asgari ücret gelir vergisi istisnası, damga vergisi %0,759 ve istisnası, net->brüt / brüt->net, maaş kuralı parametreleri (asgari ücret vb.), bordro muhasebe fişi.",
+    "Dokümanda SGK e-Bildirge / APHB, MUHSGK beyannamesi, teşvik (5510/6111 vb.) hesaplama, kıdem/ihbar tazminatı, BES, icra kesintisi, banka talimat dosyası formatı GEÇMİYOR -> doğrulanamadı / muhtemelen yok.",
+    "Community tarafında Türkiye bordrosu yok: OCA/l10n-turkey deposu 8.0-19.0 dallarında modül içermiyor (16.0'da yalnızca 'setup', 17.0/18.0/19.0'da yalnızca '.github'); OCA/payroll'da TR modülü yok.",
+    "odoo/odoo Community'de l10n_tr, l10n_tr_nilvera (e-Fatura/e-İrsaliye - Nilvera entegrasyonu) var; bunlar HR değil muhasebe/e-belge.",
+    "GitHub'da topluluk denemeleri: karatasibrahim/l10n_tr_hr_payroll (son push 2024-10-18) ve volknakkurt/l10n_tr_hr_payroll (son push 2024-08-14); lisans belirtilmemiş, 0 yıldız, Odoo modül iskeleti (models/views/report) - bakım/kapsam doğrulanamadı."
+   ],
+   "eksik_veya_yok": [
+    "Community'de bordro yok (yalnızca OCA/payroll ile, TR yerelleştirmesi olmadan)",
+    "Community'de performans değerlendirme, vardiya planlama, helpdesk, onay akışları, belge yönetimi yok",
+    "Resmi dokümanda TR için e-Bildirge/MUHSGK/teşvik/kıdem-ihbar/BES/icra: doğrulanamadı",
+    "Ayrı 'Transfer/Terfi' modülü yok; çalışan kaydı ve sözleşme değişikliğiyle yapılıyor (doğrulanamadı - ayrı özellik sayfası kontrol edilmedi)",
+    "Onboarding/Offboarding: ayrı modül değil, çalışan üzerinde plan/aktivite şablonları (doğrulanamadı - bu çalışmada kaynak açılmadı)"
+   ],
+   "kaynaklar": [
+    "https://www.odoo.com/page/editions",
+    "https://www.odoo.com/documentation/19.0/applications/hr/payroll/payroll_localizations.html",
+    "https://www.odoo.com/documentation/19.0/applications/hr/payroll/payroll_localizations/turkey.html",
+    "https://github.com/odoo/odoo/tree/19.0/addons",
+    "https://github.com/odoo/odoo/tree/18.0/addons/hr_attendance",
+    "https://github.com/OCA/payroll",
+    "https://github.com/OCA/l10n-turkey",
+    "https://github.com/karatasibrahim/l10n_tr_hr_payroll",
+    "https://github.com/volknakkurt/l10n_tr_hr_payroll"
+   ]
+  },
+  {
+   "urun": "Frappe HR / HRMS (frappe/hrms)",
+   "lisans": "GPL-3.0 (GitHub API: license=GPL-3.0; varsayılan dal develop, son push 2026-09-27). Frappe Framework + ERPNext üzerinde çalışır (v14'ten itibaren ERPNext'ten ayrı ürün).",
+   "turkiye_ozel": [
+    "Resmi Türkiye yerelleştirmesi YOK: hrms/regional klasöründe yalnızca india ve united_arab_emirates var.",
+    "Arayüz çevirisi var: hrms/locale/tr.po mevcut.",
+    "Topluluk: UfukTogay/erpnext_turkiye (MIT, 0 yıldız, son push 2025-01-14; README yalnızca başlıktan ibaret, bordro içeriği doğrulanamadı).",
+    "SGK/e-Bildirge/MUHSGK/teşvik/BES/icra: yok (kaynakta bulunmadı). Gratuity kural motoru kıdem tazminatı için uyarlanabilir (uyarlanabilirlik doğrulanamadı)."
+   ],
+   "eksik_veya_yok": [
+    "Türkiye bordro kuralları, SGK bildirgeleri, muhtasar beyanname, teşvik hesaplama yok",
+    "Banka talimat dosyası (TR banka formatları) yok; bordro ödemesi ERPNext yevmiye/ödeme kaydı ile (TR format doğrulanamadı)",
+    "Kredi/avans kesintisi: Salary Slip Loan doctype var; kredi yönetimi ayrı Frappe Lending uygulamasında (doğrulanamadı)",
+    "PDKS cihaz sürücüsü çekirdekte yok; cihazlar Employee Checkin API'sine veri basar (harici biometric sync aracı - doğrulanamadı)"
+   ],
+   "kaynaklar": [
+    "https://github.com/frappe/hrms",
+    "https://github.com/frappe/hrms/blob/develop/hrms/modules.txt",
+    "https://github.com/frappe/hrms/tree/develop/hrms/hr/doctype",
+    "https://github.com/frappe/hrms/tree/develop/hrms/payroll/doctype",
+    "https://github.com/frappe/hrms/tree/develop/hrms/regional",
+    "https://docs.frappe.io/hr/introduction",
+    "https://github.com/UfukTogay/erpnext_turkiye"
+   ]
+  },
+  {
+   "urun": "Horilla HRMS",
+   "lisans": "LGPL-2.1 (GitHub API). Depo horilla-opensource/horilla -> horilla/horilla-hr adresine taşınmış; varsayılan dal 2.0, son push 2026-09-26, ~1437 yıldız. Django/Python.",
+   "turkiye_ozel": [
+    "Arayüz çevirisi: Türkçe (tr) locale mevcut (horilla/locale).",
+    "Türkiye bordrosu/SGK/e-Bildirge/MUHSGK/teşvik/kıdem-ihbar/BES/icra: yok (kaynak kodda bulunmadı). Bordro jenerik: TaxBracket + FilingStatus (ABD tarzı beyan statüsü) + Allowance/Deduction koşul motoru."
+   ],
+   "eksik_veya_yok": [
+    "Eğitim/LMS modülü yok (depo app listesinde training yok)",
+    "Ayrı Transfer/Terfi belge akışı yok (vardiya/iş tipi talebi var; terfi için özel model bulunamadı)",
+    "Muhasebe entegrasyonu/yevmiye fişi yok (doğrulanamadı; payroll modelinde hesap planı bağlantısı görülmedi)",
+    "Banka talimat dosyası TR formatları yok",
+    "Resmi beyanname/bildirge üretimi yok"
+   ],
+   "kaynaklar": [
+    "https://github.com/horilla/horilla-hr",
+    "https://github.com/horilla-opensource/horilla",
+    "https://github.com/horilla/horilla-hr/blob/2.0/biometric/models.py",
+    "https://github.com/horilla/horilla-hr/blob/2.0/payroll/models/models.py",
+    "https://github.com/horilla/horilla-hr/blob/2.0/base/models.py",
+    "https://github.com/horilla/horilla-hr/blob/2.0/employee/models.py",
+    "https://github.com/horilla/horilla-hr/blob/2.0/helpdesk/models.py"
+   ]
+  },
+  {
+   "urun": "OrangeHRM (Starter/Open Source + Advanced)",
+   "lisans": "Starter: GPL-3.0 (github.com/orangehrm/orangehrm, PHP/Symfony + Vue; son push 2026-06-28). Advanced: ticari SaaS/abonelik.",
+   "turkiye_ozel": [
+    "Türkiye bordrosu/SGK/e-Bildirge/MUHSGK: yok (yerleşik bordro zaten yok).",
+    "Türkçe arayüz dili: doğrulanamadı (I18N eklentisi var, TR dil paketi kontrol edilmedi)."
+   ],
+   "eksik_veya_yok": [
+    "Bordro hesaplama motoru yok (yalnız connector)",
+    "Starter'da Onboarding/Offboarding, eğitim, vardiya planlama (Roster), disiplin, talep masası yok",
+    "Transfer/Terfi için ayrı iş akışı yok (PIM'de iş bilgisi geçmişi düzenlenir - doğrulanamadı)",
+    "PDKS cihaz entegrasyonu: yerleşik sürücü doğrulanamadı",
+    "Muhasebe/banka dosyası yok"
+   ],
+   "kaynaklar": [
+    "https://github.com/orangehrm/orangehrm",
+    "https://github.com/orangehrm/orangehrm/tree/main/src/plugins",
+    "https://orangehrm.com/open-source/upgrade-to-advanced",
+    "https://www.orangehrm.com/en/solutions/compensation/payroll-connector",
+    "https://www.orangehrm.com/en/open-source"
+   ]
+  },
+  {
+   "urun": "Logo Yazılım: Logo Edge HR (eski adı Logo j-HR) + Logo Bordro Plus (+ SaaS 'Logo Payroll')",
+   "lisans": "Ticari, kapalı kaynak. Edge HR/j-HR: web tabanlı (orta-büyük ölçek); Bordro Plus: on-premise masaüstü; ayrıca SaaS bordro çözümü (Logo arama sonuç özeti, sayfa açılmadı).",
+   "turkiye_ozel": [
+    "SGK: Aylık prim ve hizmet belgesi, işe giriş-çıkış bildirgeleri, e-Bildirge hazırlama ve SGK'ya gönderim (Bordro Plus); 'e-SGK Integration' (payroll kategori sayfası)",
+    "Teşvik: 'İstihdam teşvik ve destekleri otomatik hesaplanır' (Edge HR); Bordro Plus SSS 'Programda hangi teşvikler hesaplanabiliyor?' (liste sayfada açılmadı)",
+    "Yasal parametre güncelleme: My Logo entegrasyonuyla asgari ücret, vergi dilimleri (Edge HR), kıdem tavanı (Bordro Plus SSS) çevrim içi güncellenir",
+    "Kıdem/ihbar: j-HR dokümantasyonunda 'Kıdem/İhbar Tazminatı Grupları' tanımı (docs.logo.com.tr, arama özetinden; sayfa açılmadı - kısmen doğrulandı)",
+    "BES: 'BES Otomatik Katılım' işlemleri (Bordro Plus)",
+    "İcra/nafaka: özel kesinti tanımı; avans ve personel borç ödeme planı (Bordro Plus)",
+    "Şifreli e-posta ile bordro zarfı gönderimi (Bordro Plus)",
+    "MUHSGK beyannamesi: ürün sayfalarında açıkça geçmiyor -> doğrulanamadı (payroll kategori sayfası 'Tax returns' diyor)",
+    "e-imza/e-arşiv bordro: Edge HR sayfasında 'e-Arşiv' kelimesi geçiyor ancak bağlamı bordro değil/doğrulanamadı",
+    "Banka talimat dosyası: doğrulanamadı"
+   ],
+   "eksik_veya_yok": [
+    "Vardiya planlama: sayfalarda açık vardiya planlama/rotasyon ifadesi bulunamadı (doğrulanamadı)",
+    "HR vakaları/disiplin: yalnızca 'Öneri & Geri Bildirim' var; disiplin süreci doğrulanamadı",
+    "Transfer/Terfi: ayrı modül ifadesi bulunamadı (doğrulanamadı)"
+   ],
+   "kaynaklar": [
+    "https://www.logo.com.tr/urun/logo-edge-hr",
+    "https://www.logo.com.tr/en/product/logo-j-hr",
+    "https://www.logo.com.tr/urun/logo-bordro-plus",
+    "https://www.logo.com.tr/en/category/payroll-management",
+    "https://docs.logo.com.tr/pages/viewpage.action?pageId=50679864"
+   ]
+  },
+  {
+   "urun": "Mikro Yazılım: Personel Yönetimi (Mikro Jump) / İnsan Kaynakları Yönetimi (Mikro Fly) + e-Bordro",
+   "lisans": "Ticari, kapalı kaynak. Ürün aileleri: Mikro Jump (KOBİ), Mikro Fly (50+ çalışan / büyük işletme); Run ürünü bordro sayfasında geçmiyor.",
+   "turkiye_ozel": [
+    "SGK e-Bildirge'yi program üzerinden doğrudan SGK sistemine gönderme (Jump ve Fly Personel Yönetimi)",
+    "e-Bordro: bordroların imza gerekmeden KEP (Kayıtlı Elektronik Posta) ile tek tuşla elektronik gönderimi (e-Dönüşüm ürünü)",
+    "MUHSGK, teşvik hesaplama, kıdem/ihbar, BES, icra, banka talimat dosyası: incelenen resmi sayfalarda geçmiyor -> doğrulanamadı",
+    "PDKS cihaz entegrasyonu: 'Personel Devam Programı' sayfasında cihaz/kart okuyucu entegrasyonu ifadesi yok -> doğrulanamadı"
+   ],
+   "eksik_veya_yok": [
+    "Vardiya planlama: sayfalarda geçmiyor (doğrulanamadı)",
+    "Çalışan self-servis portalı: sayfalarda geçmiyor (doğrulanamadı)",
+    "Onboarding/Offboarding iş akışı, HR vakaları/disiplin: doğrulanamadı"
+   ],
+   "kaynaklar": [
+    "https://www.mikro.com.tr/bordro-programi/",
+    "https://www.mikro.com.tr/ik-programi/",
+    "https://www.mikro.com.tr/personel-devam-programi/",
+    "https://www.mikro.com.tr/e-bordro/"
+   ]
+  },
+  {
+   "urun": "Kolay İK (Personel Yönetimi + Kolay Bordro + PDKS)",
+   "lisans": "Ticari SaaS (bulut, abonelik, taahhütsüz; 15 gün deneme). Kapalı kaynak.",
+   "turkiye_ozel": [
+    "Vergi, teşvik ve SGK mevzuat değişikliklerinin otomatik güncellenmesi (bordro sayfası)",
+    "SGK işe giriş / işten çıkış işlemlerini uygulamadan tamamlama (bordro sayfası)",
+    "MUHSGK raporu (bordro sayfası rapor listesi)",
+    "Teşvik detaylarının toplu işlemlerle yönetimi (bordro sayfası); teşvik hesaplama motorunun kapsamı doğrulanamadı",
+    "Outsource bordro HİZMETİ kapsamında (yazılım özelliği olarak değil): banka ödeme listeleri, tazminat hesaplamaları, icra/BES bordrolaştırma, SGK giriş-çıkış, iş göremezlik raporları, İŞKUR kayıtları, muhtasar ve hizmet beyannameleri, Ar-Ge/teknopark istisnalı bordrolar",
+    "KVKK: veri işleyen sıfatı ve biyometrik veri toplamama vurgusu (PDKS sayfası)",
+    "e-Bildirge doğrudan gönderim, e-imzalı/e-arşiv bordro: doğrulanamadı"
+   ],
+   "eksik_veya_yok": [
+    "Eğitim/LMS modülü: resmi sayfalarda ürün olarak geçmiyor ('Akademi' kullanıcı eğitim içeriği) -> doğrulanamadı",
+    "Onboarding/Offboarding iş akışı: doğrulanamadı",
+    "Organizasyon şeması: doğrulanamadı",
+    "Fiziksel PDKS cihaz (turnike/kart) entegrasyonu: ürün cihazsız QR modeline odaklı; cihaz entegrasyonu doğrulanamadı",
+    "HR vakaları/disiplin: doğrulanamadı"
+   ],
+   "kaynaklar": [
+    "https://kolayik.com/",
+    "https://kolayik.com/bordro-yazilimi",
+    "https://kolayik.com/pdks",
+    "https://kolayik.com/bordro-ve-tesvik-danismanligi"
+   ]
+  },
+  {
+   "urun": "Luca (Luca Mali Müşavir Paketi - bordro/personel bileşeni + ROTA teşvik uygulaması)",
+   "lisans": "Ticari, web tabanlı merkezi muhasebe sistemi (TÜRMOB ile ilişkili; sayfada 'Türkiye'nin ilk ... web tabanlı merkezi muhasebe sistemi'). Kapalı kaynak.",
+   "turkiye_ozel": [
+    "e-Beyanname ve e-Bildirge işlemleri; e-Devlet entegrasyonu ile e-İşe Giriş / e-İşten Çıkış otomasyonu (Ürün Bulucu sayfası)",
+    "SGK veya gelir vergisi istisnası içeren farklı kanun numaralarının geçerlilik tarihine göre doğru istisna tutarlarıyla bordroya aktarılması; işyeri borçlu olduğu aylarda bordroyu teşviksiz hesaplama",
+    "Luca ROTA uygulaması: geriye dönük ve cari dönem istihdam teşviki sorgulama/hesaplama, personel bazında teşvik kazancı raporu",
+    "Kıdem tazminatı, ihbar tazminatı, huzur hakkı gibi ek kazançların Muhtasar beyanname işçilik kartlarına otomatik/toplu yansıtılması",
+    "BES takibi (katılımcı ve ödemeler)",
+    "Puantaj, PDKS, icra, e-bordro: doğrulanamadı"
+   ],
+   "eksik_veya_yok": [
+    "İşe alım, performans, eğitim, onboarding/offboarding, self-servis portal: ürün sayfalarında yok (doğrulanamadı)",
+    "Vardiya/PDKS: doğrulanamadı"
+   ],
+   "kaynaklar": [
+    "https://www.luca.com.tr/Sayfa/UrunBulucu/89",
+    "https://www.luca.com.tr/Products/Index/5",
+    "https://www.luca.com.tr/Sayfa/luca-bes-sistemi-hakkinda-sikca-sorulan-sorular/50"
+   ]
+  },
+  {
+   "urun": "Logo Netsis 3 Bordro (+ Logo Netsis HR)",
+   "lisans": "Ticari, kapalı kaynak. 'Çalışan ve Modül Bazlı' lisans; ana paket 100 çalışan (Entegre: 10 kullanıcı, Standard/Enterprise: 20 kullanıcı); LEM yıllık bakım aboneliği (fiyat listesi 6 Temmuz 2024).",
+   "turkiye_ozel": [
+    "BES Otomatik Katılım Entegrasyon Modülü (ücretli opsiyon) - AvivaSA, Anadolu Hayat Emeklilik, Allianz Yaşam ve Emeklilik ile entegre (fiyat listesi)",
+    "e-Bildirge: 'e-Bildirge Basımında Meslek Kodlarının Desteklenmesi' doküman sayfası (docs başlığı; içerik JS nedeniyle okunamadı); arama özetine göre MUHSGK içindeki SGK bilgilerinin Bordro/İşlemler/E-Bildirge menüsünden text formatta alınması - kısmen doğrulandı",
+    "KVKK: arama özetine göre veri alanı bazında rıza takibi ve rıza süresi dolan alanların anonimleştirilmesi (sürüm notu 9.26 Şubat 2020; sayfa içeriği okunamadı) - doğrulanamadı",
+    "eLogo İSG entegrasyonu (fiyat listesi)",
+    "Teşvik, kıdem/ihbar, icra, banka talimat dosyası, PDKS: doğrulanamadı"
+   ],
+   "eksik_veya_yok": [
+    "Fiyat listesine göre ürün kapsamı 'sicil + bordro + borç/avans' ile sınırlı: işe alım, performans, eğitim, vardiya, self-servis portal bu üründe yok (Netsis HR ayrı ürün, kapsamı doğrulanamadı)"
+   ],
+   "kaynaklar": [
+    "https://cdn.logo.com.tr/files/logocomtr/Uploads/Documents/logo-netsis-3-bordro-fiyat-listesi.pdf",
+    "https://docs.logo.com.tr/pages/viewpage.action?pageId=50680497",
+    "https://docs.logo.com.tr/pages/viewpage.action?pageId=47081981",
+    "https://docs.logo.com.tr/pages/viewpage.action?pageId=66252894",
+    "https://docs.logo.com.tr/pages/viewpage.action?pageId=66252925"
+   ]
+  },
+  {
+   "urun": "Workcube HR (Workcube ERP'nin İK bileşeni)",
+   "lisans": "Ticari ERP (Workcube). Lisans modeli / açık kaynak durumu bu çalışmada doğrulanamadı.",
+   "turkiye_ozel": [
+    "Yasa, yönetmelik, tebliğ ve genelge parametreleriyle desteklenen ücret sistemi; işe giriş, işten çıkış, yasal bildirimler; 'Bildirgeler' modülü (resmi İK sayfası)",
+    "Teşvik danışmanlığı hizmeti (arama sonucu özeti) - yazılımda teşvik hesaplama doğrulanamadı",
+    "MUHSGK, kıdem/ihbar, BES, icra, banka talimat dosyası, e-bordro: resmi İK sayfasında geçmiyor -> doğrulanamadı"
+   ],
+   "eksik_veya_yok": [
+    "Eğitim/LMS: 'Holistic Digital Academy' Workcube'ün kendi akademisi; ürün içi eğitim yönetimi modülü doğrulanamadı",
+    "Offboarding iş akışı: doğrulanamadı"
+   ],
+   "kaynaklar": [
+    "https://www.workcube.com/tr/insan-kaynaklari-ik",
+    "https://www.workcube.com/tr/insan-kaynaklari-bordro-kurallari",
+    "https://www.workcube.com/urunler/ikpdks-raporlama-sistemi",
+    "https://www.workcube.com/tr/hr-ik-bulut-bordro-cozumu",
+    "https://wiki.workcube.com/tr/detail/11216"
+   ]
+  }
+ ],
+ "bilinmeyen_bilinmeyenler": [
+  {
+   "sira": 1,
+   "madde": "Gelistirme sirasinda mevzuat/parametre degisikligi (2025-12: 7566 SGK oran/tavan; 2026-04: 7578 analik 24 hafta, babalik 10 gun; 2026-04: KVKK biyometri ilke karari; Haziran 2026 MPHB format guncellemesi)",
+   "risk": "Kritik",
+   "neden": "Yesil testler bir gecede yanlis olur; parametre surumlemesi ve 'mevzuat izleme -> altin set guncelleme' sureci yoksa sistem sessizce yanlis hesaplar",
+   "kaynak": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf ; https://www.kvkk.gov.tr/Icerik/8762/mesai-takibi-amaciyla-biyometrik-veri-islenmesi-hakkinda-kisisel-verileri-koruma-kurulunun-29-04-2026-tarihli-ve-2026-921-sayili-ilke-kararina-iliskin-kamuoyu-duyurusu"
+  },
+  {
+   "sira": 2,
+   "madde": "Kumulatif GV matrahi: yil icinde isveren degisimi (grup ici tuzel kisilik transferi dahil), ayni ay icinde birden fazla odeme, asgari ucret istisnasinin aylik degismesi (2026: Oca-Haz 4.211,33; Tem 4.537,75; Agu-Ara 5.615,10 - turetilmis)",
+   "risk": "Kritik",
+   "neden": "Dilim gecis ayi ve isveren degisimi en sik bordro hatasi kaynagi; hata tum yil boyunca birikir",
+   "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFileResources?objectKey=arsiv%2Fyardim-kaynaklar%2Fyararli-bilgiler%2Fgelir-vergisi-tarifeleri%2Fgelir-vergisi-tarifesi-2026.pdf ; https://cdn.gib.gov.tr/api/gibportal-file/file/getFile?objectKey=DUYURU/UNIVERSAL/2026/2026_Ucret_Geliri.pdf"
+  },
+  {
+   "sira": 3,
+   "madde": "Retroaktif degisiklikler: gecmis doneme ucret zammi, parametre duzeltmesi, kilit sonrasi puantaj duzeltmesi -> fark bordrosu, hangi donemin MPHB'sine yazilacagi, ek/iptal bildirge, gecikme zammi",
+   "risk": "Kritik",
+   "neden": "Ayni degisiklik GV (odeme ayi) ve SGK (hak edilen ay) icin farkli donemlere dusebilir; yorum ve kilit/duzeltme mimarisi gerektirir",
+   "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf"
+  },
+  {
+   "sira": 4,
+   "madde": "Tesvik secimi, kombinasyonu ve kosul degisimi (6111 bitis 31.12.2026; 2 puan/5 puan imalat ayrimi; 5746'da once puan indirimi sonra yari; borclu ayda tesviksiz; asgari ucret destegi 42,33 TL/gun kosullari)",
+   "risk": "Kritik",
+   "neden": "Parasal etkisi buyuk, geriye donuk duzeltme ve SGK denetim riski; en avantajli secim insan karari",
+   "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+  },
+  {
+   "sira": 5,
+   "madde": "Fesih nedeni -> kidem/ihbar hakki -> SGK cikis kodu zinciri; giydirilmis ucret; kidem tavani donem gecisi (64.948,77 -> 73.729,87 TL, 01.07.2026)",
+   "risk": "Kritik",
+   "neden": "Yanlis kod issizlik odenegini ve dava riskini etkiler; prototip istifaya kidem hesapliyor",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.1475.pdf ; https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9 ; https://www.turmob.org.tr/ekutuphane/download/4bca3949-fb63-40cd-90c6-3f5e2a0e69d4"
+  },
+  {
+   "sira": 6,
+   "madde": "SGK 30 gun kurali, ay ortasi giris/cikis, 28/29/31 cekeni aylar, eksik gun kodu secimi (06 kismi, 07 puantaj, 12 birden fazla), belge turu (1, 2 SGDP, 7 cirak)",
+   "risk": "Yuksek",
+   "neden": "Kod listeleri resmi ama hangisinin secilecegi olay bazli yorum; eksik gun belgeleri ispat yukumlulugu (5510 md.86)",
+   "kaynak": "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9 ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+  },
+  {
+   "sira": 7,
+   "madde": "MUHSGK icin test ortami yok; SGK 4/a test ortami gercek isyeri sicili ister; e-Bildirge V2 test ortami dogrulanamadi",
+   "risk": "Yuksek",
+   "neden": "Entegrasyonun gercek dogrulamasi ilk canli gonderimde olur; ajan ekibi uctan uca yesil kosamaz -> paralel kosum ve insan gonderimi sart",
+   "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf ; https://e.sgk.gov.tr/Uygulamalar/Detay/4a-Sigortali-Ise-Giris-ve-Isten-Ayrilis-Bildirgesi-2024-10-02-10-08-51"
+  },
+  {
+   "sira": 8,
+   "madde": "Zaman kurallari: gece yarisini asan vardiya hangi gune yazilir; gece calismasi 7,5 saat siniri ve gece FM yasagi; denklestirme 2 ay; hafta tatili 24 saat; arife 13.00 yarim gun; tatile denk gelen vardiya",
+   "risk": "Yuksek",
+   "neden": "Puantaj ve bordronun girdisi; hatalar sessizce FM/UBGT ucretine yansir",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2429.pdf"
+  },
+  {
+   "sira": 9,
+   "madde": "Bordro kapanis/yeniden acma, kilit ve denetim izi; beyanname gonderildikten sonra degisiklik",
+   "risk": "Yuksek",
+   "neden": "Denetimde 'kim neyi ne zaman degistirdi' ispati; yeniden acmanin beyanname duzeltmesini tetiklemesi",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf"
+  },
+  {
+   "sira": 10,
+   "madde": "Coklu SGK isyeri ve tuzel kisilik: ay ortasi isyeri degisikligi (iki belge), holding konsolidasyonu, sirketler arasi veri izolasyonu",
+   "risk": "Yuksek",
+   "neden": "Prim gunu bolunmesi, tesvik kosulunun isyeri bazli olmasi, yetki sizintisi",
+   "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+  },
+  {
+   "sira": 11,
+   "madde": "Maas/saglik verisine rol bazli erisim ve AI asistanin bu verilere erisimi; AI saglayicisinin yurt disinda olmasi (KVKK md.9, 2024 degisikligi)",
+   "risk": "Yuksek",
+   "neden": "Ozel nitelikli veri ve yurt disi aktarim kosullari; prototip 'bolge: AB' diyor",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+  },
+  {
+   "sira": 12,
+   "madde": "Veri gocu: incumbent sistemden kumulatif matrah, izin bakiyesi ve hak edis tarihi, kidem baslangici (devir/nakil), ucret gecmisi, tesvik gecmisi, icra siralari",
+   "risk": "Yuksek",
+   "neden": "Goc hatasi ilk bordroda gorunur; mutabakat raporu ve insan kabulu gerekir",
+   "kaynak": "dogrulanamadi (musteri verisine bagli)"
+  },
+  {
+   "sira": 13,
+   "madde": "AI ozelliklerinin hukuki riski: ayrilma riski skoru, aday AI puani, AI yazili uyari/degerlendirme taslaklari",
+   "risk": "Yuksek",
+   "neden": "Otomatik isleme dayali aleyhe sonuca itiraz hakki (6698 md.11) ve ayrimcilik riski; oracle insan",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+  },
+  {
+   "sira": 14,
+   "madde": "Ar-Ge/teknopark (5746, 4691): GV istisnasi asgari ucretin 40 kati sinirlari ve SGK isveren hissesinin yarisi (31.12.2028'e kadar)",
+   "risk": "Orta-Yuksek",
+   "neden": "Teknoloji sirketi musteride (Karaca Teknoloji) olasi; hesap sirasi ozel",
+   "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFile?objectKey=DUYURU/UNIVERSAL/2026/2026_Ucret_Geliri.pdf ; https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+  },
+  {
+   "sira": 15,
+   "madde": "Yuvarlama: kurus yuvarlama kalem bazli mi toplam mi; DV ve GV'de ara yuvarlama; net->brut iterasyonunun yakinsamasi",
+   "risk": "Orta-Yuksek",
+   "neden": "Kurus farklari beyanname-bordro mutabakatini bozar; resmi kural metni dogrulanamadi -> incumbent ile differential test",
+   "kaynak": "dogrulanamadi"
+  },
+  {
+   "sira": 16,
+   "madde": "Yillik izin hak edis yildonumu, md.55 calisilmis sayilan haller, devamsizlikla oteleme, yas kurali (18-/50+), bolunme (>=10 gun), yol izni, 5 yil zamanasimi",
+   "risk": "Orta",
+   "neden": "Uzun vadeli bakiye hatalari ayrilista izin ucreti uyusmazligina donusur",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+  },
+  {
+   "sira": 17,
+   "madde": "Icra siralamasi, nafaka onceligi, icra matrahi; BES 45 yas esigi, %3, aktarim suresi, 2 ay cayma",
+   "risk": "Orta",
+   "neden": "Parasal ve hukuki sorumluluk (gec aktarimda isveren kayiptan sorumlu)",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.3.2004.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4632.pdf"
+  },
+  {
+   "sira": 18,
+   "madde": "Kisa calisma odenegi, ucretsiz izin donemleri, SGDP'ye tabi emekli calisan (belge 2), yabanci calisan (YKN, sosyal guvenlik sozlesmesi), cirak/stajyer (belge 7)",
+   "risk": "Orta",
+   "neden": "Az gorulen ama farkli oran/belge gerektiren sigortali turleri",
+   "kaynak": "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+  },
+  {
+   "sira": 19,
+   "madde": "Belge saklama/imha catismasi: 5510 md.86 (10 yil), 4857 Ek md.3 (tazminatlarda 5 yil zamanasimi), KVKK md.7 imha; biyometrik eski kayitlarin imhasi",
+   "risk": "Orta",
+   "neden": "Saklama politikasi hukukcu onayi ister; prototipteki '10 yil (yasal)' ve 'aday 6 ay (KVKK)' kismen dogru/kismen politika",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+  },
+  {
+   "sira": 20,
+   "madde": "29 Ekim'de ozel isyeri calismasi: 2429 md.2 son cumle 'ozel isyerlerinin kapanmasi zorunludur' vs 4857 md.44 (sozlesme/isci onayi ile genel tatilde calisma)",
+   "risk": "Orta",
+   "neden": "Prototip Depo'da 29 Ekim vardiyasi planliyor; yorum insan oracle",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2429.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+  },
+  {
+   "sira": 21,
+   "madde": "Saat dilimi ve gun siniri: Turkiye sabit UTC+3; sunucu UTC ise PDKS olaylari yanlis gune dusebilir",
+   "risk": "Orta",
+   "neden": "Gece vardiyalari ve ay sonu kesiminde sessiz hata",
+   "kaynak": "dogrulanamadi (muhendislik riski)"
+  },
+  {
+   "sira": 22,
+   "madde": "Asgari ucretin yil ici degisme ihtimali (2026'da ara zam yapilmadi; gecmis yillarda yapildi)",
+   "risk": "Orta",
+   "neden": "Parametre motoru ay icinde gecerlilik degisimini desteklemeli",
+   "kaynak": "https://www.hurriyet.com.tr/bilgi/galeri/asgari-ucrete-ara-zam-var-mi-2026-asgari-ucret-temmuz-ayinda-artacak-mi-43229603"
+  },
+  {
+   "sira": 23,
+   "madde": "Banka toplu odeme formatlarinin bankaya ozgu olmasi (ulusal standart bulunamadi); BES icin sirkete ozgu kanallar",
+   "risk": "Orta",
+   "neden": "Her banka/BES sirketi icin ayri adaptor ve sozlesmeli test",
+   "kaynak": "alt ajan: https://www.halkbank.com.tr/content/dam/halkbank/tr/dokumanlar/ticari-kurumsal/DTOOdemeKesintiMaasMusteriUygulamaKilavuzu.pdf"
+  },
+  {
+   "sira": 24,
+   "madde": "MPHB'nin e-Beyanname sifresinden ayri ilave sifre ile gonderilmesi (GIB taslak sirkuler)",
+   "risk": "Dusuk-Orta",
+   "neden": "Yetki ve gonderim akisini degistirebilir",
+   "kaynak": "https://www.gib.gov.tr/muhtasar-ve-prim-hizmet-beyannamesini-elektronik-ortamda-mevcut-e-beyanname-sifresinden-ayri-olarak"
+  },
+  {
+   "sira": 25,
+   "madde": "Performans/olcek: 10k+ calisan donem hesabi, ay sonu 26'si oncesi yuk tepe noktasi, retro yeniden hesaplarin maliyeti",
+   "risk": "Orta",
+   "neden": "Kullanici kabulunu ve son tarih riskini etkiler",
+   "kaynak": "dogrulanamadi (muhendislik riski)"
+  }
+ ],
+ "oracle_sorunu": {
+  "tanim": "Oracle = bir ciktinin dogru olup olmadigina karar veren bagimsiz dogruluk kaynagi. Bordroda AI'nin yazdigi kod ve AI'nin yazdigi test ayni (yanlis) yorumdan turetilirse testler yesil kalir ama sonuc hukuken yanlistir: testler kodun kendisiyle tutarliligini olcer, kanunla uyumunu degil.",
+  "somut_ornekler_bu_arastirmadan": [
+   {
+    "ornek": "CronHR prototipi 'Yasal aylik ust sinir 270 saat/yil' ve 'yasal aylik sinira 28 saat kaldi' diyor. Bir ajan bu metinden 'aylik 90 saat yasal sinir' kurali ve buna uyan testler uretebilir; testler gecer, kural 4857 md.41'de yoktur (yalniz yillik 270).",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "ornek": "Prototip istifa eden calisana kidem+ihbar hesapliyor. Ajan 'ayrilista kidem hesapla' kabul kriterini test eder; 1475 md.14'e gore istifada (istisnalar disinda) kidem yoktur; SGK cikis kodu 03 'isci tarafindan fesih'.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.1475.pdf ; https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+   },
+   {
+    "ornek": "Prototip SGK isveren payini %20,5, tavani 'asgari ucret x 7,5' olarak sabitlemis; 2026'da 7566 s.K. ile indirimsiz isveren payi %21,75, tavan 9 kat. Eski parametrelerle yazilmis 'altin' testler butunuyle tutarli ama 2026 icin yanlis olur.",
+    "kaynak": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm ; https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf"
+   },
+   {
+    "ornek": "Odoo'nun resmi Turkiye bordro dokumani 'federal and state regulations' diyor, isveren SGK payini '%15' diye yuvarliyor ve 2025 dilimlerini gosteriyor: resmi bir urun dokumani bile tek basina oracle olamaz.",
+    "kaynak": "https://www.odoo.com/documentation/19.0/applications/hr/payroll/payroll_localizations/turkey.html"
+   },
+   {
+    "ornek": "Prototipte gece vardiyasi 22-06 (8 saat) + gece nobetine fazla mesai: 4857 md.69 gece calismasi 7,5 saati gecemez (sektor istisnalari haric) ve md.41 gece calismasinda FM yasak. Planlama motorunun AI-yazili testleri 'cakisma yok' diyebilir.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "ornek": "Gelistirme sirasinda kanun degisir: 7578 s.K. (22/4/2026) analik iznini 16->24 hafta, esin dogumu iznini 5->10 gun yapti. Nisan oncesi yazilmis dogru testler Mayis'ta yanlis olur.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   }
+  ],
+  "oracle_hiyerarsisi(guvenilirlik sirasi)": [
+   "1. Kanun/yonetmelik metni (mevzuat.gov.tr konsolide) + Resmi Gazete degisiklik kanunlari -> kural oracle'i (ne hesaplanir)",
+   "2. Resmi Gazete'de yayimlanan teblig ornekleri: GVGT Seri No 319 (asgari ucret istisnasi, 18 sayisal ornek; 2022 parametreleri) https://www.resmigazete.gov.tr/eskiler/2022/01/20220127-5.htm",
+   "3. Resmi kurum yayinlari: SGK 'Sigorta Primi Tesvikleri 2026' kitapcigi (her tesvik icin 2026 rakamli ornek) https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf ; CSGB asgari ucret net/maliyet tablosu 2026 https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf ; GIB Ucret Geliri Rehberi 2026 ornekleri; GIB MUHSGK kilavuzu (gun sayisi ornekleri) https://ebeyanname.gib.gov.tr/muphb1.pdf",
+   "4. Resmi parametre tablolari: GIB GV tarifesi 2026, SGK PEK alt/ust sinir 2026 (33.030 / 297.270 TL), SGK web servis kilavuzundaki kod listeleri (eksik gun 00-..., cikis nedenleri 01-..., belge turleri)",
+   "5. Resmi hesaplayicilar: GIB Dijital Vergi Dairesi gelir vergisi / gecikme zammi hesaplama (API yok) https://dijital.gib.gov.tr/hesaplamalar/GelirVergisiHesaplama ; CSGB/e-Devlet'te resmi kidem-ihbar hesaplayicisi bulunamadi (alt ajan)",
+   "6. Meslek orgutu: TURMOB hesaplamalar (kidem-ihbar vb.) https://www.turmob.org.tr/hesaplamalar/kidemihbarvetazminati ; TURMOB/ISMMMO sirkuler ve e-kitaplari; Lebib Yalkin, Yaklasim (uzman yazarli, resmi degil)",
+   "7. Differential oracle: ayni girdiyle incumbent yazilim (Logo/Luca/Mikro vb.) ciktisi ve musterinin eski sistemindeki son 12 ay bordro/MPHB tahakkuklari (paralel kosum)",
+   "8. Insan uzman (mali musavir, IK hukukcusu, SGK uzmani): yorum gerektiren kararlar ve altin setin imzasi"
+  ],
+  "entegrasyonlar_ve_test_ortamlari": [
+   {
+    "sistem": "SGK 4/a Sigortalı İşe Giriş ve İşten Ayrılış Bildirgesi (SgkTescil4a web servisleri)",
+    "kanal": "SOAP web servisi (IBM WebSphere, Java). Metotlar: iseGirisKaydet, istenCikisKaydet, tckimlikNoileiseGirisSorgula, tckimlikNoTarihileiseGirisSorgula, tckimlikNoTarihileistenCikisSorgula, PDF döküm metotları. Canlı WSDL: https://uyg.sgk.gov.tr/WS_SgkTescil4a/WS_SgkIseGirisService?wsdl ve .../WS_SgkIstenCikisService?wsdl. Ayrıca portal (uyg.sgk.gov.tr/SigortaliTescil) ve toplu Excel->XML yükleme (IsegirisExceldenXML.xls, IstenCikisExceldenXML.xls, xmlYardim.docx).",
+    "test_ortami_var_mi": "EVET. e.sgk.gov.tr uygulama sayfası: test yapılacak işyeri sicilinin entegretescil@sgk.gov.tr adresine e-posta ile bildirilmesiyle işyeri bilgileri test ortamına indirilir. Test WSDL: https://sgkt.sgk.gov.tr/WS_SgkTescil4a/WS_SgkIseGirisService?wsdl ve https://sgkt.sgk.gov.tr/WS_SgkTescil4a/WS_SgkIstenCikisService?wsdl (test URL'leri arama motoru özetinde görüldü; sgkt alan adına doğrudan erişim bu çalışmada doğrulanamadı).",
+    "erisim_kosulu": "Web servis için ayrı kullanıcı tanımı yok; uyg.sgk.gov.tr/SigortaliTescil uygulamasında kullanılan işyeri kullanıcı adı/şifresi kullanılır. Her çağrıda zorunlu KullaniciBilgileri: kullaniciAdi (11 hane, gönderenin TCKN'sine dayalı), isyeriKodu (4 hane), sistemSifre, isyeriSifre, isyeriSicil (26 karakter). Kullanıcı adı ile işyeri sicili tutarlı olmalı. Yani yalnızca SGK'da tescilli gerçek bir işyerinin yetkili kullanıcısı (işveren/aracı/mali müşavir) erişebilir; bağımsız bir yazılım firması için sahte/sentetik test hesabı yok.",
+    "kaynak": [
+     "https://e.sgk.gov.tr/Uygulamalar/Detay/4a-Sigortali-Ise-Giris-ve-Isten-Ayrilis-Bildirgesi-2024-10-02-10-08-51",
+     "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+    ]
+   },
+   {
+    "sistem": "SGK e-Bildirge V2 (Aylık Prim ve Hizmet Belgesi / APHB, eksik gün bildirimi dahil)",
+    "kanal": "Web portal (https://ebildirge.sgk.gov.tr/EBildirgeV2) + XML dosya yükleme. Yayımlanan XSD: 'EBildirgeV2 XML SEMA TANIMI V1.1.xsd' ve 'EBildirgeV2 Excel ile xml oluştur v1.1' aracı. Herkese açık SOAP/REST bildirge gönderim web servisi dokümante edilmemiş (sayfada yalnızca Hazine ve Maliye Bakanlığı ile SGK arasında sorgu tabanlı ödeme için web servis entegrasyonu geçiyor). 2026 itibarıyla 4/a için bildirge verisi büyük ölçüde GİB MUHSGK üzerinden gelir (bkz. MPHB satırı).",
+    "test_ortami_var_mi": "HAYIR / doğrulanamadı — uygulama sayfasında test ortamı veya test e-posta adresi yok.",
+    "erisim_kosulu": "İşyeri e-Bildirge kullanıcı adı, sistem şifresi ve işyeri şifresi (SGK ünitesinden alınır). Teknik iletişim: btgm_siydb@sgk.gov.tr (sayfada verilen).",
+    "kaynak": [
+     "https://e.sgk.gov.tr/Uygulamalar/Detay/E-BildirgeV2-2026-04-21-09-12-18",
+     "https://ebildirge.sgk.gov.tr/WPEB/HTML/e-bildirge-klavuzV1.2.pdf"
+    ]
+   },
+   {
+    "sistem": "SGK Vizite (iş göremezlik raporu okundu/çalışmazlık bildirimi) web servisi — WS_Vizite",
+    "kanal": "SOAP web servisi, canlı adres https://uyg.sgk.gov.tr/Ws_Vizite/services/ViziteGonder. Duyuru PDF'indeki metotlar: wsLogin (30 dk usrToken üretir), RaporAramaTarihile, RaporAramaKimlikNo, RaporOnay (çalışmazlık beyanı), PersonelimDegildir, IsverenIletisimBilgileri(+Goruntu), OnaylıRaporlarTarihile, RaporOkunduKapat (okunan rapor kapatılmazsa sonraki raporlara erişim engellenir; her sorgu 100 rapor döner), OnayIptal, ManuelCalismazlikBildirimiGiris/Goruntu/Sil. Portal: https://uyg.sgk.gov.tr/vizite/welcome.do. İkincil kaynağa göre 14.09.2022 güncellemesiyle iş kazası raporu sorgu/onay metotları eklendi.",
+    "test_ortami_var_mi": "HAYIR / doğrulanamadı — duyuru PDF'inde yalnızca canlı adres var; 'localhost:9080' izleri belge içi artefakt, test ortamı değil.",
+    "erisim_kosulu": "wsLogin parametreleri: KullaniciAdi CHAR(11) (Vizite uygulamasındaki kullanıcı kodu), İşyeriKodu DECIMAL(4), Ws Şifre CHAR(36) (Vizite uygulamasındaki şifre). Yalnızca gerçek işyerinin Vizite yetkilisi erişebilir. Vizite portal kuralları web servis için de geçerli.",
+    "kaynak": [
+     "https://www.denet.com.tr/vizite_duyuru.pdf",
+     "https://www.cottgroup.com/tr/mevzuat/item/sgk-vizite-web-servisi-hizmete-sunuldu",
+     "https://iskanunu.com/haberler/vizite-web-servisi-uygulamasi/"
+    ]
+   },
+   {
+    "sistem": "SGK İşveren Sistemi (müfredat kartı, borç sorgu, teşvik analizi/tanımlama, yapılandırma) + iş kazası provizyon sorgu metotları",
+    "kanal": "Portal: https://uyg.sgk.gov.tr/IsverenSistemi. Web servis olarak yalnızca Vizite (iş kazası provizyonu için HasIsKazSorguTCile, HasIsKazSorguTarihle, HasIsKazSorguKapat metotları) ve e-Bildirge V2 bağlantısı listeleniyor. Teşvik analizi (işe almadan önce sigortalı bazında yararlanılabilecek teşvikler) ve teşvik tanımlama portal üzerinden. İş kazası/meslek hastalığı bildiriminin ayrı bir kamuya açık web servisi bulunamadı (doğrulanamadı).",
+    "test_ortami_var_mi": "HAYIR / doğrulanamadı.",
+    "erisim_kosulu": "İşyeri kullanıcı adı, sistem şifresi, işyeri şifresi (SGK standart işveren kimlik doğrulaması; sayfada ayrıntı yok).",
+    "kaynak": [
+     "https://e.sgk.gov.tr/Uygulamalar/Detay/Isveren-Sistemi-2022-10-31-10-05-50"
+    ]
+   },
+   {
+    "sistem": "SGK Tescil ve Hizmet Dökümü / e-Devlet SGK hizmetleri (çalışan tarafı)",
+    "kanal": "Yalnızca e-Devlet vatandaş portalı (https://www.turkiye.gov.tr/sgk-tescil-ve-hizmet-dokumu); işe giriş/ayrılış bildirgeleri e-Devlet'ten de görüntülenebilir (https://www.turkiye.gov.tr/sgk-esgkuyg-esgksifre-ise-giris-isten-ayrilis). İşverene API yok.",
+    "test_ortami_var_mi": "HAYIR.",
+    "erisim_kosulu": "Çalışanın kendi e-Devlet kimlik doğrulaması; işveren sistemi bu veriyi otomatik çekemez (çalışan PDF/barkodlu belge sunabilir).",
+    "kaynak": [
+     "https://www.turkiye.gov.tr/sgk-tescil-ve-hizmet-dokumu",
+     "https://www.turkiye.gov.tr/sgk-esgkuyg-esgksifre-ise-giris-isten-ayrilis"
+    ]
+   },
+   {
+    "sistem": "GİB Muhtasar ve Prim Hizmet Beyannamesi (MUHSGK / MPHB, 1003A)",
+    "kanal": "GİB kılavuzuna göre üç düzenleme platformu: (1) Beyanname Düzenleme Programı (BDP, ebyn.exe, https://ebeyanname.gib.gov.tr/download.html), (2) İnternet Vergi Dairesi (bugün Dijital Vergi Dairesi) üzerinde çevrimiçi düzenleme, (3) Defter Beyan Sistemi (DBS). Ayrıca 'herhangi bir platformda beyanname formatına uygun hazırlanan xml dosyalarının sıkıştırılarak' e-Beyanname sistemine gönderilmesi yeterli (yani 3. taraf bordro yazılımı XML üretip BDP/e-Beyanname'ye yükler). XML şeması e-Beyanname kılavuz sayfasında açık yayımlanmıyor (intvrg.gib.gov.tr/ebyn_kilavuzlar.html'de yalnızca BDP/web kullanım kılavuzları var) — XSD kamuya açık kaynağı doğrulanamadı; pratikte BDP içinden/üretici yazılımlardan elde ediliyor. Format değişince BDP güncellemesi gerekir (ör. Haziran 2026 dönemi format güncellemesi, ikincil kaynak). 1-3 Ağustos 2026 arası DBS, e-Beyanname ve İVD üzerinden MPHB gönderimi planlı teknik çalışma nedeniyle kapatıldı (haber).",
+    "test_ortami_var_mi": "HAYIR (MUHSGK için) — Yeni 'e-Beyan' test ortamı (https://ebeyanpreprodapi.gib.gov.tr) var ama ilan edilen kapsamı Damga Vergisi, 1 No.lu KDV, Gelir/Kurumlar Geçici Vergi gibi beyannameler; MUHSGK'nın e-Beyan test/preprod kapsamına alındığına dair duyuru bulunamadı (doğrulanamadı). e-Fatura/e-Arşiv'deki gibi herkese açık MUHSGK test portalı yok.",
+    "erisim_kosulu": "e-Beyanname kullanıcı kodu/parola/şifre (mükellef veya 340 No.lu VUK GT kapsamında aracılık sözleşmeli SM/SMMM). Vergi kesintisi yapmayan işverenler vergi dairesinden ayrı MPHB kullanıcı kodu/parola/şifre alır. GİB, MPHB'nin ayrı ilave şifre ile gönderilmesine ilişkin sirküler taslağı yayımladı (ücret gizliliği için).",
+    "kaynak": [
+     "https://ebeyanname.gib.gov.tr/muphb1.pdf",
+     "https://intvrg.gib.gov.tr/ebyn_kilavuzlar.html",
+     "https://www.gib.gov.tr/muhtasar-ve-prim-hizmet-beyannamesini-elektronik-ortamda-mevcut-e-beyanname-sifresinden-ayri-olarak",
+     "https://uzmanpara.milliyet.com.tr/uzmanpara/gib-duyuru-muhtasar-ve-prim-hizmet-beyannamesi-sistemi-3-gun-hizmet-disi-kalacak-7630553",
+     "https://prozon.net/sirkuler/vergi-danismani-mustafa-celik-bildiriyor-gib-haziran-2026-doneminden-itibaren-gecerli-olmak-uzere-mphib-formatini-guncelledi-sistemden-onay-alabilmek-icin-bdpyi-yenileyin/"
+    ]
+   },
+   {
+    "sistem": "GİB yeni e-Beyan sistemi + e-Beyan Entegrasyon (API) — gelecekte MUHSGK'yı da kapsayabilir",
+    "kanal": "Token tabanlı API (ebeyan.gib.gov.tr profil > 'Entegrasyon Yönetimi' ile token; token bir kez gösterilir). Entegratör dokümanı: https://ebeyan.gib.gov.tr/entegrator/ (JS ile render ediliyor; içerik bu çalışmada okunamadı). Damga Vergisi beyannamesi 1 Haziran 2025'ten itibaren e-Beyan üzerinden (ikincil kaynak).",
+    "test_ortami_var_mi": "EVET (kapsamdaki beyannameler için) — preprod: https://ebeyanpreprodapi.gib.gov.tr. Test beyannamelerinin resmi geçerliliği yok. Geri bildirim: ebeyanentegrasyon@gelirler.gov.tr, ebeyantest@gelirler.gov.tr (ikincil kaynaklardaki GİB duyurusu aktarımı).",
+    "erisim_kosulu": "Dijital Vergi Dairesi 'Başvurularım/Başvuru Formları' altında 'e-Beyan Entegrasyon Başvurusu' onaylananlar; e-Beyanname yetkisi olan kullanıcı kendi bilgileriyle ya da yetkili kullanıcının verdiği API Key ile yazılım firması test edebilir. Test gerçek sicil bilgileri üzerinde çalışır.",
+    "kaynak": [
+     "https://www.tepeymm.com/post/yeni-e-beyan-test-uygulamas%C4%B1-hakk%C4%B1nda-duyuru",
+     "https://www.bbdas.com.tr/bbdas-16-01-2025-17-yeni-e-beyan-test-uygulamasi-basladi-g-2629",
+     "https://ebeyan.gib.gov.tr/entegrator/",
+     "https://www.diaakademi.com/bilgi-bankasi/web-servis-ile-e-beyanname-entegrasyonu/"
+    ]
+   },
+   {
+    "sistem": "GİB e-Fatura / e-Arşiv test portalları (karşılaştırma için — bordro değil)",
+    "kanal": "e-Arşiv Portal test: https://earsivportaltest.efatura.gov.tr/login.jsp ; e-Fatura test: https://test.efatura.gov.tr",
+    "test_ortami_var_mi": "EVET — e-Arşiv test portalında 'Kullanıcı Öner' ile örnek kullanıcı adı/şifre üretilerek giriş yapılır (ikincil kaynak). Bordro/MUHSGK için bunun karşılığı bulunamadı.",
+    "erisim_kosulu": "Herkese açık demo kullanıcı (e-Arşiv test). Bordro modülü açısından yalnızca personel masraf faturası vb. yan senaryolar için ilgili.",
+    "kaynak": [
+     "https://earsivportaltest.efatura.gov.tr/login.jsp",
+     "https://vergigunlugu.com/e-arsiv-portal-test-giris-ekrani/",
+     "https://test.efatura.gov.tr/efatura/logout.html"
+    ]
+   },
+   {
+    "sistem": "İŞKUR aylık işgücü çizelgesi, engelli/eski hükümlü kontenjan takibi, iş ilanı",
+    "kanal": "İŞKUR e-Şube portalı (https://esube.iskur.gov.tr/) — işveren üyeliği sonrası çizelge ve ilan girişi. Yasal dayanak: 4904 s. Kanun md.21, 4857 s. İş Kanunu md.30 (kontenjan). Özel sektörde aynı il sınırında en az 10 işçi çalıştıranlar ve en az 1 işçi çalıştıran kamu kurumları, her ayın çizelgesini takip eden ayın sonuna kadar verir.",
+    "test_ortami_var_mi": "HAYIR — kamuya açık web servis/API veya test ortamı bulunamadı (doğrulanamadı). Çizelgenin SGK verisinden otomatik üretildiğine dair İŞKUR sayfasında ifade yok (doğrulanamadı).",
+    "erisim_kosulu": "e-Şube işveren üyeliği (bazı illerde 24 saat içinde aktivasyon, bazılarında İŞKUR'un telefonla aranması gerekir — ikincil kaynak).",
+    "kaynak": [
+     "https://www.iskur.gov.tr/isveren/isgucu-cizelgesi/",
+     "https://www.iskur.gov.tr/isveren/engelli-istihdami/",
+     "https://muhasebebilenler.com/iskur-aylik-is-gucu-cizelgesi-bildirim-asamalari/"
+    ]
+   },
+   {
+    "sistem": "BES Otomatik Katılım (OKS) — emeklilik şirketi ve EGM",
+    "kanal": "Tek bir kamu standardı yok: her emeklilik şirketi kendi işveren kanalını sunar (ör. Anadolu Hayat 'DES – Dijital Eko Sistem' web servisi, bordro yazılımına (Luca) WS bilgileri tanımlanarak entegrasyon; Excel 'Bireysel Emeklilik Personel Ekleme Şablonu'; bazı şirketlerde e-posta/kargo ile sözleşme). EGM'nin rolü emeklilik şirketlerine web servis ve kontrol altyapısı sağlamak (işverene doğrudan açık API dokümanı bulunamadı — doğrulanamadı). Kamu işverenleri için HMB 'Bireysel Emeklilik (OKS) Kesintisi Uygulama Kılavuzu' KBS/bordro sürecini tanımlar.",
+    "test_ortami_var_mi": "Doğrulanamadı — şirket bazında sözleşme ile verilebilir; kamuya açık test ortamı bulunamadı.",
+    "erisim_kosulu": "İşveren–emeklilik şirketi OKS sözleşmesi; web servis kullanıcı bilgileri şirket tarafından verilir. Kural: katkı payı en az %3, en geç ücret ödeme gününü takip eden iş günü aktarılır (ikincil kaynak özetine göre).",
+    "kaynak": [
+     "https://www.anadoluhayat.com.tr/Documents/PDF%20Files/OtomatikKatilim/Luca_Bordro-Entegrasyonu-islemleri.pdf",
+     "https://www.katilimemeklilik.com.tr/urunler/birikim/otomatik-katilim/isveren-icin",
+     "https://ms.hmb.gov.tr/uploads/sites/3/2019/11/Bireysel-Emeklilik-OKS-Kesintisi-Uygulama-Klavuzu-Version-2.pdf",
+     "https://www.egm.org.tr/otomatik-katilim/oks-nedir/"
+    ]
+   },
+   {
+    "sistem": "Banka toplu maaş ödeme dosyaları (Ziraat, Halkbank, Garanti BBVA, İş Bankası, Akbank vb.)",
+    "kanal": "Bankaya özgü formatlar; ortak ulusal standart bulunamadı. Örnekler: Ziraat — maaş ödemeleri text dosya sistemiyle, şablon şube tarafından firmaya iletilir (MEB il/ilçe yardım dokümanları); Ziraat sitesinde IBAN bazlı ödeme dosyası şablonu (xls) açık. Halkbank DTO (Dosyalı Transfer Otomasyonu) — IBAN veya hesap no bazlı .xls/.xlsx şablon ya da firmanın kendi sisteminden ürettiği .txt; kanal: kurumsal portal yükleme, e-posta, FTP (ön akıbet/akıbet dosyası da FTP ile), dosya onay adımı. Akbank 'Toplu Ödeme Sistemi' kurumsal ürün sayfası. Ayrıntılı alan/pozisyon spesifikasyonları genelde müşteri sözleşmesi ile verilir (kamuya açık tam spesifikasyon doğrulanamadı).",
+    "test_ortami_var_mi": "HAYIR (kamuya açık) — banka bazında sözleşmeli müşteriye test/ön-akıbet imkânı olabilir, doğrulanamadı.",
+    "erisim_kosulu": "Banka ile maaş ödeme/toplu ödeme protokolü; kurumsal internet şube yetkilisi veya FTP/host-to-host kanalı. ISO 20022 pain.001'in Türk bankalarında kurumsal müşteri girişi olarak yaygın kabulü doğrulanamadı; TCMB FAST sayfalarında ISO 20022 ifadesi bu çalışmada bulunamadı (FAST: pilot 18.12.2020, tüm müşterilere 08.01.2021).",
+    "kaynak": [
+     "https://www.halkbank.com.tr/content/dam/halkbank/tr/dokumanlar/ticari-kurumsal/DTOOdemeKesintiMaasMusteriUygulamaKilavuzu.pdf",
+     "https://www.ziraatbank.com.tr/tr/Kobi-ZB/nakit-yonetimi/odeme-cozumleri/Documents/odeme-dosyasi-IBAN.xls",
+     "https://erenler.meb.gov.tr/www/ziraat-bankasi-text-dosyasi/icerik/2373",
+     "https://sultanbeyli.meb.gov.tr/meb_iys_dosyalar/2017_02/03093802_6_-_SYME_TEXT_HAZIRLAMA_YARDIM_SUNUMU.pdf",
+     "https://www.akbank.com/kurumsal/odeme-ve-para-transferi/para-transferleri/toplu-odeme-sistemi",
+     "https://www.tcmb.gov.tr/wps/wcm/connect/EN/TCMB+EN/Main+Menu/Core+Functions/Payment+Systems/Payment+Systems+in+Turkey/Electronic+Fund+Transfer+System+and+Electronic+Securities+Transfer+System"
+    ]
+   },
+   {
+    "sistem": "e-bordro (elektronik ücret hesap pusulası), KEP, e-imza, personel belgelerinin elektronik tebliği",
+    "kanal": "KEP (PTT KEP ve BTK yetkili KEP hizmet sağlayıcıları) üzerinden gönderim + güvenli elektronik imza/e-mühür. Yasal çerçeve: 4857 s. İş Kanunu md.37 (işveren işçiye ücret hesabını gösteren imzalı veya işyerinin özel işaretini taşıyan pusula vermek zorunda); 5070 s. Elektronik İmza Kanunu md.5/1 (güvenli e-imza elle atılan imza ile aynı hukuki sonuç); HMK md.199 (elektronik veri 'belge') ve md.205/2 (güvenli e-imzalı veri senet hükmünde); KEP Sistemine İlişkin Usul ve Esaslar Hakkında Yönetmelik (RG 25.08.2011/28036, dayanağı 6102 s. TTK md.1525; son değişiklik RG 13.12.2022/32042). ÇSGB Çalışma Genel Müdürlüğü'nün 13.11.2017 tarihli görüş yazısında md.37 yükümlülüğünün KEP Yönetmeliği kapsamında kurulan sistemle elektronik ortamda yerine getirilebileceği belirtilmiş (görüş yazısı ikincil kaynaklardan aktarılmıştır; birincil metin doğrulanamadı — csb.gov.tr PDF'i sertifika hatası nedeniyle açılamadı). e-Bordro bir GİB e-belgesi (e-Fatura/e-Arşiv gibi) değildir; standart format yok (doğrulanamadı).",
+    "test_ortami_var_mi": "Kısmen — KEP sağlayıcılarının ticari API/test ortamları sağlayıcıya özgü; kamu test ortamı yok (doğrulanamadı).",
+    "erisim_kosulu": "İşveren ve çalışanın KEP adresi (çalışanın KEP adresi edinmesi ve onayı), nitelikli e-imza/e-mühür sertifikası (BTK yetkili ESHS).",
+    "kaynak": [
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=4857&MevzuatTur=1&MevzuatTertip=5",
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=5070&MevzuatTur=1&MevzuatTertip=5",
+     "https://www.btk.gov.tr/kayitli-elektronik-posta-mevzuat",
+     "https://pttwebdosya.ptt.gov.tr/api/file/getFile?FileName=kep_yonetmelik.pdf",
+     "https://www.mevzuat.net/DigerMevzuat/elektronikpostaynt_20221213.aspx",
+     "https://www.turkishlawblog.com/insights/detail/ucret-bordrolarinin-calisanlara-kep-kayitli-elektronik-posta-araciligiyla-teblig-edilmesi-ve-delil-niteligi",
+     "https://www.muhasebetr.com/yazarlarimiz/mevlutkokus/007/",
+     "https://yaklasim.com/yaklasim-dergisi/4857-sayili-is-kanunu-cercevesinde-ucret-hesap-pusulasi-yukumlulugu/"
+    ]
+   }
+  ],
+  "oracle_artefaktlari": [
+   {
+    "artefakt": "GİB 'Muhtasar ve Prim Hizmet Beyannamesi Düzenleme Kılavuzu' (1003A, Ocak/2020)",
+    "tur": "resmi_ornek",
+    "kapsadigi_hesap": "Prim ödeme gün sayısı (ay 28/29/31 olsa da tam ay=30), ay içi giriş/çıkış gün sayısı (ör. 19/03 giriş→13 gün; 19/02 çıkış→19 gün; 17/03–27/03→11 gün), ücretsiz izin/istirahat eksik gün örnekleri, verilme zamanı/dönem örnekleri, düzeltme (ASIL/İPTAL) beyannamesi örneği. ~13 adet 'Örnek' bloğu.",
+    "guvenilirlik": "Yüksek (resmi GİB/SGK ortak kılavuzu) ama 2020 tarihli; tutar/oran içermeyen gün-sayısı ve süreç kuralları için güçlü golden test; güncel format değişiklikleri için yeni sürüm kontrol edilmeli.",
+    "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf"
+   },
+   {
+    "artefakt": "Gelir Vergisi Genel Tebliği Seri No 319 (RG 27.01.2022, sayı 31732) — asgari ücret gelir vergisi ve damga vergisi istisnası",
+    "tur": "resmi_ornek",
+    "kapsadigi_hesap": "18 numaralı sayısal örnek (metinden sayıldı): asgari ücretli istisna (Örn.1-3), emekli çalışan (4), asgari ücret üstü ücret (5-6, 12-13), kısmi süreli/aylık 15 gün çalışan (9), birden fazla işveren (10-11, 14), tevkifata tabi olmayan ücret/basit usul işveren yanında çalışan (16-18). Kümülatif matrah ve dilim geçişi etkileşimini gösterir.",
+    "guvenilirlik": "Çok yüksek (Resmî Gazete'de yayımlanmış idari düzenleme) — ancak 2022 parametreleri (asgari ücret, tarife) kullanır; golden test yıl parametresiyle birlikte kurgulanmalı; sonraki yıllarda ilgili GVK/tarife değişiklikleri ayrıca kontrol edilmeli.",
+    "kaynak": "https://www.resmigazete.gov.tr/eskiler/2022/01/20220127-5.htm"
+   },
+   {
+    "artefakt": "Gelir Vergisi Genel Tebliği Seri No 322 (RG 30.12.2022) — hizmet erbabına ısınma (elektrik, doğalgaz vb.) giderleri için ek ödemelerde istisna",
+    "tur": "resmi_ornek",
+    "kapsadigi_hesap": "Ücret bordrosunda gösterilen ısınma ödemesinin istisna tutarı ve aşan kısmın vergilendirilmesi; Örnek 9: aylık brüt 15.000 TL ücret + 1.500 TL ısınma ödemesi → 1.000 TL istisna, 500 TL vergiye tabi (ikincil kaynak aktarımı).",
+    "guvenilirlik": "Yüksek (resmi tebliğ); dar kapsamlı, dönemsel istisna — güncel geçerliliği kontrol edilmeli.",
+    "kaynak": [
+     "https://www.turmob.org.tr/Mevzuat/PDF/20196",
+     "https://www.pwc.com.tr/gelir-vergisi-genel-teblig-seri-no-322"
+    ]
+   },
+   {
+    "artefakt": "GİB 'Ücret Geliri Elde Edenler İçin Vergi Rehberi' (2026 sürümü)",
+    "tur": "resmi_ornek",
+    "kapsadigi_hesap": "Ücret gelirlerinin beyanı, birden fazla işverenden ücret, beyan sınırı, istisna ve indirimler — yıllık beyan ağırlıklı örnekler (içerik bu çalışmada ayrıntılı okunmadı; örnek sayısı doğrulanamadı).",
+    "guvenilirlik": "Yüksek (GİB resmi rehberi) ama rehberler bağlayıcı mevzuat değil, açıklayıcıdır.",
+    "kaynak": [
+     "https://cdn.gib.gov.tr/api/gibportal-file/file/getFileResources?objectKey=arsiv%2Ffileadmin%2Fbeyannamerehberi%2F2026%2F2026_Ucret_Geliri.pdf",
+     "https://intvrg.gib.gov.tr/hazirbeyan/assets/pdf/DUYURU_UNIVERSAL_2026_2026_Ucret_Geliri.pdf"
+    ]
+   },
+   {
+    "artefakt": "GİB Gelir Vergisi Tarifesi 2026 (PDF) ve geçmiş yıl tarifeleri",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "Ücret gelirlerine uygulanacak dilim/oran tablosu — kümülatif matrah üzerinden gelir vergisi kesintisi için parametre oracle'ı.",
+    "guvenilirlik": "Çok yüksek (resmi parametre kaynağı).",
+    "kaynak": "https://cdn.gib.gov.tr/api/gibportal-file/file/getFileResources?objectKey=arsiv%2Fyardim-kaynaklar%2Fyararli-bilgiler%2Fgelir-vergisi-tarifeleri%2Fgelir-vergisi-tarifesi-2026.pdf"
+   },
+   {
+    "artefakt": "SGK Sigorta Primleri Genel Müdürlüğü 'Sigorta Primi Teşvikleri 2024' kitapçığı",
+    "tur": "resmi_ornek",
+    "kapsadigi_hesap": "Her teşvik için yasal dayanak, belge/kanun no, başlama-bitiş tarihi, şartlar ve 15 adet 'Rakamlarla Teşvik Örnekleri (2024 Yılı Brüt Asgari Ücretine Göre)' tablosu: PEK alt ve üst sınırından teşviksiz tutar / teşvik tutarı / teşvik sonrası tutar (ör. 5 puan: %37,5 → %5 teşvik → %32,5; PEK alt sınırda 7.500,94 / 1.000,13 / 6.500,81 TL). Kapsam: 5510/81-ı (5 puan), 81-i (yurt dışı), geçici 95 (emekli), 81-j/k, Ek 2 (bölgesel/yatırım), geçici 101 (2024 asgari ücret desteği), 6111, engelli, kültür yatırım vb.",
+    "guvenilirlik": "Yüksek (SGK resmi yayını); 2024 parametreleri — daha yeni sürüm varlığı doğrulanamadı. Birim-teşvik tutarı için güçlü golden test; kombinasyon seçimi için yetersiz (bkz. sadece_insan_oracle).",
+    "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?f=8af2e39d-6690-4704-8ecb-31d66b98fe1a.pdf&d=de85036d-ef64-49f1-834c-916a79f1a923"
+   },
+   {
+    "artefakt": "SGK 'Prime Esas Kazanç Miktarları' tablosu (2026) + yıllık PEK alt/üst sınır genelgeleri (ör. 2024/2)",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "PEK günlük/aylık alt ve üst sınır; 2026 (01.01–31.12.2026) için günlük alt 1.101,00 TL, aylık alt 33.030,00 TL, günlük üst 9.909,00 TL, aylık üst 297.270,00 TL; çırak/meslek lisesi ve yükseköğrenim stajyerleri için ayrı dönemler (15.12.2025–14.01.2026 ve 15.01.2026–14.12.2026).",
+    "guvenilirlik": "Çok yüksek (SGK resmi parametre). Değerler SGK sayfasından okunmuştur.",
+    "kaynak": [
+     "https://www.sgk.gov.tr/Content/Post/2e0c9e1a-2cfe-4456-af10-49d3de0c58ba/Prime-Esas-Kazanc-Miktarlari-2026-01-14-10-35-39",
+     "https://www.alomaliye.com/2024/01/09/sgk-genelgesi-2024-2-prime-esas-kazanclarin-alt-ve-ust-sinirlari-ile-bazi-islemlere-esas-tutarlar/"
+    ]
+   },
+   {
+    "artefakt": "GİB Dijital Vergi Dairesi — Gelir Vergisi Hesaplama",
+    "tur": "resmi_hesaplayici",
+    "kapsadigi_hesap": "Girdiler: Vergi Dönemi, Gelir Unsuru ('Ücretli' seçeneği dahil), Matrah → tarife üzerinden gelir vergisi. Bordrodaki kümülatif matrah/dilim hesabını çapraz doğrulamak için kullanılabilir (aylık kesinti, asgari ücret istisnası mahsubu yapmaz — doğrulanamadı).",
+    "guvenilirlik": "Yüksek (resmi); ancak otomasyon için API yok, tarayıcı ile manuel/otomatik sorgu gerekir.",
+    "kaynak": "https://dijital.gib.gov.tr/hesaplamalar/GelirVergisiHesaplama"
+   },
+   {
+    "artefakt": "GİB Dijital Vergi Dairesi — Gecikme Zammı ve Faizi Hesaplama (+ 7440 ve Yİ-ÜFE varyantları)",
+    "tur": "resmi_hesaplayici",
+    "kapsadigi_hesap": "Geç ödenen vergi (ör. muhtasar kesintileri) için gecikme zammı/faizi.",
+    "guvenilirlik": "Yüksek (resmi).",
+    "kaynak": [
+     "https://dijital.gib.gov.tr/hesaplamalar/GecikmeZamVeFaizHesaplama",
+     "https://dijital.gib.gov.tr/hesaplamalar/GecikmeZamVeFaizHesaplama_7440"
+    ]
+   },
+   {
+    "artefakt": "SGK emeklilik/aylık hesaplama araçları (4/a 'Ne zaman emekli olurum', 4/a aylık hesap, 4/b, 4/c ikramiye-maaş)",
+    "tur": "resmi_hesaplayici",
+    "kapsadigi_hesap": "Emeklilik hak kazanma ve aylık bağlama hesapları — bordro çekirdeği dışında; İK self-servis bilgilendirme için referans.",
+    "guvenilirlik": "Yüksek (resmi) ama bordro hesaplamasıyla doğrudan ilgili değil. SGK'nın resmi bir 'bordro/prim hesaplama' veya 'geçici iş göremezlik ödeneği hesaplama' aracı bulunamadı (doğrulanamadı).",
+    "kaynak": [
+     "https://uyg.sgk.gov.tr/nezaman/",
+     "https://uyg.sgk.gov.tr/AylikHesap/",
+     "https://uyg.sgk.gov.tr/IkramiyeMaasHesapla4c/Welcome.do",
+     "https://e.sgk.gov.tr/Uygulamalar/Vatandas"
+    ]
+   },
+   {
+    "artefakt": "ÇSGB / e-Devlet resmi kıdem-ihbar-izin hesaplayıcısı",
+    "tur": "resmi_hesaplayici",
+    "kapsadigi_hesap": "BULUNAMADI — ÇSGB sitesinde ve e-Devlet'te resmi kıdem/ihbar/yıllık izin/brütten nete hesaplayıcı bulunamadı; ikincil kaynak e-Devlet'te kıdem tazminatı hesaplama ekranı olmadığını belirtiyor (doğrulanamadı). ÇSGB SSS sayfaları kural açıklaması içerir, sayısal oracle değildir.",
+    "guvenilirlik": "—",
+    "kaynak": [
+     "https://www.csgb.gov.tr/sikca-sorulan-sorular/calisma-genel-mudurlugu/%C4%B1s-kanunu/",
+     "https://kadimhukuk.com.tr/kidem-tazminati-hesaplama/"
+    ]
+   },
+   {
+    "artefakt": "TÜRMOB 'Hesaplamalar' (Ücret, Kıdem-İhbar Tazminatı, Gelir Vergisi, Gecikme Zammı ve Faizi, Kısa Çalışma Ödeneği, SGK Yapım İşleri vb.)",
+    "tur": "meslek_orgutu",
+    "kapsadigi_hesap": "Kıdem-İhbar: girdiler işe giriş/çıkış tarihi, çıkıştaki brüt ücret, kümülatif vergi matrahı, asgari ücret verisi → çalışma süresi, kıdem ve ihbar (brüt/net, istisnalı/istisnasız), damga vergisi, gelir vergisi. Ücret hesaplayıcı brütten nete/netten brüte (ayrıntı doğrulanamadı).",
+    "guvenilirlik": "Orta-yüksek (meslek birliği, ama resmi değil; hata/gecikme olasılığına karşı ikinci oracle ile çapraz kontrol).",
+    "kaynak": "https://www.turmob.org.tr/hesaplamalar/kidemihbarvetazminati"
+   },
+   {
+    "artefakt": "Lebib Yalkın Aylık Mevzuat Dergisi — '2026 Yılı Ücretlerinin Hesaplanışı ve SGDP'ye Tabi Asgari Ücret ile Çalışanların Durumu' (Erdem Azman, Şubat 2026)",
+    "tur": "meslek_orgutu",
+    "kapsadigi_hesap": "2026 asgari ücret ve SGDP'ye tabi (emekli) çalışan dahil tam zamanlı ücret hesaplama örnekleri. Aktarılan örnek: brüt 33.030,00 TL − SGK işçi payı 4.624,20 TL − işsizlik işçi payı 330,30 TL = net 28.075,50 TL (GV ve DV istisna).",
+    "guvenilirlik": "Orta-yüksek (uzman yazar, yerleşik yayınevi; resmi değil). Yıllık tekrarlanan seri — her yıl Ocak/Şubat sayılarında.",
+    "kaynak": "https://lebibyalkin.com.tr/makale/2026-yili-ucretlerinin-hesaplanisi-ve-sosyal-guvenlik-destek-primine-tabi-asgari-ucret-ile-calisanlarin-durumu"
+   },
+   {
+    "artefakt": "İSMMMO e-kitap 'Sosyal Güvenlik Sisteminde Son Değişiklikler' (18.05.2026) ve İSMMMO eğitim dosyaları (ör. 'Personele Dışardan Sağlanan Hizmetler ve Bordro Uygulamaları' 2023)",
+    "tur": "meslek_orgutu",
+    "kapsadigi_hesap": "2026 asgari ücret parametreleri, güncel bordro uygulamaları, 7566 ve 7577 sayılı Kanunlarla gelen yemek bedeli istisnası değişiklikleri, SGK borçlanma tutarları, teşvik uygulamaları — açıklayıcı örneklerle (arama özeti; içerik bu çalışmada ayrıntılı okunmadı).",
+    "guvenilirlik": "Orta-yüksek (meslek odası yayını, uzman yazarlı; resmi değil).",
+    "kaynak": [
+     "https://archive.ismmmo.org.tr/YAYINLAR/e_kitap/18052026_sosyal_guvenlik_sisteminde_son_degisiklikler.pdf",
+     "https://ismmmo.org.tr/Yayinlar/E-Kitap--3",
+     "https://ismmmo.org.tr/dosya/3912/Egitim-Dosya/21022023-personele-disardan-saglanan-hizmetler-2023.pdf",
+     "https://ismmmo.org.tr/Mevzuat/Pratik-Bilgiler-Vergi-Uygulamalari---15715"
+    ]
+   },
+   {
+    "artefakt": "Yaklaşım Dergisi / Yaklaşım Akademi bordro yazıları ve seminerleri",
+    "tur": "meslek_orgutu",
+    "kapsadigi_hesap": "Ücret hesap pusulası yükümlülüğü, yıllık bordro uygulamaları (örnek içerik: '4857 Sayılı İş Kanunu Çerçevesinde Ücret Hesap Pusulası Yükümlülüğü'). Aylık sayılarda ücret hesaplama örnekleri yayımladığı biliniyor ancak 2026 örneklerinin kamuya açıklığı doğrulanamadı (abonelik).",
+    "guvenilirlik": "Orta (uzman yazarlı, ücretli erişim; ikinci oracle olarak).",
+    "kaynak": [
+     "https://yaklasim.com/yaklasim-dergisi/4857-sayili-is-kanunu-cercevesinde-ucret-hesap-pusulasi-yukumlulugu/",
+     "https://yaklasimseminer.com/bordro/"
+    ]
+   },
+   {
+    "artefakt": "Ticari bordro yazılımı/danışmanlık yayınları (Zirve, CottGroup 'Pratik Bilgiler – Bordro Parametreleri 2026', MuhasebeTR bordro parametreleri)",
+    "tur": "meslek_orgutu",
+    "kapsadigi_hesap": "Yıllık/dönemlik bordro parametre tabloları ve asgari ücret net-brüt-maliyet örnekleri.",
+    "guvenilirlik": "Düşük-orta (ticari, ikincil; yalnızca çapraz kontrol — resmi kaynakla doğrulanmadan golden kabul edilmemeli).",
+    "kaynak": [
+     "https://www.cottgroup.com/tr/bordronu-hesapla/pratik-bilgiler",
+     "https://blog.zirveyazilim.net/2026-yili-bordro-parametreleri-nelerdir",
+     "https://www.muhasebetr.com/bordro-parametreleri/"
+    ]
+   },
+   {
+    "artefakt": "SGK kod listeleri — 4/a web servis kılavuzu (4atescilWS_Kullanim_Kilavuzu.doc) içindeki tablolar",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "Eksik gün nedeni kodları (00 eksik gün yok, 01 istirahat, 02 ücretsiz/aylıksız izin, 03 disiplin, 04 gözaltı, 05 tutukluluk, 06 kısmi istihdam, 07 puantaj, 08 grev, 09 lokavt, 10 genel hayatı etkileyen olaylar, 11 doğal afet, 12 birden fazla, 14 diğer, 15 devamsızlık, 16 fesih tarihinde çalışmamış, 17 ev hizmetlerinde 30 günden az, 18 kısa çalışma ödeneği, 19 ücretsiz doğum izni, 20 ücretsiz yol izni, 21 diğer ücretsiz izin, 22 5434 SK ek 76/GM 192, 23 yarım çalışma ödeneği, 24 yarım çalışma ödeneği ve diğer); işten çıkış nedeni kodları 01–37 (ör. 03 işçi feshi, 04 işverence haklı sebep bildirilmeden fesih, 05 belirli süreli sözleşme sonu, 08 emeklilik, 25/29 ahlak ve iyiniyet, 34 işyeri devri...); sigortalı türü kodları (0 tüm sigorta kolları, 7 çırak, 8 SGDP, 19 stajyer...); görev kodu, ÇSGB iş kolu kodları (01–20), öğrenim kodları; eksik gün sayısı 1–31 validasyonu. Meslek kodu İŞKUR meslek kodu (XXXX.XX).",
+    "guvenilirlik": "Yüksek (SGK resmi teknik doküman) — ancak belge tarihi/sürümü belirtilmemiş; en güncel kod eklemeleri (37 sonrası çıkış kodları vb.) için e-Bildirge V2 XSD ve güncel SGK duyuruları ile karşılaştırılmalı (doğrulanamadı).",
+    "kaynak": "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+   },
+   {
+    "artefakt": "SGK e-Bildirge V2 XML Şema Tanımı (EBildirgeV2 XML SEMA TANIMI V1.1.xsd) ve 'Excel ile xml oluştur v1.1'",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "APHB/e-Bildirge V2 XML alan yapısı ve (muhtemelen) enum kod kümeleri — bordro çıktısının şema doğrulaması (schema-level golden test).",
+    "guvenilirlik": "Yüksek (resmi şema); içerik bu çalışmada indirilmedi (enum kapsamı doğrulanamadı).",
+    "kaynak": "https://e.sgk.gov.tr/Uygulamalar/Detay/E-BildirgeV2-2026-04-21-09-12-18"
+   },
+   {
+    "artefakt": "İŞKUR meslek kodları (ISCO-08 tabanlı, XXXX.XX biçimi)",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "İşe giriş bildirgesi ve MUHSGK'daki meslek kodu alanı. SGK e-Bildirge Excel şablonunda meslek kod listesi için İŞKUR bağlantısı (https://app.iskur.gov.tr/Meslek/meslek.aspx) veriliyor; bu adres 2026-09-27'de erişilemedi. Güncel indirilebilir liste kaynağı doğrulanamadı.",
+    "guvenilirlik": "Resmi kaynak ama erişim/indirme yolu doğrulanamadı.",
+    "kaynak": [
+     "https://ebildirge.sgk.gov.tr/WPEB/jsp/duyuru/meslekkod_files/xls2xmly.xls",
+     "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+    ]
+   },
+   {
+    "artefakt": "Resmi tatil / genel tatil günleri — 2429 sayılı Ulusal Bayram ve Genel Tatiller Hakkında Kanun",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "Ulusal bayram ve genel tatil günleri (UBGT ücreti, 4857 md.47 ile birlikte). Kanun metni mevzuat.gov.tr'de HTML/PDF/DOC olarak indirilebilir. Yıllık resmi tatil takvimi için ayrı makine-okunur resmi veri seti bulunamadı (doğrulanamadı).",
+    "guvenilirlik": "Çok yüksek (kanun).",
+    "kaynak": [
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=2429&MevzuatTur=1&MevzuatTertip=5",
+     "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.2429.pdf"
+    ]
+   },
+   {
+    "artefakt": "Diyanet İşleri Başkanlığı 'Dini Günler' sorgu sayfası",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "Ramazan ve Kurban Bayramı, arife vb. tarihleri; yıl seçimi ile sorgu (sayfada 1900–2027 aralığı ve 2026/2027 yılı dini günler menüleri). Dini bayramlar ve arife yarım günü UBGT hesabı için tarih oracle'ı. Makine-okunur API yok, HTML sorgu.",
+    "guvenilirlik": "Yüksek (resmi kurum).",
+    "kaynak": "https://vakithesaplama.diyanet.gov.tr/dini_gunler.php"
+   },
+   {
+    "artefakt": "ÇSGB Çalışma Genel Müdürlüğü İş Kanunu Sıkça Sorulan Sorular (ör. Soru 43/44: kıdem tazminatına dahil olan/olmayan ödemeler; Soru 59: ücret hesap pusulası)",
+    "tur": "resmi_ornek",
+    "kapsadigi_hesap": "Kural düzeyinde oracle (sayısal değil): kıdem tazminatına esas ücrete dahil ödemeler listesi (yemek, kasa tazminatı, gıda, yakacak, eğitim, konut, giyecek, aile/çocuk yardımı vb.), haklı fesih sebepleri, yıllık izin ücreti, fazla çalışma.",
+    "guvenilirlik": "Orta-yüksek (idari görüş; bağlayıcı değil, Yargıtay içtihadı öncelikli).",
+    "kaynak": "https://www.csgb.gov.tr/sikca-sorulan-sorular/calisma-genel-mudurlugu/%C4%B1s-kanunu/"
+   },
+   {
+    "artefakt": "İl/ilçe kodları ve banka/şube (EFT) kodları",
+    "tur": "acik_veri",
+    "kapsadigi_hesap": "Adres ve banka referans verisi.",
+    "guvenilirlik": "Doğrulanamadı — bu çalışmada resmi indirilebilir kaynak (NVİ/TÜİK il-ilçe kodları; TCMB/TBB banka-şube listeleri) doğrulanamadı; arama bütçesi tükendi. Bordro için IBAN (TR + 26 hane) tek başına yeterli olduğundan EFT şube kodu ihtiyacı düşük.",
+    "kaynak": "doğrulanamadı"
+   },
+   {
+    "artefakt": "SGK İşveren Sistemi 'teşvik analizi' / teşvik tanımlama ekranları",
+    "tur": "resmi_hesaplayici",
+    "kapsadigi_hesap": "İşe alım öncesi sigortalı bazında yararlanılabilecek teşviklerin SGK kayıtlarına göre listelenmesi — teşvik uygunluğu için en yetkili (SGK verisine dayalı) oracle; tutar değil uygunluk.",
+    "guvenilirlik": "Çok yüksek (SGK'nın kendi kayıtları) ama yalnızca gerçek işyeri kimlik bilgileriyle erişilebilir; otomasyona açık API yok.",
+    "kaynak": "https://e.sgk.gov.tr/Uygulamalar/Detay/Isveren-Sistemi-2022-10-31-10-05-50"
+   }
+  ],
+  "sadece_insan_oracle": [
+   {
+    "karar": "Teşvik kombinasyonu ve seçimi (hangi sigortalıya hangi kanun numarası/teşvik uygulanacağı; teşviklerin birlikte uygulanamaması; geriye dönük teşvik düzeltmesi)",
+    "neden": "SGK kitapçığında teşviklerin bir kısmının '5 puanlık indirim ile birlikte uygulanmaz' şeklinde kısıtları, her teşvikte ayrı şart listeleri (vadesi geçmiş borç olmaması, 5335/30-2 kapsamı dışında olma, 4734 kapsamı işler, İSG-KATİP sözleşmesi vb.) var. Şartların sağlanıp sağlanmadığı (ör. borç durumu, fiili istihdam, ortalama sigortalı sayısı, muvazaa) olgusal/yorumsal değerlendirme gerektirir; seçim işveren tercihine bağlıdır. MUHSGK kılavuzunda belge/kanun türü değişikliği ve İPTAL+ASIL düzeltme örneği, hatalı teşvik seçiminin sonradan düzeltme gerektirdiğini gösterir. Algoritma sayısal tutarı hesaplayabilir; 'doğru seçim' için SMMM/SGK uzmanı onayı gerekir.",
+    "kaynak": [
+     "https://www.sgk.gov.tr/Download/DownloadFile?f=8af2e39d-6690-4704-8ecb-31d66b98fe1a.pdf&d=de85036d-ef64-49f1-834c-916a79f1a923",
+     "https://ebeyanname.gib.gov.tr/muphb1.pdf"
+    ]
+   },
+   {
+    "karar": "Fesih nedeninin hukuki nitelendirilmesi (haklı/geçerli fesih, 4857 md.24–25) ve buna bağlı SGK işten çıkış kodu seçimi (ör. 03, 04, 25, 29)",
+    "neden": "Çıkış kodu kıdem/ihbar hakkını ve işsizlik ödeneğini etkiler; kodun doğruluğu olgulara ve hukuki değerlendirmeye bağlıdır (ahlak ve iyiniyet kurallarına aykırılık, zorunlu nedenler, sağlık nedenleri). ÇSGB SSS'de haklı fesih halleri ayrı sorularda açıklanır ama somut olayın nitelendirmesi nihayetinde iş mahkemesi/Yargıtay denetimindedir. Sistem yalnızca kodu kaydedebilir, doğruluğunu İK hukukçusu belirlemelidir.",
+    "kaynak": [
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=4857&MevzuatTur=1&MevzuatTertip=5",
+     "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9",
+     "https://www.csgb.gov.tr/sikca-sorulan-sorular/calisma-genel-mudurlugu/%C4%B1s-kanunu/",
+     "https://karararama.yargitay.gov.tr/"
+    ]
+   },
+   {
+    "karar": "Kıdem tazminatına esas 'giydirilmiş ücret' kapsamı (hangi ikramiye, prim, sosyal yardım, fazla mesai vb. dahil) ve 1475 md.14 uygulaması",
+    "neden": "ÇSGB SSS'de dahil/dahil olmayan ödemeler için ayrı sorular (43/44) var; hukuk büroları giydirilmiş ücreti 'brüt ücret + sosyal haklar + düzenli ikramiye ve primler' diye tarif ediyor. 'Düzenli' olma, süreklilik ve arızi ödeme ayrımı olaya bağlıdır ve Yargıtay içtihadıyla şekillenir (içtihat metinleri: Yargıtay Karar Arama / UYAP Emsal). Yıllık tavan değişimi parametre olarak deterministik; kapsam kararı insan oracle'ı gerektirir.",
+    "kaynak": [
+     "https://www.csgb.gov.tr/sikca-sorulan-sorular/calisma-genel-mudurlugu/%C4%B1s-kanunu/",
+     "https://www.capa.av.tr/kidem-ve-ihbar-tazminati-hesaplama/",
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=1475&MevzuatTur=1&MevzuatTertip=5",
+     "https://karararama.yargitay.gov.tr/",
+     "https://emsal.uyap.gov.tr/"
+    ]
+   },
+   {
+    "karar": "Gelir vergisi istisnası / ücret niteliği belirsiz ödemeler (yemek, ulaşım, ısınma, kira, eğitim vb. yan haklar; ücret mi, istisna mı, SGK primine esas mı)",
+    "neden": "İstisna tutarları ve koşulları tebliğlerle sık değişir (ör. GVGT 322 ısınma ödemesi istisnası; 7566/7577 sayılı Kanunlarla yemek bedeli istisnası değişiklikleri — İSMMMO e-kitap özeti). Belirsiz durumlar için GİB özelge sistemi vardır; özelgeler yalnızca talep eden mükellefi bağlar ve yorum farklılıkları olabilir. Yeni bir yan hak tipinin sınıflandırılması SMMM/vergi uzmanı kararı gerektirir.",
+    "kaynak": [
+     "https://www.turmob.org.tr/Mevzuat/PDF/20196",
+     "https://archive.ismmmo.org.tr/YAYINLAR/e_kitap/18052026_sosyal_guvenlik_sisteminde_son_degisiklikler.pdf",
+     "https://www.gib.gov.tr/mevzuat/ozelgeler"
+    ]
+   },
+   {
+    "karar": "Eksik gün nedeni ve belge türü seçimi (ör. kısmi istihdam 06 vs puantaj 07, 'birden fazla' 12, istirahat/iş göremezlik raporuyla uyum, kısa/yarım çalışma ödeneği)",
+    "neden": "Kod listesi deterministik ama olguya uygun kodun seçimi (ve SGK'ya belge ibrazı gerektiren durumlar) yorum ister; MUHSGK kılavuzu eksik gün nedeninin 'sigortalının durumunu açıklayan kod' ile girilmesini ve istirahat süresinde çalışıp çalışmadığının (E/H) beyanını ister — bu beyanlar Vizite onayı ile tutarlı olmalıdır. Hatalı seçim idari para cezası/teşvik kaybı riskine yol açabilir (ceza tutarları burada verilmemiştir).",
+    "kaynak": [
+     "https://ebeyanname.gib.gov.tr/muphb1.pdf",
+     "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9",
+     "https://www.denet.com.tr/vizite_duyuru.pdf"
+    ]
+   },
+   {
+    "karar": "Yıllık izin, fazla çalışma ve UBGT ücretlerinin somut uyuşmazlıkta hesaplanması (ör. sözleşmede fazla çalışmanın ücrete dahil olduğu hükmü, puantaj/ispat, dini bayram arife yarım günü)",
+    "neden": "Kanun ve parametreler deterministik (4857 md.41, 47, 53–57; 2429 s. Kanun) ancak uyuşmazlıkta ispat ve sözleşme yorumu mahkeme içtihadıyla belirlenir; ÇSGB SSS bu konuları genel kural düzeyinde açıklar.",
+    "kaynak": [
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=4857&MevzuatTur=1&MevzuatTertip=5",
+     "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=2429&MevzuatTur=1&MevzuatTertip=5",
+     "https://www.csgb.gov.tr/sikca-sorulan-sorular/calisma-genel-mudurlugu/%C4%B1s-kanunu/",
+     "https://karararama.yargitay.gov.tr/"
+    ]
+   },
+   {
+    "karar": "e-bordro/KEP ile tebliğin ispat değeri ve işçinin rızası; elektronik özlük dosyası",
+    "neden": "Ücret hesap pusulasının KEP ile verilmesinin md.37'yi karşıladığı yönündeki ÇSGB görüşü (13.11.2017) idari görüştür; delil değeri HMK 199/205 ve 5070 md.5 çerçevesinde değerlendirilir. Uygulama biçimi (çalışanın KEP adresi, imza/mühür türü) için İK hukukçusu onayı gerekir.",
+    "kaynak": [
+     "https://www.turkishlawblog.com/insights/detail/ucret-bordrolarinin-calisanlara-kep-kayitli-elektronik-posta-araciligiyla-teblig-edilmesi-ve-delil-niteligi",
+     "https://www.muhasebetr.com/yazarlarimiz/mevlutkokus/007/"
+    ]
+   }
+  ],
+  "alt_ajan_notlari": [
+   "ÖNEMLİ BULGU: Bordro ile ilgili devlet entegrasyonlarında belgelenmiş TEK test ortamı SGK 4/a işe giriş/işten ayrılış web servisidir (sgkt.sgk.gov.tr; erişim için gerçek işyeri sicilinin entegretescil@sgk.gov.tr'ye e-postayla bildirilmesi). Kaynak: https://e.sgk.gov.tr/Uygulamalar/Detay/4a-Sigortali-Ise-Giris-ve-Isten-Ayrilis-Bildirgesi-2024-10-02-10-08-51",
+   "GİB'in yeni e-Beyan sisteminde preprod API (https://ebeyanpreprodapi.gib.gov.tr) var, ancak ilan edilen kapsamda MUHSGK yok (Damga, KDV, geçici vergi). MUHSGK'nın ileride e-Beyan'a taşınması olasılığı izlenmeli (doğrulanamadı). Kaynak: https://www.tepeymm.com/post/yeni-e-beyan-test-uygulamas%C4%B1-hakk%C4%B1nda-duyuru",
+   "Tüm SGK web servisleri (4/a tescil, Vizite) gerçek işyeri kimlik bilgileri gerektirir; ajan ekibi için sentetik test hesabı yok → entegrasyon testleri (a) SOAP sözleşme/şema testleri + kayıtlı yanıtlarla mock, (b) bir pilot müşterinin test ortamına indirilmiş işyeri sicili ile kontrollü uçtan uca test şeklinde kurgulanmalı. Kimlik bilgileri insan tarafından sağlanmalı (ajanlara verilmemeli).",
+   "Golden test önceliği (güvenilirlik sırası): 1) Resmî Gazete'deki tebliğ örnekleri (GVGT 319: 18 sayısal örnek) 2) GİB/SGK resmi kılavuz örnekleri (MUHSGK kılavuzu gün sayısı örnekleri; SGK teşvik kitapçığı 15 sayısal tablo) 3) Resmi parametre tabloları (PEK sınırları, GV tarifesi) 4) Resmi hesaplayıcılar (GİB GV hesaplama, gecikme zammı) 5) Meslek örgütü/uzman yayınları (TÜRMOB hesaplayıcıları, Lebib Yalkın, İSMMMO) — yalnızca çapraz doğrulama için.",
+   "Resmi örneklerin çoğu eski yıl parametreleriyle yazılmıştır (GVGT 319 → 2022; MUHSGK kılavuzu → 2020; teşvik kitapçığı → 2024). Golden testler 'yıl-parametre seti + girdi + beklenen çıktı' üçlüsü olarak saklanmalı; parametre motoru yıllara göre sürümlenmeli.",
+   "ÇSGB ve e-Devlet'te resmi kıdem/ihbar/izin/brütten-nete hesaplayıcısı bulunamadı; kıdem-ihbar için en iyi erişilebilir hesaplayıcı TÜRMOB'unki (meslek örgütü, resmi değil). Kaynak: https://www.turmob.org.tr/hesaplamalar/kidemihbarvetazminati",
+   "Banka maaş dosyaları bankaya özgüdür; Halkbank DTO örneğinde xls/xlsx/txt + portal/e-posta/FTP kanalları var. Türkiye'de kurumsal pain.001 kabulü ve FAST'ın ISO 20022 kullanımı bu çalışmada doğrulanamadı → banka adaptörleri eklenti mimarisiyle, banka başına sözleşmeli spesifikasyonla yazılmalı.",
+   "BES OKS için ortak ulusal dosya/API standardı bulunamadı; emeklilik şirketi başına adaptör (ör. Anadolu Hayat DES web servisi) gerekir.",
+   "SGK/GİB belge metinleri WebFetch ile okunamadığında yerel olarak indirilip macOS PDFKit/textutil ile metne çevrildi (ws4a kılavuzu, vizite duyurusu, MUHSGK kılavuzu, teşvik kitapçığı, Halkbank DTO kılavuzu). Bu belgelerdeki kod listeleri/örnekler doğrudan metinden alınmıştır.",
+   "Doğrulanamayanlar: test WSDL'lerine (sgkt.sgk.gov.tr) doğrudan erişim; e-Bildirge V2 XSD içeriği; İŞKUR güncel meslek kodu indirme adresi (app.iskur.gov.tr/Meslek/meslek.aspx erişilemedi); il/ilçe ve banka-şube kodları için resmi indirilebilir kaynak; ÇSGB 13.11.2017 e-bordro görüş yazısının birincil metni; MUHSGK XML şemasının kamuya açık yayını; ebeyan.gib.gov.tr/entegrator dokümanı (JS render).",
+   "Bu dosya '_C5-alt' yardımcı dosyasıdır; aynı klasördeki C5-hrms-alan-ve-oracle.json ile birleştirilirken çakışan kalemlerde bu dosyadaki birincil kaynak atıfları tercih edilmelidir."
+  ],
+  "ek_dogrulamalar_ana_ajan": [
+   {
+    "bulgu": "MPHB verilme zamani: ait oldugu ayi takip eden ayin 26'si saat 23.59'a kadar elektronik ortamda",
+    "kaynak": "https://ebeyanname.gib.gov.tr/muphb1.pdf (GIB/SGK ortak kilavuz, 2020)"
+   },
+   {
+    "bulgu": "SGK 4/a web servis kilavuzu kod listeleri: eksik gun nedenleri (00 bildirilmeyecek, 01 istirahat, 02 ucretsiz izin, 06 kismi istihdam, 07 puantaj kayitlari, 12 birden fazla, 15 devamsizlik, 18 kisa calisma, 19 ucretsiz dogum izni, 20 ucretsiz yol izni, 21 diger ucretsiz izin ...), isten cikis nedenleri (01..; 03 isci tarafindan fesih, 04 isveren feshi haklI sebep bildirilmeden ...), belge turleri (1 tum sigorta kollari, 2 SGDP, 7 cirak ...)",
+    "kaynak": "https://e.sgk.gov.tr/Download/DownloadFile?f=ccda7d7e-d99b-40f5-9622-63246763b4b0.doc&d=bf271de4-fea9-4557-a460-957858589cf9"
+   },
+   {
+    "bulgu": "SGK 2026 tesvik kitapcigi mevcut (alt ajan 2024 surumunu bulmustu); 2026 surumu rakamli ornekleri 2026 asgari ucretine gore veriyor",
+    "kaynak": "https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+   }
+  ],
+  "pratik_oracle_mimarisi": [
+   "Kural kaynagi izlenebilirligi: her hesap kurali ve parametre {kanun, madde, fikra, RG tarihi/sayisi, gecerlilik} ile etiketlenir; ajan kaynaksiz kural yazamaz (CI kontrolu)",
+   "Altin set = (yil-parametre seti, girdi, beklenen cikti, kaynak, imzalayan uzman). Resmi orneklerden turetilenler 'resmi', uzmanin hazirladiklari 'uzman-imzali', incumbent ciktilari 'differential' etiketi tasir",
+   "Iki bagimsiz uygulama: uretim motoru + ayri ekip/ajanin yazdigi kucuk referans hesaplayici (N-version); farklar insan kuyruguna",
+   "Metamorfik/ozellik testleri: brut artarken net azalmaz; net->brut->net ters; kumulatif matrah dilim gecis ayi; ay ortasi giris oransal; parametre degisim tarihinde retro",
+   "Mevzuat izleme: Resmi Gazete/GIB/SGK duyuru takibi -> parametre surumu ve altin set guncellemesi icin 'mevzuat degisikligi' isi (insan onayli)",
+   "Canli oncesi paralel kosum: en az 1-3 donem eski sistem ile ayni anda bordro, fark raporu mali musavir onayi (sure: dogrulanamadi, oneridir)"
+  ]
+ },
+ "cerceve_uzerine_yapmak": {
+  "frappe_hrms": {
+   "kaynak": "https://github.com/frappe/hrms (git clone --depth 1, HEAD 28d1791, 2026-09-25; olcumler bu klondan)",
+   "lisans": "GPL-3 (hooks.py app_license; license.txt)",
+   "bagimlilik": "required_apps = ['frappe/erpnext'] -> Employee, Company, Department, Designation, Holiday List gibi temel DocType'lar ERPNext/Frappe setup tarafinda; HRMS tek basina kurulamaz",
+   "surum": "main: 17.0.0-dev; son etiket v16.20.0 (git ls-remote)",
+   "doctype_sayisi": {
+    "toplam": 160,
+    "ana(istable=0)": 106,
+    "child_table": 54,
+    "HR_modulu": 117,
+    "Payroll_modulu": 43,
+    "not": "modules.txt 10 modul listeler (HR Setup, Tenure, Recruitment, Shift and Attendance, Leaves, Expenses, Performance, Payroll, Tax and Benefits, HR) ama DocType JSON'larinin 'module' alani yalniz HR ve Payroll"
+   },
+   "kod_boyutu_satir": {
+    "py": 73462,
+    "js": 18308,
+    "vue": 10169,
+    "html": 1831,
+    "git_dosya": 1614
+   },
+   "test": {
+    "test_*.py dosyasi": 128,
+    "CI": "bench --site test_site run-parallel-tests --app hrms (.github/workflows/ci.yml); patch.yml v14 veritabanini restore edip migrate ederek yukseltme testi yapar"
+   },
+   "patches": "hrms/patches.txt ~53 kayit (sema/veri gocu yamalari)",
+   "yerellestirme": "hrms/regional yalniz india ve united_arab_emirates; regional_overrides yalniz India (HRA, marginal relief). Turkiye bordro yerellestirmesi YOK. hrms/locale/tr.po mevcut (ceviri; tamlik olculmedi).",
+   "turkiye_icin_uyan_doctypelar": "Payroll Period, Income Tax Slab (kademeli vergi), Salary Component/Structure/Assignment, Payroll Entry, Salary Slip, Additional Salary, Arrear, Payroll Correction, Salary Withholding, Gratuity/Gratuity Rule (kidem benzeri), Full and Final Statement, Employee Checkin, Shift Type/Assignment/Schedule, Overtime Type/Slip, Leave Policy/Allocation/Ledger Entry/Encashment, Holiday List Assignment, Employee Grievance, Employee Onboarding/Separation, Employee Transfer/Promotion, Appraisal/Goal/KRA, Training Program/Event, Job Requisition/Opening/Applicant/Offer, Staffing Plan",
+   "turkiye_icin_eksik": "SGK prim hesaplari (tavan/taban, eksik gun kodlari, belge turleri, tesvikler), kumulatif GV matrahi + asgari ucret GV/DV istisnasi, MPHB/e-Bildirge XML uretimi, SGK ise giris/ayrilis bildirgeleri, kidem tavani, icra/nafaka oncelik sirasi, BES otomatik katilim, arife yarim gun, Turk banka toplu odeme formatlari",
+   "vergi_motoru_uyumsuzlugu": {
+    "bulgu": "Frappe HRMS Salary Slip gelir vergisini yillik projeksiyonla hesapliyor (compute_taxable_earnings_for_year, remaining_sub_periods, calculate_variable_tax: yillik vergi kalan donemlere bolunur - Hindistan modeli). Turkiye'de ucret stopaji fiili kumulatif matraha gore aylik hesaplanir; bu nedenle vergi mantigi override edilmeli (regional_overrides yalniz birkac fonksiyonu kapsiyor; buyuk olasilikla override_doctype_class gerekir -> yukseltme riski).",
+    "kaynak": "hrms/payroll/doctype/salary_slip/salary_slip.py (2831 satir; test_salary_slip.py 63 test) - https://github.com/frappe/hrms"
+   },
+   "repo_meta": {
+    "frappe/hrms": "GPL-3.0, ~8.8k yildiz, Python ~2,3 MB",
+    "frappe/erpnext": "GPL-3.0, ~39.6k yildiz, Python ~13,4 MB",
+    "frappe/frappe": "MIT",
+    "kaynak": "GitHub API 2026-09-27"
+   }
+  },
+  "odoo": {
+   "community_19_hr_modulleri": "odoo/odoo 19.0 addons: hr, hr_attendance, hr_holidays, hr_recruitment, hr_skills, hr_timesheet, hr_work_entry, hr_work_entry_holidays, hr_expense, hr_org_chart, hr_presence, hr_homeworking ... (kaynak: https://api.github.com/repos/odoo/odoo/contents/addons?ref=19.0)",
+   "community_19_turkiye": "l10n_tr (muhasebe) ve l10n_tr_nilvera* (e-fatura/e-irsaliye) var; Community'de Turk bordrosu yok",
+   "enterprise_turkiye_bordro": {
+    "moduller": "l10n_tr_hr_payroll (bagimlilik hr_payroll - Enterprise), l10n_tr_hr_payroll_account",
+    "kapsam": "Maas yapisi 'Turkiye: Regular Pay', kurallar: gelir vergisi (YTD kumulatif), damga vergisi, SGK isci/isveren, issizlik, asgari ucret GV/DV istisnasi, net->brut; kural parametreleri tarihli (Rule Parameters)",
+    "kapsam_disi_gorunen": "Dokumanda MUHSGK/e-Bildirge, SGK bildirgeleri, tesvikler, kidem/ihbar, eksik gun kodlari, BES, icra yok",
+    "kaynak": "https://www.odoo.com/documentation/19.0/applications/hr/payroll/payroll_localizations/turkey.html"
+   },
+   "oracle_sorunu_ornegi_odoo_dokumani": [
+    "Metin 'It accounts for federal and state regulations' diyor - Turkiye'de eyalet yok (ABD sablonundan kopya izlenimi)",
+    "'Employers contribute 15%' - isveren SGK payi ve 5 puan indirimi ayrimi yapilmadan yuvarlanmis; tesvik kosullarina bagli oldugu belirtilmemis",
+    "Vergi dilimleri 'As of 2025' - 2026 guncellemesi dokumanda yok (sayfa 2026-09-27'de okundu)"
+   ],
+   "payroll_localizations_listesi": "https://www.odoo.com/documentation/19.0/applications/hr/payroll/payroll_localizations.html (Turkiye listede)"
+  },
+  "oca": {
+   "l10n_turkey": "https://github.com/OCA/l10n-turkey - 11.0..19.0 dallarinda modul yok, yalniz 'setup' klasoru (GitHub API ile kontrol edildi); son push 2025-09-30",
+   "oca_payroll": "https://github.com/OCA/payroll - 18.0 dalinda: payroll, payroll_account, payroll_contract_advantages, payroll_hr_public_holidays, payroll_rule_time_parameter, hr_payroll_document; Turkiye kurali yok; son push 2026-09-25"
+  },
+  "frappe_is_kirilimi_etkisi": [
+   "Birim is = DocType (JSON sema + controller .py + client .js + test_*.py); ajan gorevi dogal olarak DocType basina kesilir; DocType'lar arasi akis hooks.py doc_events ile",
+   "Yerellestirme ayri app olarak (orn. hrms_tr; required_apps: hrms) - cekirdek repo'ya yama yok; Custom Field/Property Setter fixtures ile export",
+   "Sema/veri degisiklikleri patches.txt ile surumlu; her site 'bench migrate' ile calistirir; CI'da eski surum veritabanindan migrate testi (HRMS patch.yml bunu v14 dump'i ile yapiyor)",
+   "Testler 'bench run-tests --app' / 'run-parallel-tests'; testler gercek MariaDB site uzerinde calisir (yavas, izole ortam gerekir) -> saf hesap motorunu framework disi kutuphaneye ayirmak hizli ve bagimsiz test saglar",
+   "Coklu sirket, rol/izin, workflow, denetim (Version), rapor, REST API, i18n cerceve ozelligi olarak hazir"
+  ],
+  "odoo_is_kirilimi_etkisi": [
+   "Birim is = modul (__manifest__ depends), model (ORM), XML view/data, security (ir.model.access.csv + record rules); bordro kurallari hr.salary.rule veri kaydi olarak python kod parcaciklariyla, parametreler tarihli rule parameter",
+   "Turkiye bordrosu Enterprise'a bagli (hr_payroll EE) -> musteri EE aboneligi; EE modullerini genisletmenin lisans kosullari hukukcu teyidi ister (dogrulanamadi)",
+   "Community yolu: OCA/payroll (AGPL-3, 18.0/19.0) + sifirdan TR kurallari; AGPL SaaS'ta kaynak acma yukumlulugu dogurur (hukukcu teyidi)"
+  ],
+  "sifirdan_yapmak": [
+   "Genel HR genisligi (alt ajanin 'ortak minimum' 18 maddesi) + cerceve servisleri (kimlik, coklu sirket, izin motoru, workflow, denetim, rapor, dosya, i18n, API) sifirdan yazilir. Karsilastirma olcusu: Frappe HRMS tek basina 106 ana + 54 alt tablo DocType, ~73k satir Python, 128 test dosyasi ve ERPNext/Frappe altyapisina dayaniyor.",
+   "Avantaj: CronHR'in kendi UX/AI mimarisi (Astro prototipi) ve lisans ozgurlugu; alan modelini (effective-dating, immutable PDKS, surumlu parametre) bastan dogru kurma",
+   "Dezavantaj: is hacmi ve 'bilinmeyen-bilinmeyen' sayisi artar (izin motoru, workflow, yetki gibi cozulmus problemler yeniden cozulur)"
+  ],
+  "karar": {
+   "hukum": "Is hacmini dramatik degistiren kisim GENEL HR genisligidir; RISKI belirleyen kisim (Turkiye bordro/SGK/GIB + oracle) her iki yolda da ayni buyukluktedir ve hicbir acik kaynakta hazir degildir.",
+   "oneri": "Frappe HRMS + ERPNext uzerine ayri bir 'Turkiye' uygulamasi (DocType'lar: SGK isyeri, tesvik, eksik gun/cikis/belge kodlari, surumlu yasal parametre, MPHB, icra dosyasi, BES, kidem hesabi...) + framework'ten bagimsiz saf Python 'TR bordro cekirdegi' kutuphanesi (altin/differential testlerin hedefi) + CronHR on yuzu (Frappe REST/frappe-ui ile headless). Bu, oracle-kritik kodu framework yukseltmelerinden ve DocType test yavasligindan izole eder.",
+   "kosullar": [
+    "GPL-3 yukumlulukleri (dagitimda kaynak) hukukcu tarafindan onaylanmali",
+    "Frappe/HRMS yillik major surum takibi (main 17.0.0-dev) icin yukseltme butcesi",
+    "Salary Slip vergi mantigi override'inin yukseltme riskine karsi sozlesme testleri"
+   ],
+   "alternatif": "Odoo EE: l10n_tr_hr_payroll hesap cekirdegini verir ama SGK/GIB/tesvik/kidem katmani yine yazilmali ve EE lisansi gerekir. Sifirdan: CronHR UX'ine tam uyum, en buyuk is hacmi.",
+   "not": "Bu bir muhendislik yargisidir (olcum degil); yuzdesel is tasarrufu tahmini yapilmadi cunku dogrulanabilir veri yok."
+  }
+ },
+ "sentez": {
+  "dod_tanimi": {
+   "ozet": "Bu HRMS icin 'DoD'ye kadar tamam' = (1) kapsam: alt ajanin 'ortak minimum' 18 maddesi + 'Turkiye farki' 16 maddesi + CronHR'in 28 ekraninin her biri icin bu dosyadaki yetenek listesi; (2) dogruluk: her yasal kuralin resmi kaynaga izlenebilir oldugu ve resmi-ornek/uzman-imzali altin setlerle dogrulandigi; (3) entegrasyon: test ortami olan yerde (SGK 4/a) uctan uca, olmayan yerde (MUHSGK, e-Bildirge, banka, BES) sema + paralel kosum + insan gonderimi ile kanitlandigi; (4) isletim: parametre surumleme, mevzuat izleme, kilit/duzeltme/denetim izi, veri gocu mutabakati; (5) insan kabulu: mali musavir + IK hukukcusu + kullanici imzasi.",
+   "katmanli_dod": [
+    {
+     "seviye": "Hikaye (story)",
+     "kosullar": [
+      "kabul kriterleri + kaynak URL'li kural etiketi",
+      "birim/property testleri",
+      "yetki negatif testleri",
+      "erisilebilirlik taramasi temiz",
+      "denetim kaydi uretiyor"
+     ]
+    },
+    {
+     "seviye": "Modul",
+     "kosullar": [
+      "bu dosyadaki 'yetenekler' listesinin tamami veya bilincli olarak ertelenmis (kayitli)",
+      "ilgili 'bilinmeyen-bilinmeyen' maddeleri icin kapanis kaniti",
+      "resmi ornek kapsami %100 (ilgili kitapcik/teblig ornekleri)",
+      "mutasyon skoru esigi (ekip belirler)",
+      "uzman imzasi (bordro/SGK/izin/fesih modullerinde zorunlu)"
+     ]
+    },
+    {
+     "seviye": "Surum (alpha -> musteri)",
+     "kosullar": [
+      "uctan uca isgucu zinciri (org->vardiya->PDKS->izin->puantaj->bordro->MPHB/SGK->odeme->muhasebe)",
+      "coklu sirket izolasyon testi",
+      "veri gocu mutabakat raporu onayli",
+      "en az bir donem paralel kosum farki mali musavirce kabul",
+      "parametreler 2026 resmi degerlerle eslesiyor ve mevzuat izleme calisiyor"
+     ]
+    }
+   ],
+   "yeniden_calisma_tetikleyicileri": [
+    "Resmi Gazete'de 4857/5510/193/488/1475/6698/4632/2004 degisikligi",
+    "yil basi/temmuz parametre degisimi (asgari ucret, tarife, kidem tavani, engellilik indirimi)",
+    "GIB MPHB format/BDP guncellemesi",
+    "SGK kod listesi/XSD degisikligi",
+    "KVK Kurulu ilke karari"
+   ]
+  },
+  "ana_mesaj": "AI ajanlari genis kapsamli HRMS'in kodunu ve testlerinin cogunu yazabilir; ancak bordro/SGK/GIB dogrulugu icin oracle AI'nin kendisi olamaz. Oracle zinciri: kanun metni -> resmi ornekler (SGK 2026 tesvik kitapcigi, CSGB asgari ucret tablosu, GVGT 319, GIB rehber/MUHSGK kilavuzu) -> differential (incumbent + eski sistem) -> uzman imzasi. Test ortami yalniz SGK 4/a icin var; MUHSGK'nin ilk gercek testi canli gonderimdir.",
+  "cerceve_hukmu": "Frappe HRMS uzerine ayri Turkiye app + framework-disi TR bordro cekirdegi + CronHR on yuzu; genel HR isini buyuk olcude azaltir, Turkiye/oracle isini azaltmaz."
+ },
+ "prototip_gozlemleri": {
+  "kaynak": "https://karacaismail.github.io/CronHR/ (Astro statik site, 32 sayfa curl ile okundu, 2026-09-27)",
+  "teknik": "Astro statik (/_astro/*.js, *.css); tum veriler mock/statik; 'Bu özellik yakında kullanıma açılacak' uyarisi: Beyannameler, Terfiler, Offboarding, Performans, Egitim, HR Vakalari, Calisan/Yonetici portali sayfalarinda goruluyor",
+  "rotalar": [
+   "/",
+   "/gorevler/",
+   "/calisanlar/",
+   "/organizasyon/",
+   "/pozisyonlar/",
+   "/ozluk/",
+   "/belgeler/",
+   "/izin-devam/",
+   "/vardiya/",
+   "/pdks/",
+   "/puantaj/",
+   "/fazla-mesai/",
+   "/takvim/",
+   "/bordro/",
+   "/ucretler/",
+   "/degisken-odemeler/",
+   "/kesintiler/",
+   "/sgk/",
+   "/beyannameler/",
+   "/odemeler/",
+   "/onboarding/",
+   "/transferler/",
+   "/terfiler/",
+   "/offboarding/",
+   "/ise-alim/",
+   "/performans/",
+   "/egitim/",
+   "/hr-vakalari/",
+   "/raporlar/",
+   "/calisan-portali/",
+   "/yonetici-portali/",
+   "/ayarlar/",
+   "/bildirimler/"
+  ],
+  "guclu_tasarim_kararlari": [
+   "Isgucu zinciri acikca modellenmis: Organizasyon+Ozluk -> Takvim/Vardiya -> PDKS -> Izin -> Puantaj -> Bordro -> Muhasebe/SGK/GIB",
+   "PDKS ham hareket degismez (immutable), duzeltmeler ayri kayit + denetim izi",
+   "Ucret gecmisi ve organizasyon effective-dated",
+   "Yasal oranlar surumlu parametre (key, deger, effective_from/to, legal_reference, version) - koda gomulu degil",
+   "Bordro calistirma durum makinesi: Draft>Calculate>Validate>Review>Approve>Finalize>Pay>Close; retro ve off-cycle kavramlari var",
+   "Bordro oncesi dogrulama engelleyicileri (IBAN eksik, puantaj onaysiz, maas tanimi yok, SGK meslek kodu)",
+   "Beyanname adaptorleri surumlu (E-Bildirge V2 adaptoru 'v2026-04' semasi)",
+   "Alan bazli maskeleme (TCKN, IBAN, ucret), rol bazli erisim, SSO/SCIM, AI onaysiz uygulama yok",
+   "Coklu tuzel kisilik (2 VKN) ve 4 SGK isyeri sicili"
+  ],
+  "prototipte_hukuki_acidan_supheli_veya_yanlis_ornekler_ORACLE_SORUNU": [
+   {
+    "yer": "/fazla-mesai/, /vardiya/, /bordro/",
+    "ifade": "'Yasal aylik ust sinir 270 saat/yil' ve 'yasal aylik sinira 28 saat kaldi' (62+28=90 saat aylik yasal sinir ima ediliyor)",
+    "sorun": "4857 md.41 ve Fazla Calisma Yonetmeligi yalniz YILLIK 270 saat sinir koyar; yasal aylik sinir yok (72 saat sirket politikasi). Ic tutarli gorunen ama hukuken yanlis metin.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "yer": "/offboarding/, /odemeler/, /bordro/",
+    "ifade": "Deniz Koc 'Istifa · dis teklif' + 'kidem/ihbar off-cycle 84.500 TL'",
+    "sorun": "Istifa eden isciye kural olarak kidem tazminati (1475 s.K. md.14 istisnalari haric) ve ihbar tazminati odenmez; ihbar suresine uymayan isci ihbar tazminati borclu olabilir. Istifada sadece kullanilmayan yillik izin ucreti (4857 md.59) odenir.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.1475.pdf ; https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "yer": "/ozluk/, /belgeler/, /calisanlar/",
+    "ifade": "Mert Kaya baslangic 4 Kas 2024, 'deneme suresi 16 Eylul(2026)'da bitiyor'",
+    "sorun": "4857 md.15: deneme suresi en cok 2 ay, TIS ile en cok 4 ay. ~22 aylik deneme suresi yasal olarak mumkun degil.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "yer": "/ucretler/",
+    "ifade": "Mavi yaka 'Gece %20' kalemi",
+    "sorun": "Is Kanunu genel olarak gece calismasi icin yasal zam orani ongormez (TIS/sozlesme/isyeri uygulamasi konusu); parametre 'politika' olarak etiketlenmeli, 'yasal' degil. dogrulanamadi: ozel sektor icin yasal gece zammi yok varsayimi uzman teyidi ister.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf (md.69)"
+   },
+   {
+    "yer": "/pdks/",
+    "ifade": "'KVKK 2026/921: biyometrik mesai takibi olculuk disi'",
+    "sorun": "DOGRULANDI - karar gercek: KVK Kurulu 29.04.2026 tarih 2026/921 sayili ilke karari (RG 02.06.2026, sayi 33268 - ikincil kaynaklara gore). Prototip dogru; bu madde 'yanlis' degil, dogru atif ornegi.",
+    "kaynak": "https://www.kvkk.gov.tr/Icerik/8762/mesai-takibi-amaciyla-biyometrik-veri-islenmesi-hakkinda-kisisel-verileri-koruma-kurulunun-29-04-2026-tarihli-ve-2026-921-sayili-ilke-kararina-iliskin-kamuoyu-duyurusu"
+   },
+   {
+    "yer": "/sgk/",
+    "ifade": "SGK isveren payi %20,5; tavan 'asgari ucret x 7,5'",
+    "sorun": "YANLIS/ESKIMIS: 2026'da isveren payi indirimsiz %21,75 (imalat 5 puan -> %16,75; diger 2 puan -> %19,75); PEK ust siniri asgari ucretin 9 kati (7566 s.K.). Prototip %20,5, '5 puan', 'x7,5' kullaniyor.",
+    "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf ; https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm"
+   },
+   {
+    "yer": "/ayarlar/",
+    "ifade": "'Ozluk saklama: ayrilistan sonra 10 yil (yasal)'; 'Aday verisi 6 ay sonra imha (KVKK)'",
+    "sorun": "KVKK sabit sure koymaz; sure veri sorumlusunun saklama-imha politikasinda ilgili mevzuat (5510 md.86, VUK md.253, TBK zamanasimi) dayanak gosterilerek belirlenir. '6 ay' KVKK kurali degil politika tercihidir.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.6698.pdf"
+   },
+   {
+    "yer": "/vardiya/",
+    "ifade": "Emre Dogan 22-06 gece vardiyalari + pazar gecesi nobeti fazla mesai",
+    "sorun": "4857 md.69: gece calismasi 7,5 saati gecemez (sektor istisnalari yazili onayla); md.41: gece calismasinda fazla calisma yapilamaz. Prototipin 'AI kurallari' bu iki kurali icermiyor.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "yer": "/takvim/",
+    "ifade": "Depo 12/36 takviminde 29 Ekim'e denk gelen 6 vardiya, '%100 zamli'",
+    "sorun": "2429 md.2 son cumlesi '29 Ekim gunu ozel isyerlerinin kapanmasi zorunludur' diyor; 4857 md.44 ile iliskisi yorum gerektirir (insan oracle). Ayrica Ramazan/Kurban arifeleri ayri yarim gun olarak gosterilmemis.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2429.pdf"
+   },
+   {
+    "yer": "/izin-devam/",
+    "ifade": "'Dogum 13 Eyl-28 Eyl 2026, 112 gun'",
+    "sorun": "Tarih araligi 16 gun, gun sayisi 112 - ic tutarsizlik; ayrica 7578 s.K. ile analik izni toplam 24 hafta (dogum sonrasi 16).",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+   },
+   {
+    "yer": "/kesintiler/",
+    "ifade": "'Icra kesintisi yasal 1/4 oraniyla otomatik'",
+    "sorun": "IIK md.83: haczedilecek miktar dortte birinden AZ OLAMAZ (alt sinir, icra dairesi belirler); birden fazla haciz siraya konur.",
+    "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.3.2004.pdf"
+   }
+  ],
+  "eksik_gorunenler_genel": [
+   "Calisan detay/Employee 360 ekrani yalniz satir tiklama notu olarak var; alan bazli form yok",
+   "Bordro hesap detay (brutten nete kalem kalem), bordro pusulasi (md.37), kumulatif vergi matrahi, AGI/asgari ucret istisnasi gosterimi yok",
+   "Tesvik secim/hesap ekrani (kanun no bazli) yok; sadece 'tesvik tasarrufu' KPI",
+   "Kidem/ihbar hesap ekrani ve ibraname/fesih bildirimi yok",
+   "Eksik gun nedeni kodlari (SGK) ve belge turu (4/a belge turleri) yok",
+   "Izin: hak edis/devir/yas kurali (18 alti, 50 ustu 20 gun), bolunme kurallari, yol izni, ucretsiz izin SGK etkisi, dogum/sut izni hesap ekrani yok",
+   "BES otomatik katilim, icra oncelik sirasi/nafaka, engellilik indirimi ekranlari yok",
+   "Coklu sirket konsolidasyonu raporlari, sirketler arasi transferde SGK cikis-giris ve kumulatif matrah devri yok",
+   "Veri gocu (Logo/Mikro vb.) araci yok",
+   "Denetim izi goruntuleme ekrani (kim, neyi, ne zaman) yok; yalniz metinlerde bahsediliyor"
+  ]
+ },
+ "parametreler_2026": [
+  {
+   "parametre": "Brut asgari ucret (aylik)",
+   "deger": "33.030,00 TL (gunluk 1.101 TL), 01.01.2026-31.12.2026",
+   "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf",
+   "not": "Temmuz 2026 ara zam: resmi karar bulunamadi; haberler ara zam yapilmadigini soyluyor (https://www.hurriyet.com.tr/bilgi/galeri/asgari-ucrete-ara-zam-var-mi-2026-asgari-ucret-temmuz-ayinda-artacak-mi-43229603) -> prototipteki 'v2026-2 1 Tem 2026' asgari ucret surumu dogrulanamadi"
+  },
+  {
+   "parametre": "Net asgari ucret",
+   "deger": "28.075,50 TL (SGK isci %14 = 4.624,20; issizlik isci %1 = 330,30; GV ve DV istisna nedeniyle 0)",
+   "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf"
+  },
+  {
+   "parametre": "Isveren SGK payi (tum sigorta kollari, indirimsiz)",
+   "deger": "%21,75 (+ issizlik isveren %2); imalat 5 puan indirimli %16,75; diger sektorler 2 puan indirimli %19,75",
+   "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf ; yasal dayanak 7566 s.K. md.23 (5510 md.81/1-a MYO isveren %11->%12; 81/1-ı 'dort'->'iki'; (k) bendi kaldirildi) ve md.27 (gecici 108 'dort'->'iki'), RG 19.12.2025 sayi 33112: https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm"
+  },
+  {
+   "parametre": "Asgari ucretin isverene maliyeti",
+   "deger": "imalat (5 puan) 39.223,13 TL; diger (2 puan) 40.214,03 TL; indirimsiz 40.874,63 TL",
+   "kaynak": "https://www.csgb.gov.tr/Media/gm2fekds/asgari-%C3%BCcret-2026.pdf"
+  },
+  {
+   "parametre": "Toplam prim orani (isci+isveren, issizlik dahil, indirimsiz)",
+   "deger": "%38,75",
+   "kaynak": "SGK 'Sigorta Primi Tesvikleri 2026' kitapcigi: https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf"
+  },
+  {
+   "parametre": "Prime esas kazanc alt siniri",
+   "deger": "33.030,00 TL/ay (asgari ucret)",
+   "kaynak": "SGK Tesvikler 2026 kitapcigi (PEK alt sinirindan tesviksiz tutar 12.799,13 TL = 33.030 x %38,75)"
+  },
+  {
+   "parametre": "Prime esas kazanc ust siniri",
+   "deger": "asgari ucretin 9 kati = 297.270,00 TL/ay (turetilmis: SGK kitapcigindaki PEK ust sinir tesviksiz tutar 115.192,13 TL / %38,75)",
+   "kaynak": "7566 s.K. md.24 (5510 md.82 '7,5'->'9'): https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm ; SGK tesvik kitapcigi",
+   "not": "Prototip 'asgari ucret x 7,5' diyor -> 2026 icin YANLIS"
+  },
+  {
+   "parametre": "Gelir vergisi tarifesi 2026 (ucret)",
+   "deger": "0-190.000 %15; 190.000-400.000 %20 (28.500 + ); 400.000-1.500.000 %27 (70.500 + ); 1.500.000-5.300.000 %35 (367.500 + ); 5.300.000 ustu %40 (1.697.500 + )",
+   "kaynak": "GIB Gelir Vergisi Tarifesi 2026: https://cdn.gib.gov.tr/api/gibportal-file/file/getFileResources?objectKey=arsiv%2Fyardim-kaynaklar%2Fyararli-bilgiler%2Fgelir-vergisi-tarifeleri%2Fgelir-vergisi-tarifesi-2026.pdf (193 s.K. md.103)"
+  },
+  {
+   "parametre": "Asgari ucret GV istisnasi (aylik)",
+   "deger": "Ocak-Haziran 4.211,33; Temmuz 4.537,75; Agustos-Aralik 5.615,10 TL",
+   "kaynak": "TURETILMIS: GVK md.23/1-18 (istisna = asgari ucretin SGK+issizlik isci payi dusulmus tutarina isabet eden vergi) x 2026 tarifesi x kumulatif matrah; ikincil kaynaklarla tutarli (https://www.kamilozkan.com.tr/yararli-bilgiler/2026-yili-asgari-ucret-gelir-vergisi-ve-damga-vergisi-istisna-tutarlari). GIB'in resmi aylik tablo yayini: dogrulanamadi. Yontem: 319 Seri No.lu GVGT"
+  },
+  {
+   "parametre": "Asgari ucret damga vergisi istisnasi",
+   "deger": "250,70 TL/ay (33.030 x binde 7,59)",
+   "kaynak": "TURETILMIS; DV orani binde 7,59 (488 s.K. 1 sayili tablo IV-1-b) resmi metinden ayrica dogrulanacak; ikincil: https://blog.ozkansoft.com/2026-yilinda-uygulanacak-gelir-ve-damga-vergisi-istisnalari/"
+  },
+  {
+   "parametre": "Engellilik indirimi 2026 (aylik)",
+   "deger": "1. derece 12.000 TL; 2. derece 7.000 TL; 3. derece 3.000 TL",
+   "kaynak": "GIB Ucret Geliri Elde Edenler Icin Vergi Rehberi 2026: https://cdn.gib.gov.tr/api/gibportal-file/file/getFile?objectKey=DUYURU/UNIVERSAL/2026/2026_Ucret_Geliri.pdf"
+  },
+  {
+   "parametre": "Asgari ucret destegi 2026",
+   "deger": "gunluk 42,33 TL (30 gun = 1.270 TL); 2025 ayni ayda gunluk PEK <= 1.300 TL (TIS'li 2.600; linyit/taskomuru 3.467) sigortalilar; 5510 gecici 112; 01.01-31.12.2026",
+   "kaynak": "SGK Tesvikler 2026 kitapcigi (yukaridaki URL)"
+  }
+ ],
+ "tesvikler_2026_guncel": {
+  "kaynak": "SGK Sigorta Primleri Genel Mudurlugu 'Sigorta Primi Tesvikleri 2026' (14 guncel tesvik; 13'u 4/a): https://www.sgk.gov.tr/Download/DownloadFile?d=de85036d-ef64-49f1-834c-916a79f1a923&f=c94c643d-2190-4d85-9b14-a8c7c5d241e8.pdf",
+  "liste": [
+   {
+    "tesvik": "MYO isveren hissesinden 2 puan (imalat 5 puan, 2026 sonuna kadar)",
+    "dayanak": "5510 md.81/1-ı, gecici 108; Genelge 2026/1",
+    "kanun_no": "5510",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Yurtdisina goturulen sigortalilar 5 puan",
+    "dayanak": "5510 md.81/1-i",
+    "kanun_no": "6486",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "4/b 5 puan",
+    "dayanak": "5510 md.81/1-j",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Yatirimlarda devlet yardimlari",
+    "dayanak": "5510 ek 2",
+    "kanun_no": "25510/16322/26322 vb.",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Asgari ucret destegi",
+    "dayanak": "5510 gecici 112",
+    "bitis": "31.12.2026"
+   },
+   {
+    "tesvik": "Issizlik odenegi alanlarin istihdami",
+    "dayanak": "4447 md.50/5",
+    "kanun_no": "15921",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Cok tehlikeli sinif issizlik primi tesviki",
+    "dayanak": "4447 ek 4",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Genc, kadin, mesleki belge sahibi (6111)",
+    "dayanak": "4447 gecici 10; Genelge 2011/45",
+    "kanun_no": "6111",
+    "bitis": "31.12.2026 (ise alim tarihi)"
+   },
+   {
+    "tesvik": "Engelli sigortali",
+    "dayanak": "4857 md.30; Genelge 2008/77",
+    "kanun_no": "14857",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Ar-Ge/Tasarim",
+    "dayanak": "5746 md.3",
+    "kanun_no": "5746/15746",
+    "bitis": "31.12.2028"
+   },
+   {
+    "tesvik": "Kultur yatirimlari",
+    "dayanak": "5225 md.5",
+    "kanun_no": "55225/25225",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Sosyal hizmetlerden faydalananlar",
+    "dayanak": "2828 ek 1",
+    "kanun_no": "02828",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "Sosyal yardim alanlar",
+    "dayanak": "3294 ek 5",
+    "kanun_no": "03294",
+    "bitis": "-"
+   },
+   {
+    "tesvik": "ISG hizmetleri destegi",
+    "dayanak": "6331 md.7",
+    "bitis": "-"
+   }
+  ],
+  "guncel_olmayan": "7103 (4447 gecici 19 ilave istihdam) SGK'nin 2026 guncel 14 tesvik listesinde YOK -> yeni ise alimlar icin guncel degil (liste disi olma cikarimi; ayrica bitis tarihi resmi metinden dogrulanamadi). 5510 md.81/1-(k) bendi 7566 ile yururlukten kaldirildi.",
+  "oracle_notu": "Kitapcik her tesvik icin 'Rakamlarla tesvik ornekleri (2026 brut asgari ucrete gore)' iceriyor: PEK alt/ust sinirdan tesviksiz tutar, tesvik tutari, tesvik sonrasi tutar -> dogrudan altin test vakasi olarak kullanilabilir."
+ },
+ "mevzuat_degisiklikleri_2025_2026": [
+  {
+   "degisiklik": "7566 s.K. (RG 19.12.2025, sayi 33112): 5510 md.81 MYO isveren %11->%12 (toplam MYO %20->%21), 81/1-ı indirim 4->2 puan, (k) bendi kaldirildi; md.82 PEK ust siniri 7,5->9 kat; gecici 108 'dort'->'iki'",
+   "etki": "Bordro motoru, maliyet raporlari, tesvik hesaplari, tavan",
+   "kaynak": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251219-1.htm"
+  },
+  {
+   "degisiklik": "7578 s.K. (22/4/2026): 4857 md.74 analik izni toplam 24 hafta (dogum sonrasi 16); Ek Madde 2 babalik izni 10 gun",
+   "etki": "Izin tipleri, SGK eksik gun/odenek, puantaj",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+  },
+  {
+   "degisiklik": "7573 s.K. (23/1/2026): 4857 gecici 12 (kamu alt isveren kidem rucusu)",
+   "etki": "Kamu ihale alt isverenleri - dar kapsam",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+  },
+  {
+   "degisiklik": "7553 s.K. (10/7/2025): 4857 md.46 turizm konaklama tesislerinde hafta tatilinin 4 gun icinde kullandirilabilmesi",
+   "etki": "Vardiya kisit motoru sektor istisnasi",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4857.pdf"
+  },
+  {
+   "degisiklik": "KVK Kurulu 2026/921 ilke karari (29.04.2026): mesai takibinde biyometrik veri olculuk disi",
+   "etki": "PDKS cihaz secimi, veri gocu (eski biyometrik kayitlarin imhasi)",
+   "kaynak": "https://www.kvkk.gov.tr/Icerik/8762/mesai-takibi-amaciyla-biyometrik-veri-islenmesi-hakkinda-kisisel-verileri-koruma-kurulunun-29-04-2026-tarihli-ve-2026-921-sayili-ilke-kararina-iliskin-kamuoyu-duyurusu"
+  },
+  {
+   "degisiklik": "CB Karari 10811 (RG 07.01.2026 sayi 33130): BES otomatik katilim ilave devlet katkisi 500 TL",
+   "etki": "BES modulu raporlama",
+   "kaynak": "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.4632.pdf (dipnot 18)"
+  }
+ ],
+ "karsilastirma_ozet": {
+  "kaynak_dosya": "_C5-alt-karsilastirma.json (alt ajan; 10 urun, 28 modul kapsama matrisi V/K/Y/?)",
+  "kapsama_matrisi": {
+   "aciklama": "V=resmi kaynakta var; K=kısmen/ücretli sürümde/hizmet olarak/jenerik; Y=yok (kaynakta yok veya sürüm tablosunda hayır); ?=doğrulanamadı. Detay ve kaynaklar ilgili ürün kaydında.",
+   "sutunlar": [
+    "odoo_ce",
+    "odoo_ee",
+    "frappe",
+    "horilla",
+    "ohrm_starter",
+    "ohrm_adv",
+    "logo_edgehr_bordroplus",
+    "mikro",
+    "kolayik",
+    "luca",
+    "netsis_bordro",
+    "workcube"
+   ],
+   "satirlar": {
+    "Çalışanlar/Özlük": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "V",
+     "netsis_bordro": "V",
+     "workcube": "V"
+    },
+    "Organizasyon/Pozisyon": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "?",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "Belgeler (DMS)": {
+     "odoo_ce": "Y",
+     "odoo_ee": "V",
+     "frappe": "?",
+     "horilla": "V",
+     "ohrm_starter": "?",
+     "ohrm_adv": "?",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "V",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "İzinler": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "V",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "Takvim (resmi tatil)": {
+     "odoo_ce": "?",
+     "odoo_ee": "?",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "?",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "?"
+    },
+    "Vardiyalar": {
+     "odoo_ce": "Y",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "?",
+     "kolayik": "K",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "K"
+    },
+    "PDKS (cihaz/mobil check-in)": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "V",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "Puantaj/çalışma girişi": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "Fazla Mesai": {
+     "odoo_ce": "?",
+     "odoo_ee": "?",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "?",
+     "ohrm_adv": "?",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "Bordro motoru": {
+     "odoo_ce": "K",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "K",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "V",
+     "netsis_bordro": "V",
+     "workcube": "V"
+    },
+    "TR bordro (SGK+GV+DV)": {
+     "odoo_ce": "Y",
+     "odoo_ee": "V",
+     "frappe": "Y",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "V",
+     "netsis_bordro": "V",
+     "workcube": "V"
+    },
+    "SGK bildirge/e-Bildirge": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "Y",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "K",
+     "luca": "V",
+     "netsis_bordro": "K",
+     "workcube": "V"
+    },
+    "MUHSGK": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "Y",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "?",
+     "kolayik": "V",
+     "luca": "V",
+     "netsis_bordro": "K",
+     "workcube": "?"
+    },
+    "Teşvik hesaplama": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "Y",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "K",
+     "luca": "V",
+     "netsis_bordro": "?",
+     "workcube": "?"
+    },
+    "Kıdem/İhbar": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "K",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "K",
+     "mikro": "?",
+     "kolayik": "K",
+     "luca": "V",
+     "netsis_bordro": "?",
+     "workcube": "?"
+    },
+    "BES otomatik katılım": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "Y",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "K",
+     "luca": "V",
+     "netsis_bordro": "V",
+     "workcube": "?"
+    },
+    "İcra/nafaka kesintisi": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "Y",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "K",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "?"
+    },
+    "Banka ödeme dosyası": {
+     "odoo_ce": "Y",
+     "odoo_ee": "?",
+     "frappe": "?",
+     "horilla": "?",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "?",
+     "kolayik": "K",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "?"
+    },
+    "Muhasebe fişi": {
+     "odoo_ce": "Y",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "?",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "Y",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "V",
+     "netsis_bordro": "V",
+     "workcube": "?"
+    },
+    "Onboarding": {
+     "odoo_ce": "?",
+     "odoo_ee": "?",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "V"
+    },
+    "Transfer/Terfi": {
+     "odoo_ce": "?",
+     "odoo_ee": "?",
+     "frappe": "V",
+     "horilla": "Y",
+     "ohrm_starter": "?",
+     "ohrm_adv": "?",
+     "logo_edgehr_bordroplus": "?",
+     "mikro": "?",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "?"
+    },
+    "Offboarding": {
+     "odoo_ce": "?",
+     "odoo_ee": "?",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "?"
+    },
+    "İşe Alım": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "K",
+     "kolayik": "V",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "V"
+    },
+    "Performans": {
+     "odoo_ce": "Y",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "V",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "V"
+    },
+    "Eğitim": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "Y",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "?"
+    },
+    "HR Vakaları/Disiplin/Talep": {
+     "odoo_ce": "Y",
+     "odoo_ee": "K",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "Y",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "K",
+     "mikro": "?",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "Y",
+     "workcube": "V"
+    },
+    "Self-servis/Mobil": {
+     "odoo_ce": "K",
+     "odoo_ee": "V",
+     "frappe": "V",
+     "horilla": "V",
+     "ohrm_starter": "V",
+     "ohrm_adv": "V",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "?",
+     "kolayik": "V",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "V"
+    },
+    "Çok şirket/işyeri": {
+     "odoo_ce": "V",
+     "odoo_ee": "V",
+     "frappe": "?",
+     "horilla": "V",
+     "ohrm_starter": "?",
+     "ohrm_adv": "?",
+     "logo_edgehr_bordroplus": "V",
+     "mikro": "V",
+     "kolayik": "?",
+     "luca": "?",
+     "netsis_bordro": "?",
+     "workcube": "K"
+    }
+   }
+  },
+  "tam_hrms_icin_ortak_minimum": [
+   "Çalışan ana kaydı: kimlik, iletişim, iş bilgisi, banka hesabı, belge ekleri; efektif tarihli değişiklik geçmişi (Frappe Employee Property History, Logo 'Zaman İzli Kayıtlar')",
+   "Organizasyon: şirket -> şube/işyeri -> departman -> pozisyon/unvan; kadro planı ve kadro talebi (Frappe Staffing Plan/Job Requisition, Workcube Organizasyon/Rol Planlama); organizasyon şeması",
+   "İzin: izin tipi, politika/hakediş (tahakkuk), izin defteri (ledger), bakiye, çok seviyeli onay, izin paraya çevirme, resmi tatil takvimi ve takvim atama",
+   "Devam/PDKS: check-in/out olayı (cihaz, kiosk, mobil, QR, geofence/IP kısıtı), ham olaydan devam kaydı üretimi, geç kalma/erken çıkma kuralları, düzeltme talebi ve onayı",
+   "Vardiya: vardiya tipi, atama, rotasyon, vardiya/iş tipi değişiklik talebi, roster yayınlama",
+   "Puantaj: devam + izin + vardiya verisinden dönemsel çalışma girişleri (Odoo work entry kaynakları: çalışma takvimi / attendance / planning) ve onaylı puantajın bordroya aktarımı",
+   "Fazla mesai: tip/oran tanımı, hesaplama, onay, bordro bileşenine bağlama (Frappe Overtime Slip, Horilla AttendanceOverTime)",
+   "Bordro motoru: ücret bileşenleri (kazanç/kesinti), maaş yapısı ve atama, tarih geçerlilikli kural parametreleri, toplu bordro çalıştırma (payroll run), ek/değişken ödeme ve kesinti, geriye dönük fark (arrear) ve bordro düzeltme, net->brüt, avans/borç/kredi taksiti, bordro zarfı dağıtımı",
+   "Muhasebe entegrasyonu: bordro -> yevmiye fişi, masraf merkezi dağılımı",
+   "Masraf ve avans talepleri (onaylı), bordroyla geri ödeme",
+   "İşe alım (ATS): açık pozisyon, aday, kaynak, mülakat ve geri bildirim, teklif, referans",
+   "Yaşam döngüsü: onboarding ve offboarding şablonlu görev listeleri, transfer, terfi, çıkış görüşmesi, son hesap/ibra (Frappe'de hepsi ayrı doctype)",
+   "Performans: dönem/döngü, hedef (OKR/KRA), yetkinlik, 360/çok yönlü geri bildirim, 1:1 toplantı",
+   "Eğitim ve beceri: eğitim programı/etkinliği, katılım, sonuç, beceri matrisi",
+   "Çalışan talepleri/yardım masası + şikâyet + disiplin kaydı (Horilla helpdesk + DisciplinaryAction, OrangeHRM Advanced Request Desk/Discipline/Employee Voice, Frappe Employee Grievance)",
+   "Self-servis portal ve mobil uygulama: profil, izin/avans/masraf/mesai talebi, bordro görüntüleme, duyurular; yönetici onay kutusu",
+   "Çok şirketli yapı ve şirket bazlı veri ayrımı",
+   "Raporlama/analitik, denetim izi, rol-yetki, REST API, LDAP/SSO"
+  ],
+  "turkiye_farki": [
+   "Bordro hesap çekirdeği: SGK işçi/işveren ve işsizlik primi, SGK tavanı, kümülatif matrahla artan oranlı gelir vergisi, asgari ücret GV ve damga vergisi istisnası, damga vergisi (Odoo EE l10n_tr_hr_payroll dokümanı bunları kapsıyor)",
+   "Yasal parametrelerin tarihli tabloda tutulması ve çevrim içi güncellenmesi: asgari ücret, vergi dilimleri, kıdem tavanı (Logo My Logo, Kolay İK otomatik güncelleme, Odoo Rule Parameters)",
+   "SGK bildirimleri: işe giriş/işten çıkış bildirgesi, aylık prim ve hizmet belgesi, e-Bildirge'nin sistemden gönderimi (Logo Bordro Plus, Mikro, Luca, Workcube)",
+   "MUHSGK (muhtasar ve prim hizmet beyannamesi) üretimi; kıdem/ihbar/huzur hakkı gibi ek kazançların muhtasar işçilik kartlarına yansıtılması (Luca, Kolay İK MUHSGK raporu, Netsis e-Bildirge text çıktısı)",
+   "Teşvik: kanun numarası bazlı SGK/GV teşvikleri, geçerlilik tarihine göre istisna, işyerinin borçlu olduğu aylarda teşviksiz hesaplama, geriye dönük teşvik sorgulama (Luca ROTA), Ar-Ge/teknopark istisnaları (Kolay İK, Logo Edge HR)",
+   "Kıdem ve ihbar tazminatı hesaplama + kıdem/ihbar grupları (sendikalı/yabancı mevzuat için - Logo j-HR dokümantasyonu, kısmen doğrulandı)",
+   "BES otomatik katılım kesintisi ve emeklilik şirketi entegrasyonu (Netsis: AvivaSA, Anadolu Hayat, Allianz; Logo Bordro Plus; Luca BES takibi)",
+   "İcra ve nafaka kesintileri, personel borç ödeme planları (Logo Bordro Plus)",
+   "Bordro dağıtımı: KEP ile e-Bordro (Mikro), şifreli e-posta/PDF bordro zarfı (Logo Bordro Plus, Netsis)",
+   "PDKS: fiziksel cihaz (kart/biyometrik) verisinin izlenip düzeltilip onaylanarak puantaja aktarımı (Logo Edge HR) veya cihazsız QR+konum modeli ve 'biyometrik veri toplamama' KVKK vurgusu (Kolay İK)",
+   "KVKK: veri alanı bazında rıza takibi ve süresi dolan verilerin anonimleştirilmesi (Netsis sürüm notu - doğrulanamadı)",
+   "İSG entegrasyonu (Netsis + eLogo İSG; Workcube Sağlık ve Güvenlik İşlemleri); iş göremezlik raporları ve İŞKUR kayıtları (Kolay İK hizmet kapsamı)",
+   "Çok işyeri (SGK işyeri sicili) bazında bordro ve bildirge; aynı ayda birden fazla ödeme (Logo Bordro Plus SSS)",
+   "Kamu personeli (memur) bordrosu (Workcube wiki başlığı - doğrulanamadı)",
+   "Yabancı çalışanlar için ek dil paketleri: Arapça, Farsça, Rusça, Azerice (Logo Bordro Plus, Netsis)",
+   "Banka talimat/ödeme listesi dosyası: yalnızca Kolay İK outsource hizmet kapsamında açıkça geçiyor; yazılım özelliği olarak hiçbir TR ürününde doğrulanamadı"
+  ],
+  "ana_sonuc": "Acik kaynaklarin hicbirinde (Odoo CE, Frappe HRMS, Horilla, OrangeHRM, OCA) Turkiye bordrosu + SGK/GIB bildirim katmani yok. Odoo EE'de l10n_tr_hr_payroll var ama dokumana gore hesap cekirdegiyle sinirli (MUHSGK/e-Bildirge/tesvik/kidem/BES/icra yok). Turk incumbentler (Logo, Luca, Mikro, Kolay IK, Netsis) Turkiye katmanini kapsiyor ama genel HR genisligi (ATS, performans, egitim, vaka) urunden urune degisiyor ve kapali kaynak. 'Tam' = ortak minimum (18 madde) + Turkiye farki (16 madde)."
+ },
+ "test_matrisi_ai_vs_insan": {
+  "ai_yapabilir": [
+   {
+    "tur": "Birim + tablo-gudumlu altin testler",
+    "kapsam": "resmi orneklerden (GVGT 319, SGK Tesvik 2026 kitapcigi, CSGB asgari ucret tablosu, GIB rehber ornekleri) turetilen girdi/cikti; her test kaynak URL ve parametre yili ile etiketli",
+    "not": "Altin setin 'dogru' oldugu insan tarafindan bir kez imzalanmali; AI yalniz resmi ornegi koda dokerse oracle resmi kaynaktir"
+   },
+   {
+    "tur": "Property/metamorfik",
+    "kapsam": "monotonluk, ters fonksiyon (net<->brut), sinir degerleri (45 saat, 270 saat/yil, 7,5 saat gece, PEK alt/ust, dilim esikleri), tarih aritmetigi (artik yil, ay sonu), idempotent yeniden hesap"
+   },
+   {
+    "tur": "Differential / N-version",
+    "kapsam": "uretim motoru vs bagimsiz referans hesaplayici (ayri ajan/ekip); incumbent yazilim ciktisi ve musteri eski sistem tahakkuklariyla karsilastirma; farklar insan kuyruguna"
+   },
+   {
+    "tur": "Sozlesme/sema",
+    "kapsam": "MPHB XML (BDP'den elde edilen sema), e-Bildirge V2 XSD, SGK 4/a SOAP WSDL; banka dosyasi golden file; kayitli yanitlarla mock"
+   },
+   {
+    "tur": "Mutasyon testi",
+    "kapsam": "oran/parametre/karsilastirma operatorlerini bozan mutantlari test setinin yakalama orani (90/90 tuzagina karsi olcut)"
+   },
+   {
+    "tur": "E2E yolculuklar",
+    "kapsam": "ise alim->onboarding->SGK giris (test ortami/mock)->vardiya->PDKS->puantaj->bordro->MPHB XML->banka dosyasi->offboarding->cikis bildirgesi; coklu sirket; ESS/MSS"
+   },
+   {
+    "tur": "Yetki/guvenlik",
+    "kapsam": "her endpoint icin negatif yetki testi (tenant/sirket sizintisi), alan maskeleme, denetim kaydi zorunlulugu, OWASP ASVS kontrolleri, gizli veri loglamasi taramasi"
+   },
+   {
+    "tur": "Erisilebilirlik",
+    "kapsam": "WCAG 2.2 AA otomatik tarama (axe vb.) + klavye gezinme senaryolari (otomatik kismi; tam uyum insan denetimi ister)"
+   },
+   {
+    "tur": "Performans",
+    "kapsam": "10k calisan bordro, ay sonu PDKS olay patlamasi, retro yeniden hesap; SLO hedefleri musteriyle"
+   },
+   {
+    "tur": "Yerellestirme",
+    "kapsam": "tr-TR sayi/para/tarih bicimleri, Turkce karakter siralama (i/I, ş, ğ), CSV/Excel icine aktarma kodlamasi, PDF pusula"
+   },
+   {
+    "tur": "Mevzuat izleme",
+    "kapsam": "Resmi Gazete/GIB/SGK duyuru takibi ve 'parametre degisti' uyarisi; degisiklik PR'i uretimi (insan onayli)"
+   }
+  ],
+  "insan_gerekir": [
+   {
+    "konu": "Hukuki dogruluk imzasi",
+    "kim": "mali musavir (bordro/MPHB), IK hukukcusu (fesih, izin, calisma sureleri), SGK uzmani (tesvik, eksik gun, belge turu)",
+    "neden": "yorum gerektiren kararlar ve altin setin imzasi; alt ajan 7 'yalniz insan' karar tipi listeledi"
+   },
+   {
+    "konu": "Canli devlet sistemleri",
+    "kim": "isveren/mali musavir",
+    "neden": "MUHSGK test ortami yok; SGK test ortami gercek sicil ister; canli gonderim yetki ve sorumluluk gerektirir"
+   },
+   {
+    "konu": "Paralel kosum kabulu",
+    "kim": "musteri IK + mali musavir",
+    "neden": "ilk donem(ler) eski sistemle fark raporu onayi"
+   },
+   {
+    "konu": "UX kabul",
+    "kim": "IK kullanicilari, yonetici, calisan",
+    "neden": "is akisinin kullanilabilirligi ve guven"
+   },
+   {
+    "konu": "KVKK/etik",
+    "kim": "KVKK uzmani, hukuk",
+    "neden": "AI puanlama/risk skoru, yurt disi aktarim, saklama-imha politikasi"
+   },
+   {
+    "konu": "Tam erisilebilirlik denetimi",
+    "kim": "erisilebilirlik uzmani / ekran okuyucu kullanicisi",
+    "neden": "otomatik tarama WCAG kriterlerinin bir kismini kapsar"
+   }
+  ],
+  "90_90_tuzagina_karsi_olcutler": [
+   "Kapsam olcusu satir kapsami degil: (a) mevzuat kurali izlenebilirlik matrisi (her kural -> en az bir resmi-kaynakli test), (b) mutasyon skoru, (c) resmi ornek kapsami (kitapciktaki/tebligdeki her ornek test edildi mi), (d) bilinmeyen-bilinmeyenler listesindeki her madde icin kapanis kaniti",
+   "Modul 'bitti' sayilmaz: altin set uzman imzali degilse, parametreler resmi kaynakla eslesmiyorsa veya entegrasyon yalniz mock ile test edildiyse durum 'AI-dogrulandi, insan-onayi-bekliyor' olarak ayri tutulur"
+  ]
+ }
+}
