@@ -1,4 +1,7 @@
 // Kaynak dizini. Bağlantılar bu HTML dosyasının konumuna göredir (fabrika-karar-merkezi/ klasörü).
+import veri from './uretilen.json';
+
+const sayi = (n: number) => n.toLocaleString('tr-TR');
 export interface Kaynak { kod: string; ad: string; ne: string; yol: string; grup: string }
 
 const ar = (dosya: string) => `../mimari-haritasi/arastirma/${dosya}`;
@@ -25,8 +28,8 @@ export const KAYNAKLAR: Kaynak[] = [
   { grup: 'Araştırma', kod: 'D2', ad: 'Ajan platformu hataları', ne: '8 platform, 66 kayıt, 11 dikiş', yol: ar('D2-ozet.md') },
   { grup: 'Araştırma', kod: 'E1–E6', ad: 'Codex karşılaştırmaları', ne: 'İhtiyaç, araç, risk, mimari, araştırma, Kestra geçmişi', yol: ar('E4-ozet.md') },
   { grup: 'Haritalar', kod: 'İhtiyaç', ad: 'İhtiyaç haritası (görsel)', ne: '395 ihtiyaç, 35 küme', yol: '../ihtiyac-haritasi/gorsel/ihtiyac-haritasi.html' },
-  { grup: 'Haritalar', kod: 'Araç', ad: 'Araç haritası', ne: '4.404 araç', yol: '../arac-haritasi/00-harita.json' },
-  { grup: 'Haritalar', kod: 'Risk', ad: 'Risk haritası', ne: '2.514 bulgu', yol: '../risk-haritasi/00-risk-haritasi.json' },
+  { grup: 'Haritalar', kod: 'Araç', ad: 'Araç haritası', ne: `${sayi(veri.arac.toplam)} araç`, yol: '../arac-haritasi/00-harita.json' },
+  { grup: 'Haritalar', kod: 'Risk', ad: 'Risk haritası', ne: `${sayi(veri.risk.toplamBulgu)} bulgu`, yol: '../risk-haritasi/00-risk-haritasi.json' },
   { grup: 'Haritalar', kod: 'Mimari', ad: 'Mimari kayıt', ne: 'Bileşenler, kararlar, pilot dersleri, kabul deneyleri', yol: '../mimari-haritasi/00-mimari.json' },
   { grup: 'Codex (salt okunur)', kod: 'Codex-15', ad: 'Karşılaştırmada kaçan mimari açıklar', ne: '28 bulgu, 16 düzeltilmiş sözleşme', yol: '../../otomasyon%20coding%202/reports/Kar%C5%9F%C4%B1la%C5%9Ft%C4%B1rmada%20ka%C3%A7an%20mimari%20a%C3%A7%C4%B1klar.md' },
   { grup: 'Codex (salt okunur)', kod: 'Codex-atlas', ad: 'Codex Mermaid + ECharts atlası', ne: 'Araştırma görselleştirmesi', yol: '../../otomasyon%20coding%202/agentic-sistem/gorsellestirme.html' },
